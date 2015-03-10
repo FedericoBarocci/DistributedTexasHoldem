@@ -20,9 +20,40 @@ public class GameTexasHoldemRunner {
 			game.addPlayer(new Player("Enrico"));
 			game.addPlayer(new Player("Fausto"));
 			
+			System.out.println(game + "\n");
+
+			for (Player p : game.getPlayers()) {
+				p.evaluateRanking(game.getTableCards());
+				System.out.println(p);
+			}
+			
 			game.deal();
+			
+			System.out.println(game + "\n");
+
+			for (Player p : game.getPlayers()) {
+				p.evaluateRanking(game.getTableCards());
+				System.out.println(p);
+			}
+			
 			game.callFlop();
+			
+			System.out.println(game + "\n");
+
+			for (Player p : game.getPlayers()) {
+				p.evaluateRanking(game.getTableCards());
+				System.out.println(p);
+			}
+			
 			game.betTurn();
+			
+			System.out.println(game + "\n");
+
+			for (Player p : game.getPlayers()) {
+				p.evaluateRanking(game.getTableCards());
+				System.out.println(p);
+			}
+			
 			game.betRiver();
 
 			System.out.println(game + "\n");

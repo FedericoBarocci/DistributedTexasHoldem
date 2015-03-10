@@ -1,6 +1,6 @@
 package it.unibo.cs.sd.poker;
 
-public enum RankingEnum {
+public enum Rankings {
 	CARTA_ALTA,
 	COPPIA,
 	DOPPIA_COPPIA,

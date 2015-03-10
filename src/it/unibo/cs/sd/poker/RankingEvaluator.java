@@ -1,47 +1,44 @@
 package it.unibo.cs.sd.poker;
 
-import static it.unibo.cs.sd.poker.CardRank._10;
 import static it.unibo.cs.sd.poker.CardRank._2;
 import static it.unibo.cs.sd.poker.CardRank._3;
 import static it.unibo.cs.sd.poker.CardRank._4;
 import static it.unibo.cs.sd.poker.CardRank._5;
 import static it.unibo.cs.sd.poker.CardRank._A;
-import static it.unibo.cs.sd.poker.CardRank._J;
 import static it.unibo.cs.sd.poker.CardRank._K;
-import static it.unibo.cs.sd.poker.CardRank._Q;
-import static it.unibo.cs.sd.poker.RankingEnum.CARTA_ALTA;
-import static it.unibo.cs.sd.poker.RankingEnum.COLORE;
-import static it.unibo.cs.sd.poker.RankingEnum.COPPIA;
-import static it.unibo.cs.sd.poker.RankingEnum.DOPPIA_COPPIA;
-import static it.unibo.cs.sd.poker.RankingEnum.FULL;
-import static it.unibo.cs.sd.poker.RankingEnum.NOT_DEF;
-import static it.unibo.cs.sd.poker.RankingEnum.POKER;
-import static it.unibo.cs.sd.poker.RankingEnum.SCALA;
-import static it.unibo.cs.sd.poker.RankingEnum.SCALA_COLORE;
-import static it.unibo.cs.sd.poker.RankingEnum.SCALA_REALE;
-import static it.unibo.cs.sd.poker.RankingEnum.TRIS;
+import static it.unibo.cs.sd.poker.Rankings.CARTA_ALTA;
+import static it.unibo.cs.sd.poker.Rankings.COLORE;
+import static it.unibo.cs.sd.poker.Rankings.COPPIA;
+import static it.unibo.cs.sd.poker.Rankings.DOPPIA_COPPIA;
+import static it.unibo.cs.sd.poker.Rankings.FULL;
+import static it.unibo.cs.sd.poker.Rankings.NOT_DEF;
+import static it.unibo.cs.sd.poker.Rankings.POKER;
+import static it.unibo.cs.sd.poker.Rankings.SCALA;
+import static it.unibo.cs.sd.poker.Rankings.SCALA_COLORE;
+import static it.unibo.cs.sd.poker.Rankings.SCALA_REALE;
+import static it.unibo.cs.sd.poker.Rankings.TRIS;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RankingEval {
+public class RankingEvaluator {
 	
 	private List<Card> allCards = new ArrayList<Card>();
 	private List<Card> solutionCards = new ArrayList<Card>();
-	private RankingEnum rankingEnum = NOT_DEF;
+	private Rankings rankings = NOT_DEF;
 	
-	public RankingEval() { }
+	public RankingEvaluator() { }
 	
-	public RankingEval(List<Card> cards) {
+	public RankingEvaluator(List<Card> cards) {
 		this.setAllCards(cards);
 	}
 	
-	public RankingEnum getRanking() {
-		return rankingEnum;
+	public Rankings getRankings() {
+		return rankings;
 	}
 	
-	private void setRanking(RankingEnum rankEnum) {
-		this.rankingEnum = rankEnum;
+	private void setRankings(Rankings rankings) {
+		this.rankings = rankings;
 	}
 	
 	public List<Card> getAllCards() {
@@ -52,21 +49,13 @@ public class RankingEval {
 		this.allCards = allCards;
 	}
 	
-//	public List<Card> getCards() {
-//		return getSolutionCards();
-//	}
-	
 	public List<Card> getSolutionCards() {
 		return solutionCards;
 	}
 
-//	public void setEvalCards(List<Card> evalCards) {
-//		this.solutionCards = evalCards;
-//	}
-
-	private Boolean setSolution(List<Card> cards, RankingEnum rankEnum) {
+	private Boolean setSolution(List<Card> cards, Rankings rankings) {
 		this.solutionCards = cards;
-		setRanking(rankEnum);
+		setRankings(rankings);
 		
 		return true;
 	}
@@ -76,12 +65,12 @@ public class RankingEval {
 	}
 
 	public Boolean isScalaReale() {
-		RankingEval test = new RankingEval(getAllCards());
+		RankingEvaluator test = new RankingEvaluator(getAllCards());
 		
 		if (test.isScalaColore()) {
 			List<CardRank> r = toRankEnumList(test.getSolutionCards());
 
-			if (r.contains(_10) && r.contains(_J) && r.contains(_Q) && r.contains(_K) && r.contains(_A) ) {
+			if (r.contains(_K) && r.contains(_A) ) {
 				return setSolution(test.getSolutionCards(), SCALA_REALE);
 			}
 		}
@@ -90,10 +79,17 @@ public class RankingEval {
 	}
 
 	public Boolean isScalaColore() {
-		RankingEval test = new RankingEval(getAllCards());
+		RankingEvaluator test = new RankingEvaluator(getAllCards());
 		
-		if (test.isScala() && test.isColore()) return setSolution(test.getSolutionCards(), SCALA_COLORE);
-		else return false;
+		if (test.isScala()) { 
+			RankingEvaluator test2 = new RankingEvaluator(test.getSolutionCards());
+			
+			if (test2.isColore()) {
+				return setSolution(test2.getSolutionCards(), SCALA_COLORE);
+			}
+		}
+		
+		return false;
 	}
 
 	public Boolean isPoker() {
@@ -101,14 +97,14 @@ public class RankingEval {
 	}
 
 	public Boolean isFull() {
-		RankingEval tris = new RankingEval(getAllCards());
+		RankingEvaluator tris = new RankingEvaluator(getAllCards());
 		
 		if (tris.sameCards(3, 3, TRIS)) {
 			List<Card> l = new ArrayList<Card>(getAllCards()); 
 			
 			l.removeAll(tris.getSolutionCards());
 			
-			RankingEval pair = new RankingEval(l);
+			RankingEvaluator pair = new RankingEvaluator(l);
 			
 			if (pair.sameCards(2, 2, COPPIA)) {
 				l.clear();
@@ -215,14 +211,14 @@ public class RankingEval {
 	}
 
 	public Boolean isDoppiaCoppia() {
-		RankingEval pair1 = new RankingEval(getAllCards());
+		RankingEvaluator pair1 = new RankingEvaluator(getAllCards());
 		
 		if (pair1.sameCards(2, 2, COPPIA)) {
 			List<Card> l = new ArrayList<Card>(getAllCards()); 
 			
 			l.removeAll(pair1.getSolutionCards());
 			
-			RankingEval pair2 = new RankingEval(l);
+			RankingEvaluator pair2 = new RankingEvaluator(l);
 			
 			if (pair2.sameCards(2, 3, COPPIA)) {
 				l.clear();
@@ -251,7 +247,7 @@ public class RankingEval {
 	}
 
 	//ok
-	private Boolean sameCards(Integer pairSize, Integer retSize, RankingEnum rankEnum) {
+	private Boolean sameCards(Integer pairSize, Integer retSize, Rankings rankEnum) {
 		List<Card> checkedPair = new ArrayList<Card>();
 		
 		for (Card card1 : getAllCards()) {

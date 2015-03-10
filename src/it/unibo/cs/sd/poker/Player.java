@@ -46,7 +46,7 @@ public class Player implements Serializable {
 		rank.setCards(getCards(), tablecards);
 	}
 	
-	public RankingEnum getRanking() {
+	public Rankings getRanking() {
 		return rank.getRanking();
 	}
 	
