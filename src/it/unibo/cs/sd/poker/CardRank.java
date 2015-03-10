@@ -1,6 +1,6 @@
 package it.unibo.cs.sd.poker;
 
-public enum CardRankEnum {
+public enum CardRank {
 	_2,
 	_3,
 	_4,

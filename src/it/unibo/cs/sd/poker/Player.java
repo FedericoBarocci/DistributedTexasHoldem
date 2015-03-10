@@ -1,20 +1,62 @@
 package it.unibo.cs.sd.poker;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class Player implements IPlayer, Serializable {
-
+public class Player implements Serializable {
+	
 	private static final long serialVersionUID = 4664480702994610549L;
 
-	private Card[] cards = new Card[2];
-
-	private RankingEnum rankingEnum = null;
-
-	private List<Card> rankingList = null;
+	private List<Card> cards = new ArrayList<Card>();
 	
-	private String name = null;
+	private Ranking rank = new Ranking();
+	
+	private String name = new String();
+	
+	private Integer chips;
+	
+	public Integer getChip() {
+		return chips;
+	}
+
+	public void setChip(Integer chips) {
+		this.chips = chips;
+	}
+	
+	public Boolean bet(Integer num) {
+		if (num <= getChip()) {
+			setChip(getChip() - num);
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public Integer allin() {
+		Integer tot = getChip();
+		setChip(0);
+		
+		return tot;
+	}
+
+	public void evaluateRanking(List<Card> tablecards) {
+		rank.setCards(getCards(), tablecards);
+	}
+	
+	public RankingEnum getRanking() {
+		return rank.getRanking();
+	}
+	
+	public Integer getRankingInt(){
+		return rank.getRankingToInt();
+	}
+	
+	public List<Card> getSolutionCards() {
+		return rank.getSolutionCards();
+	}
 
 	public Player(String string) {
 		this.name = string;
@@ -28,47 +70,32 @@ public class Player implements IPlayer, Serializable {
 		this.name = name;
 	}
 
-	public RankingEnum getRankingEnum() {
-		return rankingEnum;
-	}
-
-	public void setRankingEnum(RankingEnum rankingEnum) {
-		this.rankingEnum = rankingEnum;
-	}
-
-	public List<Card> getRankingList() {
-		return rankingList;
-	}
-
-	public void setRankingList(List<Card> rankingList) {
-		this.rankingList = rankingList;
-	}
-
-	public Card[] getCards() {
+	public List<Card> getCards() {
 		return cards;
 	}
 
-	public void setCards(Card[] cards) {
+	public void setCards(List<Card> cards) {
 		this.cards = cards;
 	}
 	
-	public void printStatus()
+	@Override
+	public String toString()
 	{
-		System.out.print(this.getName() + " \t");
+		String s = this.getName() + " \t";
 		
 		for (Card carta : this.getCards()) {
-			System.out.print( carta.toString() + "  \t");
+			s += carta.toString() + "  \t";
 		}
 		
-		if (this.getRankingEnum().ordinal() == 2)
-			System.out.print("\t" + this.getRankingEnum().toString() + "\t");
+		if (rank.getRanking().ordinal() == 2)
+			s += "\t" + rank.getRanking().toString() + "\t";
 		else
-			System.out.print("\t" + this.getRankingEnum().toString() + "    \t");
+			s += "\t" + rank.getRanking().toString() + "    \t";
 		
-		for (Card carta : this.getRankingList()) {
-			System.out.print( carta.toString() + "  \t");
+		for (Card carta : rank.getSolutionCards()) {
+			s += carta.toString() + "  \t";
 		}
 		
-		System.out.println("");
+		return s;
 	}
 }

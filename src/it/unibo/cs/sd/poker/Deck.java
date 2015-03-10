@@ -1,32 +1,25 @@
 package it.unibo.cs.sd.poker;
 
+import it.unibo.cs.sd.poker.Card;
+import it.unibo.cs.sd.poker.CardRank;
+import it.unibo.cs.sd.poker.CardSuit;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-
-public class Deck implements IDeck, Serializable {
-
+public class Deck implements Serializable {
+	
 	private static final long serialVersionUID = 2463644121163649891L;
 
-	private List<Card> cards;
-	private Random random;
+	private final List<Card> cards = new ArrayList<Card>();
+	
+	private final Random random = new Random();
 
 	public Deck() {
-		this(new Random());
-	}
-
-	public Deck(Random random) {
-		this.random = random;
-		createDeck();
-	}
-
-	private void createDeck() {
-		cards = new ArrayList<Card>();
-		
-		for (CardSuitEnum suit : CardSuitEnum.values()) {
-			for (CardRankEnum rank : CardRankEnum.values()) {
+		for (CardSuit suit : CardSuit.values()) {
+			for (CardRank rank : CardRank.values()) {
 				cards.add(new Card(suit, rank));
 			}
 		}

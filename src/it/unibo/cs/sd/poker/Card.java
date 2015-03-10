@@ -7,19 +7,19 @@ public class Card implements Serializable {
 
 	private static final long serialVersionUID = 8343990871159439035L;
 
-	private CardSuitEnum suit;
-	private CardRankEnum rank;
+	private CardSuit suit;
+	private CardRank rank;
 
-	public Card(CardSuitEnum suit, CardRankEnum rank) {
+	public Card(CardSuit suit, CardRank rank) {
 		this.suit = suit;
 		this.rank = rank;
 	}
 
-	public CardSuitEnum getSuit() {
+	public CardSuit getSuit() {
 		return suit;
 	}
 
-	public CardRankEnum getRank() {
+	public CardRank getRank() {
 		return rank;
 	}
 

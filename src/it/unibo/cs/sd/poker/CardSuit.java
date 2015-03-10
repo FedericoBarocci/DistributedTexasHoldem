@@ -1,6 +1,6 @@
 package it.unibo.cs.sd.poker;
 
-public enum CardSuitEnum {
+public enum CardSuit {
 	Cuori,
 	Quadri,
 	Fiori,

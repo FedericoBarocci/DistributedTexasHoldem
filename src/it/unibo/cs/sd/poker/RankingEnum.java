@@ -10,5 +10,6 @@ public enum RankingEnum {
 	FULL,
 	POKER,
 	SCALA_COLORE,
-	SCALA_REALE
+	SCALA_REALE,
+	NOT_DEF
 }
