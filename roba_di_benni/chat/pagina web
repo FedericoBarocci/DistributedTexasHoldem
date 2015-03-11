@@ -1,0 +1,151 @@
+Project 2: Distributed Chat Service
+
+CprE: 550
+
+Md. Manzoor Murshed
+
+ 
+
+Abstract:
+
+ 
+
+This program contains a chat service registration program (Provider) through a Server program (Server) and Client program to check the registered chat services, join or leave chat and also to do chat (Chat). A GUI based Chat Client (ChatClient) to do chatting using windows machines was also designed.
+
+ 
+
+Design:
+
+ 
+
+ChatProvider.java contains the interface for java RMI. Provider program implements and runs all the methods to register chat rooms.  It registers the program using Naming.rebind() methods in port 4099. Server Program can connect to Provider program using java RMI registry checking Naming.lookup() to register, unregister and list chat rooms. It also can find information about a particular char room. Client program can check the available char rooms and can join or leave chat rooms. Client program can also send and receive chat messages.
+
+ 
+
+System Diagram:
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Figure: Distributed Chat Service
+
+ 
+
+ 
+
+Methods used:
+
+ 
+
+The following remote methods are used in the program
+
+ 
+
+To register the chat service
+
+public int register(String name, String info) throws RemoteException;
+
+ 
+
+To unregister chat service
+
+public int unregister(String name)throws RemoteException;
+
+ 
+
+To get information about a chat service
+
+public String getinfo(String name) throws RemoteException;
+
+ 
+
+To get the list of the available chat service
+
+public Vector getChatRooms() throws RemoteException; 
+
+ 
+
+To get information about a particular Chat service
+
+public Vector getInformation() throws RemoteException;
+
+ 
+
+To sign in the service to start a chat
+
+int  signIn(String s, int i) throws java.rmi.RemoteException;
+
+ 
+
+To broadcast chat messages
+
+void broadcast(String s,int i ) throws java.rmi.RemoteException;
+
+ 
+
+To receive the chat messages
+
+String getbroadcast() throws java.rmi.RemoteException;
+
+ 
+
+To purge the stored messages
+
+void reset() throws java.rmi.RemoteException;
+
+ 
+
+Run and Compile:
+
+ 
+
+Following commands were used to compile the programs in either windows or unix machine.
+
+ 
+
+javac ChatProvider.java
+
+javac Provider.java
+
+rmic Provider
+
+javac Server.java
+
+javac Client.java
+
+javac ChatClient.java
+
+ 
+
+To run the program following commands were used.
+
+ 
+
+              rmiregistry 4099
+
+              java Provider
+
+              java Server machine_name (localhost/Saturn/Jupiter/linux-1)
+
+              java Client machine_name (localhost/Saturn/Jupiter/linux-1)
+
+ 
+
+For the GUI based client, program ChatClient can be run on a windows machine to connect to the Saturn or Jupiter machine using the command java ChatClient
+
+ 
+
+Measurements:
+
+ 
+
+The program was tested on Unix/Linux machines and also on Windows machines. When I used localhost it gave faster response and the response was also good for remote machines. Latency of registration and unregistration cycle was checked and the program gave satisfactory results for all possible conditions.
+
+ 
