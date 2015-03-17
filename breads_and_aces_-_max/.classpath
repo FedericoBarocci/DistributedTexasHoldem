@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/core"/>
-	<classpathentry kind="src" path="src/rmi"/>
+	<classpathentry excluding="breads_and_aces/rmi/services/base/listener/ListenerImpl.java|breads_and_aces/rmi/services/base/echo/EchoImpl.java|breads_and_aces/rmi/services/base/listeners/player/PlayersListenerImpl.java|breads_and_aces/rmi/client/ClientRunnable.java|breads_and_aces/rmi/server/ServerRunnable.java|breads_and_aces/rmi/client/Client.java|breads_and_aces/rmi/node/client/Client.java|breads_and_aces/rmi/node/client/ClientRunnable.java|breads_and_aces/rmi/node/server/ServerRunnable.java|breads_and_aces/rmi/node/client/ClientUtil.java|breads_and_aces/rmi/node/server/ServerAsServiceContainerUtil.java|breads_and_aces/node/client/|breads_and_aces/node/server/ServerAsServiceContainerUtil.java|breads_and_aces/node/server/ServerRunnable.java|breads_and_aces/rmi/game/services/init/registrar/GameRegistrar.java|breads_and_aces/rmi/game/GameInitializer_.java|breads_and_aces/rmi/game/state/GameRegistrarStaterContext.java|breads_and_aces/node/NodeBuilderClassOld.java|breads_and_aces/node/builder/NodeBuilderClientable.java|breads_and_aces/node/builder/NodeBuilderNO.java|breads_and_aces/node/builder/NodeBuilderServable.java" kind="src" path="src/rmi"/>
 	<classpathentry kind="src" path="src/gui"/>
-	<classpathentry kind="src" path="src/from_uml"/>
+	<classpathentry excluding="Client.java|Echo.java|EchoImpl.java|Server.java" kind="src" path="src/from_uml"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="swing2swt.jar"/>
+	<classpathentry kind="lib" path="libs/guice/javax.inject.jar"/>
+	<classpathentry kind="lib" path="libs/guice/guice-3.0.jar"/>
+	<classpathentry kind="lib" path="libs/guice/aopalliance-1.0.jar"/>
 	<classpathentry excluding="demo/gui/Comp.java|demo/gui/Demo2.java|demo/gui/JFaceMain.java" kind="src" path="no"/>
+	<classpathentry kind="lib" path="swing2swt.jar"/>
 	<classpathentry kind="lib" path="libs/swt/org.eclipse.core.commands_3.6.100.v20141026-0121.jar"/>
 	<classpathentry kind="lib" path="libs/swt/org.eclipse.core.runtime_3.10.0.v20150112-1422.jar"/>
 	<classpathentry kind="lib" path="libs/swt/org.eclipse.equinox.common_3.6.200.v20141113-1308.jar"/>
@@ -16,5 +19,12 @@
 	<classpathentry kind="lib" path="libs/swt/org.eclipse.text_3.5.400.v20140915-2351.jar"/>
 	<classpathentry kind="lib" path="libs/swt/org.eclipse.ui.forms_3.6.200.v20150109-1110.jar"/>
 	<classpathentry kind="lib" path="libs/swt/org.eclipse.ui.workbench_3.107.0.v20150127-1326.jar"/>
+	<classpathentry kind="lib" path="/data/lab/eclipse/eclipse_mars/plugins/org.eclipse.core.databinding_1.4.100.v20141002-1314.jar" sourcepath="/data/lab/eclipse/eclipse_mars/plugins/org.eclipse.core.databinding_1.4.100.v20141002-1314.jar"/>
+	<classpathentry kind="lib" path="/data/lab/eclipse/eclipse_mars/plugins/org.eclipse.core.databinding.beans_1.2.200.v20140930-0857.jar" sourcepath="/data/lab/eclipse/eclipse_mars/plugins/org.eclipse.core.databinding.beans_1.2.200.v20140930-0857.jar"/>
+	<classpathentry kind="lib" path="/data/lab/eclipse/eclipse_mars/plugins/org.eclipse.core.databinding.observable_1.4.1.v20140910-2107.jar" sourcepath="/data/lab/eclipse/eclipse_mars/plugins/org.eclipse.core.databinding.observable_1.4.1.v20140910-2107.jar"/>
+	<classpathentry kind="lib" path="/data/lab/eclipse/eclipse_mars/plugins/org.eclipse.core.databinding.property_1.4.200.v20140910-2107.jar" sourcepath="/data/lab/eclipse/eclipse_mars/plugins/org.eclipse.core.databinding.property_1.4.200.v20140910-2107.jar"/>
+	<classpathentry kind="lib" path="/data/lab/eclipse/eclipse_mars/plugins/org.eclipse.jface.databinding_1.7.0.v20141105-2217.jar" sourcepath="/data/lab/eclipse/eclipse_mars/plugins/org.eclipse.jface.databinding_1.7.0.v20141105-2217.jar"/>
+	<classpathentry kind="lib" path="/data/lab/eclipse/eclipse_mars/plugins/com.ibm.icu_54.1.1.v201501272100.jar" sourcepath="/data/lab/eclipse/eclipse_mars/plugins/com.ibm.icu_54.1.1.v201501272100.jar"/>
+	<classpathentry kind="lib" path="libs/guice/guice-assistedinject-3.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
