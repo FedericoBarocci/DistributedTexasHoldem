@@ -40,7 +40,7 @@ public class PlayerGUI {
 		this.name.setText(player.getName());
 		
 		this.box.setBackground(new Color(188, 221, 17, 70));
-		this.box.setBorder(new LineBorder(new Color(255, 255, 255), 1));
+		this.box.setBorder(new LineBorder(new Color(65, 146, 75), 1));
 		//this.box.setBounds(this.x-10, this.y-10, 135, 170);
 		this.box.setBounds(this.x-10, this.y+25, 135, 135);
 	}
