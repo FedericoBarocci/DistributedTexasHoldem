@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src/core"/>
 	<classpathentry kind="src" path="src/rmi"/>
-	<classpathentry kind="src" path="src/gui"/>
 	<classpathentry kind="src" path="src/from_uml"/>
+	<classpathentry kind="src" path="src/gui"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="swing2swt.jar"/>
 	<classpathentry excluding="demo/gui/Comp.java|demo/gui/Demo2.java|demo/gui/JFaceMain.java" kind="src" path="no"/>
