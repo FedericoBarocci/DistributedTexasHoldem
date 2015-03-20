@@ -7,7 +7,7 @@ public class CardGUI extends ElementGUI {
 	private static final long serialVersionUID = 2087881853075706384L;
 	
 	private static String imgDir = "elements/cardset/";
-	private static String imgBack = "back006.gif";	
+	private static String imgBack = "back.gif";	
 	private Card card = null;
 	
 	private int x = 0;
