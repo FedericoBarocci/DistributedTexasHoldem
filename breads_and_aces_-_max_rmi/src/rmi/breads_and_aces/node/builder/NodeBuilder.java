@@ -7,19 +7,17 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.util.LinkedHashMap;
 
-import breads_and_aces.node.Node;
+import breads_and_aces.game.init.GameInitializer;
+import breads_and_aces.game.init.clientable.GameInitializerClientableFactory;
+import breads_and_aces.game.init.servable.GameInitializerServable;
+import breads_and_aces.node.NodeContainer;
 import breads_and_aces.node.NodeFactory;
-import breads_and_aces.node.model.ConnectionInfo;
-import breads_and_aces.rmi.game.init.GameInitializer;
-import breads_and_aces.rmi.game.init.clientable.GameInitializerClientableFactory;
-import breads_and_aces.rmi.game.init.servable.GameInitializerServable;
-import breads_and_aces.rmi.game.model.Player;
-import breads_and_aces.rmi.services.rmi.game.GameService;
-import breads_and_aces.rmi.services.rmi.game.impl.GameServiceAsSessionInitializerClientable;
-import breads_and_aces.rmi.services.rmi.game.impl.GameServiceAsSessionInitializerServable;
-import breads_and_aces.rmi.services.rmi.game.utils.ServiceUtils;
+import breads_and_aces.node.model.NodeConnectionInfos;
+import breads_and_aces.services.rmi.game.GameService;
+import breads_and_aces.services.rmi.game.impl.GameServiceFactory;
+import breads_and_aces.services.rmi.game.utils.ServiceUtils;
+import breads_and_aces.utils.printer.Printer;
 
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
@@ -27,19 +25,25 @@ import com.google.inject.assistedinject.AssistedInject;
 public class NodeBuilder {
 	
 	private static int NODE_PORT = 33333;
-	private final ConnectionInfo connectionInfo;
+	private final NodeConnectionInfos nodeConnectionInfo;
 	private final String nodeId;
 	private final NodeFactory nodeFactory;
+	private final Printer printer;
 	
 	@AssistedInject
 	public NodeBuilder(
-			GameServiceAsSessionInitializerServable gameServiceAsSessionInitializerServable,
-			@Assisted(value="nodeIdAsServable") String id, 
+			@Assisted(value="nodeIdAsServable") String nodeId,
 			@Assisted(value="addressToBindAsServable") String addressToBind,
+//			GameServiceAsSessionInitializerServable gameServiceAsSessionInitializerServable,
+			GameServiceFactory gameServiceFactory,
 			GameInitializerServable gameInitializer,
-			NodeFactory nodeFactory
+			NodeFactory nodeFactory,
+			Printer printer
 			) throws RemoteException, MalformedURLException, NotBoundException, IOException {
-		this(id, addressToBind, gameServiceAsSessionInitializerServable, nodeFactory, gameInitializer);
+		this(nodeId, addressToBind, 
+//				gameServiceAsSessionInitializerServable,
+				gameServiceFactory.createServable(nodeId),
+				gameInitializer, nodeFactory, printer);
 
 		// TODO restore ?
 		//		populateNodesGameServices = populateNodesGameServices(me, game);
@@ -47,29 +51,34 @@ public class NodeBuilder {
 	
 	@AssistedInject
 	public NodeBuilder(
-			GameServiceAsSessionInitializerClientable gameServiceAsSessionInitializerConnectable,
-			@Assisted(value="nodeIdAsConnectable") String nodeId, 
+			@Assisted(value="nodeIdAsConnectable") String nodeId,
 			@Assisted(value="addressToBindAsConnectable") String addressToBind,
-			NodeFactory nodeFactory,
+//			GameServiceAsSessionInitializerClientable gameServiceAsSessionInitializerConnectable,
+			GameServiceFactory gameServiceFactory,
 			GameInitializerClientableFactory gameInitializerConnectableFactory,
 			@Assisted(value="initializerHostAddress") String initializerHostAddress,
-			@Assisted(value="initializerHostPort") int initializerHostPort
+			@Assisted(value="initializerHostPort") int initializerHostPort,
+			NodeFactory nodeFactory
+			, Printer printer
 			) throws RemoteException, MalformedURLException, NotBoundException, IOException {
-		this(nodeId, addressToBind, gameServiceAsSessionInitializerConnectable, nodeFactory, 
-				gameInitializerConnectableFactory.create(initializerHostAddress, initializerHostPort) );
+		this(nodeId, addressToBind, 
+//				gameServiceAsSessionInitializerConnectable,
+				gameServiceFactory.createClientable(nodeId),
+				gameInitializerConnectableFactory.create(initializerHostAddress, initializerHostPort), nodeFactory, printer);
 	}
 	
-	public Node build() {
-		return nodeFactory.create(nodeId/*, new Player(nodeId), connectionInfo, new LinkedHashMap<String, GameService>()*/ );
+	public NodeContainer build() {
+		return nodeFactory.create(nodeId, nodeConnectionInfo/*, new Player(nodeId), connectionInfo, new LinkedHashMap<String, GameService>()*/ );
 	}
 	
-	private NodeBuilder(String nodeId, String addressToBind, GameService gameService, NodeFactory nodeFactory, GameInitializer gameInitializer) throws RemoteException, IOException, NotBoundException {
+	private NodeBuilder(String nodeId, String addressToBind, GameService gameService, GameInitializer gameInitializer, NodeFactory nodeFactory, Printer printer) throws RemoteException, IOException, NotBoundException {
 		this.nodeId = nodeId;
 		this.nodeFactory = nodeFactory;
-		this.connectionInfo = startListen(addressToBind, gameService);
-		gameInitializer.initialize(nodeId, connectionInfo);
+		this.printer = printer;
+		this.nodeConnectionInfo = startListen(nodeId, addressToBind, gameService);
+		gameInitializer.initialize(nodeConnectionInfo, nodeId);
 	}
-	private static ConnectionInfo startListen(String addressToBind, GameService service) throws IOException {
+	private NodeConnectionInfos startListen(String nodeId, String addressToBind, GameService service) throws IOException {
 		int localPort = getPort();
 		LocateRegistry.createRegistry(localPort);
 		new Thread() {
@@ -78,61 +87,18 @@ public class NodeBuilder {
 				try {
 					Naming.rebind( ServiceUtils.getRMIURLString(addressToBind, localPort, GameService.SERVICE_NAME), service);
 				} catch (RemoteException e) {
+					printer.println("Unable to register RMI service: exiting");
 					e.printStackTrace();
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
+					System.exit(-1);
 				}
 			}
 		}.start();
-System.out.println("Node started on port "+localPort);
-		return new ConnectionInfo(addressToBind, localPort);
+		printer.println("Node started on port "+localPort);
+		return new NodeConnectionInfos(nodeId, addressToBind, localPort);
 	}
-	
-	
-	
 
-	/*private Player startListenServable(String meNodeId, String addressToBind, GameServiceServable service) throws IOException {
-		int localPort = getPort();
-		createThreadForServable(addressToBind, localPort, service);
-		System.out.println("Node"+" "+meNodeId+" "+"started on port "+localPort);
-		return new Player(meNodeId, new ConnectionInfo(addressToBind, localPort));
-	}
-	private Player startListenClientable(String meNodeId, String addressToBind, GameServiceClientable service) throws IOException {
-		int localPort = getPort();
-		createThreadForClientable(addressToBind, localPort, service);
-		System.out.println("Node"+" "+meNodeId+" "+"started on port "+localPort);
-		return new Player(meNodeId, new ConnectionInfo(addressToBind, localPort));
-	}*/
-	/*private void createThreadForServable(String addressToBind, int localPort, GameServiceServable service) throws RemoteException {
-		LocateRegistry.createRegistry(localPort);
-		new Thread() {
-			@Override
-			public void run() {
-				try {
-					Naming.rebind( ServiceUtils.getRMIURLString(addressToBind, localPort, GameService.SERVICE_NAME), service);
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				}
-			}
-		}.start();
-	}
-	private void createThreadForClientable(String addressToBind, int localPort, GameServiceClientable service) throws RemoteException {
-		LocateRegistry.createRegistry(localPort);
-		new Thread() {
-			@Override
-			public void run() {
-				try {
-					Naming.rebind( ServiceUtils.getRMIURLString(addressToBind, localPort, GameService.SERVICE_NAME), service);
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				}
-			}
-		}.start();
-	}*/
 	private static int getPort() throws IOException {
 		ServerSocket ss;
 		int localPort;
