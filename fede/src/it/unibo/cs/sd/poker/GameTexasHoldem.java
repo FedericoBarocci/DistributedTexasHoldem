@@ -7,16 +7,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameTexasHoldem implements Serializable {
-
+	
 	private static final long serialVersionUID = 967261359515323981L;
 
-	private final Deck deck;
-
-	private final List<Player> players = new ArrayList<Player>();
-
-	private final List<Card> tableCards = new ArrayList<Card>();
+	private Deck deck;
+	private List<Player> players = new ArrayList<Player>();
+	private List<Card> tableCards = new ArrayList<Card>();
+	private List<Pot> pots = new ArrayList<Pot>();
 	
-	private final List<Pot> pots = new ArrayList<Pot>();
+	public GameTexasHoldem() {
+		this.deck = new Deck();
+		
+		newPot();
+	}
 	
 	public GameTexasHoldem(Deck deck) {
 		this.deck = deck;
@@ -24,6 +27,17 @@ public class GameTexasHoldem implements Serializable {
 		newPot();
 	}
 	
+	public void newGame() {
+		this.newGame(new Deck());
+	}
+	
+	public void newGame(Deck deck) {
+		this.deck = deck;
+		this.players = new ArrayList<Player>();
+		this.tableCards = new ArrayList<Card>();
+		this.pots = new ArrayList<Pot>();
+	}
+
 	public void addPlayer(Player player) {
 		this.players.add(player);
 	}
@@ -107,8 +121,23 @@ public class GameTexasHoldem implements Serializable {
 				winnerList.add(winner);
 			}
 		}
-
+		
 		return winnerList;
+	}
+	
+	public String getWinners() {
+		List<Player> winnerList = getWinner();
+		String msg = new String();
+		
+		msg = "VINCE ";
+		
+		for (Player giocatore : winnerList) {
+			msg += giocatore.getName() + " ";
+		}
+		
+		msg += "con " + winnerList.get(0).getRanking().toString();
+		
+		return msg;
 	}
 	
 	//ok

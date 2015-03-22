@@ -10,12 +10,23 @@ public class Player implements Serializable {
 	private static final long serialVersionUID = 4664480702994610549L;
 
 	private List<Card> cards = new ArrayList<Card>();
-	
 	private Ranking rank = new Ranking();
-	
 	private String name = new String();
-	
 	private Integer chips;
+	private Action action;
+	
+	public Boolean clientPlayer = false;
+	
+	public Player(String string, Boolean clientPlayer) {
+		this.name = string;
+		this.clientPlayer = clientPlayer;
+		this.setAction(Action.NULL);
+	}
+	
+	public Player(String string) {
+		this.name = string;
+		this.setAction(Action.NULL);
+	}
 	
 	public Integer getChip() {
 		return chips;
@@ -58,10 +69,6 @@ public class Player implements Serializable {
 		return rank.getSolutionCards();
 	}
 
-	public Player(String string) {
-		this.name = string;
-	}
-	
 	public String getName() {
 		return name;
 	}
@@ -97,5 +104,13 @@ public class Player implements Serializable {
 		}
 		
 		return s;
+	}
+
+	public Action getAction() {
+		return action;
+	}
+
+	public void setAction(Action action) {
+		this.action = action;
 	}
 }
