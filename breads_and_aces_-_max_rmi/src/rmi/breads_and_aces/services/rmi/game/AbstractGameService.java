@@ -16,12 +16,12 @@ public abstract class AbstractGameService
 	protected final PlayersRegistry playersRegistry;
 	protected final String nodeId;
 
-	public AbstractGameService(String nodeId, Game game, NodesConnectionInfosRegistry nodesRegistry, PlayersRegistry players) throws RemoteException {
+	public AbstractGameService(String nodeId, Game game, NodesConnectionInfosRegistry nodesRegistry, PlayersRegistry playersRegistry) throws RemoteException {
 		super();
 		this.nodeId = nodeId;
 		this.game = game;
 		this.nodesConnectionInfosRegistry = nodesRegistry;
-		this.playersRegistry = players;
+		this.playersRegistry = playersRegistry;
 	}
 
 	private static final long serialVersionUID = 7999272435762156455L;
@@ -32,9 +32,4 @@ public abstract class AbstractGameService
 			System.out.println(nodeId+" says : "+string);
 	}
 	
-	@Override
-	public void receiveToken() throws RemoteException {
-		
-		
-	}
 }

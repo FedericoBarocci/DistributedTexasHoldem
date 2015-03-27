@@ -6,6 +6,7 @@ import java.rmi.RemoteException;
 
 import breads_and_aces.game.init.GameInitializer;
 import breads_and_aces.game.init.clientable.observer.NewPlayersObserverAsClientable;
+import breads_and_aces.game.init.servable.registrar.result.RegistrationResult;
 import breads_and_aces.game.registry.PlayersObservable;
 import breads_and_aces.game.registry.PlayersRegistry;
 import breads_and_aces.node.model.NodeConnectionInfos;
@@ -33,19 +34,21 @@ public class GameInitializerClientable implements GameInitializer {
 	
 	@Override
 	public void initialize(NodeConnectionInfos nodeConnectionInfo, String playerId) {
-		((PlayersObservable) playersRegistry).addObserver( new NewPlayersObserverAsClientable( /*nodeConnectionInfo.getId()*/ ) );
+		((PlayersObservable) playersRegistry).addObserver( new NewPlayersObserverAsClientable( ) );
 		printer.print("Starting as client: ");
 		registerNodeInfosPlayerIdThenDo(nodeConnectionInfo, playerId, initializingHostAddress, initializingHostPort);
 	}
 	
 	private void registerNodeInfosPlayerIdThenDo(NodeConnectionInfos nodeConnectionInfo, String playerId, String initializingHostAddress, int initializingHostPort) {
 		try {
-//			System.out.println(initializingHostPort);
 			PlayersRegistrar remoteService = (PlayersRegistrar) ServiceUtils.lookup(initializingHostAddress, initializingHostPort);
-			boolean registered = remoteService.registerPlayer(nodeConnectionInfo, playerId);
+			RegistrationResult registered = remoteService.registerPlayer(nodeConnectionInfo, playerId);
 			
-			if (registered)
+			if (registered.isAccepted())
 				printer.println("initializer confirmed my registration as new player.");
+			else {
+				printer.println("initializer rejected my registration as new player, becaus: "+registered.getCause().name().toLowerCase().replace("_", " "));
+			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			System.exit(0);

@@ -2,47 +2,33 @@ package breads_and_aces.game.init.servable.registrar.registrars;
 
 import javax.inject.Inject;
 
+import breads_and_aces.game.init.registrar.utils.RegistriesUtils;
 import breads_and_aces.game.init.servable.registrar.GameRegistrar;
-import breads_and_aces.game.model.Player;
-import breads_and_aces.game.model.PlayerRegistrationId;
-import breads_and_aces.game.registry.PlayersRegistry;
-import breads_and_aces.node.NodesConnectionInfosRegistry;
+import breads_and_aces.game.init.servable.registrar.result.RegistrationResult;
+import breads_and_aces.game.init.servable.registrar.result.RegistrationResult.Cause;
 import breads_and_aces.node.model.NodeConnectionInfos;
 
 public class GameRegistrarInit implements GameRegistrar {
 
-	private boolean gameStarted;
-	private final PlayersRegistry playersRegistry;
-	private final NodesConnectionInfosRegistry nodesConnectionInfosRegistry;
+	private final boolean gameStarted = false;
+	private final RegistriesUtils registriesUtils;
 	
 	@Inject
-	public GameRegistrarInit(NodesConnectionInfosRegistry nodesConnectionInfosRegistry, PlayersRegistry playersRegistry) {
-		this.nodesConnectionInfosRegistry = nodesConnectionInfosRegistry;
-		this.playersRegistry = playersRegistry;
+	public GameRegistrarInit(RegistriesUtils registriesUtils) {
+		this.registriesUtils = registriesUtils;
 	}
 
 	@Override
-	public boolean registerPlayer(NodeConnectionInfos nodeConnectionInfos, String playerId) {
-//		players.addPlayer(player);
-		
-		long now = System.currentTimeMillis();
-		
-		if (playersRegistry.contains(playerId) || nodesConnectionInfosRegistry.contains(playerId))
-			return false;
-		
-		nodeConnectionInfos.setRegisterTime(now);
-		nodesConnectionInfosRegistry.addNodeInfo(nodeConnectionInfos);
-		
-		PlayerRegistrationId playerRegistrationId = new PlayerRegistrationId(playerId, now);
-		Player player = new Player(playerId);
-		
-		playersRegistry.addPlayer(playerRegistrationId,player);
-		
-		return true;
+	public RegistrationResult registerPlayer(NodeConnectionInfos nodeConnectionInfos, String playerId) {
+		if (registriesUtils.contains(playerId))
+			return new RegistrationResult(false, Cause.EXISTING);
+
+		return registriesUtils.addNodePlayerGameService(nodeConnectionInfos, playerId);
 	}
 	
 	@Override
 	public boolean isStarted() {
-		return gameStarted;
+		//still not started, so false
+		return gameStarted; 
 	}
 }

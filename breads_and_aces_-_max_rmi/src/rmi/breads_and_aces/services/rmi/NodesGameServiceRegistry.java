@@ -18,8 +18,7 @@ public class NodesGameServiceRegistry {
 	}
 	
 	public void remove(String nodeId) {
-		if (services.containsKey(nodeId))
-			services.remove(nodeId);
+		services.remove(nodeId);
 	}
 	
 	public Optional<GameService> getService(String nodeId) {

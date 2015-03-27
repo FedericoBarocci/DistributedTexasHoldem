@@ -1,7 +1,7 @@
 package breads_and_aces.main;
 
 import breads_and_aces._di._guice.module.TexasHoldemPokerModule;
-import breads_and_aces.node.NodeContainer;
+import breads_and_aces.node.Node;
 import breads_and_aces.node.builder.NodeBuilder;
 import breads_and_aces.node.builder.NodeBuilderFactory;
 
@@ -43,7 +43,7 @@ public class Main {
 				initializingHostPort = Integer.parseInt(args[2]);
 			nodeBuilder = nodeBuilderFactory.createAsClientable(me, addressToBind, initializingHostAddress, initializingHostPort);
 		}
-		NodeContainer node = nodeBuilder.build();
+		Node node = nodeBuilder.build();
 		node.start();
 		
 		System.exit(0);

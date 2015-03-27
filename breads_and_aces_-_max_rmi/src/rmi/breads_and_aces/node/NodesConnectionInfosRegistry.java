@@ -44,8 +44,11 @@ public class NodesConnectionInfosRegistry {
 		});
 	}
 
-	public boolean contains(String playerId) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean contains(String id) {
+		return nodesConnectionInfosMap.containsKey(id);
+	}
+
+	public void removeNode(String id) {
+		nodesConnectionInfosMap.remove(id);		
 	}
 }

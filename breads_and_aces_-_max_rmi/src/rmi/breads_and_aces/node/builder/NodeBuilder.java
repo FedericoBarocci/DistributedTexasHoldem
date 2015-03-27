@@ -11,7 +11,7 @@ import java.rmi.registry.LocateRegistry;
 import breads_and_aces.game.init.GameInitializer;
 import breads_and_aces.game.init.clientable.GameInitializerClientableFactory;
 import breads_and_aces.game.init.servable.GameInitializerServable;
-import breads_and_aces.node.NodeContainer;
+import breads_and_aces.node.Node;
 import breads_and_aces.node.NodeFactory;
 import breads_and_aces.node.model.NodeConnectionInfos;
 import breads_and_aces.services.rmi.game.GameService;
@@ -67,7 +67,7 @@ public class NodeBuilder {
 				gameInitializerConnectableFactory.create(initializerHostAddress, initializerHostPort), nodeFactory, printer);
 	}
 	
-	public NodeContainer build() {
+	public Node build() {
 		return nodeFactory.create(nodeId, nodeConnectionInfo/*, new Player(nodeId), connectionInfo, new LinkedHashMap<String, GameService>()*/ );
 	}
 	

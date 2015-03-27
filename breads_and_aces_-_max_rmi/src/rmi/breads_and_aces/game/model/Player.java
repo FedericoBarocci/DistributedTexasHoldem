@@ -17,7 +17,7 @@ public class Player implements Serializable, Comparable<Player> {
 		return id;
 	}
 	
-	public void giveToken() {
+	public void receiveToken() {
 		hasToken = true;
 	}
 	
@@ -39,7 +39,7 @@ public class Player implements Serializable, Comparable<Player> {
 		if (this.registrationTime > player.registrationTime) return 1;
 		return 0;
 	}
-	
+
 	/*public static class PlayersComparator implements Comparator<Player> {
 		@Override
 		public int compare(Player p1, Player p2) {

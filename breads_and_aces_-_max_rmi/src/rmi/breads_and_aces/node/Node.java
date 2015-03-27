@@ -7,17 +7,15 @@ import breads_and_aces.utils.misc.Waiter;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 
-public class NodeContainer {
+public class Node {
 
 	private final String nodeId;
 	private final InputHandler inputHandler;
 	private final Game game;
-	private NodeConnectionInfos connectionInfo;
+	private final NodeConnectionInfos connectionInfo;
 	
 	@AssistedInject
-	public NodeContainer(@Assisted String thisNodeId, 
-//			@Assisted Player player,
-//			@Assisted Map<String, GameService> nodeGameserviceMap,
+	public Node(@Assisted String thisNodeId, 
 			@Assisted NodeConnectionInfos connectionInfo,
 			Game game // dummy presence
 			, InputHandler inputHandler
@@ -25,8 +23,6 @@ public class NodeContainer {
 		this.nodeId = thisNodeId;
 		this.connectionInfo = connectionInfo;
 		this.game = game;
-//		this.thisPlayer = player;
-//		this.nodeGameserviceMap = nodeGameserviceMap;
 		this.inputHandler = inputHandler;
 	}
 	
