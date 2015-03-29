@@ -2,31 +2,50 @@ package breads_and_aces.game.model;
 
 import java.io.Serializable;
 
+import breads_and_aces.utils.printer.Printer;
+
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
+
 public class Player implements Serializable, Comparable<Player> {
 
 	private static final long serialVersionUID = -7618547420110997571L;
 	private final String id;
+	private final Printer printer;
+	
 	private long registrationTime;
-	private boolean hasToken;
+	private boolean hasBucket;
 
-	public Player(String id) {
+	@AssistedInject
+	public Player(@Assisted String id, Printer printer) {
 		this.id = id;
+		this.printer = printer;
 	}
 	
 	public String getId() {
 		return id;
 	}
 	
-	public void receiveToken() {
-		hasToken = true;
+	public void receiveBucket() {
+		hasBucket = true;
+		printer.println("bucket received");
+	}
+	public void receiveBucket(String receivedFrom) {
+		hasBucket = true;
+		printer.println("bucket received from "+receivedFrom);
 	}
 	
-	public void passToken() {
-		hasToken = false;
+	public void passBucket() {
+		hasBucket = false;
+		printer.println("bucket passed");
+	}
+	public void passBucket(String passedTo) {
+		hasBucket = false;
+		printer.println("bucket passed to "+passedTo);
 	}
 	
-	public boolean hasToken() {
-		return hasToken;
+	public boolean hasBucket() {
+		return hasBucket;
 	}
 
 	public void setRegisterPosition(long registrationTime) {

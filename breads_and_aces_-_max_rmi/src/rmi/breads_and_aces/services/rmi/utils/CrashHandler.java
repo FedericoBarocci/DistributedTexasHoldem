@@ -41,7 +41,7 @@ public class CrashHandler {
 	public void handleRemovingLocally(String id) {
 		setHappenedCrash(true);
 		registriesUtils.removeNodePlayerGameService(id);
-		printer.println(id+" not responding, remove it.");
+		printer.println(id+" not responding, removed it.");
 //		crashed.remove(id);
 	}
 	public void handleRemovingLocally(List<String> crashedDuringSync) {

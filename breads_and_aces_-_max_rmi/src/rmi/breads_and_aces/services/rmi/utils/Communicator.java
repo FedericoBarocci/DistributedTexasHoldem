@@ -29,16 +29,11 @@ public class Communicator {
 		this.me = me;
 	}
 	
-//	public <T> void toAll(CommunicatorFunctorZeroArguments communicatorFunctor) {
-//		broadcast(communicatorFunctor, null);
-//	}
-//	public <T> void toAll(CommunicatorFunctor1Argument communicatorFunctor, T arg) {
-//		broadcast(communicatorFunctor, arg);
-//	}
-	public <T1,T2> void toAll(CommunicatorFunctor2Argument communicatorFunctor, T1 arg1, T2 arg2) {
-		broadcast2arguments(communicatorFunctor, arg1, arg2);
+	public void toAll(CommunicatorFunctor communicatorFunctor) {
+		broadcast(communicatorFunctor);
 	}
-	private <T1,T2> void broadcast2arguments(CommunicatorFunctor2Argument communicatorFunctor, T1 arg1, T2 arg2) {
+	
+	private void broadcast (CommunicatorFunctor communicatorFunctor) {
 		// this below is always updated each times we arrive here, because, eventually "handleRemovingLocally" remove crashed id 
 		Set<String> idsFromGameService = gameServicesShelf.getServices().keySet();
 		ListIterator<String> idsListIterator = new ArrayList<>(idsFromGameService).listIterator();
@@ -53,9 +48,10 @@ public class Communicator {
 			Optional<GameService> optService = gameServicesShelf.getService(id);
 			optService.ifPresent(service->{
 				try {
-					communicatorFunctor.exec(service, arg1, arg2);
+					communicatorFunctor.exec(service/*, arg1, arg2*/);
 				} catch (RemoteException e) {
-					// the node is unreachable, so handle the crash removing player/node/service
+					e.printStackTrace();
+					// TODO the node is unreachable, so handle the crash removing player/node/service
 					crashHandler.handleRemovingLocally(id);
 					idsListIterator.remove(); // needed ?
 				}
@@ -64,7 +60,7 @@ public class Communicator {
 //		return crashHandler.isHappenedCrash();
 	}
 	
-	public <T> void toOne(CommunicatorFunctorZeroArguments communicatorFunctor, String targetId) {
+	public void toOne(CommunicatorFunctor communicatorFunctor, String targetId) {
 		Optional<GameService> optService = gameServicesShelf.getService(targetId);
 		optService.ifPresent(service->{
 			try {
@@ -76,15 +72,15 @@ public class Communicator {
 	}
 	
 	@FunctionalInterface
-	public interface CommunicatorFunctorZeroArguments {
-		<T> void exec(GameService gameService) throws RemoteException;
+	public interface CommunicatorFunctor {
+		void exec(GameService gameService) throws RemoteException;
 	}
-	@FunctionalInterface
-	public interface CommunicatorFunctor1Argument {
-		<T> void exec(GameService gameService, T arg) throws RemoteException;
-	}
-	@FunctionalInterface
-	public interface CommunicatorFunctor2Argument {
-		<T1, T2> void exec(GameService gameService, T1 arg1, T2 arg2) throws RemoteException;
-	}
+//	@FunctionalInterface
+//	public interface CommunicatorFunctor1Argument {
+//		<T> void exec(GameService gameService, T arg) throws RemoteException;
+//	}
+//	@FunctionalInterface
+//	public interface CommunicatorFunctor2Argument {
+//		<T1, T2> void exec(GameService gameService, T1 arg1, T2 arg2) throws RemoteException;
+//	}
 }

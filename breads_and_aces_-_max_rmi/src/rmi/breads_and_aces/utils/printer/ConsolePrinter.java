@@ -18,29 +18,29 @@
 package breads_and_aces.utils.printer;
 
 
-import com.google.inject.ImplementedBy;
+import java.io.Serializable;
 
-@ImplementedBy(ConsolePrinter.ConsolePrinterDummy.class)
+//@ImplementedBy(ConsolePrinter.ConsolePrinterDummy.class)
 public interface ConsolePrinter extends Printer {
 	
-	public static class ConsolePrinterDummy implements ConsolePrinter {
-		@Override
-		public void print(Object string) {
-		}
-		@Override
-		public void println(Object string) {
-		}
-	}
-	
-	public static class ConsolePrinterReal implements ConsolePrinter {
+	public static class ConsolePrinterReal implements ConsolePrinter, Serializable {
+
+		private static final long serialVersionUID = -7018609970922495583L;
+
 		@Override
 		public void print(Object string) {
 			System.out.print(""+string);
 		}
-		
 		@Override
 		public void println(Object string) {
 			System.out.println(""+string);
 		}
+	}
+	
+	public static class ConsolePrinterDummy implements ConsolePrinter {
+		@Override
+		public void print(Object string) {}
+		@Override
+		public void println(Object string) {}
 	}
 }

@@ -4,18 +4,18 @@ import java.util.Scanner;
 
 import javax.inject.Inject;
 
-import breads_and_aces.game.BuckHandler;
+import breads_and_aces.game.BucketHandler;
 import breads_and_aces.utils.misc.InputUtils;
 
 public class InputHandler {
 	
 	private final static String END_GAME = "END";
 	
-	BuckHandler buckHandler;
+	BucketHandler bucketHandler;
 
 	@Inject
-	public InputHandler(BuckHandler buckHandler) {
-		this.buckHandler = buckHandler;
+	public InputHandler(BucketHandler buckHandler) {
+		this.bucketHandler = buckHandler;
 	}
 
 
@@ -24,12 +24,9 @@ public class InputHandler {
 		String next = "";
 		while(!next.equals(END_GAME)) {
 			next = scanner.next();
-			System.out.println(next);
+//			System.out.println("\t said: "+next);
 			// do something with next
-			// TODO restore
-			//			sendBroadcast(next);
-			//			passToken();
-			buckHandler.play(next);
+			bucketHandler.play(next);
 		}
 		scanner.close();
 	}

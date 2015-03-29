@@ -15,8 +15,6 @@ import breads_and_aces.services.rmi.game.GameServiceClientable;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 
-
-
 public class GameServiceAsSessionInitializerClientable 
 	extends AbstractGameService 
 	implements GameServiceClientable {
@@ -37,11 +35,11 @@ public class GameServiceAsSessionInitializerClientable
 	@Override
 	public void synchronizeAllNodesAndPlayersFromInitiliazer(Map<String, NodeConnectionInfos> nodesConnectionInfosMap, Map<PlayerRegistrationId, Player> playersMap) throws RemoteException {
 //		List<String> crashedDuringSyncAlreadyLocallyRemoved = 
-				shelfsUtils.synchronizeNodesPlayersGameservicesLocallyAsClientable(nodesConnectionInfosMap, playersMap);
+		shelfsUtils.synchronizeNodesPlayersGameservicesLocallyAsClientable(nodesConnectionInfosMap, playersMap);
 		
-		// broadcast for update player will be skipping here, because ... because!
-//		Communicator communicator = null;
-//		communicator.toAll(this::updatePartecipants);
+		// broadcast for update crashed player will be skipping here, because we don't really need this:
+		// if any player crashs during each sync, we can hide this event until the bucket arrives to that 
+		// (and the game will be in "opening" phase"), so its predecessor will handle its crash 
 		
 		// TODO too bad here, but it works
 		game.setStarted();

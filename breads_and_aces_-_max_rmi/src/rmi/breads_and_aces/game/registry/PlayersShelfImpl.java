@@ -67,7 +67,10 @@ public class PlayersShelfImpl implements PlayersShelf, PlayersObservable {
 	public Player getNext(String playerId) {
 		Optional<PlayerRegistrationId> key = findKey(playerId);
 		PlayerRegistrationId playerRegistrationId = key.get();
-		return playersMap.tailMap(playerRegistrationId, false).firstEntry().getValue();
+		return Optional
+				.ofNullable( playersMap.tailMap(playerRegistrationId, false).firstEntry() )
+				.orElse( playersMap.firstEntry() )
+				.getValue();
 	}
 
 	@Override

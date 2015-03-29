@@ -22,12 +22,7 @@ public class TokenRinger {
 	}
 
 	public boolean passToken(Player player) {
-		
 		nodesConnectionInfosRegistry.getNode(player.getId());
-		
-		
-		
-	
 //		Iterator<Entry<String, GameService>> iterator = nodeGameserviceMap.entrySet().iterator();
 	//	boolean crashed = false;
 //		boolean passed = false;

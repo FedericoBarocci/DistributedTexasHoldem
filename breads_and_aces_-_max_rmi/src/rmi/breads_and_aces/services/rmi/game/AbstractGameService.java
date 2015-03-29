@@ -35,9 +35,8 @@ public abstract class AbstractGameService
 	}
 	
 	@Override
-	public void receiveToken() throws RemoteException {
-		playersShelf.getPlayer(nodeId).receiveToken();
-		System.out.println("received token!");
+	public void receiveBucket() throws RemoteException {
+		playersShelf.getPlayer(nodeId).receiveBucket();
 	}
 	
 }

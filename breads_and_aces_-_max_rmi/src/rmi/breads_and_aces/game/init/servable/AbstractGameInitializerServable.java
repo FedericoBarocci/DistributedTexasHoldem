@@ -1,14 +1,11 @@
 package breads_and_aces.game.init.servable;
 
 import java.rmi.RemoteException;
-import java.util.Map;
-import java.util.NavigableMap;
 import java.util.stream.Collectors;
 
 import breads_and_aces._di.providers.GameRegistrarProvider;
 import breads_and_aces.game.Game;
 import breads_and_aces.game.model.Player;
-import breads_and_aces.game.model.PlayerRegistrationId;
 import breads_and_aces.game.registry.PlayersObservable;
 import breads_and_aces.game.registry.PlayersShelf;
 import breads_and_aces.node.NodesConnectionInfosShelf;
@@ -16,7 +13,6 @@ import breads_and_aces.node.model.NodeConnectionInfos;
 import breads_and_aces.services.rmi.GameServicesShelf;
 import breads_and_aces.services.rmi.game.GameService;
 import breads_and_aces.services.rmi.game._init.PlayersSynchronizar;
-import breads_and_aces.services.rmi.utils.ArgumentHolder;
 import breads_and_aces.services.rmi.utils.Communicator;
 import breads_and_aces.utils.printer.Printer;
 
@@ -27,7 +23,6 @@ public abstract class AbstractGameInitializerServable implements GameInitializer
 	protected final GameRegistrarProvider gameRegistrarProvider;
 	protected final GameServicesShelf gameServicesRegistry;
 	protected final Game game;
-//	protected final TokenRinger tokenRinger;
 	protected final Printer printer;
 	
 	private String meId;
@@ -35,21 +30,17 @@ public abstract class AbstractGameInitializerServable implements GameInitializer
 	
 	
 	public AbstractGameInitializerServable(GameRegistrarProvider gameRegistrarProvider,
-			/*Nodes*/GameServicesShelf gameServicesRegistry,
+			GameServicesShelf gameServicesRegistry,
 			PlayersShelf playersRegistry, 
 			NodesConnectionInfosShelf nodesConnectionInfosRegistry,
-//			RegistriesUtils registriesUtils,
 			Communicator communicator,
-//			TokenRinger tokenRinger,
 			Game game,
 			Printer printer) {
 		this.gameRegistrarProvider = gameRegistrarProvider;
-		this./*nodesG*/gameServicesRegistry = gameServicesRegistry;
+		this.gameServicesRegistry = gameServicesRegistry;
 		this.playersRegistry = playersRegistry;
 		this.nodesConnectionInfosRegistry = nodesConnectionInfosRegistry;
-//		this.registriesUtils = registriesUtils;
 		this.communicator = communicator;
-//		this.tokenRinger = tokenRinger;
 		this.game = game;
 		this.printer = printer;
 	}
@@ -74,7 +65,6 @@ public abstract class AbstractGameInitializerServable implements GameInitializer
 		// add itself to game
 		printer.print("Adding myself as player: ");
 		gameRegistrarProvider.get().registerPlayer(thisNodeConnectionInfo, playerId);
-//		nodesConnectionInfosRegistry.addNodeInfo(thisNodeConnectionInfo);
 		printer.println("ok");
 	}
 	protected abstract void waitForRegistrationsClosingWhileAcceptPlayersThenStartGame();
@@ -83,51 +73,36 @@ public abstract class AbstractGameInitializerServable implements GameInitializer
 	}
 
 	protected void updateAllNodesForPartecipants() {
-		communicator.toAll(
-				this::updatePartecipantsFunction,
-				nodesConnectionInfosRegistry.getNodesConnectionInfosMap(),
-				playersRegistry.getIdsPlayersMap()
-				);
+		communicator.toAll(this::updatePartecipantsFunction);
 		
 		printer.print("Ok: final list partecipants has: ");
+		
 		printer.println( 
-				playersRegistry.getIdsPlayersMap().values().stream().map(Player::getId).collect(Collectors.joining(", "))
+				playersRegistry.getPlayers().stream().map(Player::getId).collect(Collectors.joining(", "))
 		);
 	}
 	
-	private <T1,T2> void updatePartecipantsFunction(GameService gameServiceExternalInjected, 
-			T1 nodesConnectionInfosMap, 
-			T2 playersMap
-			) throws RemoteException {
+	private void updatePartecipantsFunction(GameService gameServiceExternalInjected) throws RemoteException {
 		PlayersSynchronizar ps = ((PlayersSynchronizar) gameServiceExternalInjected);
+		
 		ps.synchronizeAllNodesAndPlayersFromInitiliazer(
-//				nodesConnectionInfosRegistry.getNodesConnectionInfosMap(),
-				(Map<String, NodeConnectionInfos>) nodesConnectionInfosMap,
-//				playersRegistry.getIdsPlayersMap()
-				(NavigableMap<PlayerRegistrationId, Player>) playersMap
-				);
+				nodesConnectionInfosRegistry.getNodesConnectionInfosMap(),
+				playersRegistry.getIdsPlayersMap()
+			);
 	}
-	/*private static class Holder {
-		Map<String, NodeConnectionInfos> ns;
-		NavigableMap<PlayerRegistrationId, Player> ps;
-		public Holder(Map<String, NodeConnectionInfos> ns, NavigableMap<PlayerRegistrationId, Player> ps) {
-			this.ns = ns;
-			this.ps = ps;
-		}
-	}*/
 	
 	private void startGame() {
 		printer.print("Game can start! ");
 		game.setStarted();
-		passToken();
+		passBucket();
 	}
-	private void passToken() {
+	private void passBucket() {
 		Player next = playersRegistry.getNext(meId);
 		printer.println("First player is: "+next.getId());
-		communicator.toOne(this::passToken, next.getId());
+		communicator.toOne(this::passBucket, next.getId());
 	}
-	private void passToken(GameService gameServiceExternalInjected) throws RemoteException {
-		gameServiceExternalInjected.receiveToken();
+	private void passBucket(GameService gameServiceExternalInjected) throws RemoteException {
+		gameServiceExternalInjected.receiveBucket();
 	}
 	
 

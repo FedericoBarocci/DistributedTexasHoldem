@@ -33,7 +33,6 @@ public class Node {
 	public void start() {
 		// this while is necessary if node acts as clientable
 		Waiter.sleep(game::isStarted, 1);
-//		handleInput();
 		inputHandler.exec();
 	}
 	
@@ -52,7 +51,7 @@ public class Node {
 	}*/
 	
 	// TODO restore
-	/*private void passToken() {
+	/*private void passBucket() {
 //		nodesGameServices.entrySet().
 //		new LinkedHashMap<Integer, String>().;
 		Iterator<Entry<String, GameService>> iterator = nodeGameserviceMap.entrySet().iterator();
@@ -61,7 +60,7 @@ public class Node {
 		while (iterator.hasNext() && !passed) {
 			Entry<String, GameService> next = iterator.next();
 			try {
-				// TODO change with new passToken method
+				// TODO change with new passBucket method
 				next.getValue().echo(null, null);
 				passed = true;
 			} catch (RemoteException e) {

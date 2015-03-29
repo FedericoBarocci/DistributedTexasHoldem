@@ -13,6 +13,7 @@ import javax.inject.Singleton;
 import breads_and_aces.game.init.servable.registrar.result.RegistrationResult;
 import breads_and_aces.game.init.servable.registrar.result.RegistrationResult.Cause;
 import breads_and_aces.game.model.Player;
+import breads_and_aces.game.model.PlayerFactory;
 import breads_and_aces.game.model.PlayerRegistrationId;
 import breads_and_aces.game.registry.PlayersShelf;
 import breads_and_aces.node.NodesConnectionInfosShelf;
@@ -31,12 +32,16 @@ public class ShelfsUtils {
 //	private final CrashHandler crashHandler;
 	
 	private final Printer printer;
+	private final PlayerFactory playerFactory;
 
 	@Inject
-	public ShelfsUtils(NodesConnectionInfosShelf nodesConnectionInfosShelf, PlayersShelf playersShelf, GameServicesShelf gameServiceShelf, /*CrashHandler crashHandler,*/ Printer printer) {
+	public ShelfsUtils(NodesConnectionInfosShelf nodesConnectionInfosShelf, 
+			PlayersShelf playersShelf, GameServicesShelf gameServiceShelf, 
+			PlayerFactory playerFactory, Printer printer) {
 		this.nodesConnectionInfosShelf = nodesConnectionInfosShelf;
 		this.playersShelf = playersShelf;
 		this.gameServiceShelf = gameServiceShelf;
+		this.playerFactory = playerFactory;
 //		this.crashHandler = crashHandler;
 		this.printer = printer;
 	}
@@ -59,7 +64,7 @@ public class ShelfsUtils {
 			nodesConnectionInfosShelf.addNodeInfo(nodeConnectionInfos);
 			
 			PlayerRegistrationId playerRegistrationId = new PlayerRegistrationId(playerId, now);
-			Player player = new Player(playerId);
+			Player player = playerFactory.create(playerId);
 			
 			playersShelf.addPlayer(playerRegistrationId,player);
 			
