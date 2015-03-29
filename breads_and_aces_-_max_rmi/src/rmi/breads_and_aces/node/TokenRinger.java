@@ -4,18 +4,18 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import breads_and_aces.game.model.Player;
-import breads_and_aces.game.registry.PlayersRegistry;
-import breads_and_aces.services.rmi.GameServicesRegistry;
+import breads_and_aces.game.registry.PlayersShelf;
+import breads_and_aces.services.rmi.GameServicesShelf;
 
 @Singleton
 public class TokenRinger {
 	
-	private final NodesConnectionInfosRegistry nodesConnectionInfosRegistry;
-	private final PlayersRegistry playersRegistry;
-	private final GameServicesRegistry GameServicesRegistry;
+	private final NodesConnectionInfosShelf nodesConnectionInfosRegistry;
+	private final PlayersShelf playersRegistry;
+	private final GameServicesShelf GameServicesRegistry;
 	
 	@Inject
-	public TokenRinger(NodesConnectionInfosRegistry nodesConnectionInfosRegistry, PlayersRegistry playersRegistry, GameServicesRegistry GameServicesRegistry) {
+	public TokenRinger(NodesConnectionInfosShelf nodesConnectionInfosRegistry, PlayersShelf playersRegistry, GameServicesShelf GameServicesRegistry) {
 		this.nodesConnectionInfosRegistry = nodesConnectionInfosRegistry;
 		this.playersRegistry = playersRegistry;
 		this.GameServicesRegistry = GameServicesRegistry;

@@ -22,7 +22,7 @@ public class Main {
 		}
 			
 		String addressToBind = args[0];
-		String me = "NODE-"+addressToBind;
+		String meId = "NODE-"+addressToBind;
 		
 		boolean actAsServer = false;
 		
@@ -30,21 +30,30 @@ public class Main {
 			actAsServer = true;
 		}
 		
-		Injector injector = Guice.createInjector(new TexasHoldemPokerModule());
+		Injector injector = null;
+		try {
+			injector = Guice.createInjector(new TexasHoldemPokerModule());
+			// init singleton Me
+			injector.getInstance(Me.class).init(meId);
 		
-		NodeBuilderFactory nodeBuilderFactory = injector.getInstance(NodeBuilderFactory.class);
-		NodeBuilder nodeBuilder = null;
-		if (actAsServer) {
-			nodeBuilder = nodeBuilderFactory.createAsServable(me, addressToBind);
-		} else {
-			String initializingHostAddress = args[1];
-			int initializingHostPort = 33333;
-			if (args.length==3)
-				initializingHostPort = Integer.parseInt(args[2]);
-			nodeBuilder = nodeBuilderFactory.createAsClientable(me, addressToBind, initializingHostAddress, initializingHostPort);
+		
+			NodeBuilderFactory nodeBuilderFactory = injector.getInstance(NodeBuilderFactory.class);
+			NodeBuilder nodeBuilder = null;
+			if (actAsServer) {
+				nodeBuilder = nodeBuilderFactory.createAsServable(meId, addressToBind);
+			} else {
+				String initializingHostAddress = args[1];
+				int initializingHostPort = 33333;
+				if (args.length==3)
+					initializingHostPort = Integer.parseInt(args[2]);
+				nodeBuilder = nodeBuilderFactory.createAsClientable(meId, addressToBind, initializingHostAddress, initializingHostPort);
+			}
+			
+			Node node = nodeBuilder.build();
+			node.start();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		Node node = nodeBuilder.build();
-		node.start();
 		
 		System.exit(0);
 	}

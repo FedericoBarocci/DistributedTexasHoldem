@@ -14,7 +14,7 @@ import breads_and_aces.node.model.NodeConnectionInfos;
  * singleton
  */
 @Singleton
-public class NodesConnectionInfosRegistry {
+public class NodesConnectionInfosShelf {
 
 	private final Map<String, NodeConnectionInfos> nodesConnectionInfosMap = new LinkedHashMap<>();
 	
@@ -38,11 +38,15 @@ public class NodesConnectionInfosRegistry {
 		this.nodesConnectionInfosMap.putAll(nodesConnectionInfosMap);
 	}
 	
-	public void setNodesConnectionInfos(Collection<NodeConnectionInfos> nodeConnectionInfos) {
-		nodeConnectionInfos.iterator().forEachRemaining(nodeConnectionInfo->{
+	/*public void setNodesConnectionInfos(Collection<NodeConnectionInfos> nodeConnectionInfos) {
+		// guice don't like lambda in init phase
+//		nodeConnectionInfos.iterator().forEachRemaining(nodeConnectionInfo->{
+//			this.nodesConnectionInfosMap.put(nodeConnectionInfo.getNodeId(),nodeConnectionInfo);
+//		});
+		for (NodeConnectionInfos nodeConnectionInfo : nodeConnectionInfos) {
 			this.nodesConnectionInfosMap.put(nodeConnectionInfo.getNodeId(),nodeConnectionInfo);
-		});
-	}
+		}
+	}*/
 
 	public boolean contains(String id) {
 		return nodesConnectionInfosMap.containsKey(id);

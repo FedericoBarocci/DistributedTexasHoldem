@@ -3,8 +3,8 @@ package breads_and_aces._di._guice.module;
 import breads_and_aces.game.init.clientable.GameInitializerClientableFactory;
 import breads_and_aces.game.init.servable.GameInitializerServable;
 import breads_and_aces.game.init.servable.GameInitializerServableUsingShellInput;
-import breads_and_aces.game.registry.PlayersRegistry;
-import breads_and_aces.game.registry.PlayersRegistryImpl;
+import breads_and_aces.game.registry.PlayersShelf;
+import breads_and_aces.game.registry.PlayersShelfImpl;
 import breads_and_aces.node.NodeFactory;
 import breads_and_aces.node.builder.NodeBuilderFactory;
 import breads_and_aces.services.rmi.game.impl.GameServiceFactory;
@@ -20,8 +20,9 @@ public class TexasHoldemPokerModule extends AbstractModule {
 	protected void configure() {
 		bind(Printer.class).to(ConsolePrinterReal.class);
 		
+		bind(PlayersShelf.class).to(PlayersShelfImpl.class);
 		
-		bind(PlayersRegistry.class).to(PlayersRegistryImpl.class);
+//		install(new FactoryModuleBuilder().build(MeFactory.class));
 		
 		install(new FactoryModuleBuilder().build(NodeFactory.class));
 		install(new FactoryModuleBuilder().build(NodeBuilderFactory.class));

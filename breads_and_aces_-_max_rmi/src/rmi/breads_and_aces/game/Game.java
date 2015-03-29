@@ -2,22 +2,22 @@ package breads_and_aces.game;
 
 import javax.inject.Inject;
 
-import breads_and_aces.game.registry.PlayersRegistry;
+import breads_and_aces.game.registry.PlayersShelf;
 
 import com.google.inject.Singleton;
 
 @Singleton
 public class Game {
 	
-	private final PlayersRegistry playersRegistry;
+	private final PlayersShelf playersRegistry;
 	private boolean isStarted = false;
 	
 	@Inject
-	public Game(PlayersRegistry playersRegistry) {
+	public Game(PlayersShelf playersRegistry) {
 		this.playersRegistry = playersRegistry;
 	}
 	
-	public PlayersRegistry getPlayers() {
+	public PlayersShelf getPlayers() {
 		return playersRegistry;
 	}
 	

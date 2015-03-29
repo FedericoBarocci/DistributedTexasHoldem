@@ -34,13 +34,19 @@ public class PlayerRegistrationId implements Comparable<PlayerRegistrationId>, S
 		return 0;
 	}
 	
-	@Override
+	/*@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof Player))
+		if (!(obj instanceof PlayerRegistrationId)) {
+//			System.out.println("no");
 			return false;
-		Player p = (Player) obj;
-		if (p.getId().equals(id))
+		}
+		PlayerRegistrationId p = (PlayerRegistrationId) obj;
+//System.out.println(p.getId()+" "+id);
+		if (p.getId().equals(id)) {
+//			System.out.println("yes");
 			return true;
+		}
+//		System.out.println("uff");
 		return false;
-	}
+	}*/
 }

@@ -3,7 +3,6 @@ package breads_and_aces.game.registry;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.Optional;
 import java.util.TreeMap;
@@ -17,7 +16,7 @@ import breads_and_aces.utils.observatory.ObservableDelegate;
 import breads_and_aces.utils.observatory.Observer;
 
 @Singleton
-public class PlayersRegistryImpl implements PlayersRegistry, PlayersObservable {
+public class PlayersShelfImpl implements PlayersShelf, PlayersObservable {
 
 	private final ObservableDelegate<String> observableDelegate = new ObservableDelegate<String>();
 	
@@ -48,6 +47,11 @@ public class PlayersRegistryImpl implements PlayersRegistry, PlayersObservable {
 	public List<Player> getPlayers() {
 		return new LinkedList<Player>( playersMap.values() );
 	}
+	
+	@Override
+	public Player getPlayer(String playerId) {
+		return findValue(playerId).get();
+	}
 
 	@Override
 	public void setPlayers(Map<PlayerRegistrationId, Player> players) {
@@ -61,22 +65,37 @@ public class PlayersRegistryImpl implements PlayersRegistry, PlayersObservable {
 	 */
 	@Override
 	public Player getNext(String playerId) {
-		return playersMap.tailMap(new PlayerRegistrationId(playerId), false).firstEntry().getValue();
+		Optional<PlayerRegistrationId> key = findKey(playerId);
+		PlayerRegistrationId playerRegistrationId = key.get();
+		return playersMap.tailMap(playerRegistrationId, false).firstEntry().getValue();
 	}
 
 	@Override
 	public boolean contains(String playerId) {
-		return find(playerId).isPresent();
+		return findValue(playerId).isPresent();
 	}
 	
-	private Optional<Entry<PlayerRegistrationId, Player>> find(String playerId) {
-		Optional<Entry<PlayerRegistrationId, Player>> findFirst = playersMap.entrySet().stream().filter(p->{return p.getKey().equals(playerId);}).findFirst();
+	private Optional<PlayerRegistrationId> findKey(String playerId) {
+		Optional<PlayerRegistrationId> first = playersMap.keySet().stream().filter(p->p.getId().equals(playerId)).findFirst();
+		return first;
+	}
+	private Optional<Player> findValue(String playerId) {
+		Optional<Player> findFirst = playersMap.values().stream().filter(
+				p->{return p.getId().equals(playerId);}
+				// this below because guice don't like lambda in init phase
+				/*new Predicate<Entry<PlayerRegistrationId, Player>>() {
+					@Override
+					public boolean test(Entry<PlayerRegistrationId, Player> e) {
+						return e.getKey().equals(playerId);
+					}
+				}*/
+				).findFirst();
 		return findFirst;
 	}
 	
 	@Override
 	public void remove(String playerId) {
-		find(playerId).ifPresent(c->{playersMap.remove(c.getKey());});
+		findKey(playerId).ifPresent(pri->{playersMap.remove(pri);});
 	}
 	
 	

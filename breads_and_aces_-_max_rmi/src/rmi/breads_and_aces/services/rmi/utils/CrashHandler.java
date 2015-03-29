@@ -1,29 +1,36 @@
 package breads_and_aces.services.rmi.utils;
 
 import java.util.List;
+import java.util.ListIterator;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import breads_and_aces.game.init.registrar.utils.RegistriesUtils;
+import breads_and_aces.game.init.registrar.utils.ShelfsUtils;
+import breads_and_aces.main.Me;
 import breads_and_aces.utils.printer.Printer;
 
 @Singleton
 public class CrashHandler {
 
-	private final RegistriesUtils registriesUtils;
+	private final ShelfsUtils registriesUtils;
 	private final Printer printer;
 	
-	private boolean isExistingCrash;
+	private boolean isExistingCrash = false;
+	
+//	private final Set<String> crashed = new HashSet<>();
 	
 	@Inject
-	public CrashHandler(boolean isExistingCrash, List<String> crashed, RegistriesUtils registriesUtils, Printer printer) {
-		this.isExistingCrash = isExistingCrash;
+	public CrashHandler(ShelfsUtils registriesUtils, Me me, Printer printer) {
 		this.registriesUtils = registriesUtils;
 		this.printer = printer;
 	}
-
-	public void setHappenedCrash(boolean isExistingCrashed) {
+	
+	public void noMoreCrash() {
+		setHappenedCrash(false);
+//		crashed.clear();
+	}
+	private void setHappenedCrash(boolean isExistingCrashed) {
 		this.isExistingCrash = isExistingCrashed;
 	}
 
@@ -31,13 +38,25 @@ public class CrashHandler {
 		return isExistingCrash;
 	}
 
-	public void handle(String id) {
+	public void handleRemovingLocally(String id) {
 		setHappenedCrash(true);
 		registriesUtils.removeNodePlayerGameService(id);
 		printer.println(id+" not responding, remove it.");
+//		crashed.remove(id);
+	}
+	public void handleRemovingLocally(List<String> crashedDuringSync) {
+		setHappenedCrash(true);
+		ListIterator<String> listIterator = crashedDuringSync.listIterator();
+		while (listIterator.hasNext()) {
+			String next = listIterator.next();
+			registriesUtils.removeNodePlayerGameService(next);
+			listIterator.remove();
+		}
+		
 	}
 
-	public void noMoreCrash() {
-		setHappenedCrash(false);
-	}
+//	public void addCrashed(String id) {
+//		crashed.add(id);
+//	}
+	
 }

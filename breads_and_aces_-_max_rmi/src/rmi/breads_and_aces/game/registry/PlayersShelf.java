@@ -7,7 +7,7 @@ import java.util.NavigableMap;
 import breads_and_aces.game.model.Player;
 import breads_and_aces.game.model.PlayerRegistrationId;
 
-public interface PlayersRegistry {
+public interface PlayersShelf {
 
 	public void addPlayer(PlayerRegistrationId playerRegistrationId, Player player);
 	public NavigableMap<PlayerRegistrationId, Player> getIdsPlayersMap();
@@ -15,5 +15,6 @@ public interface PlayersRegistry {
 	public void setPlayers(Map<PlayerRegistrationId, Player> players);
 	public Player getNext(String playerId);
 	public boolean contains(String playerId);
-	public void remove(String targetnodeId);
+	public void remove(String targetplayerId);
+	public Player getPlayer(String playerId);
 }

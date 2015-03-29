@@ -2,7 +2,7 @@ package breads_and_aces.game.init.servable.registrar.registrars;
 
 import javax.inject.Inject;
 
-import breads_and_aces.game.init.registrar.utils.RegistriesUtils;
+import breads_and_aces.game.init.registrar.utils.ShelfsUtils;
 import breads_and_aces.game.init.servable.registrar.GameRegistrar;
 import breads_and_aces.game.init.servable.registrar.result.RegistrationResult;
 import breads_and_aces.game.init.servable.registrar.result.RegistrationResult.Cause;
@@ -11,10 +11,10 @@ import breads_and_aces.node.model.NodeConnectionInfos;
 public class GameRegistrarInit implements GameRegistrar {
 
 	private final boolean gameStarted = false;
-	private final RegistriesUtils registriesUtils;
+	private final ShelfsUtils registriesUtils;
 	
 	@Inject
-	public GameRegistrarInit(RegistriesUtils registriesUtils) {
+	public GameRegistrarInit(ShelfsUtils registriesUtils) {
 		this.registriesUtils = registriesUtils;
 	}
 
@@ -23,7 +23,7 @@ public class GameRegistrarInit implements GameRegistrar {
 		if (registriesUtils.contains(playerId))
 			return new RegistrationResult(false, Cause.EXISTING);
 
-		return registriesUtils.addNodePlayerGameService(nodeConnectionInfos, playerId);
+		return registriesUtils.registerNodePlayerGameServiceAsServable(nodeConnectionInfos, playerId);
 	}
 	
 	@Override

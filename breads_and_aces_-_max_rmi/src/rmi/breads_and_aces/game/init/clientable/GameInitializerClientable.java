@@ -8,7 +8,7 @@ import breads_and_aces.game.init.GameInitializer;
 import breads_and_aces.game.init.clientable.observer.NewPlayersObserverAsClientable;
 import breads_and_aces.game.init.servable.registrar.result.RegistrationResult;
 import breads_and_aces.game.registry.PlayersObservable;
-import breads_and_aces.game.registry.PlayersRegistry;
+import breads_and_aces.game.registry.PlayersShelf;
 import breads_and_aces.node.model.NodeConnectionInfos;
 import breads_and_aces.services.rmi.game._init.PlayersRegistrar;
 import breads_and_aces.services.rmi.game.utils.ServiceUtils;
@@ -21,11 +21,11 @@ public class GameInitializerClientable implements GameInitializer {
 	
 	private final String initializingHostAddress;
 	private final int initializingHostPort;
-	private final PlayersRegistry playersRegistry;
+	private final PlayersShelf playersRegistry;
 	private final Printer printer;
 
 	@AssistedInject
-	public GameInitializerClientable(@Assisted String initializingHostAddress, @Assisted int initializingHostPort, PlayersRegistry playersRegistry, Printer printer) {
+	public GameInitializerClientable(@Assisted String initializingHostAddress, @Assisted int initializingHostPort, PlayersShelf playersRegistry, Printer printer) {
 		this.initializingHostAddress = initializingHostAddress;
 		this.initializingHostPort = initializingHostPort;
 		this.playersRegistry = playersRegistry;

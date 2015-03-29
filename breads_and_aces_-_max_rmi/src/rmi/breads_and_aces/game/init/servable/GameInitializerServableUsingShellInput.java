@@ -6,9 +6,9 @@ import javax.inject.Inject;
 
 import breads_and_aces._di.providers.GameRegistrarProvider;
 import breads_and_aces.game.Game;
-import breads_and_aces.game.registry.PlayersRegistry;
-import breads_and_aces.node.NodesConnectionInfosRegistry;
-import breads_and_aces.services.rmi.GameServicesRegistry;
+import breads_and_aces.game.registry.PlayersShelf;
+import breads_and_aces.node.NodesConnectionInfosShelf;
+import breads_and_aces.services.rmi.GameServicesShelf;
 import breads_and_aces.services.rmi.utils.Communicator;
 import breads_and_aces.utils.misc.InputUtils;
 import breads_and_aces.utils.printer.Printer;
@@ -17,8 +17,8 @@ public class GameInitializerServableUsingShellInput extends AbstractGameInitiali
 	
 	@Inject
 	public GameInitializerServableUsingShellInput(GameRegistrarProvider gameRegistrarProvider,
-			GameServicesRegistry gameServicesRegistry, PlayersRegistry playersRegistry,
-			NodesConnectionInfosRegistry nodesConnectionInfosRegistry, Communicator communicator, Game game,
+			GameServicesShelf gameServicesRegistry, PlayersShelf playersRegistry,
+			NodesConnectionInfosShelf nodesConnectionInfosRegistry, Communicator communicator, Game game,
 			Printer printer) {
 		super(gameRegistrarProvider, gameServicesRegistry, playersRegistry, nodesConnectionInfosRegistry, communicator, game,
 				printer);

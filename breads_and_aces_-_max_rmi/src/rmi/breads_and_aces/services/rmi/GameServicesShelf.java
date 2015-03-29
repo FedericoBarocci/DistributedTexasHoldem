@@ -1,6 +1,6 @@
 package breads_and_aces.services.rmi;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -9,9 +9,9 @@ import javax.inject.Singleton;
 import breads_and_aces.services.rmi.game.GameService;
 
 @Singleton
-public class GameServicesRegistry {
+public class GameServicesShelf {
 
-	private final Map<String, GameService> servicesMap = new HashMap<>();
+	private final Map<String, GameService> servicesMap = new LinkedHashMap<>();
 
 	public void addService(String playerId, GameService gameService) {
 		servicesMap .put(playerId, gameService);
