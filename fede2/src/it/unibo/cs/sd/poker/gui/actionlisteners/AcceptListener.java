@@ -3,7 +3,6 @@ package it.unibo.cs.sd.poker.gui.actionlisteners;
 import it.unibo.cs.sd.poker.game.Player;
 import it.unibo.cs.sd.poker.mvc.Model;
 import it.unibo.cs.sd.poker.mvc.View;
-import it.unibo.cs.sd.poker.rmi.GlobalListener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,7 +23,7 @@ public class AcceptListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		model.startAsServer();
 		
-		new GlobalListener(model, view);
+		//new GlobalListener(model, view);
 
 		try {
 			model.registerPlayer( new Player(view.getUsername()) );

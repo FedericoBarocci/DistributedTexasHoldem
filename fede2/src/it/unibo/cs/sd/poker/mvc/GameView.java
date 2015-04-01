@@ -6,8 +6,6 @@ import it.unibo.cs.sd.poker.gui.CardGUI;
 import it.unibo.cs.sd.poker.gui.ElementGUI;
 import it.unibo.cs.sd.poker.gui.PlayerGUI;
 import it.unibo.cs.sd.poker.gui.TransparentPanel;
-import it.unibo.cs.sd.poker.gui.actionlisteners.AcceptListener;
-import it.unibo.cs.sd.poker.gui.actionlisteners.LoginListener;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -22,10 +20,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-public class View {
+public class GameView {
 	public JFrame frame = new JFrame();
 	
 	private BackgroundGUI background = new BackgroundGUI("bg.jpg", 1280, 720);
+	// TODO usare playerskeeper
 	private List<PlayerGUI> players = new ArrayList<PlayerGUI>();
 	
 	public JLabel lblWinners = new JLabel("", SwingConstants.CENTER);
@@ -47,7 +46,7 @@ public class View {
 	private JTextField addressField = new JTextField();
 	private JTextField usernameField = new JTextField("Username");
 	
-	public View() { 
+	public GameView() { 
 		frame.setLayout(null);
 		frame.setContentPane(background);
 		frame.setBounds(0, 0, 1280, 720);
@@ -95,32 +94,33 @@ public class View {
 		btnWinners.setBounds(12, 132, 103, 25);
 		frame.getContentPane().add(btnWinners);
 	}
-	
-	public void createIntroGUI(Model model, View view) {
+	/* TODO Per la costruzione della gui di welcome
+	public void createIntroGUI() {
 		acceptButton.setBounds(12, 12, 103, 25);
 		this.frame.getContentPane().add(acceptButton);
-		acceptButton.addActionListener(new AcceptListener(model, view));
+//		acceptButton.addActionListener(new AcceptListener(model, view));
 		
 		addressField.setBounds(212, 12, 103, 25);
 		this.frame.getContentPane().add(addressField);
 		
 		loginButton.setBounds(212, 42, 103, 25);
 		this.frame.getContentPane().add(loginButton);
-		loginButton.addActionListener(new LoginListener(model, view));
+//		loginButton.addActionListener(new LoginListener(model, view));
 		
 		usernameField.setBounds(412, 12, 103, 25);
 		this.frame.getContentPane().add(usernameField);
 	}
+	*/
 	
-	public String getUsername() {
+	private String getUsername() {
 		return this.usernameField.getText();
 	}
 	
-	public void initElementsGUI(List<Player> players, Integer id, Model model) {
+	private void initElementsGUI(/*List<Player> players,*/ /*Integer id*//*, Model model*/) {
 		//Integer id = model.getService().getId();
 		
 		for (Player p : players) {
-			this.addPlayer(p, id, model);
+			this.addPlayer(p, id/*, model*/);
 		}
 		
 		this.tableCard1.clear();
@@ -134,34 +134,34 @@ public class View {
 		this.resetToken();
 	}
 	
-	public void add(ElementGUI element) {
+	private void add(ElementGUI element) {
 		frame.getContentPane().add(element);
 	}
 	
-	public List<PlayerGUI> getPlayers() {
+	private List<PlayerGUI> getPlayers() {
 		return this.players;
 	}
 	
-	public void clearPlayers() {
+	private void clearPlayers() {
 		this.players.clear();
 	}
 	
-	public void showPlayersCards(List<Player> playerList) {
+	private void showPlayersCards(List<Player> playerList) {
 		for(int i = 0; i < playerList.size(); i++) {
 			this.players.get(i).setCard1(playerList.get(i).getCards().get(0));
 			this.players.get(i).setCard2(playerList.get(i).getCards().get(1));
 		}
 	}
 	
-	public void addPlayer(Player p, Integer playerId, Model model) {
+	private void addPlayer(Player p, Integer playerId/*, Model model*/) {
 		PlayerGUI pgui = new PlayerGUI(p, getPlayers().size() == playerId, (180 * players.size()) + 110, 500);
 		players.add(pgui);
-		pgui.draw(frame, model, this);
+		pgui.draw(frame/*, model, this*/);
 		frame.getContentPane().repaint();
 		//System.out.println(pgui.toString());
 	}
 	
-	public void clear() {
+	private void clear() {
 		for(PlayerGUI p : this.players) {
 			frame.getContentPane().remove(p.getCard1());
 			frame.getContentPane().remove(p.getCard2());
@@ -174,22 +174,28 @@ public class View {
 		this.lblWinners.setText("");
 	}
 
-	public void setToken(Integer i) {
+	private void setToken(Integer i) {
 		players.get(i).getName().setForeground(new Color(204, 0, 0));
 	}
 
-	public void unsetToken() {
+	private void unsetToken() {
 		for (int i = 0; i < getPlayers().size(); i++) {
 			unsetToken(i);
 		}
 	}
 	
-	public void unsetToken(Integer i) {
+	private void unsetToken(Integer i) {
 		getPlayers().get(i).getName().setForeground(new Color(0, 0, 0));
 	}
 
-	public void resetToken() {
+	private void resetToken() {
 		unsetToken();
 		setToken(0);
+	}
+
+	public void create() {
+		// TODO Auto-generated method stub
+		this.createGamePlay();
+		this.initElementsGUI();
 	}
 }

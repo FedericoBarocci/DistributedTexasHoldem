@@ -1,21 +1,21 @@
 package it.unibo.cs.sd.poker.main;
 
 import it.unibo.cs.sd.poker.mvc.Controller;
-import it.unibo.cs.sd.poker.mvc.Model;
-import it.unibo.cs.sd.poker.mvc.View;
+import it.unibo.cs.sd.poker.mvc.GameView;
 
 import java.awt.EventQueue;
 
 public class Main {
 	
 	public static void main(String[] args) {
+	//	Model model = new Model();
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Model model = new Model();
-					View view = new View();
+					GameView view = new GameView();
 					//Controller controller = 
-					new Controller(model, view);
+					new Controller(/*model, */view);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

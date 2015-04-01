@@ -103,11 +103,11 @@ public class Model extends GameTexasHoldem {
 	public Boolean isMyTurn(Integer myID) throws RemoteException {
 		return isRunning() && myID == this.getTurn();
 	}
-	
+	/*
 	public Integer getTurn() throws RemoteException {
 		return getService().getGlobal().getTurn();
-	}
-	
+	}*/
+	/*
 	public Boolean executeCheck() throws RemoteException {
 		if (getService().getToken()) {
 			getService().getGlobal().setAction(getService().getId(), Action.CHECK);
@@ -117,7 +117,7 @@ public class Model extends GameTexasHoldem {
 			return true;
 		}
 		else return false;
-	}
+	}*/
 	
 	public Boolean isComplete() throws RemoteException {
 		try {

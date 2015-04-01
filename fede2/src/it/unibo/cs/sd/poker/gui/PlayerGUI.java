@@ -3,8 +3,6 @@ package it.unibo.cs.sd.poker.gui;
 import it.unibo.cs.sd.poker.game.Card;
 import it.unibo.cs.sd.poker.game.Player;
 import it.unibo.cs.sd.poker.gui.actionlisteners.Check;
-import it.unibo.cs.sd.poker.mvc.Model;
-import it.unibo.cs.sd.poker.mvc.View;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -74,7 +72,7 @@ public class PlayerGUI {
 		this.name = name;
 	}
 
-	public void draw(JFrame frame, Model model, View view) {
+	public void draw(JFrame frame/*, Model model, GameView view*/) {
 		if (this.interactive)
 			check.setBounds(this.x+17, this.y + 120, 80, 30);
 		
@@ -88,7 +86,7 @@ public class PlayerGUI {
 		
 		if (this.interactive) {
 			frame.getContentPane().add(check);
-			check.addActionListener( new Check(model, view) );
+			check.addActionListener( new Check(/*model, view*/) );
 		}
 		
 		frame.getContentPane().add(box);

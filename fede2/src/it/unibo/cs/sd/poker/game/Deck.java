@@ -1,9 +1,5 @@
 package it.unibo.cs.sd.poker.game;
 
-import it.unibo.cs.sd.poker.game.Card;
-import it.unibo.cs.sd.poker.game.CardRank;
-import it.unibo.cs.sd.poker.game.CardSuit;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

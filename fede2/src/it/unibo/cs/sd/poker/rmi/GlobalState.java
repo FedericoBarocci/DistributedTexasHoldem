@@ -76,7 +76,7 @@ public class GlobalState extends UnicastRemoteObject implements PokerRMI /*, Rem
 	public void addPlayer(Player p) throws RemoteException {
 		this.players.add(p);
 		
-		notifyListeners(new RMIMessage(RMICommand.NEW_PLAYER, p));
+		//notifyListeners(new RMIMessage(RMICommand.NEW_PLAYER, p));
 	}
 	
 	public void setPlayer(Integer index, Player player) throws RemoteException {

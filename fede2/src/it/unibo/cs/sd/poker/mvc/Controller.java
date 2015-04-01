@@ -10,10 +10,12 @@ public class Controller implements Serializable {
 	private View view;
 	*/
 	
-	public Controller(Model model, View view) {
+	public Controller(/*Model model,*/ GameView view) {
 		//this.model = model;
 		//this.view = view;
 		
-		view.createIntroGUI(model, view);
+		//view.createIntroGUI(/*model, view*/);
+		
+		view.create();
 	}
 }

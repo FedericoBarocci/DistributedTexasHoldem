@@ -2,14 +2,12 @@ package it.unibo.cs.sd.poker.rmi;
 
 import it.unibo.cs.sd.poker.game.Player;
 
-import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-public class Node implements /*RemoteListener,*/ Serializable {
-	private static final long serialVersionUID = 294655112250423524L;
+public class Node /*RemoteListener,*/ {
 
 	public PokerRMI globalstate;
 	private Player player;
@@ -52,6 +50,8 @@ public class Node implements /*RemoteListener,*/ Serializable {
 				e.printStackTrace();
 			}
 		}
+		
+		new GlobalListener(model, view);
 	}
 
 	public PokerRMI getGlobal() throws RemoteException {
