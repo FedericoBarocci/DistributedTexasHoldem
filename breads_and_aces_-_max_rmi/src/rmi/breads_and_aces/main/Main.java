@@ -2,16 +2,15 @@ package breads_and_aces.main;
 
 import breads_and_aces._di._guice.module.TexasHoldemPokerModule;
 import breads_and_aces.node.Node;
-import breads_and_aces.node.builder.NodeBuilder;
-import breads_and_aces.node.builder.NodeBuilderFactory;
+import breads_and_aces.node.initializer.NodeInitializer;
+import breads_and_aces.node.initializer.NodeInitializerFactory;
+import breads_and_aces.utils.misc.MemoryUtil;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 public class Main {
 	
-//	public static Random Randomizer = new Random();
-
 	public static void main(String[] args) {
 		if (args.length<1) {
 			System.out.println("minimum 1 arguments: \n"
@@ -33,23 +32,24 @@ public class Main {
 		Injector injector = null;
 		try {
 			injector = Guice.createInjector(new TexasHoldemPokerModule());
-			// init singleton Me
-			injector.getInstance(Me.class).init(meId);
 		
-		
-			NodeBuilderFactory nodeBuilderFactory = injector.getInstance(NodeBuilderFactory.class);
-			NodeBuilder nodeBuilder = null;
+			NodeInitializerFactory nodeInitializerFactory = injector.getInstance(NodeInitializerFactory.class);
+			NodeInitializer nodeInitializer = null;
 			if (actAsServer) {
-				nodeBuilder = nodeBuilderFactory.createAsServable(meId, addressToBind);
+				nodeInitializer  = nodeInitializerFactory.createAsServable(meId, addressToBind);
 			} else {
 				String initializingHostAddress = args[1];
-				int initializingHostPort = 33333;
-				if (args.length==3)
-					initializingHostPort = Integer.parseInt(args[2]);
-				nodeBuilder = nodeBuilderFactory.createAsClientable(meId, addressToBind, initializingHostAddress, initializingHostPort);
+				if (args.length==3) {
+					int initializingHostPort = Integer.parseInt(args[2]);
+					nodeInitializer  = nodeInitializerFactory.createAsClientableWithInitializerPort(meId, addressToBind, initializingHostAddress, initializingHostPort);
+				} else
+					nodeInitializer  = nodeInitializerFactory.createAsClientable(meId, addressToBind, initializingHostAddress);
 			}
 			
-			Node node = nodeBuilder.build();
+			Node node = nodeInitializer.get();
+//			MemoryUtil.runGarbageCollector();
+//			nodeInitializer = null;
+//			MemoryUtil.runGarbageCollector();
 			node.start();
 		} catch (Exception e) {
 			e.printStackTrace();

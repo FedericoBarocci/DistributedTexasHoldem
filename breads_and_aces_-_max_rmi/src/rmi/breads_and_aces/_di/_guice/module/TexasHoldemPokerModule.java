@@ -1,14 +1,16 @@
 package breads_and_aces._di._guice.module;
 
-import breads_and_aces.game.init.clientable.GameInitializerClientableFactory;
-import breads_and_aces.game.init.servable.GameInitializerServable;
-import breads_and_aces.game.init.servable.GameInitializerServableUsingShellInput;
-import breads_and_aces.game.model.PlayerFactory;
-import breads_and_aces.game.registry.PlayersShelf;
-import breads_and_aces.game.registry.PlayersShelfImpl;
+import breads_and_aces.dummy.InputHandlerFactory;
+import breads_and_aces.game.model.players.keeper.PlayersKeeper;
+import breads_and_aces.game.model.players.keeper.PlayersKeeperImpl;
+import breads_and_aces.game.model.players.player.PlayerFactory;
 import breads_and_aces.node.NodeFactory;
-import breads_and_aces.node.builder.NodeBuilderFactory;
-import breads_and_aces.services.rmi.game.impl.GameServiceFactory;
+import breads_and_aces.node.initializer.NodeInitializerFactory;
+import breads_and_aces.registration.init.clientable.RegistrationInitializerClientableFactory;
+import breads_and_aces.registration.init.servable.RegistrationInitializerServable;
+import breads_and_aces.registration.init.servable.RegistrationInitializerServableFactory;
+import breads_and_aces.registration.init.servable.RegistrationInitializerServableUsingShellInput;
+import breads_and_aces.services.rmi.game.core.impl.GameServiceFactory;
 import breads_and_aces.utils.printer.ConsolePrinter.ConsolePrinterReal;
 import breads_and_aces.utils.printer.Printer;
 
@@ -21,16 +23,22 @@ public class TexasHoldemPokerModule extends AbstractModule {
 	protected void configure() {
 		bind(Printer.class).to(ConsolePrinterReal.class);
 		
-		bind(PlayersShelf.class).to(PlayersShelfImpl.class);
+		bind(PlayersKeeper.class).to(PlayersKeeperImpl.class);
 		
 //		install(new FactoryModuleBuilder().build(MeFactory.class));
 		
+		install(new FactoryModuleBuilder().build(InputHandlerFactory.class));
+		
 		install(new FactoryModuleBuilder().build(NodeFactory.class));
-		install(new FactoryModuleBuilder().build(NodeBuilderFactory.class));
+		install(new FactoryModuleBuilder().build(NodeInitializerFactory.class));
 		
-		bind(GameInitializerServable.class).to(GameInitializerServableUsingShellInput.class);
 		
-		install(new FactoryModuleBuilder().build(GameInitializerClientableFactory.class));
+//		bind(RegistrationInitializerServable.class).to(RegistrationInitializerServableUsingShellInput.class);
+//		install(new FactoryModuleBuilder().build(RegistrationInitializerServableFactory.class));
+		FactoryModuleBuilder factoryModuleBuilder = new FactoryModuleBuilder().implement(RegistrationInitializerServable.class, RegistrationInitializerServableUsingShellInput.class);
+		install(factoryModuleBuilder.build(RegistrationInitializerServableFactory.class));
+		
+		install(new FactoryModuleBuilder().build(RegistrationInitializerClientableFactory.class));
 		
 		install(new FactoryModuleBuilder().build(GameServiceFactory.class));
 		

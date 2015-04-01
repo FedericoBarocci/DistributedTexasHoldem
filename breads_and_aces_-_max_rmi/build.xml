@@ -3,81 +3,28 @@
               Any modifications will be overwritten.
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. --><project basedir="." default="build" name="GuiDemo">
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="breads_and_aces_-_max_rmi">
     <property environment="env"/>
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.8"/>
     <property name="source" value="1.8"/>
-    <path id="GuiDemo.classpath">
+    <path id="breads_and_aces_-_max_rmi.classpath">
         <pathelement location="bin"/>
-        <pathelement location="../../eclipse/eclipse-mars/plugins/org.eclipse.osgi_3.10.100.v20150129-2253.jar"/>
-        <pathelement location="../../eclipse/eclipse-mars/plugins/org.eclipse.core.commands_3.6.100.v20141026-0121.jar"/>
-        <pathelement location="../../eclipse/eclipse-mars/plugins/org.eclipse.equinox.common_3.6.200.v20141113-1308.jar"/>
-        <pathelement location="../../eclipse/eclipse-mars/plugins/org.eclipse.equinox.registry_3.5.400.v20140428-1507.jar"/>
-        <pathelement location="../../eclipse/eclipse-mars/plugins/org.eclipse.core.runtime_3.10.0.v20150112-1422.jar"/>
-        <pathelement location="../../eclipse/eclipse-mars/plugins/org.eclipse.text_3.5.400.v20140915-2351.jar"/>
-        <pathelement location="../../eclipse/eclipse-mars/plugins/org.eclipse.swt.gtk.linux.x86_64_3.104.0.v20150203-2243.jar"/>
-        <pathelement location="../../eclipse/eclipse-mars/plugins/org.eclipse.jface_3.11.0.v20150121-1751.jar"/>
-        <pathelement location="../../eclipse/eclipse-mars/plugins/org.eclipse.jface.text_3.10.0.v20150112-1146.jar"/>
-        <pathelement location="../../eclipse/eclipse-mars/plugins/org.eclipse.ui.workbench_3.107.0.v20150127-1326.jar"/>
-        <pathelement location="../../eclipse/eclipse-mars/plugins/com.ibm.icu_54.1.1.v201501272100.jar"/>
-        <pathelement location="../../eclipse/eclipse-mars/plugins/org.eclipse.ui.forms_3.6.200.v20150109-1110.jar"/>
-        <pathelement location="swing2swt.jar"/>
+        <pathelement location="libs/guice/javax.inject.jar"/>
+        <pathelement location="libs/guice/guice-3.0.jar"/>
+        <pathelement location="libs/guice/aopalliance-1.0.jar"/>
+        <pathelement location="libs/guice/guice-assistedinject-3.0.jar"/>
     </path>
-    <target name="init">
-        <mkdir dir="bin"/>
-        <copy includeemptydirs="false" todir="bin">
-            <fileset dir="src">
-                <exclude name="**/*.uad"/>
-                <exclude name="**/*.ucd"/>
-                <exclude name="**/*.uld"/>
-                <exclude name="**/*.upd"/>
-                <exclude name="**/*.udd"/>
-                <exclude name="**/*.uod"/>
-                <exclude name="**/*.usd"/>
-                <exclude name="**/*.utd"/>
-                <exclude name="**/*.uud"/>
-                <exclude name="**/*.odd"/>
-                <exclude name="**/*.ead"/>
-                <exclude name="**/*.ecd"/>
-                <exclude name="**/*.eld"/>
-                <exclude name="**/*.epd"/>
-                <exclude name="**/*.edd"/>
-                <exclude name="**/*.eod"/>
-                <exclude name="**/*.esd"/>
-                <exclude name="**/*.etd"/>
-                <exclude name="**/*.eud"/>
-                <exclude name="**/*.urd"/>
-                <exclude name="**/*.uml"/>
-                <exclude name="**/*.ecore"/>
-                <exclude name="**/*.java"/>
-                <exclude name="demo/Comp.java"/>
-            </fileset>
-        </copy>
-    </target>
     <target name="clean">
-        <delete dir="bin"/>
+    	<delete dir="bin"/>
+    	<mkdir dir="bin"/>
     </target>
-    <target depends="clean" name="cleanall"/>
-    <target depends="build-subprojects,build-project" name="build"/>
-    <target name="build-subprojects"/>
-    <target depends="init" name="build-project">
-        <echo message="${ant.project.name}: ${ant.file}"/>
-        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
-            <src path="src"/>
-            <exclude name="demo/Comp.java"/>
-            <classpath refid="GuiDemo.classpath"/>
-        </javac>
-    </target>
-    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
-    <target name="SWTMain">
-        <java classname="demo.SWTMain" failonerror="true" fork="yes">
-            <classpath refid="GuiDemo.classpath"/>
-        </java>
-    </target>
-    <target name="JFaceMain">
-        <java classname="demo.JFaceMain" failonerror="true" fork="yes">
-            <classpath refid="GuiDemo.classpath"/>
-        </java>
+    <target name="build">
+    			<mkdir dir="bin"/>
+       <echo message="${ant.project.name}: ${ant.file}"/>
+       <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+           <src path="src/rmi"/>
+           <classpath refid="breads_and_aces_-_max_rmi.classpath"/>
+       </javac>
     </target>
 </project>

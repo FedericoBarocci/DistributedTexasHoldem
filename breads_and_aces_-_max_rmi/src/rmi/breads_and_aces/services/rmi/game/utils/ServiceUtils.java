@@ -5,7 +5,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-import breads_and_aces.services.rmi.game.GameService;
+import breads_and_aces.services.rmi.game.core.GameService;
 
 public class ServiceUtils {
 
