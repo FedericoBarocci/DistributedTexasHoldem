@@ -3,8 +3,8 @@ package breads_and_aces.registration.init.servable;
 import java.util.Scanner;
 
 import breads_and_aces._di.providers.GameRegistrarProvider;
+import breads_and_aces.game.Game;
 import breads_and_aces.game.model.players.keeper.PlayersKeeper;
-import breads_and_aces.registration.Game;
 import breads_and_aces.services.rmi.game.keeper.GameServicesKeeper;
 import breads_and_aces.services.rmi.utils.communicator.Communicator;
 import breads_and_aces.utils.misc.InputUtils;

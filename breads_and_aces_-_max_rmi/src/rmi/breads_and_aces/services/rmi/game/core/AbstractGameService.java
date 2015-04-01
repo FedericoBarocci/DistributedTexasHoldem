@@ -3,8 +3,8 @@ package breads_and_aces.services.rmi.game.core;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
+import breads_and_aces.game.Game;
 import breads_and_aces.game.model.players.keeper.PlayersKeeper;
-import breads_and_aces.registration.Game;
 
 public abstract class AbstractGameService 
 	extends UnicastRemoteObject 

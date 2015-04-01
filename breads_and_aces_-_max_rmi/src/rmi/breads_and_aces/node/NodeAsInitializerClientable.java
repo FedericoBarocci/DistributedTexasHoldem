@@ -1,7 +1,7 @@
 package breads_and_aces.node;
 
 import breads_and_aces.dummy.InputHandlerFactory;
-import breads_and_aces.registration.Game;
+import breads_and_aces.game.Game;
 import breads_and_aces.utils.misc.Waiter;
 
 import com.google.inject.assistedinject.Assisted;

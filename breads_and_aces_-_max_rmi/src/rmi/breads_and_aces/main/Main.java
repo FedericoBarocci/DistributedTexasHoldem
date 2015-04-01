@@ -4,7 +4,6 @@ import breads_and_aces._di._guice.module.TexasHoldemPokerModule;
 import breads_and_aces.node.Node;
 import breads_and_aces.node.initializer.NodeInitializer;
 import breads_and_aces.node.initializer.NodeInitializerFactory;
-import breads_and_aces.utils.misc.MemoryUtil;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

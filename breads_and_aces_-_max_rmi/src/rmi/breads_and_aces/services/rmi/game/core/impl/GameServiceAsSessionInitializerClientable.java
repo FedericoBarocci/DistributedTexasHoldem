@@ -4,10 +4,10 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 
+import breads_and_aces.game.Game;
 import breads_and_aces.game.model.players.keeper.PlayersKeeper;
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.game.model.players.player.PlayerRegistrationId;
-import breads_and_aces.registration.Game;
 import breads_and_aces.registration.init.model.NodeConnectionInfos;
 import breads_and_aces.services.rmi.game.core.AbstractGameService;
 import breads_and_aces.services.rmi.game.core.GameServiceClientable;
