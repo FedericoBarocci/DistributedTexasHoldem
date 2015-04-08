@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/fede/gui"/>
+	<classpathentry excluding="breads_and_aces/main/RegistrationGUI_CRASH.java" kind="src" path="src/max/main"/>
+	<classpathentry excluding="it/unibo/cs/sd/poker/game/core/Player.java|it/unibo/cs/sd/poker/game/core/GameTexasHoldemRunner.java" kind="src" path="src/fede/game"/>
+	<classpathentry kind="src" path="src/max/model"/>
+	<classpathentry kind="src" path="src/max/registration"/>
+	<classpathentry kind="src" path="src/max/node"/>
+	<classpathentry kind="src" path="src/max/rmi"/>
+	<classpathentry kind="src" path="src/max/misc"/>
+	<classpathentry excluding="it/unibo/cs/sd/poker/mvc/Model.java" kind="src" path="src/fede/main_test"/>
+	<classpathentry kind="src" path="src/common/model"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="libs/guice/aopalliance-1.0.jar"/>
+	<classpathentry kind="lib" path="libs/guice/guice-3.0.jar"/>
+	<classpathentry kind="lib" path="libs/guice/guice-assistedinject-3.0.jar"/>
+	<classpathentry kind="lib" path="libs/guice/javax.inject.jar"/>
+	<classpathentry kind="lib" path="libs/jgoodies/jgoodies-common-1.4.0.jar"/>
+	<classpathentry kind="lib" path="libs/jgoodies/jgoodies-forms-1.8.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

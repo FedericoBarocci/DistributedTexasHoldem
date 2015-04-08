@@ -83,7 +83,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 	}
 	
 	private void startGame() {
-		printer.print("Game cans start! ");
+		printer.print("Game can start! ");
 		game.setStarted();
 		passBucket();
 	}
@@ -91,7 +91,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		Player next = 
 //				playersKeeper.getNext(meId);
 				gameRegistrarProvider.get().getFirst();
-		String nextId = next.getId();
+		String nextId = next.getName();
 		printer.println("First player is: "+nextId);
 		communicator.toOne(this::passBucket, nextId);
 	}

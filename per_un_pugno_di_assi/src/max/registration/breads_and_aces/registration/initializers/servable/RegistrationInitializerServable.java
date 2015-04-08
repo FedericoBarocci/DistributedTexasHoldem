@@ -1,0 +1,5 @@
+package breads_and_aces.registration.initializers.servable;
+
+import breads_and_aces.registration.initializers.RegistrationInitializer;
+
+public interface RegistrationInitializerServable extends RegistrationInitializer {}
