@@ -8,7 +8,7 @@ import breads_and_aces.game.Game;
 import breads_and_aces.game.model.players.keeper.PlayersKeeper;
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.game.model.players.player.PlayerRegistrationId;
-import breads_and_aces.registration.init.model.NodeConnectionInfos;
+import breads_and_aces.registration.model.NodeConnectionInfos;
 import breads_and_aces.services.rmi.game.core.AbstractGameService;
 import breads_and_aces.services.rmi.game.core.GameServiceClientable;
 import breads_and_aces.utils.keepers.KeepersUtils;

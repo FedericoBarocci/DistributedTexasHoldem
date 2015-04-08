@@ -7,7 +7,7 @@ import java.util.Map;
 
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.game.model.players.player.PlayerRegistrationId;
-import breads_and_aces.registration.init.model.NodeConnectionInfos;
+import breads_and_aces.registration.model.NodeConnectionInfos;
 
 public interface PlayersSynchronizar extends Remote {
 	void synchronizeAllNodesAndPlayersFromInitiliazer(List<NodeConnectionInfos> nodesConnectionInfosMap, Map<PlayerRegistrationId, Player> playersMap) throws RemoteException;
