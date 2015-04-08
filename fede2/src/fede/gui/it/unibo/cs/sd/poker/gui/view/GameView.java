@@ -13,7 +13,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,11 +28,11 @@ public class GameView {
 	
 	public JLabel lblWinners = new JLabel("", SwingConstants.CENTER);
 	
-	public JButton btnDeal = new JButton("Deal");
-	public JButton btnFlop = new JButton("Flop");
-	public JButton btnTurn = new JButton("Turn");
-	public JButton btnRiver = new JButton("River");
-	public JButton btnWinners = new JButton("Winner(s)");
+//	public JButton btnDeal = new JButton("Deal");
+//	public JButton btnFlop = new JButton("Flop");
+//	public JButton btnTurn = new JButton("Turn");
+//	public JButton btnRiver = new JButton("River");
+//	public JButton btnWinners = new JButton("Winner(s)");
 	
 	public CardGUI tableCard1 = new CardGUI(300, 250);
 	public CardGUI tableCard2 = new CardGUI(450, 250);

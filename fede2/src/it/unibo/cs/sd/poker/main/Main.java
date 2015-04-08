@@ -1,10 +1,9 @@
 package it.unibo.cs.sd.poker.main;
 
-import it.unibo.cs.sd.poker.mvc.GuiInitializer;
+import it.unibo.cs.sd.poker.gui.view.GameViewInitializer;
 
 import java.awt.EventQueue;
 
-import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -19,7 +18,7 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GuiInitializer guiInitializer = injector.getInstance(GuiInitializer.class);
+					GameViewInitializer guiInitializer = injector.getInstance(GameViewInitializer.class);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

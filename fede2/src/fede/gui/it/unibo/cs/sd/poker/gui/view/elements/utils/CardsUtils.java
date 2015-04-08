@@ -36,7 +36,7 @@ public enum CardsUtils {
 		return backCard;
 	}
 	
-	public String getCardImgPath(Card card) {
+	private String getCardImgPath(Card card) {
 		String s = new String(imgDir);
 		s+=File.separatorChar;
 
