@@ -56,7 +56,7 @@ public class GameView {
 		frame.setVisible(true);
 	}
 	
-	public void createGamePlay() {
+	public void init(List<Player> players) {
 		JPanel panel = new TransparentPanel();
 		panel.setBackground(new Color(174, 234, 255, 70));
 		panel.setBorder(new LineBorder(new Color(255, 255, 255), 1));
@@ -95,6 +95,8 @@ public class GameView {
 //
 //		btnWinners.setBounds(12, 132, 103, 25);
 //		frame.getContentPane().add(btnWinners);
+		
+		initElementsGUI(players);
 	}
 	/* TODO Per la costruzione della gui di welcome
 	public void createIntroGUI() {
@@ -202,14 +204,13 @@ public class GameView {
 //		setToken(0);
 //	}
 
-	public void create() {
-		// TODO Auto-generated method stub
-		this.createGamePlay();
-		
-	}
+//	public void create(List<Player> players) {
+//		// TODO Auto-generated method stub
+//		createGamePlay(players);
+//	}
 
-	public void populatePlayers(List<Player> players) {
-		// TODO Auto-generated method stub
-		this.initElementsGUI(players);
-	}
+//	public void populatePlayers(List<Player> players) {
+//		// TODO Auto-generated method stub
+//		this.initElementsGUI(players);
+//	}
 }

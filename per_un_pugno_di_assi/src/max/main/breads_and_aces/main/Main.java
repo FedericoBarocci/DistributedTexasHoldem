@@ -87,7 +87,7 @@ public class Main {
 			e1.printStackTrace();
 		}
 		
-		System.exit(0);
+//		System.exit(0);
 	}
 	
 	static public class LoginResult {

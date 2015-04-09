@@ -1,5 +1,7 @@
 package it.unibo.cs.sd.poker.gui.view;
 
+import it.unibo.cs.sd.poker.game.core.Deck;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,18 +15,19 @@ public class GameViewInitializer {
 	private final PlayersKeeper playersKeeper;
 
 	@Inject
-	public GameViewInitializer(/*Model model,*/ GameView view, PlayersKeeper playersKeeper) {
+	public GameViewInitializer(GameView view, PlayersKeeper playersKeeper) {
 		this.view = view;
 		this.playersKeeper = playersKeeper;
 	}
 	
 	public void start() {
-		view.create();
+//		view.create();
 		
 		//TODO pass PlayersKeeper values
 //		view.populatePlayers( Collections.emptyList() );
 		List<Player> players = playersKeeper.getPlayers();
-//		players.forEach(c->c.);
-		view.populatePlayers( playersKeeper.getPlayers() );
+		Deck deck = new Deck();
+		players.forEach(c->c.deal(deck));
+		view.init( players );
 	}
 }

@@ -35,7 +35,7 @@ public class InputHandler {
 			bucketHandler.play(meId, next);
 		}
 		scanner.close();*/
-		System.out.println("here");
+//		System.out.println("here");
 //		EventQueue.invokeLater( ()->{
 			gameViewInitializerInstancer.create().start();
 //		});
