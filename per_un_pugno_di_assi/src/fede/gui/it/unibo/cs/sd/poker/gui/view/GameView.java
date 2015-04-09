@@ -29,22 +29,11 @@ public class GameView {
 	
 	public JLabel lblWinners = new JLabel("", SwingConstants.CENTER);
 	
-//	public JButton btnDeal = new JButton("Deal");
-//	public JButton btnFlop = new JButton("Flop");
-//	public JButton btnTurn = new JButton("Turn");
-//	public JButton btnRiver = new JButton("River");
-//	public JButton btnWinners = new JButton("Winner(s)");
-	
 	public CardGUI tableCard1 = new CardGUI(300, 250);
 	public CardGUI tableCard2 = new CardGUI(450, 250);
 	public CardGUI tableCard3 = new CardGUI(600, 250);
 	public CardGUI tableCard4 = new CardGUI(750, 250);
 	public CardGUI tableCard5 = new CardGUI(900, 250);
-	
-//	private JButton acceptButton = new JButton("Accept Connections");
-//	private JButton loginButton = new JButton("Login");
-//	private JTextField addressField = new JTextField();
-//	private JTextField usernameField = new JTextField("Username");
 	
 	public GameView() {
 		super();
@@ -64,16 +53,10 @@ public class GameView {
         
 		frame.getContentPane().add(panel);
 		
-//		btnFlop.setEnabled(false);
-//		btnTurn.setEnabled(false);
-//		btnRiver.setEnabled(false);
-//		btnWinners.setEnabled(false);
-		
 		lblWinners.setForeground(new Color(0, 0, 0));
 		lblWinners.setFont(new Font("SansSerif", Font.BOLD | Font.ITALIC, 16));
 		lblWinners.setBounds(400, 50, 500, 50);
 		frame.getContentPane().add(lblWinners);
-		
 		
 		addElementGui(tableCard1);
 		addElementGui(tableCard2);
@@ -81,35 +64,21 @@ public class GameView {
 		addElementGui(tableCard4);
 		addElementGui(tableCard5);
 		
-//		btnDeal.setBounds(12, 12, 103, 25);
-//		frame.getContentPane().add(btnDeal);
-//		
-//		btnFlop.setBounds(12, 42, 103, 25);
-//		frame.getContentPane().add(btnFlop);
-//		
-//		btnTurn.setBounds(12, 72, 103, 25);
-//		frame.getContentPane().add(btnTurn);
-//
-//		btnRiver.setBounds(12, 102, 103, 25);
-//		frame.getContentPane().add(btnRiver);
-//
-//		btnWinners.setBounds(12, 132, 103, 25);
-//		frame.getContentPane().add(btnWinners);
-		
 		initElementsGUI(players);
 	}
+	
 	/* TODO Per la costruzione della gui di welcome
 	public void createIntroGUI() {
 		acceptButton.setBounds(12, 12, 103, 25);
 		this.frame.getContentPane().add(acceptButton);
-//		acceptButton.addActionListener(new AcceptListener(model, view));
+		acceptButton.addActionListener(new AcceptListener(model, view));
 		
 		addressField.setBounds(212, 12, 103, 25);
 		this.frame.getContentPane().add(addressField);
 		
 		loginButton.setBounds(212, 42, 103, 25);
 		this.frame.getContentPane().add(loginButton);
-//		loginButton.addActionListener(new LoginListener(model, view));
+		loginButton.addActionListener(new LoginListener(model, view));
 		
 		usernameField.setBounds(412, 12, 103, 25);
 		this.frame.getContentPane().add(usernameField);
@@ -120,11 +89,9 @@ public class GameView {
 //		return this.usernameField.getText();
 //	}
 	
-	private void initElementsGUI(List<Player> players /*, Integer id*//*, Model model*/) {
-		//Integer id = model.getService().getId();
-		
+	private void initElementsGUI(List<Player> players) {
 		for (Player p : players) {
-			createAndAddPlayerGui(p, p.getName() /*,id*//*, model*/);
+			createAndAddPlayerGui(p);
 		}
 		
 		this.tableCard1.clear();
@@ -132,9 +99,6 @@ public class GameView {
 		this.tableCard3.clear();
 		this.tableCard4.clear();
 		this.tableCard5.clear();
-		
-//		this.btnDeal.setEnabled(false);
-//		this.btnFlop.setEnabled(true);
 		
 		// TODO restore?
 //		this.resetToken();
@@ -162,18 +126,27 @@ public class GameView {
 		}
 	}*/
 	
-	private void createAndAddPlayerGui(Player p, String playerId /*Integer playerIndex*//*, Model model*/) {
+	private void createAndAddPlayerGui(Player p) {
 //		PlayerGUI playerGui = new PlayerGUI(p, getPlayers().size() == playerIndex, (180 * playersGui.size()) + 110, 500);
 //		TODO: fix deal
+		
 		PlayerGUI playerGui = new PlayerGUI(p.getName(),  
 				p.getCards().get(0), 
 				p.getCards().get(1), 
 				(180 * playersGui.size()) + 110, 
 				500);
-		playersGui.put(playerId, playerGui);
+		
+		playersGui.put(p.getName(), playerGui);
 		playerGui.draw(frame);
 		frame.getContentPane().repaint();
-		//System.out.println(pgui.toString());
+		
+		System.err.println("Player: " + p.getName() + " " 
+				+ p.getCards().get(0).toString() + " "
+				+ p.getCards().get(1).toString());
+		
+		System.err.println("PlayerGUI: " + playerGui.getName() + " " 
+				+ playerGui.getCard1() + " "
+				+ playerGui.getCard2());
 	}
 	
 	private void clear() {
@@ -186,7 +159,7 @@ public class GameView {
 	}
 	
 	private void setToken(Integer i) {
-		playersGui.get(i).getName().setForeground(new Color(204, 0, 0));
+		playersGui.get(i).getLabel().setForeground(new Color(204, 0, 0));
 	}
 
 //	private void unsetToken() {

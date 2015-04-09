@@ -11,51 +11,28 @@ import javax.swing.JLabel;
 public class ElementGUI extends JLabel {
 	
 	private static final long serialVersionUID = 2817608666404375068L;
-//	private ImageIcon icon;
-//	private String path;
 	
 	protected int x = 0;
 	protected int y = 0;
 	protected int w = 0;
 	protected int h = 0;
 	
-//	public ElementGUI() {
-//		super();
-//	}
-	
-	public ElementGUI(ImageIcon icon/*String path*/) {
-//		super(path);
-//		super();
-		
-//		setSource(path);
+	public ElementGUI(ImageIcon icon) {
 		setSource(icon);
 		setBounds(0, 0, icon.getIconWidth(), icon.getIconHeight());
 	}
 	
-	public ElementGUI(/*String path*/ImageIcon icon, int x, int y) {
-//		super(path);
-//		super();
-		
-//		setSource(path);
+	public ElementGUI(ImageIcon icon, int x, int y) {
 		setSource(icon);
 		setBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
-//		this(path, icon.getIconWidth(), icon.getIconHeight());
 	}
 	
-	public ElementGUI(ImageIcon icon, /*String path,*/ int x, int y, int w, int h) {
-//		super(path);
-//		super();
-		
-//		setSource(path);
+	public ElementGUI(ImageIcon icon, int x, int y, int w, int h) {
 		setSource(icon);
 		setBounds(x, y, w, h);
 	}
 	
-	protected void setSource(ImageIcon icon/*String path*/) {
-//		this.path = path;
-//		icon = new ImageIcon(path);
-//		this.icon = icon;
-//		super.get
+	protected void setSource(ImageIcon icon) {
 		super.setIcon(icon);
 	}
 	

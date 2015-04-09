@@ -42,8 +42,10 @@ public class PlayerGUI {
 		this.x = x;
 		this.y = y;
 		
-		this.card1 = new CardGUI(CardsUtils.INSTANCE.getCard(card0), x, y, cardDefaultWidth, cardDefaultHeight);
-		this.card2 = new CardGUI(CardsUtils.INSTANCE.getCard(card1), x + xOffset, y, cardDefaultWidth, cardDefaultHeight );
+		this.card1 = new CardGUI(card0, x, y, 
+				cardDefaultWidth, cardDefaultHeight);
+		this.card2 = new CardGUI(card1, x + xOffset, y, 
+				cardDefaultWidth, cardDefaultHeight );
 		
 		this.name.setText(playerId);
 		
@@ -100,12 +102,15 @@ public class PlayerGUI {
 //		card2.setCard(card);
 //	}
 
-	public JLabel getName() {
+	public String getName() {
+		return name.getText();
+	}
+	
+	public JLabel getLabel() {
 		return name;
 	}
 
 	public void draw(JFrame frame) {
-		
 		JButton checkButton = buttons.get("Check");
 		
 		if (this.interactive)
