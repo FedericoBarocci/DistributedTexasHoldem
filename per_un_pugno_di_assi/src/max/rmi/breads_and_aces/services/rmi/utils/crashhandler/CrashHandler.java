@@ -6,13 +6,13 @@ import java.util.ListIterator;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import breads_and_aces.utils.keepers.KeepersUtils;
+import breads_and_aces.utils.keepers.KeepersUtilDelegate;
 import breads_and_aces.utils.printer.Printer;
 
 @Singleton
 public class CrashHandler {
 
-	private final KeepersUtils registriesUtils;
+	private final KeepersUtilDelegate registriesUtils;
 	private final Printer printer;
 	
 	private boolean isExistingCrash = false;
@@ -20,7 +20,7 @@ public class CrashHandler {
 //	private final Set<String> crashed = new HashSet<>();
 	
 	@Inject
-	public CrashHandler(KeepersUtils registriesUtils, /*Me me,*/ Printer printer) {
+	public CrashHandler(KeepersUtilDelegate registriesUtils, /*Me me,*/ Printer printer) {
 		this.registriesUtils = registriesUtils;
 		this.printer = printer;
 	}

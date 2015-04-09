@@ -4,7 +4,7 @@ import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-import breads_and_aces.game.model.players.keeper.PlayersKeeper;
+import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
 import breads_and_aces.game.model.players.keeper.PlayersObservable;
 import breads_and_aces.registration.initializers.RegistrationInitializer;
 import breads_and_aces.registration.initializers.clientable.observer.NewPlayersObserverAsClientable;
@@ -21,11 +21,11 @@ public class RegistrationInitializerClientable implements RegistrationInitialize
 	
 	private final String initializingHostAddress;
 	private final int initializingHostPort;
-	private final PlayersKeeper playersKeeper;
+	private final RegistrarPlayersKeeper playersKeeper;
 	private final Printer printer;
 
 	@AssistedInject
-	public RegistrationInitializerClientable(@Assisted String initializingHostAddress, @Assisted int initializingHostPort, PlayersKeeper playersRegistry, Printer printer) {
+	public RegistrationInitializerClientable(@Assisted String initializingHostAddress, @Assisted int initializingHostPort, RegistrarPlayersKeeper playersRegistry, Printer printer) {
 		this.initializingHostAddress = initializingHostAddress;
 		this.initializingHostPort = initializingHostPort;
 		this.playersKeeper = playersRegistry;

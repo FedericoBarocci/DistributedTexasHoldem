@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import breads_and_aces.game.Game;
-import breads_and_aces.game.model.players.keeper.PlayersKeeper;
+import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.game.model.players.player.PlayerRegistrationId;
 import breads_and_aces.registration.model.NodeConnectionInfos;
 import breads_and_aces.services.rmi.game.core.AbstractGameService;
 import breads_and_aces.services.rmi.game.core.GameServiceClientable;
-import breads_and_aces.utils.keepers.KeepersUtils;
+import breads_and_aces.utils.keepers.KeepersUtilDelegate;
 
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
@@ -21,23 +21,23 @@ public class GameServiceAsSessionInitializerClientable
 	implements GameServiceClientable {
 
 	private static final long serialVersionUID = 5332389646575258965L;
-	private final KeepersUtils shelfsUtils;
+	private final KeepersUtilDelegate keepersUtilDelegate;
 	
 	@AssistedInject
 	public GameServiceAsSessionInitializerClientable(@Assisted String nodeId, 
 			Game game, 
-			PlayersKeeper playersShelf
-			, KeepersUtils shelfsUtils
+			GamePlayersKeeper playersKeeper
+			, KeepersUtilDelegate keepersUtilDelegate
 			) throws RemoteException {
-		super(nodeId, game, playersShelf);
-		this.shelfsUtils = shelfsUtils;
+		super(nodeId, game, playersKeeper);
+		this.keepersUtilDelegate = keepersUtilDelegate;
 	}
 
 	@Override
 	public void synchronizeAllNodesAndPlayersFromInitiliazer(List<NodeConnectionInfos> nodesConnectionInfos, Map<PlayerRegistrationId, Player> playersMap) throws RemoteException {
 //		System.out.println("here");
 //		List<String> crashedDuringSyncAlreadyLocallyRemoved = 
-		shelfsUtils.synchronizeNodesPlayersGameservicesLocallyAsClientable(nodesConnectionInfos, playersMap);
+		keepersUtilDelegate.synchronizeNodesPlayersGameservicesLocallyAsClientable(nodesConnectionInfos, playersMap);
 		
 		// broadcast for update crashed player will be skipping here, because we don't really need this:
 		// if any player crashs during each sync, we can hide this event until the bucket arrives to that 

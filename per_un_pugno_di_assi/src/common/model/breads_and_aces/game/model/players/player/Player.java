@@ -12,10 +12,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import breads_and_aces.utils.printer.Printer;
+import javax.inject.Inject;
 
-import com.google.inject.assistedinject.Assisted;
-import com.google.inject.assistedinject.AssistedInject;
+import breads_and_aces.main.Main;
+import breads_and_aces.utils.printer.Printer;
 
 public class Player implements Serializable, Comparable<Player> {
 
@@ -30,12 +30,13 @@ public class Player implements Serializable, Comparable<Player> {
 	private long registrationTime;
 	private boolean hasBucket;
 	
-	private final Printer printer;
+	@Inject private /*final*/ Printer printer;
 
-	@AssistedInject
-	public Player(@Assisted String name, Printer printer) {
+//	@AssistedInject
+	public Player(/*@Assisted*/ String name/*, Printer printer*/) {
 		this.name = name;
-		this.printer = printer;
+//		this.printer = printer;
+		Main.Injector.injectMembers(this);
 	}
 	
 	public String getName() {
@@ -114,7 +115,7 @@ public class Player implements Serializable, Comparable<Player> {
 	public void receiveBucket() {
 		hasBucket = true;
 		printer.println("bucket received");
-		System.out.println("bucket received"); 
+//		System.out.println("bucket received"); 
 	}
 	public void receiveBucket(String receivedFrom) {
 		hasBucket = true;
@@ -141,9 +142,9 @@ public class Player implements Serializable, Comparable<Player> {
 	/*
 	 * Register zone - start
 	 */
-	public void setRegisterPosition(long registrationTime) {
-		this.registrationTime = registrationTime;
-	}
+//	public void setRegisterPosition(long registrationTime) {
+//		this.registrationTime = registrationTime;
+//	}
 
 	@Override
 	public int compareTo(Player player) {

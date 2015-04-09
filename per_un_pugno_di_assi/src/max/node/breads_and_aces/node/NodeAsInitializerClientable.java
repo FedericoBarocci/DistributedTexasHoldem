@@ -1,6 +1,6 @@
 package breads_and_aces.node;
 
-import breads_and_aces.dummy.InputHandler;
+import breads_and_aces.dummy.GUIInputHandler;
 import breads_and_aces.game.Game;
 import breads_and_aces.utils.misc.Waiter;
 
@@ -14,7 +14,7 @@ public class NodeAsInitializerClientable extends DefaultNode {
 	@AssistedInject
 	public NodeAsInitializerClientable(@Assisted String thisNodeId,
 //			InputHandlerFactory inputHandlerFactory,
-			InputHandler inputHandler, 
+			GUIInputHandler inputHandler, 
 			Game game) {
 		super(thisNodeId, inputHandler);
 		this.game = game;

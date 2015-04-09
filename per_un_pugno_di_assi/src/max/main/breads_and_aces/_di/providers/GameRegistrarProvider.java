@@ -32,7 +32,8 @@ public class GameRegistrarProvider implements Provider<GameRegistrar> {
 		gameRegistrarStarted.passNodesInfos( ((GameRegistrarInit)instance).getRegisteredNodesConnectionInfos() );
 		instance = gameRegistrarStarted;
 		
-		Collection<Player> registeredPlayer = instance.getRegisteredPlayer().values();
+		// just for verbosity
+		Collection<Player> registeredPlayer = instance.getRegisteredPlayersMap().values();
 		printer.print("Ok: final list partecipants has: ");
 		printer.println(registeredPlayer.stream().map(Player::getName).collect(Collectors.joining(", "))
 		);

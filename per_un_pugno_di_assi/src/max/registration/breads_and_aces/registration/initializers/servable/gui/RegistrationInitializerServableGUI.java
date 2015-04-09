@@ -8,7 +8,7 @@ import com.google.inject.assistedinject.AssistedInject;
 
 import breads_and_aces._di.providers.GameRegistrarProvider;
 import breads_and_aces.game.Game;
-import breads_and_aces.game.model.players.keeper.PlayersKeeper;
+import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
 import breads_and_aces.registration.initializers.servable.AbstractRegistrationInitializerServable;
 import breads_and_aces.services.rmi.game.keeper.GameServicesKeeper;
 import breads_and_aces.services.rmi.utils.communicator.Communicator;
@@ -21,7 +21,7 @@ public class RegistrationInitializerServableGUI extends AbstractRegistrationInit
 	@AssistedInject
 	public RegistrationInitializerServableGUI(@Assisted String nodeId, 
 			GameRegistrarProvider gameRegistrarProvider, GameServicesKeeper gameServicesRegistry,
-			PlayersKeeper playersKeeper, Communicator communicator, Game game, Printer printer, AccepterPlayersGUIFactory accepterPlayersGUIFactory) {
+			RegistrarPlayersKeeper playersKeeper, Communicator communicator, Game game, Printer printer, AccepterPlayersGUIFactory accepterPlayersGUIFactory) {
 		super(nodeId, gameRegistrarProvider, gameServicesRegistry, playersKeeper, communicator, game, printer);
 		this.accepterPlayersGUIFactory = accepterPlayersGUIFactory;
 	}

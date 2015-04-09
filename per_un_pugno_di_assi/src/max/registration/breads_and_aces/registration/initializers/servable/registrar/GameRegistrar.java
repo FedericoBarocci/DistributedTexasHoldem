@@ -14,6 +14,6 @@ public interface GameRegistrar {
 	RegistrationResult registerPlayer(NodeConnectionInfos nodeConnectionInfos, String playerId);
 	List<NodeConnectionInfos> getRegisteredNodesConnectionInfos();
 //	boolean isStarted();
-	Map<PlayerRegistrationId, Player> getRegisteredPlayer();
+	Map<PlayerRegistrationId,Player> getRegisteredPlayersMap();
 	Player getFirst();
 }
