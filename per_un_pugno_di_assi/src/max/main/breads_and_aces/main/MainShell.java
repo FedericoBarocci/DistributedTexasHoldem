@@ -51,7 +51,7 @@ public class MainShell {
 //			String meId = loginResult.username;
 			
 			if (actAsServer) {
-				nodeInitializer  = nodeInitializerFactory.createAsServable(meId, addressToBind/*, null*/);
+				nodeInitializer  = nodeInitializerFactory.createAsServable(meId, addressToBind, null);
 			} else {
 				String initializingHostAddress = 
 						args[1];
