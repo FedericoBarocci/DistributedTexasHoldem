@@ -4,7 +4,7 @@ import java.rmi.RemoteException;
 
 import breads_and_aces._di.providers.GameRegistrarProvider;
 import breads_and_aces.game.Game;
-import breads_and_aces.game.model.players.keeper.PlayersKeeper;
+import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
 import breads_and_aces.game.model.players.keeper.PlayersObservable;
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.registration.initializers.servable.registrar.GameRegistrar;
@@ -26,7 +26,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 	public AbstractRegistrationInitializerServable(String nodeId, 
 			GameRegistrarProvider gameRegistrarProvider,
 			GameServicesKeeper gameServicesRegistry,
-			PlayersKeeper playersKeeper, 
+			RegistrarPlayersKeeper playersKeeper, 
 			Communicator communicator,
 			Game game,
 			Printer printer) {
@@ -78,7 +78,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		GameRegistrar gameRegistrar = gameRegistrarProvider.get();
 		ps.synchronizeAllNodesAndPlayersFromInitiliazer(
 			gameRegistrar.getRegisteredNodesConnectionInfos(),
-			gameRegistrar.getRegisteredPlayer()
+			gameRegistrar.getRegisteredPlayersMap()
 		);
 	}
 	

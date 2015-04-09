@@ -4,7 +4,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 import breads_and_aces.game.Game;
-import breads_and_aces.game.model.players.keeper.PlayersKeeper;
+import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 
 public abstract class AbstractGameService 
 	extends UnicastRemoteObject 
@@ -12,11 +12,11 @@ public abstract class AbstractGameService
 
 	protected final Game game;
 	protected final String nodeId;
-	protected final PlayersKeeper playersKeeper;
+	protected final GamePlayersKeeper playersKeeper;
 
 	public AbstractGameService(String nodeId
 			, Game game 
-			, PlayersKeeper playersKeeper
+			, GamePlayersKeeper playersKeeper
 			) throws RemoteException {
 		super();
 		this.nodeId = nodeId;

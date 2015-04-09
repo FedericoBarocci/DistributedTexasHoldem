@@ -6,7 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.swing.table.DefaultTableModel;
 
-import breads_and_aces.game.model.players.keeper.PlayersKeeper;
+import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.players.keeper.PlayersObservable;
 import breads_and_aces.utils.observatory.Observable;
 import breads_and_aces.utils.observatory.Observer;
@@ -14,12 +14,12 @@ import breads_and_aces.utils.observatory.Observer;
 class AccepterPlayerTableModel extends DefaultTableModel {
 		
 	private static final long serialVersionUID = 3138739482615283558L;
-	private final PlayersKeeper playersKeeper;
+	private final GamePlayersKeeper playersKeeper;
 	
 	private final List<Integer> n = new ArrayList<Integer>();
 
 	@Inject
-	public AccepterPlayerTableModel(PlayersKeeper playersKeeper) {
+	public AccepterPlayerTableModel(GamePlayersKeeper playersKeeper) {
 		Object[] columns = new Object[3];
 		columns[0] = "Position";
 		columns[1] = "Name";

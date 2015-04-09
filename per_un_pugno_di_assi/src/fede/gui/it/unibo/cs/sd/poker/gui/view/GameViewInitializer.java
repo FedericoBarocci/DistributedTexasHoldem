@@ -6,16 +6,16 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import breads_and_aces.game.model.players.keeper.PlayersKeeper;
+import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.players.player.Player;
 
 public class GameViewInitializer {
 	
 	private final GameView view;
-	private final PlayersKeeper playersKeeper;
+	private final GamePlayersKeeper playersKeeper;
 
 	@Inject
-	public GameViewInitializer(GameView view, PlayersKeeper playersKeeper) {
+	public GameViewInitializer(GameView view, GamePlayersKeeper playersKeeper) {
 		this.view = view;
 		this.playersKeeper = playersKeeper;
 	}

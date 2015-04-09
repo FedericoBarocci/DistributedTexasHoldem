@@ -1,6 +1,6 @@
 package breads_and_aces.node;
 
-import breads_and_aces.dummy.InputHandler;
+import breads_and_aces.node.dummy.InputHandler;
 
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;

@@ -16,6 +16,8 @@ import com.google.inject.Injector;
 
 public class Main {
 	
+	public static Injector Injector;
+
 	public static void main(String[] args) {
 		if (args.length<1) {
 			System.out.println("minimum 1 arguments: \n"
@@ -43,9 +45,9 @@ public class Main {
 			startOrRegisterGUI = null;
 			LoginResult loginResult = loginResultAtomicReference.get();
 		
-			Injector injector = Guice.createInjector(new TexasHoldemPokerModule());
+			Injector = Guice.createInjector(new TexasHoldemPokerModule());
 		
-			NodeInitializerFactory nodeInitializerFactory = injector.getInstance(NodeInitializerFactory.class);
+			NodeInitializerFactory nodeInitializerFactory = Injector.getInstance(NodeInitializerFactory.class);
 			NodeInitializer nodeInitializer = null;
 			
 			String meId = loginResult.username;

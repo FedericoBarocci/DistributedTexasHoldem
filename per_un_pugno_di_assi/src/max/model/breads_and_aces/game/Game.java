@@ -2,22 +2,22 @@ package breads_and_aces.game;
 
 import javax.inject.Inject;
 
-import breads_and_aces.game.model.players.keeper.PlayersKeeper;
+import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
 
 import com.google.inject.Singleton;
 
 @Singleton
 public class Game {
 	
-	private final PlayersKeeper playersRegistry;
+	private final RegistrarPlayersKeeper playersRegistry;
 	private boolean isStarted = false;
 	
 	@Inject
-	public Game(PlayersKeeper playersRegistry) {
+	public Game(RegistrarPlayersKeeper playersRegistry) {
 		this.playersRegistry = playersRegistry;
 	}
 	
-	public PlayersKeeper getPlayers() {
+	public RegistrarPlayersKeeper getPlayers() {
 		return playersRegistry;
 	}
 	

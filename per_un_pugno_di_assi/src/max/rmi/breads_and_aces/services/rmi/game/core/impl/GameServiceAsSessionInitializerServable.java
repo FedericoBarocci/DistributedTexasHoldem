@@ -4,7 +4,7 @@ import java.rmi.RemoteException;
 
 import breads_and_aces._di.providers.GameRegistrarProvider;
 import breads_and_aces.game.Game;
-import breads_and_aces.game.model.players.keeper.PlayersKeeper;
+import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.registration.initializers.servable.registrar.GameRegistrar;
 import breads_and_aces.registration.initializers.servable.registrar.RegistrationResult;
 import breads_and_aces.registration.model.NodeConnectionInfos;
@@ -21,7 +21,7 @@ public class GameServiceAsSessionInitializerServable
 	private final GameRegistrarProvider gameRegistrarProvider;
 
 	@AssistedInject
-	public GameServiceAsSessionInitializerServable(@Assisted String nodeId, Game game, PlayersKeeper playersKeeper, GameRegistrarProvider gameRegistrarProvider) throws RemoteException {
+	public GameServiceAsSessionInitializerServable(@Assisted String nodeId, Game game, GamePlayersKeeper playersKeeper, GameRegistrarProvider gameRegistrarProvider) throws RemoteException {
 		super(nodeId, game, playersKeeper);
 		this.gameRegistrarProvider = gameRegistrarProvider;
 	}

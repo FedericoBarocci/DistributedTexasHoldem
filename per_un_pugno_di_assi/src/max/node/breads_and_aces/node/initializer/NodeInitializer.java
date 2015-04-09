@@ -9,7 +9,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.concurrent.CountDownLatch;
 
-import breads_and_aces.game.model.players.keeper.PlayersKeeper;
+import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
 import breads_and_aces.node.Node;
 import breads_and_aces.node.NodeFactory;
 import breads_and_aces.registration.initializers.RegistrationInitializer;
@@ -38,7 +38,7 @@ public class NodeInitializer {
 			GameServiceFactory gameServiceFactory,
 			RegistrationInitializerServableFactory registrationInitializerFactory,
 			NodeFactory nodeFactory,
-			PlayersKeeper playersKeeper,
+			RegistrarPlayersKeeper playersKeeper,
 			Printer printer
 			) throws RemoteException, MalformedURLException, NotBoundException, IOException {
 		this(nodeId, addressToBind, 
@@ -56,7 +56,7 @@ public class NodeInitializer {
 			@Assisted(value="initializerHostAddressWithPort") String initializerHostAddress,
 			@Assisted(value="initializerHostPortWithPort") int initializerHostPort,
 			NodeFactory nodeFactory,
-			PlayersKeeper playersKeeper,
+			RegistrarPlayersKeeper playersKeeper,
 			Printer printer
 			, @Assisted(value="latchForClientableWithPort") CountDownLatch registrarLatch
 			) throws RemoteException, MalformedURLException, NotBoundException, IOException {
@@ -74,7 +74,7 @@ public class NodeInitializer {
 			RegistrationInitializerClientableFactory registrationInitializerConnectableFactory,
 			@Assisted(value="initializerHostAddressWithoutPort") String initializerHostAddress,
 			NodeFactory nodeFactory,
-			PlayersKeeper playersKeeper,
+			RegistrarPlayersKeeper playersKeeper,
 			Printer printer
 			) throws RemoteException, MalformedURLException, NotBoundException, IOException {
 		this(nodeId, addressToBind, 

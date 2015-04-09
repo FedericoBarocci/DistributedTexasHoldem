@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import breads_and_aces._di.providers.GameRegistrarProvider;
 import breads_and_aces.game.Game;
-import breads_and_aces.game.model.players.keeper.PlayersKeeper;
+import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
 import breads_and_aces.services.rmi.game.keeper.GameServicesKeeper;
 import breads_and_aces.services.rmi.utils.communicator.Communicator;
 import breads_and_aces.utils.misc.InputUtils;
@@ -18,7 +18,7 @@ public class RegistrationInitializerServableUsingShellInput extends AbstractRegi
 	@AssistedInject
 	public RegistrationInitializerServableUsingShellInput(@Assisted String nodeId, 
 			GameRegistrarProvider gameRegistrarProvider,
-			GameServicesKeeper gameServicesRegistry, PlayersKeeper playersRegistry,
+			GameServicesKeeper gameServicesRegistry, RegistrarPlayersKeeper playersRegistry,
 			Communicator communicator, Game game,
 			Printer printer) {
 		super(nodeId, gameRegistrarProvider, gameServicesRegistry, playersRegistry, communicator, game,

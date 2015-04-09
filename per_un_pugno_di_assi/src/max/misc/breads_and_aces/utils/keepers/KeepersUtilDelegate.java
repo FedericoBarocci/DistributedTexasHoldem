@@ -10,9 +10,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import breads_and_aces.game.model.players.keeper.PlayersKeeper;
+import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
 import breads_and_aces.game.model.players.player.Player;
-import breads_and_aces.game.model.players.player.PlayerFactory;
 import breads_and_aces.game.model.players.player.PlayerRegistrationId;
 import breads_and_aces.registration.initializers.servable.registrar.RegistrationResult;
 import breads_and_aces.registration.initializers.servable.registrar.RegistrationResult.Cause;
@@ -23,24 +22,24 @@ import breads_and_aces.services.rmi.game.utils.ServiceUtils;
 import breads_and_aces.utils.printer.Printer;
 
 @Singleton
-public class KeepersUtils {
+public class KeepersUtilDelegate {
 
-	private final PlayersKeeper playersKeeper;
+	private final RegistrarPlayersKeeper playersKeeper;
 	private final GameServicesKeeper gameServiceKeeper;
 //	private final CrashHandler crashHandler;
 	
 	private final Printer printer;
-	private final PlayerFactory playerFactory;
+//	private final PlayerFactory playerFactory;
 
 	@Inject
-	public KeepersUtils(
-			PlayersKeeper playersKeeper, 
+	public KeepersUtilDelegate(
+			RegistrarPlayersKeeper playersKeeper, 
 			GameServicesKeeper gameServiceKeeper, 
-			PlayerFactory playerFactory, 
+//			PlayerFactory playerFactory, 
 			Printer printer) {
 		this.playersKeeper = playersKeeper;
 		this.gameServiceKeeper = gameServiceKeeper;
-		this.playerFactory = playerFactory;
+//		this.playerFactory = playerFactory;
 		this.printer = printer;
 	}
 	
@@ -55,12 +54,14 @@ public class KeepersUtils {
 //		nodeConnectionInfos.setRegisterTime(now);
 		
 		PlayerRegistrationId playerRegistrationId = new PlayerRegistrationId(playerId, now);
-		Player player = playerFactory.create(playerId);
+		Player player = 
+//				playerFactory.create(playerId);
+				new Player(playerId);
 		
 		playersKeeper.addPlayer(playerRegistrationId,player);
 	}
 
-	public RegistrationResult registerNodePlayerGameServiceAsServable(NodeConnectionInfos nodeConnectionInfos, String playerId) {
+	public RegistrationResult registerNodePlayerGameServiceAsClientable(NodeConnectionInfos nodeConnectionInfos, String playerId) {
 //		List<String> crashed = new ArrayList<>(); 
 		try {
 			GameService gameService = ServiceUtils.lookup(nodeConnectionInfos.getAddress(), nodeConnectionInfos.getPort());
@@ -88,7 +89,7 @@ public class KeepersUtils {
 	 */
 	public List<String> synchronizeNodesPlayersGameservicesLocallyAsClientable(List<NodeConnectionInfos> nodesConnectionInfos, Map<PlayerRegistrationId, Player> playersMap) {
 //		nodesConnectionInfosShelf.setNodesConnectionInfos(nodesConnectionInfosMap);
-		playersKeeper.setPlayers(playersMap);
+		playersKeeper.addPlayers(playersMap);
 		
 		List<String> crashedDuringSync = new ArrayList<>();
 

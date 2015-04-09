@@ -16,7 +16,7 @@ import breads_and_aces.utils.observatory.ObservableDelegate;
 import breads_and_aces.utils.observatory.Observer;
 
 @Singleton
-public class PlayersKeeperImpl implements PlayersKeeper, PlayersObservable {
+public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKeeper, PlayersObservable {
 
 	private final ObservableDelegate<String> observableDelegate = new ObservableDelegate<String>();
 	
@@ -36,7 +36,7 @@ public class PlayersKeeperImpl implements PlayersKeeper, PlayersObservable {
 	 * @return a map which key is playerId and value is player itself - order is the same of insertion
 	 */
 	@Override
-	public NavigableMap<PlayerRegistrationId, Player> getIdsPlayersMap() {
+	public Map<PlayerRegistrationId, Player> getIdsPlayersMap() {
 		return playersMap;
 	}
 	
@@ -45,7 +45,9 @@ public class PlayersKeeperImpl implements PlayersKeeper, PlayersObservable {
 	 */
 	@Override
 	public List<Player> getPlayers() {
-		return new LinkedList<Player>( playersMap.values() );
+		final LinkedList<Player> linkedList = new LinkedList<Player>();
+		linkedList.addAll(playersMap.values());
+		return linkedList;
 	}
 	
 	@Override
@@ -54,7 +56,7 @@ public class PlayersKeeperImpl implements PlayersKeeper, PlayersObservable {
 	}
 
 	@Override
-	public void setPlayers(Map<PlayerRegistrationId, Player> players) {
+	public void addPlayers(Map<PlayerRegistrationId, Player> players) {
 		this.playersMap.putAll(players);
 		notifyObservers( players.values().stream().map(Player::getName).collect(Collectors.joining(", ")) );
 	}
@@ -83,17 +85,8 @@ public class PlayersKeeperImpl implements PlayersKeeper, PlayersObservable {
 		return first;
 	}
 	private Optional<Player> findValue(String playerId) {
-		Optional<Player> findFirst = playersMap.values().stream().filter(
-				p->{return p.getName().equals(playerId);}
-				// this below because guice don't like lambda in init phase
-				/*new Predicate<Entry<PlayerRegistrationId, Player>>() {
-					@Override
-					public boolean test(Entry<PlayerRegistrationId, Player> e) {
-						return e.getKey().equals(playerId);
-					}
-				}*/
-				).findFirst();
-		return findFirst;
+		Optional<Player> first = playersMap.values().stream().filter(p->{return p.getName().equals(playerId);}).findFirst();
+		return first;
 	}
 	
 	@Override
