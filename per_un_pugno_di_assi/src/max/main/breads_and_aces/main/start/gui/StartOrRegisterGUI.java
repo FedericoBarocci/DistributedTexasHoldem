@@ -1,4 +1,4 @@
-package breads_and_aces.main.guis;
+package breads_and_aces.main.start.gui;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -13,8 +13,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-
-import org.eclipse.wb.swing.FocusTraversalOnArray;
 
 import breads_and_aces.main.Main.LoginResult;
 

@@ -1,10 +1,10 @@
-package breads_and_aces.dummy;
+package breads_and_aces.node.inputhandler.gui;
 
 import javax.inject.Inject;
 
-import breads_and_aces.node.dummy.InputHandler;
+import breads_and_aces.node.inputhandler.InputHandler;
 
-public class GUIInputHandler implements InputHandler {
+public class InputHandlerGUI implements InputHandler {
 	
 	// TO SYSTEM
 	
@@ -12,7 +12,7 @@ public class GUIInputHandler implements InputHandler {
 	private GameViewInitializerInstancer gameViewInitializerInstancer;
 
 	@Inject
-	public GUIInputHandler(/*@Assisted String meId,*/ /*BucketHandler bucketHandler,*/ GameViewInitializerInstancer gameViewInitializerInstancer) {
+	public InputHandlerGUI(/*@Assisted String meId,*/ /*BucketHandler bucketHandler,*/ GameViewInitializerInstancer gameViewInitializerInstancer) {
 //		this.bucketHandler = bucketHandler;
 		this.gameViewInitializerInstancer = gameViewInitializerInstancer;
 	}

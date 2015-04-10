@@ -14,7 +14,7 @@ import breads_and_aces.node.Node;
 import breads_and_aces.node.NodeFactory;
 import breads_and_aces.registration.initializers.RegistrationInitializer;
 import breads_and_aces.registration.initializers.clientable.RegistrationInitializerClientableFactory;
-import breads_and_aces.registration.initializers.servable.RegistrationInitializerServableFactory;
+import breads_and_aces.registration.initializers.servable._gui.RegistrationInitializerServableGUIFactory;
 import breads_and_aces.registration.model.NodeConnectionInfos;
 import breads_and_aces.services.rmi.game.core.GameService;
 import breads_and_aces.services.rmi.game.core.impl.GameServiceFactory;
@@ -36,14 +36,14 @@ public class NodeInitializer {
 			@Assisted(value="addressToBindAsServable") String addressToBind,
 			@Assisted(value="latchForServable") CountDownLatch initializerLatch,
 			GameServiceFactory gameServiceFactory,
-			RegistrationInitializerServableFactory registrationInitializerFactory,
+			RegistrationInitializerServableGUIFactory registrationInitializerFactory,
 			NodeFactory nodeFactory,
 			RegistrarPlayersKeeper playersKeeper,
 			Printer printer
 			) throws RemoteException, MalformedURLException, NotBoundException, IOException {
 		this(nodeId, addressToBind, 
 				gameServiceFactory.createAsServable(nodeId),
-				registrationInitializerFactory.create(nodeId),
+				registrationInitializerFactory.createGUI(nodeId),
 				nodeFactory::create, printer, initializerLatch);
 	}
 	
