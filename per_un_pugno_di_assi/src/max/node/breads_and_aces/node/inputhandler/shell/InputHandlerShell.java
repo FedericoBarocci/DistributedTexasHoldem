@@ -1,22 +1,22 @@
-package breads_and_aces.dummy;
+package breads_and_aces.node.inputhandler.shell;
 
 import java.util.Scanner;
 
 import breads_and_aces.game.bucket.BucketHandler;
-import breads_and_aces.node.dummy.InputHandler;
+import breads_and_aces.node.inputhandler.InputHandler;
 import breads_and_aces.utils.misc.InputUtils;
 
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 
-public class ShellInputHandler implements InputHandler {
+public class InputHandlerShell implements InputHandler {
 	
 	private final static String END_GAME = "END";
 	private final BucketHandler bucketHandler;
 	private final String meId;
 
 	@AssistedInject
-	public ShellInputHandler(@Assisted String meId, BucketHandler bucketHandler) {
+	public InputHandlerShell(@Assisted String meId, BucketHandler bucketHandler) {
 		this.meId = meId;
 		this.bucketHandler = bucketHandler;
 	}

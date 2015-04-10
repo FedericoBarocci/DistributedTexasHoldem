@@ -8,7 +8,7 @@
  * Contributors:
  *    Google, Inc. - initial API and implementation
  *******************************************************************************/
-package org.eclipse.wb.swing;
+package breads_and_aces.main.start.gui;
 
 import java.awt.Component;
 import java.awt.Container;
