@@ -8,6 +8,7 @@ import it.unibo.cs.sd.poker.gui.view.elements.TransparentPanel;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,16 +29,12 @@ public class GameView {
 	private Map<String, PlayerGUI> playersGui = new LinkedHashMap<>();
 	
 	public JLabel lblWinners = new JLabel("", SwingConstants.CENTER);
-	
-	public CardGUI tableCard1 = new CardGUI(300, 250);
-	public CardGUI tableCard2 = new CardGUI(450, 250);
-	public CardGUI tableCard3 = new CardGUI(600, 250);
-	public CardGUI tableCard4 = new CardGUI(750, 250);
-	public CardGUI tableCard5 = new CardGUI(900, 250);
+	public List<CardGUI> tableCardsGui = new ArrayList<>();
 	
 	public GameView() {
 		super();
 		frame.setLayout(null);
+		frame.setTitle("Poker Distributed Hold'em");
 		frame.setContentPane(background);
 		frame.setBounds(0, 0, 1280, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,26 +42,28 @@ public class GameView {
 		frame.setVisible(true);
 	}
 	
+	private void initTableGui() {		
+		for (int i = 0; i < 5; i++) {
+			CardGUI c = new CardGUI(300 + 150*i, 250);
+			tableCardsGui.add(c);
+			addElementGui(c);
+		}
+	}
+	
 	public void init(List<Player> players) {
-		JPanel panel = new TransparentPanel();
-		panel.setBackground(new Color(174, 234, 255, 70));
-		panel.setBorder(new LineBorder(new Color(255, 255, 255), 1));
-		panel.setBounds(275, 225, 740, 185);
-        
-		frame.getContentPane().add(panel);
+		initElementsGUI(players);
+		initTableGui();
 		
 		lblWinners.setForeground(new Color(0, 0, 0));
 		lblWinners.setFont(new Font("SansSerif", Font.BOLD | Font.ITALIC, 16));
 		lblWinners.setBounds(400, 50, 500, 50);
 		frame.getContentPane().add(lblWinners);
 		
-		addElementGui(tableCard1);
-		addElementGui(tableCard2);
-		addElementGui(tableCard3);
-		addElementGui(tableCard4);
-		addElementGui(tableCard5);
-		
-		initElementsGUI(players);
+		JPanel panel = new TransparentPanel();
+		panel.setBackground(new Color(174, 234, 255, 70));
+		panel.setBorder(new LineBorder(new Color(255, 255, 255), 1));
+		panel.setBounds(275, 225, 740, 185);
+		frame.getContentPane().add(panel);
 	}
 	
 	/* TODO Per la costruzione della gui di welcome
@@ -94,11 +93,11 @@ public class GameView {
 			createAndAddPlayerGui(p);
 		}
 		
-		this.tableCard1.clear();
-		this.tableCard2.clear();
-		this.tableCard3.clear();
-		this.tableCard4.clear();
-		this.tableCard5.clear();
+		for (CardGUI c : tableCardsGui) {
+			removeElementGui(c);
+		}
+		
+		initTableGui();
 		
 		// TODO restore?
 //		this.resetToken();
@@ -106,6 +105,10 @@ public class GameView {
 	
 	private void addElementGui(ElementGUI element) {
 		frame.getContentPane().add(element);
+	}
+	
+	private void removeElementGui(ElementGUI element) {
+		frame.getContentPane().remove(element);
 	}
 	
 	/*private Collection<PlayerGUI> getPlayers() {
@@ -126,10 +129,7 @@ public class GameView {
 		}
 	}*/
 	
-	private void createAndAddPlayerGui(Player p) {
-//		PlayerGUI playerGui = new PlayerGUI(p, getPlayers().size() == playerIndex, (180 * playersGui.size()) + 110, 500);
-//		TODO: fix deal
-		
+	private void createAndAddPlayerGui(Player p) {		
 		PlayerGUI playerGui = new PlayerGUI(p.getName(),  
 				p.getCards().get(0), 
 				p.getCards().get(1), 
@@ -139,14 +139,6 @@ public class GameView {
 		playersGui.put(p.getName(), playerGui);
 		playerGui.draw(frame);
 		frame.getContentPane().repaint();
-		
-		System.err.println("Player: " + p.getName() + " " 
-				+ p.getCards().get(0).toString() + " "
-				+ p.getCards().get(1).toString());
-		
-		System.err.println("PlayerGUI: " + playerGui.getName() + " " 
-				+ playerGui.getCard1() + " "
-				+ playerGui.getCard2());
 	}
 	
 	private void clear() {

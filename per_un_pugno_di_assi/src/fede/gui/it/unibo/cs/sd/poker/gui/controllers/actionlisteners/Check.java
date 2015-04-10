@@ -16,7 +16,7 @@ public class Check implements ActionListener {
 //	}
 	
 	public void actionPerformed(ActionEvent e) {
-		//JOptionPane.showMessageDialog(null, "Prova");
+		JOptionPane.showMessageDialog(null, "Prova");
 //		try {
 //			if (model.getService().getToken()) {
 			

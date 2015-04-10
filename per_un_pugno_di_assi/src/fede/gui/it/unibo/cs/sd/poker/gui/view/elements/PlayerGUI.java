@@ -28,24 +28,15 @@ public class PlayerGUI {
 	private final Map<String, JButton> buttons = new HashMap<>();
 	private final JPanel box = new TransparentPanel();
 	
-	private final static int cardDefaultWidth = 54;
-	private final static int cardDefaultHeight = 81;
 	private final static int xOffset = 60;
-	
-//	@Deprecated
-//	public PlayerGUI(Player player, Integer x, Integer y) {
-//		this(player, false, x, y);
-//	}
 	
 	public PlayerGUI(String playerId, Card card0, Card card1, Integer x, Integer y) {
 		this.interactive = true;
 		this.x = x;
 		this.y = y;
 		
-		this.card1 = new CardGUI(card0, x, y, 
-				cardDefaultWidth, cardDefaultHeight);
-		this.card2 = new CardGUI(card1, x + xOffset, y, 
-				cardDefaultWidth, cardDefaultHeight );
+		this.card1 = new CardGUI(CardsUtils.INSTANCE_SMALL.getImageCard(card0), x, y);
+		this.card2 = new CardGUI(CardsUtils.INSTANCE_SMALL.getImageCard(card1), x + xOffset, y);
 		
 		this.name.setText(playerId);
 		

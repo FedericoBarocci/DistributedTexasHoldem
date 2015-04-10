@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src/fede/gui"/>
 	<classpathentry kind="src" path="src/fede/game"/>
-	<classpathentry excluding="it/unibo/cs/sd/poker/mvc/Model.java" kind="src" path="src/fede/main_test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-8-oracle"/>
 	<classpathentry excluding="it/unibo/cs/sd/poker/gui/view/controllers/actionlisteners/|it/unibo/cs/sd/poker/gui/view/controllers/|it/unibo/cs/sd/poker/rmi/" kind="src" path="src/no"/>
 	<classpathentry kind="lib" path="libs/guice/aopalliance-1.0.jar"/>

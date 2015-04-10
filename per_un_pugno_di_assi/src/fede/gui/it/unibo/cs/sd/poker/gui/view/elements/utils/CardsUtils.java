@@ -21,12 +21,12 @@ public enum CardsUtils {
 	private final String imgBack = "back.gif";
 	private final Map<Card,ImageIcon> cards = new HashMap<>();
 	private final ImageIcon backCard;
-//	private int width;
-//	private int height;
+	private int width;
+	private int height;
 	
 	private CardsUtils(int width, int height) {
-//		this.width = width;
-//		this.height = height;
+		this.width = width;
+		this.height = height;
 		backCard = new ImageIcon(imgDir + File.separatorChar + imgBack);
 		backCard.setImage( rescaleImage( backCard.getImage(), width, height) );
 	}
@@ -37,6 +37,7 @@ public enum CardsUtils {
 		
 		if (cardImage == null) {
 			cardImage = new ImageIcon(cardImgPath);
+			cardImage.setImage( rescaleImage( cardImage.getImage(), width, height) );
 			cards.put(card, cardImage );
 		}
 		
@@ -47,27 +48,25 @@ public enum CardsUtils {
 		return backCard;
 	}
 	
-	public String getCardImgPath(Card card) {
+	private String getCardImgPath(Card card) {
+		String s = new String(imgDir + File.separatorChar);
+		
 		if (card == null) {
-			return imgDir + File.separatorChar + imgBack;
+			s += imgBack;
 		}
 		else {
-			String s = new String(imgDir);
-	
-			s += File.separatorChar;
-			
-			int rank = card.getRankToInt().intValue();
+			int rank = (card.getRankToInt().intValue() + 1) % 13 + 1;
 			
 			if (rank < 10) {
 				s += "0";
 			}
 			
-			s += "" + rank;
-			s += card.getSuit().getSuitChar();
-			s += ".gif";
-	
-			return s;
+			s += "" + rank + card.getSuit().getSuitChar() + ".gif";
 		}
+		
+		//System.err.println(s);
+		
+		return s;
 	}
 	
 	public static Image rescaleImage(Image srcImg, int w, int h) {
@@ -81,9 +80,9 @@ public enum CardsUtils {
 	}
 	
 	interface CardDimensions {
-		final static int width_small = 90;
-		final static int height_small = 90;
+		final static int width_small = 54;
+		final static int height_small = 81;
 		final static int width_big = 90;
-		final static int height_big = 90;
+		final static int height_big = 140;
 	}
 }

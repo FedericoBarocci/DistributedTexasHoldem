@@ -2,6 +2,7 @@ package it.unibo.cs.sd.poker.gui.view;
 
 import it.unibo.cs.sd.poker.game.core.Deck;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,7 +26,10 @@ public class GameViewInitializer {
 		
 		//TODO pass PlayersKeeper values
 //		view.populatePlayers( Collections.emptyList() );
-		List<Player> players = playersKeeper.getPlayers();
+		List<Player> players = 
+				//playersKeeper.getPlayers();
+				new ArrayList<>();
+		players.add(new Player("Pippo"));
 		Deck deck = new Deck();
 		players.forEach(c->c.deal(deck));
 		view.init( players );
