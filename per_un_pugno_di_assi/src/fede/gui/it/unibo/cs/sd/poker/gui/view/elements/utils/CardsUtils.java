@@ -2,6 +2,10 @@ package it.unibo.cs.sd.poker.gui.view.elements.utils;
 
 import it.unibo.cs.sd.poker.game.core.Card;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,14 +21,14 @@ public enum CardsUtils {
 	private final String imgBack = "back.gif";
 	private final Map<Card,ImageIcon> cards = new HashMap<>();
 	private final ImageIcon backCard;
-	private int w;
-	private int h;
+//	private int width;
+//	private int height;
 	
-	private CardsUtils(int w, int h) {
-		this.w = w;
-		this.h = h;
+	private CardsUtils(int width, int height) {
+//		this.width = width;
+//		this.height = height;
 		backCard = new ImageIcon(imgDir + File.separatorChar + imgBack);
-		backCard.setImage( rescaleImage( backCard.getImage(), w, h) );
+		backCard.setImage( rescaleImage( backCard.getImage(), width, height) );
 	}
 
 	public ImageIcon getImageCard(Card card) {
@@ -64,6 +68,16 @@ public enum CardsUtils {
 	
 			return s;
 		}
+	}
+	
+	public static Image rescaleImage(Image srcImg, int w, int h) {
+	    BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+	    Graphics2D g2 = resizedImg.createGraphics();
+	    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+	    g2.drawImage(srcImg, 0, 0, w, h, null);
+	    g2.dispose();
+	    
+	    return resizedImg;
 	}
 	
 	interface CardDimensions {

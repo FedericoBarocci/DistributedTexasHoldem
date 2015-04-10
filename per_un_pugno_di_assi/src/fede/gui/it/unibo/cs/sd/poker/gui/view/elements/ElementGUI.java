@@ -1,9 +1,6 @@
 package it.unibo.cs.sd.poker.gui.view.elements;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
+import it.unibo.cs.sd.poker.gui.view.elements.utils.CardsUtils;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -43,8 +40,8 @@ public class ElementGUI extends JLabel {
 		/* Metodo 1 */
 //		getIcon().setImage( rescaleImage( getIcon().getImage(), w, h) );
 		// we passed an ImageIcon
-		ImageIcon i = (ImageIcon) getIcon(); 
-		i.setImage( rescaleImage( i.getImage(), w, h) );
+		ImageIcon i = (ImageIcon) getIcon();
+		i.setImage( CardsUtils.rescaleImage( i.getImage(), w, h) );
 		
 		/* Metodo 2 */
 //		this.icon = new ImageIcon(this.icon.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH));
@@ -58,7 +55,7 @@ public class ElementGUI extends JLabel {
 		return getIcon().getIconHeight();
 	}*/
 	
-	private Image rescaleImage(Image srcImg, int w, int h) {
+	/*private Image rescaleImage(Image srcImg, int w, int h) {
 	    BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 	    Graphics2D g2 = resizedImg.createGraphics();
 	    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
@@ -66,5 +63,5 @@ public class ElementGUI extends JLabel {
 	    g2.dispose();
 	    
 	    return resizedImg;
-	}
+	}*/
 }
