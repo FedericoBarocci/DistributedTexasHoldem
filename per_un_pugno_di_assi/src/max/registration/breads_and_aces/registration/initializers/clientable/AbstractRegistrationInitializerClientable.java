@@ -6,7 +6,6 @@ import java.rmi.RemoteException;
 
 import breads_and_aces.game.model.players.keeper.PlayersObservable;
 import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
-import breads_and_aces.registration.initializers.clientable.observer.NewPlayersObserverAsClientable;
 import breads_and_aces.registration.initializers.servable.registrar.RegistrationResult;
 import breads_and_aces.registration.model.NodeConnectionInfos;
 import breads_and_aces.services.rmi.game.base._init.PlayersRegistrar;
@@ -20,22 +19,25 @@ public abstract class AbstractRegistrationInitializerClientable implements Regis
 	private final String initializingHostAddress;
 	private final int initializingHostPort;
 	private final RegistrarPlayersKeeper playersKeeper;
-//	private final Printer printer;
+//	private final CountDownLatch latch;
 
 	@AssistedInject
-	public AbstractRegistrationInitializerClientable(@Assisted String initializingHostAddress, @Assisted int initializingHostPort, RegistrarPlayersKeeper playersRegistry) {
+	public AbstractRegistrationInitializerClientable(
+			@Assisted String initializingHostAddress, 
+			@Assisted int initializingHostPort, 
+			RegistrarPlayersKeeper playersRegistry
+//			, CountDownLatch latch
+			) {
 		this.initializingHostAddress = initializingHostAddress;
 		this.initializingHostPort = initializingHostPort;
 		this.playersKeeper = playersRegistry;
-//		this.printer = printer;
+//		this.latch = latch;
 		((PlayersObservable)playersKeeper).addObserver( new NewPlayersObserverAsClientable() );
 	}
 	
 	@Override
-	public void initialize(NodeConnectionInfos nodeConnectionInfo, String playerId) {
-//		((PlayersObservable) playersRegistry).addObserver( new NewPlayersObserverAsClientable( ) );
-//		printer.print("Starting as client: ");
-		registerNodeInfosPlayerIdThenDo(nodeConnectionInfo, playerId, initializingHostAddress, initializingHostPort);
+	public void initialize(NodeConnectionInfos nodeConnectionInfo, String playerId/*, CountDownLatch latch*/) {
+		init(nodeConnectionInfo, playerId);
 	}
 	
 	private void registerNodeInfosPlayerIdThenDo(NodeConnectionInfos nodeConnectionInfo, String playerId, String initializingHostAddress, int initializingHostPort) {
@@ -59,11 +61,17 @@ public abstract class AbstractRegistrationInitializerClientable implements Regis
 		}
 	}
 	
-	protected abstract void onError(String message)/* {
-		printer.println(message);
-		System.exit(0);
-	}*/;
+//	@Override
+//	public void goFurther() {
+//		if (latch!=null)
+//			latch.countDown();
+//	}
 	
+	abstract protected void onError(String message);
 	abstract protected void onAccepted(RegistrationResult registrationResult);
 	abstract protected void onRejected(RegistrationResult registrationResult);
+
+	protected void init(NodeConnectionInfos nodeConnectionInfo, String playerId) {
+		registerNodeInfosPlayerIdThenDo(nodeConnectionInfo, playerId, initializingHostAddress, initializingHostPort);
+	}
 }

@@ -2,10 +2,10 @@ package breads_and_aces.registration.initializers.servable;
 
 import java.rmi.RemoteException;
 
-import breads_and_aces._di.providers.GameRegistrarProvider;
+import breads_and_aces._di.providers.registration.initializers.servable.registrar.GameRegistrarProvider;
 import breads_and_aces.game.Game;
-import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
 import breads_and_aces.game.model.players.keeper.PlayersObservable;
+import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.registration.initializers.servable.registrar.GameRegistrar;
 import breads_and_aces.registration.model.NodeConnectionInfos;
@@ -22,6 +22,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 	protected final Game game;
 	protected final Printer printer;
 	private final String meId;
+//	private final CountDownLatch latch;
 	
 	public AbstractRegistrationInitializerServable(String nodeId, 
 			GameRegistrarProvider gameRegistrarProvider,
@@ -29,17 +30,20 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 			RegistrarPlayersKeeper playersKeeper, 
 			Communicator communicator,
 			Game game,
-			Printer printer) {
+//			CountDownLatch latch,
+			Printer printer
+			) {
 		this.gameRegistrarProvider = gameRegistrarProvider;
 		this.communicator = communicator;
 		this.game = game;
 		this.meId = nodeId;
 		this.printer = printer;
+//		this.latch = latch;
 		((PlayersObservable)playersKeeper).addObserver( new NewPlayersObserverAsServable( nodeId) );
 	}
 
 	@Override
-	public void initialize(NodeConnectionInfos thisNodeConnectionInfo, String playerId) {
+	public void initialize(NodeConnectionInfos thisNodeConnectionInfo, String playerId/*, CountDownLatch latch*/) {
 		printer.println("Acting as initializer: waiting for players");
 
 		registerMyPlayer(thisNodeConnectionInfo, playerId);
@@ -53,9 +57,10 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		closeRegistrations();
 		updateAllNodesForPartecipants();
 		startGame();
+//		if (latch!=null) 
+//			latch.countDown();
 	}
 	private void registerMyPlayer(NodeConnectionInfos thisNodeConnectionInfo, String playerId) {
-//		this.this.meId = playerId;
 		// add itself
 		printer.print("Adding myself as player: ");
 		gameRegistrarProvider.get().registerPlayer(thisNodeConnectionInfo, playerId);

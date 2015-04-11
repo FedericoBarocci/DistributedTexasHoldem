@@ -1,7 +1,8 @@
-package breads_and_aces._di.providers;
+package breads_and_aces._di.providers.node.inputhandler.shell;
 
 import javax.inject.Inject;
 
+import breads_and_aces._di.providers.node.inputhandler.InputHandlerProvider;
 import breads_and_aces.node.inputhandler.InputHandler;
 import breads_and_aces.node.inputhandler.shell.InputHandlerShell;
 import breads_and_aces.node.inputhandler.shell.InputHandlerShellFactory;

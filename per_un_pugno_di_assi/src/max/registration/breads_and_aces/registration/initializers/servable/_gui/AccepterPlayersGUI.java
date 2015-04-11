@@ -36,8 +36,7 @@ public class AccepterPlayersGUI extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(this.contentPane);
 		contentPane.setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.LABEL_COMPONENT_GAP_COLSPEC,
-				ColumnSpec.decode("436px:grow"),},
+				ColumnSpec.decode("center:425px:grow"),},
 			new RowSpec[] {
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
@@ -46,20 +45,22 @@ public class AccepterPlayersGUI extends JFrame {
 				RowSpec.decode("27px"),}));
 		
 		JLabel labelTitle = new JLabel("Subscribing players:");
-		contentPane.add(labelTitle, "2, 2, center, top");
+		contentPane.add(labelTitle, "1, 2, center, top");
 		
 		table = new JTable();
 		table.setModel(dataModel);
 		
 		JScrollPane jScrollPane = new JScrollPane(table);
-		contentPane.add(jScrollPane, "2, 4, fill, fill");
+		contentPane.add(jScrollPane, "1, 4, center, fill");
 		
 		JButton buttonStart = new JButton("Close Registration And Start Game");
-		contentPane.add(buttonStart, "2, 5, fill, bottom");
+		contentPane.add(buttonStart, "1, 5, center, bottom");
 		
 		buttonStart.addActionListener(l->{
 			startLatch.countDown();
-			AccepterPlayersGUI.this.dispose();
+			AccepterPlayersGUI accepterPlayersGUI = AccepterPlayersGUI.this;
+			accepterPlayersGUI.dispose();
+			accepterPlayersGUI = null;
 		});
 	}
 }

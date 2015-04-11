@@ -54,26 +54,27 @@ public class Main {
 			
 			if (loginResult.asServable) {
 				// waiter gui for players
-				CountDownLatch initializerLatch = new CountDownLatch(1);
-				nodeInitializer = nodeInitializerFactory.createAsServable(meId, addressToBind, initializerLatch
+//				CountDownLatch initializerLatch = new CountDownLatch(1);
+				nodeInitializer = nodeInitializerFactory.createAsServable(meId, addressToBind
 						);
 				/*EventQueue.invokeLater(()->{
 				});*/
-				initializerLatch.await();
+//				initializerLatch.await();
 			} else {
 				String initializingHostAddress = loginResult.serverHost;
-				CountDownLatch registrarLatch = new CountDownLatch(1);
+//				CountDownLatch registrarLatch = new CountDownLatch(1);
 				nodeInitializer  = nodeInitializerFactory.createAsClientableWithInitializerPort(
 						meId, 
 						addressToBind, 
 						initializingHostAddress, 
-						Integer.parseInt(loginResult.serverPort),
-						registrarLatch);
+						Integer.parseInt(loginResult.serverPort)
+//						,registrarLatch
+						);
 				// waiter gui for confirmed registration
 				
 				/*EventQueue.invokeLater(()->{
 				});*/
-				registrarLatch.await();
+//				registrarLatch.await();
 			}
 			Node node = nodeInitializer.get();
 			

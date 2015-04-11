@@ -6,7 +6,7 @@ import java.util.concurrent.CountDownLatch;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 
-import breads_and_aces._di.providers.GameRegistrarProvider;
+import breads_and_aces._di.providers.registration.initializers.servable.registrar.GameRegistrarProvider;
 import breads_and_aces.game.Game;
 import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
 import breads_and_aces.registration.initializers.servable.AbstractRegistrationInitializerServable;
@@ -21,8 +21,10 @@ public class RegistrationInitializerServableGUI extends AbstractRegistrationInit
 	@AssistedInject
 	public RegistrationInitializerServableGUI(@Assisted String nodeId, 
 			GameRegistrarProvider gameRegistrarProvider, GameServicesKeeper gameServicesRegistry,
-			RegistrarPlayersKeeper playersKeeper, Communicator communicator, Game game, Printer printer, AccepterPlayersGUIFactory accepterPlayersGUIFactory) {
-		super(nodeId, gameRegistrarProvider, gameServicesRegistry, playersKeeper, communicator, game, printer);
+			RegistrarPlayersKeeper playersKeeper, Communicator communicator, Game game, Printer printer,
+//			CountDownLatch latch, 
+			AccepterPlayersGUIFactory accepterPlayersGUIFactory) {
+		super(nodeId, gameRegistrarProvider, gameServicesRegistry, playersKeeper, communicator, game,  printer);
 		this.accepterPlayersGUIFactory = accepterPlayersGUIFactory;
 	}
 
@@ -31,10 +33,10 @@ public class RegistrationInitializerServableGUI extends AbstractRegistrationInit
 		CountDownLatch startLatch = new CountDownLatch(1);
 //		accepterPlayersGUIFactory.create(startLatch);
 		EventQueue.invokeLater(()->{
-			AccepterPlayersGUI frame = 
+//			AccepterPlayersGUI frame = 
 //					new AccepterPlayersGUI(startLatch);
-					accepterPlayersGUIFactory.create(startLatch);
-			frame.setVisible(true);
+					accepterPlayersGUIFactory.create(startLatch).setVisible(true);;
+//			frame.setVisible(true);
 		});
 		try {
 			startLatch.await();

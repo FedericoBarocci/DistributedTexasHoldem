@@ -1,6 +1,7 @@
-package breads_and_aces.registration.initializers.clientable;
+package breads_and_aces.registration.initializers.clientable._shell;
 
 import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
+import breads_and_aces.registration.initializers.clientable.AbstractRegistrationInitializerClientable;
 import breads_and_aces.registration.initializers.servable.registrar.RegistrationResult;
 import breads_and_aces.registration.model.NodeConnectionInfos;
 import breads_and_aces.utils.printer.Printer;
@@ -23,10 +24,13 @@ public class RegistrationInitializerClientableShell extends AbstractRegistration
 	}
 	
 	@Override
-	public void initialize(NodeConnectionInfos nodeConnectionInfo, String playerId) {
+	public void initialize(NodeConnectionInfos nodeConnectionInfo, String playerId/*, CountDownLatch latch*/) {
 //		((PlayersObservable) playersRegistry).addObserver( new NewPlayersObserverAsClientable( ) );
 		printer.print("Starting as client: ");
-		super.initialize(nodeConnectionInfo, playerId);
+		super.init(nodeConnectionInfo, playerId);
+//		if (latch!=null)
+//			latch.countDown();
+//		goFurther();
 	}
 	
 	@Override
@@ -44,5 +48,8 @@ public class RegistrationInitializerClientableShell extends AbstractRegistration
 	protected void onRejected(RegistrationResult registrationResult) {
 		printer.println("initializer rejected my registration as new player, because: "+registrationResult.getCause().name().toLowerCase().replace("_", " "));
 	}
+
+	@Override
+	public void goFurther() {}
 
 }

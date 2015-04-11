@@ -1,4 +1,4 @@
-package breads_and_aces.registration.initializers.clientable.observer;
+package breads_and_aces.registration.initializers.clientable;
 
 import breads_and_aces.utils.observatory.Observable;
 import breads_and_aces.utils.observatory.Observer;

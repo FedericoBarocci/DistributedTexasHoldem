@@ -6,14 +6,11 @@ import breads_and_aces.node.inputhandler.InputHandler;
 
 public class InputHandlerGUI implements InputHandler {
 	
-	// TO SYSTEM
 	
-//	private final BucketHandler bucketHandler;
 	private GameViewInitializerInstancer gameViewInitializerInstancer;
 
 	@Inject
-	public InputHandlerGUI(/*@Assisted String meId,*/ /*BucketHandler bucketHandler,*/ GameViewInitializerInstancer gameViewInitializerInstancer) {
-//		this.bucketHandler = bucketHandler;
+	public InputHandlerGUI(GameViewInitializerInstancer gameViewInitializerInstancer) {
 		this.gameViewInitializerInstancer = gameViewInitializerInstancer;
 	}
 

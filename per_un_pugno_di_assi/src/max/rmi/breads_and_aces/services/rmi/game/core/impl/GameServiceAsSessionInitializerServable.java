@@ -2,7 +2,7 @@ package breads_and_aces.services.rmi.game.core.impl;
 
 import java.rmi.RemoteException;
 
-import breads_and_aces._di.providers.GameRegistrarProvider;
+import breads_and_aces._di.providers.registration.initializers.servable.registrar.GameRegistrarProvider;
 import breads_and_aces.game.Game;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.registration.initializers.servable.registrar.GameRegistrar;

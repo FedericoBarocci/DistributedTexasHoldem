@@ -51,14 +51,14 @@ public class MainShell {
 //			String meId = loginResult.username;
 			
 			if (actAsServer) {
-				nodeInitializer  = nodeInitializerFactory.createAsServable(meId, addressToBind, null);
+				nodeInitializer  = nodeInitializerFactory.createAsServable(meId, addressToBind);
 			} else {
 				String initializingHostAddress = 
 						args[1];
 //						loginResult.serverHost;
 				if (args.length==3) {
 					int initializingHostPort = Integer.parseInt(args[2]);
-					nodeInitializer  = nodeInitializerFactory.createAsClientableWithInitializerPort(meId, addressToBind, initializingHostAddress, initializingHostPort, null);
+					nodeInitializer  = nodeInitializerFactory.createAsClientableWithInitializerPort(meId, addressToBind, initializingHostAddress, initializingHostPort);
 				} else
 					nodeInitializer  = nodeInitializerFactory.createAsClientable(meId, addressToBind, initializingHostAddress);
 			}

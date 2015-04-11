@@ -1,4 +1,4 @@
-package breads_and_aces._di.providers;
+package breads_and_aces._di.providers.registration.initializers.servable.registrar;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
