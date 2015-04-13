@@ -3,6 +3,7 @@ package it.unibo.cs.sd.poker.gui.view;
 import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.Bet;
 import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.Check;
 import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.Fold;
+import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.betButton;
 import it.unibo.cs.sd.poker.gui.view.elements.BackgroundGUI;
 import it.unibo.cs.sd.poker.gui.view.elements.CardGUI;
 import it.unibo.cs.sd.poker.gui.view.elements.ElementGUI;
@@ -11,6 +12,7 @@ import it.unibo.cs.sd.poker.gui.view.elements.TransparentPanel;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -44,7 +47,8 @@ public class GameView {
 	public JLabel lblClientPlayerName = new JLabel("", SwingConstants.CENTER);
 	public JLabel lblClientPlayerScore = new JLabel("");
 	public JLabel lblClientPlayerPot = new JLabel("");
-	public JLabel lblBet = new JLabel("");
+	public JLabel lblBet = new JLabel("", SwingConstants.CENTER);
+	public JLabel lblPot = new JLabel("", SwingConstants.CENTER);
 	
 	public GameView() {
 		super();
@@ -89,7 +93,7 @@ public class GameView {
 		frame.getContentPane().add(lblWinners);
 	}
 	
-	private void initActionsGui(String clientPlayer, int chips, int score /*, List<Card> cards*/) {
+	private void initActionsGui(String clientPlayer, int coins, int score /*, List<Card> cards*/) {
 		lblClientPlayerName.setBounds(0, 130, 180, 50);
 		lblClientPlayerName.setForeground(new Color(0, 0, 0));
 		lblClientPlayerName.setFont(new Font("SansSerif", Font.BOLD, 14));
@@ -99,7 +103,7 @@ public class GameView {
 		lblClientPlayerPot.setBounds(10, 530, 180, 50);
 		lblClientPlayerPot.setForeground(new Color(0, 0, 0));
 		lblClientPlayerPot.setFont(new Font("SansSerif", Font.BOLD, 14));
-		lblClientPlayerPot.setText("Coins: "+ chips);
+		lblClientPlayerPot.setText("Coins: "+ coins);
 		frame.getContentPane().add(lblClientPlayerPot);
 		
 		lblClientPlayerScore.setBounds(10, 550, 180, 50);
@@ -108,16 +112,28 @@ public class GameView {
 		lblClientPlayerScore.setText("Score: " + score);
 		frame.getContentPane().add(lblClientPlayerScore);
 		
-		lblBet.setBounds(80, 340, 180, 50);
+		lblBet.setBounds(60, 340, 60, 50);
 		lblBet.setForeground(new Color(0, 0, 0));
 		lblBet.setFont(new Font("SansSerif", Font.BOLD, 25));
 		lblBet.setText("0");
 		frame.getContentPane().add(lblBet);
 		
+		lblPot.setBounds(60, 600, 60, 50);
+		lblPot.setForeground(new Color(0, 0, 0));
+		lblPot.setFont(new Font("SansSerif", Font.BOLD, 18));
+		lblPot.setText("Pot: 0");
+		frame.getContentPane().add(lblPot);
+		
 		ElementGUI up = new ElementGUI(new ImageIcon("elements" + File.separatorChar + "up.png"), 55, 290, 70, 70);
 		ElementGUI down = new ElementGUI(new ImageIcon("elements" + File.separatorChar + "down.png"), 55, 370, 70, 70);
+		up.setName("UP");
+		down.setName("DOWN");
 		frame.getContentPane().add(up);
 		frame.getContentPane().add(down);
+		
+		MouseListener betClick = new betButton(lblBet, lblClientPlayerPot, coins);
+		up.addMouseListener( betClick );
+		down.addMouseListener( betClick );
 		
 		for (String	s: new String[]{"Check", "Fold", "Bet"}) {
 			buttons.put(s, new JButton(s));
