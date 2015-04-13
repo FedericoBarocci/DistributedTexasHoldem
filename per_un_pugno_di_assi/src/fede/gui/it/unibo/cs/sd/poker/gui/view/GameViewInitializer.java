@@ -29,14 +29,14 @@ public class GameViewInitializer {
 		List<Player> players = 
 				//playersKeeper.getPlayers();
 				new ArrayList<>();
-		players.add(new Player("Pippo"));
-		players.add(new Player("Ciccio"));
-		players.add(new Player("3"));
-		players.add(new Player("4"));
-		players.add(new Player("5"));
-		players.add(new Player("6"));
-		players.add(new Player("7"));
-		players.add(new Player("7bis"));
+		players.add(new Player("Anna"));
+		players.add(new Player("Bob"));
+		players.add(new Player("Carl"));
+		players.add(new Player("David"));
+		players.add(new Player("Erik"));
+		players.add(new Player("Fausto"));
+		players.add(new Player("Gino"));
+		players.add(new Player("Helen"));
 		Deck deck = new Deck();
 		players.forEach(c->c.deal(deck));
 		view.init( players );
