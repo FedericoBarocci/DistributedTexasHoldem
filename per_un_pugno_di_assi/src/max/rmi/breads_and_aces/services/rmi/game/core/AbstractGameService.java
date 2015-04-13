@@ -36,5 +36,4 @@ public abstract class AbstractGameService
 	public void receiveBucket() throws RemoteException {
 		playersKeeper.getPlayer(nodeId).receiveBucket();
 	}
-	
 }

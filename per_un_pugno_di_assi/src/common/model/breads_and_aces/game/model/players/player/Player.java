@@ -2,7 +2,6 @@ package breads_and_aces.game.model.players.player;
 
 import it.unibo.cs.sd.poker.game.core.Action;
 import it.unibo.cs.sd.poker.game.core.Card;
-import it.unibo.cs.sd.poker.game.core.Deck;
 import it.unibo.cs.sd.poker.game.core.MaxReachedException;
 import it.unibo.cs.sd.poker.game.core.PositiveInteger;
 import it.unibo.cs.sd.poker.game.core.Ranking;
@@ -14,6 +13,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import breads_and_aces.game.model.utils.Pair;
 import breads_and_aces.main.Main;
 import breads_and_aces.utils.printer.Printer;
 
@@ -21,21 +21,20 @@ public class Player implements Serializable, Comparable<Player> {
 
 	private static final long serialVersionUID = -7618547420110997571L;
 	private final String name;
+	private final long registrationTime;
 	
 	private final List<Card> cards = new ArrayList<Card>();
 	private final Ranking rank = new Ranking();
 	private final PositiveInteger chips = new PositiveInteger();
 	private Action action = Action.NONE;
 	
-	private long registrationTime;
 	private boolean hasBucket;
 	
-	@Inject private /*final*/ Printer printer;
+	@Inject private Printer printer;
 
-//	@AssistedInject
-	public Player(/*@Assisted*/ String name/*, Printer printer*/) {
+	public Player(String name, long registrationTime/*, Printer printer*/) {
 		this.name = name;
-//		this.printer = printer;
+		this.registrationTime = registrationTime/*, Printer printer*/;
 		Main.Injector.injectMembers(this);
 	}
 	
@@ -46,10 +45,10 @@ public class Player implements Serializable, Comparable<Player> {
 	/*
 	 * Game zone - start
 	 */
-	public void deal(Deck deck) {
+	public void deal(Pair<Card> cards2) {
 		cards.clear();
-		cards.add(deck.pop());
-		cards.add(deck.pop());
+		cards.add( cards2.getFirst() );
+		cards.add( cards2.getSecond() );
 	}
 
 	public PositiveInteger getChip() {

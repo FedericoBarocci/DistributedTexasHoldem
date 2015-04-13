@@ -56,7 +56,7 @@ public class KeepersUtilDelegate {
 		PlayerRegistrationId playerRegistrationId = new PlayerRegistrationId(playerId, now);
 		Player player = 
 //				playerFactory.create(playerId);
-				new Player(playerId);
+				new Player(playerId, now);
 		
 		playersKeeper.addPlayer(playerRegistrationId,player);
 	}

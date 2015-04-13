@@ -16,7 +16,6 @@ public class GameTexasHoldem /*implements Serializable*/ {
 	
 	public GameTexasHoldem() {
 		this.deck = new Deck();
-		
 		newPot();
 	}
 	

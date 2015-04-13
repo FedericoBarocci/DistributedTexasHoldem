@@ -1,11 +1,10 @@
 package it.unibo.cs.sd.poker.game.core;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Deck implements Serializable {
+public class Deck {
 	
 	private static final long serialVersionUID = 2463644121163649891L;
 

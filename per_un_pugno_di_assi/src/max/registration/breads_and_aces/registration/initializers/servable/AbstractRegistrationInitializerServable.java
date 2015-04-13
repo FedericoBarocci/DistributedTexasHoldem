@@ -1,5 +1,8 @@
 package breads_and_aces.registration.initializers.servable;
 
+import it.unibo.cs.sd.poker.game.core.Card;
+import it.unibo.cs.sd.poker.game.core.Deck;
+
 import java.rmi.RemoteException;
 
 import breads_and_aces._di.providers.registration.initializers.servable.registrar.GameRegistrarProvider;
@@ -7,6 +10,7 @@ import breads_and_aces.game.Game;
 import breads_and_aces.game.model.players.keeper.PlayersObservable;
 import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
 import breads_and_aces.game.model.players.player.Player;
+import breads_and_aces.game.model.utils.Pair;
 import breads_and_aces.registration.initializers.servable.registrar.GameRegistrar;
 import breads_and_aces.registration.model.NodeConnectionInfos;
 import breads_and_aces.services.rmi.game.base._init.PlayersSynchronizar;
@@ -55,11 +59,13 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		// here the thread is unlocked
 		// after this line gameRegistrarStater will be referenced to GameRegistrarStarted
 		closeRegistrations();
+		giveCards();
 		updateAllNodesForPartecipants();
 		startGame();
 //		if (latch!=null) 
 //			latch.countDown();
 	}
+
 	private void registerMyPlayer(NodeConnectionInfos thisNodeConnectionInfo, String playerId) {
 		// add itself
 		printer.print("Adding myself as player: ");
@@ -70,7 +76,21 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 	private void closeRegistrations() {
 		gameRegistrarProvider.changeRegistrar();
 	}
-
+	private void giveCards() {
+		Deck deck = new Deck();
+//		Set<Card> tableCardsToSend = new LinkedHashSet<>();
+		for (int i=0; i<5; i++) {
+//			tableCardsToSend.add( deck.pop() );
+			game.getTable().addCards( deck.pop() );
+		}
+		gameRegistrarProvider.get().getRegisteredPlayersMap().values().forEach(c->{
+			Pair<Card> cards = new Pair<>(deck.pop(), deck.pop());
+//			cards.addFirst(deck.pop());
+//			cards.addSecond(deck.pop());
+			c.deal( cards );
+		});
+		
+	}
 	protected void updateAllNodesForPartecipants() {
 //		printer.print("Ok: final list partecipants has: ");
 //		printer.println(playersKeeper.getPlayers().stream().map(Player::getId).collect(Collectors.joining(", "))
@@ -83,7 +103,8 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		GameRegistrar gameRegistrar = gameRegistrarProvider.get();
 		ps.synchronizeAllNodesAndPlayersFromInitiliazer(
 			gameRegistrar.getRegisteredNodesConnectionInfos(),
-			gameRegistrar.getRegisteredPlayersMap()
+			gameRegistrar.getRegisteredPlayersMap(),
+			game.getTable().getCards()
 		);
 	}
 	
