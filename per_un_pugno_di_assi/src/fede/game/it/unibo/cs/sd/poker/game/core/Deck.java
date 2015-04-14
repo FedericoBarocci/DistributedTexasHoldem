@@ -6,8 +6,6 @@ import java.util.Random;
 
 public class Deck {
 	
-	private static final long serialVersionUID = 2463644121163649891L;
-
 	private final List<Card> cards = new ArrayList<Card>();
 	
 	private final Random random = new Random();

@@ -1,5 +1,6 @@
 package it.unibo.cs.sd.poker.gui.view;
 
+import it.unibo.cs.sd.poker.game.core.Card;
 import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.Bet;
 import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.Check;
 import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.Fold;
@@ -20,7 +21,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -67,13 +67,14 @@ public class GameView {
 		frame.getContentPane().add(lblTitle);
 	}
 	
-	public void init(List<Player> players) {
+	/*public void init(List<Player> players) {
 		initElementsGUI(players);
 		initTableGui();
-		initActionsGui("Player Name", 200, 0); ///*, players.get(0).getCards()*/);
-	}
+		initActionsGui("Player Name", 200, 0);
+	}*/
 	
-	private void initTableGui() {		
+	private void initTableGui(List<Card> tableCards) {
+		// TODO use tableCards from model
 		for (int i = 0; i < 5; i++) {
 			CardGUI c = new CardGUI(375 + 150*i, 52);
 			tableCardsGui.add(c);
@@ -93,7 +94,7 @@ public class GameView {
 		frame.getContentPane().add(lblWinners);
 	}
 	
-	private void initActionsGui(String clientPlayer, int coins, int score /*, List<Card> cards*/) {
+	public void initActionsGui(String clientPlayer, int coins, int score) {
 		ElementGUI leftUI = new ElementGUI(new ImageIcon("elements" + File.separatorChar + "left.png"), 0, 0, 180, 670);
 		frame.getContentPane().add(leftUI);
 		
@@ -196,20 +197,32 @@ public class GameView {
 //		return this.usernameField.getText();
 //	}
 	
-	private void initElementsGUI(List<Player> players) {
+	public void initPlayers(List<Player> players) {
+		for (Player p : players) {
+			createAndAddPlayerGui(p);
+		}
+	}
+	public void initTableCards(List<Card> tableCards) {
+		for (CardGUI c : tableCardsGui) {
+			removeElementGui(c);
+		}		
+		initTableGui(tableCards);
+	}
+	
+	// old
+	/*private void initElementsGUI(List<Player> players) {
 		for (Player p : players) {
 			createAndAddPlayerGui(p);
 		}
 		
 		for (CardGUI c : tableCardsGui) {
 			removeElementGui(c);
-		}
-		
+		}		
 		initTableGui();
 		
 		// TODO restore?
 //		this.resetToken();
-	}
+	}*/
 	
 	private void addElementGui(ElementGUI element) {
 		frame.getContentPane().add(element);

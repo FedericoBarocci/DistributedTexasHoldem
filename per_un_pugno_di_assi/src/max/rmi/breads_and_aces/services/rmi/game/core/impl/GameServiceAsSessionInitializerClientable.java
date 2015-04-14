@@ -5,7 +5,6 @@ import it.unibo.cs.sd.poker.game.core.Card;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
 
 import breads_and_aces.game.Game;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
