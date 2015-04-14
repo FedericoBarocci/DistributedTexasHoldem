@@ -13,19 +13,19 @@ public class betButton implements MouseListener {
 
 	private JLabel lblBet;
 	private JLabel lblScore;
-	private Integer max;
+	private Integer coins;
 	
-	public betButton(JLabel lblBet, JLabel lblScore, Integer max) {
+	public betButton(JLabel lblBet, JLabel lblScore, Integer coins) {
 		// TODO Auto-generated constructor stub
 		this.lblBet = lblBet;
 		this.lblScore = lblScore;
-		this.max = max;
+		this.coins = coins;
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		PositiveInteger i = new PositiveInteger(Integer.parseInt(lblBet.getText()), max);
+		PositiveInteger i = new PositiveInteger(Integer.parseInt(lblBet.getText()), coins);
 		
 		switch (((JLabel) e.getSource()).getName()) {
 			case "UP" :
@@ -46,7 +46,7 @@ public class betButton implements MouseListener {
 		}
 		
 		lblBet.setText("" + i.getIntValue());
-		int score = max - i.getIntValue();
+		int score = coins - i.getIntValue();
 		lblScore.setText("Coins: " + score);
 	}
 

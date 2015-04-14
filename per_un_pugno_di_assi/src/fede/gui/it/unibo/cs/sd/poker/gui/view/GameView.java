@@ -94,6 +94,9 @@ public class GameView {
 	}
 	
 	private void initActionsGui(String clientPlayer, int coins, int score /*, List<Card> cards*/) {
+		ElementGUI leftUI = new ElementGUI(new ImageIcon("elements" + File.separatorChar + "left.png"), 0, 0, 180, 670);
+		frame.getContentPane().add(leftUI);
+		
 		lblClientPlayerName.setBounds(0, 130, 180, 50);
 		lblClientPlayerName.setForeground(new Color(0, 0, 0));
 		lblClientPlayerName.setFont(new Font("SansSerif", Font.BOLD, 14));
@@ -162,11 +165,13 @@ public class GameView {
 		leftPanel.setBounds(0, 0, 180, 670);
 		frame.getContentPane().add(leftPanel);
 		
-		JPanel panel2 = new TransparentPanel();
-		panel2.setBackground(new Color(176, 23, 31, 255));
-		//panel2.setBorder(new LineBorder(new Color(65, 146, 75), 1));
-		panel2.setBounds(0, 670, 1280, 50);
-		frame.getContentPane().add(panel2);
+		JPanel bottomPanel = new TransparentPanel();
+		bottomPanel.setBackground(new Color(176, 23, 31, 255));
+		//bottomPanel.setBorder(new LineBorder(new Color(65, 146, 75), 1));
+		bottomPanel.setBounds(0, 670, 1280, 50);
+		frame.getContentPane().add(bottomPanel);
+		
+		
 	}
 
 	/* TODO Per la costruzione della gui di welcome
