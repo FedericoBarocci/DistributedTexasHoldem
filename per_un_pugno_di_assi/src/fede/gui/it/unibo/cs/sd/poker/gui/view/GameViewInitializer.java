@@ -35,11 +35,22 @@ public class GameViewInitializer {
 		players.add(new Player("6"));
 		players.add(new Player("7"));
 		players.add(new Player("7bis"));
+=======
+				//playersKeeper.getPlayers();
+				new ArrayList<>();
+		players.add(new Player("Anna"));
+		players.add(new Player("Bob"));
+		players.add(new Player("Carl"));
+		players.add(new Player("David"));
+		players.add(new Player("Erik"));
+		players.add(new Player("Fausto"));
+		players.add(new Player("Gino"));
+		players.add(new Player("Helen"));
+>>>>>>> 1908d7383742a90b21939ad26ac5b0032e9da80a
 		Deck deck = new Deck();
 		Pair<Card> cards = new Pair<>(deck.pop(), deck.pop());
 		players.forEach(c->c.deal(cards));*/
 		// end dummy code
-		
 		
 		view.init( players );
 	}
