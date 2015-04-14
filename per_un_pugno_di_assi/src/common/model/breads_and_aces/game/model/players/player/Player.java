@@ -35,7 +35,7 @@ public class Player implements Serializable, Comparable<Player> {
 	public Player(String name, long registrationTime/*, Printer printer*/) {
 		this.name = name;
 		this.registrationTime = registrationTime/*, Printer printer*/;
-		Main.Injector.injectMembers(this);
+	//	Main.Injector.injectMembers(this);
 	}
 	
 	public String getName() {

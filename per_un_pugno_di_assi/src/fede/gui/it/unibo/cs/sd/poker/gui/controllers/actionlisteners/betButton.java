@@ -47,7 +47,7 @@ public class betButton implements MouseListener {
 		
 		lblBet.setText("" + i.getIntValue());
 		int score = coins - i.getIntValue();
-		lblScore.setText("Coins: " + score);
+		lblScore.setText("" + score);
 	}
 
 	@Override
