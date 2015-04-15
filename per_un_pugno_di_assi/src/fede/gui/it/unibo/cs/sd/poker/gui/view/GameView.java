@@ -1,15 +1,16 @@
 package it.unibo.cs.sd.poker.gui.view;
 
 import it.unibo.cs.sd.poker.game.core.Card;
-import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.Bet;
-import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.Check;
-import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.Fold;
 import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.betButton;
+import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.foldButton;
+import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.infoButton;
+import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.okButton;
 import it.unibo.cs.sd.poker.gui.view.elements.BackgroundGUI;
 import it.unibo.cs.sd.poker.gui.view.elements.CardGUI;
 import it.unibo.cs.sd.poker.gui.view.elements.ElementGUI;
 import it.unibo.cs.sd.poker.gui.view.elements.PlayerGUI;
 import it.unibo.cs.sd.poker.gui.view.elements.TransparentPanel;
+import it.unibo.cs.sd.poker.gui.view.elements.utils.ButtonsUtils;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -122,41 +123,51 @@ public class GameView {
 		lblPot.setBounds(60, 240, 60, 50);
 		lblPot.setForeground(new Color(0, 0, 0));
 		lblPot.setFont(new Font("SansSerif", Font.BOLD, 18));
-		lblPot.setText("0");
+		lblPot.setText("0/0");
 		frame.getContentPane().add(lblPot);
 		
 		ElementGUI leftUI = new ElementGUI(new ImageIcon("elements" + File.separatorChar + "left.png"), 0, 0, 180, 670);
 		frame.getContentPane().add(leftUI);
 		
-		ElementGUI up = new ElementGUI(new ImageIcon("elements" + File.separatorChar + "up.png"), 15, 297, 50, 50);
-		ElementGUI down = new ElementGUI(new ImageIcon("elements" + File.separatorChar + "down.png"), 15, 363, 50, 50);
+		ElementGUI up = new ElementGUI(ButtonsUtils.INSTANCE.getImageGui("up.png"), 15, 297, 50, 50);
+		ElementGUI down = new ElementGUI(ButtonsUtils.INSTANCE.getImageGui("down.png"), 15, 363, 50, 50);
+		ElementGUI ok = new ElementGUI(ButtonsUtils.INSTANCE.getImageGui("ok.png"), 100, 300, 50, 50);
+		ElementGUI fold = new ElementGUI(ButtonsUtils.INSTANCE.getImageGui("fold.png"), 100, 365, 50, 50);
+		ElementGUI info = new ElementGUI(ButtonsUtils.INSTANCE.getImageGui("info.png"), 1250, 15, 35, 35);
 		up.setName("UP");
 		down.setName("DOWN");
 		frame.getContentPane().add(up);
 		frame.getContentPane().add(down);
+		frame.getContentPane().add(ok);
+		frame.getContentPane().add(fold);
+		frame.getContentPane().add(info);
 		
 		MouseListener betClick = new betButton(lblBet, lblClientPlayerCoins, coins);
 		up.addMouseListener( betClick );
 		down.addMouseListener( betClick );
 		
-		for (String	s: new String[]{"Check", "Fold"/*, "Bet"*/}) {
-			buttons.put(s, new JButton(s));
-		}
+		ok.addMouseListener(new okButton());
+		fold.addMouseListener(new foldButton());
+		info.addMouseListener(new infoButton());
 		
-		JButton checkButton = buttons.get("Check");
-		JButton foldButton = buttons.get("Fold");
+//		for (String	s: new String[]{"Check", "Fold"/*, "Bet"*/}) {
+//			buttons.put(s, new JButton(s));
+//		}
+		
+//		JButton checkButton = buttons.get("Check");
+//		JButton foldButton = buttons.get("Fold");
 //		JButton betButton = buttons.get("Bet");
 		
-		checkButton.setBounds(90, 310, 80, 40);
-		foldButton.setBounds(90, 360, 80, 40);
+//		checkButton.setBounds(90, 310, 80, 40);
+//		foldButton.setBounds(90, 360, 80, 40);
 //		betButton.setBounds(40, 460, 100, 40);
 		
-		frame.getContentPane().add(checkButton);
-		frame.getContentPane().add(foldButton);
+//		frame.getContentPane().add(checkButton);
+//		frame.getContentPane().add(foldButton);
 //		frame.getContentPane().add(betButton);
 		
-		checkButton.addActionListener( new Check(/*model, view*/) );
-		foldButton.addActionListener( new Fold(/*model, view*/) );
+//		checkButton.addActionListener( new Check(/*model, view*/) );
+//		foldButton.addActionListener( new Fold(/*model, view*/) );
 //		betButton.addActionListener( new Bet(/*model, view*/) );
 		
 		JPanel leftPanel = new TransparentPanel();

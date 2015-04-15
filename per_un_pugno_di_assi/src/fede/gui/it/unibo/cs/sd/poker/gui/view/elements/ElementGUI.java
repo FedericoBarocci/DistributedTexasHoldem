@@ -15,22 +15,42 @@ public class ElementGUI extends JLabel {
 	protected int h = 0;
 	
 	public ElementGUI(ImageIcon icon) {
+		this.x = 0;
+		this.y = 0;
+		this.w = icon.getIconWidth();
+		this.h = icon.getIconHeight();
+		
 		setSource(icon);
-		setBounds(0, 0, icon.getIconWidth(), icon.getIconHeight());
+		setBounds(0, 0, w, h);
 	}
 	
 	public ElementGUI(ImageIcon icon, int x, int y) {
+		this.x = x;
+		this.y = y;
+		this.w = icon.getIconWidth();
+		this.h = icon.getIconHeight();
+		
 		setSource(icon);
-		setBounds(x, y, icon.getIconWidth(), icon.getIconHeight());
+		setBounds(x, y, w, h);
 	}
 	
 	public ElementGUI(ImageIcon icon, int x, int y, int w, int h) {
+		this.x = x;
+		this.y = y;
+		this.w = w;
+		this.h = h;
+		
 		setSource(icon);
 		setBounds(x, y, w, h);
 	}
 	
 	protected void setSource(ImageIcon icon) {
 		super.setIcon(icon);
+	}
+	
+	public void changeImage(ImageIcon icon) {
+		setSource(icon);
+		setBounds(x, y, w, h);
 	}
 	
 	@Override
