@@ -2,6 +2,8 @@ package it.unibo.cs.sd.poker.gui.view.elements;
 
 import it.unibo.cs.sd.poker.gui.view.elements.utils.CardsUtils;
 
+import java.awt.Rectangle;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -42,6 +44,16 @@ public class ElementGUI extends JLabel {
 		
 		setSource(icon);
 		setBounds(x, y, w, h);
+	}
+	
+	public ElementGUI(ImageIcon icon, Rectangle r) {
+		this(
+			icon, 
+			(int) r.getX(), 
+			(int) r.getY(), 
+			(int) r.getWidth(), 
+			(int) r.getHeight()
+		);
 	}
 	
 	protected void setSource(ImageIcon icon) {
