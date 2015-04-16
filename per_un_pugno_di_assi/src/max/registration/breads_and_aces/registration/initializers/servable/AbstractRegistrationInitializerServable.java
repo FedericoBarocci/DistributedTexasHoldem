@@ -1,19 +1,19 @@
 package breads_and_aces.registration.initializers.servable;
 
-import it.unibo.cs.sd.poker.game.core.Card;
 import it.unibo.cs.sd.poker.game.core.Deck;
 
 import java.rmi.RemoteException;
+import java.util.stream.Collectors;
 
 import breads_and_aces._di.providers.registration.initializers.servable.registrar.GameRegistrarProvider;
 import breads_and_aces.game.Game;
 import breads_and_aces.game.model.players.keeper.PlayersObservable;
 import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
 import breads_and_aces.game.model.players.player.Player;
-import breads_and_aces.game.model.utils.Pair;
 import breads_and_aces.registration.initializers.servable.registrar.GameRegistrar;
 import breads_and_aces.registration.model.NodeConnectionInfos;
 import breads_and_aces.services.rmi.game.base._init.PlayersSynchronizar;
+import breads_and_aces.services.rmi.game.base.dealable.Dealer;
 import breads_and_aces.services.rmi.game.core.GameService;
 import breads_and_aces.services.rmi.game.keeper.GameServicesKeeper;
 import breads_and_aces.services.rmi.utils.communicator.Communicator;
@@ -77,24 +77,11 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		gameRegistrarProvider.changeRegistrar();
 	}
 	private void giveCards() {
-		Deck deck = new Deck();
-//		Set<Card> tableCardsToSend = new LinkedHashSet<>();
-		for (int i=0; i<5; i++) {
-//			tableCardsToSend.add( deck.pop() );
-			game.getTable().addCards( deck.pop() );
-		}
-		gameRegistrarProvider.get().getRegisteredPlayersMap().values().forEach(c->{
-			Pair<Card> cards = new Pair<>(deck.pop(), deck.pop());
-//			cards.addFirst(deck.pop());
-//			cards.addSecond(deck.pop());
-			c.deal( cards );
-		});
-		
+		new Dealer(game.getTable(), gameRegistrarProvider.get().getRegisteredPlayersMap().values(), new Deck() ).deal();
 	}
 	protected void updateAllNodesForPartecipants() {
-//		printer.print("Ok: final list partecipants has: ");
-//		printer.println(playersKeeper.getPlayers().stream().map(Player::getId).collect(Collectors.joining(", "))
-//		);
+		printer.println("Ok: final list partecipants has: "
+				+gameRegistrarProvider.get().getRegisteredPlayersMap().values().stream().map(Player::getName).collect(Collectors.joining(", ")));
 		communicator.toAll(meId, this::updatePartecipantsOnClientFunction);
 	}
 	

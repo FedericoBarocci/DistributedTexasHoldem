@@ -35,7 +35,8 @@ public class Player implements Serializable, Comparable<Player> {
 	public Player(String name, long registrationTime/*, Printer printer*/) {
 		this.name = name;
 		this.registrationTime = registrationTime/*, Printer printer*/;
-	//	Main.Injector.injectMembers(this);
+		if (Main.Injector!=null)
+			Main.Injector.injectMembers(this);
 	}
 	
 	public String getName() {
@@ -113,23 +114,23 @@ public class Player implements Serializable, Comparable<Player> {
 	 */
 	public void receiveBucket() {
 		hasBucket = true;
-		printer.println("bucket received");
-//		System.out.println("bucket received"); 
+		if (printer!=null)
+			printer.println("bucket received");
 	}
 	public void receiveBucket(String receivedFrom) {
 		hasBucket = true;
-		printer.println("bucket received from "+receivedFrom);
-//		System.out.println("bucket received from "+receivedFrom);
+		if (printer!=null)
+			printer.println("bucket received from "+receivedFrom);
 	}
 	public void passBucket() {
 		hasBucket = false;
-		printer.println("bucket passed");
-//		System.out.println("bucket passed");
+		if (printer!=null)
+			printer.println("bucket passed");
 	}
 	public void passBucket(String passedTo) {
 		hasBucket = false;
-		printer.println("bucket passed to "+passedTo);
-//		System.out.println("bucket passed to "+passedTo);
+		if (printer!=null)
+			printer.println("bucket passed to "+passedTo);
 	}
 	public boolean hasBucket() {
 		return hasBucket;

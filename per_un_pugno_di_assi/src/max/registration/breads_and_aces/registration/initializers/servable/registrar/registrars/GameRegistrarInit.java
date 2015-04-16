@@ -30,7 +30,7 @@ public class GameRegistrarInit implements GameRegistrar {
 	public RegistrationResult registerPlayer(NodeConnectionInfos nodeConnectionInfos, String playerId) {
 		if (nodesConnectionInfos.size()==0) { // if size is zero, we are adding servable node
 			nodesConnectionInfos.add(nodeConnectionInfos);
-			keepersUtils.registerPlayer(/*nodeConnectionInfos,*/ playerId);
+			keepersUtils.registerPlayer(playerId, true);
 			// dummy return
 			return new RegistrationResult(true, Cause.OK);
 		} else { // here we add client nodes

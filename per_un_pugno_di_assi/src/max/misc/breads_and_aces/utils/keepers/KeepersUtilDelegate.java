@@ -49,26 +49,27 @@ public class KeepersUtilDelegate {
 		return false;
 	}
 	
-	public void registerPlayer(/*NodeConnectionInfos nodeConnectionInfos,*/ String playerId) {
+	public void registerPlayer(String playerId) {
 		long now = System.currentTimeMillis();
-//		nodeConnectionInfos.setRegisterTime(now);
 		
 		PlayerRegistrationId playerRegistrationId = new PlayerRegistrationId(playerId, now);
-		Player player = 
-//				playerFactory.create(playerId);
-				new Player(playerId, now);
+		Player player = new Player(playerId, now);
 		
-		playersKeeper.addPlayer(playerRegistrationId,player);
+		playersKeeper.addPlayer(playerRegistrationId, player);
+	}
+	
+	public void registerPlayer(String playerId, boolean isMe) {
+		registerPlayer(playerId);
+		playersKeeper.setMe(playerId);
 	}
 
 	public RegistrationResult registerNodePlayerGameServiceAsClientable(NodeConnectionInfos nodeConnectionInfos, String playerId) {
-//		List<String> crashed = new ArrayList<>(); 
 		try {
 			GameService gameService = ServiceUtils.lookup(nodeConnectionInfos.getAddress(), nodeConnectionInfos.getPort());
 			gameServiceKeeper.addService(playerId, gameService);
 			
 			// here we register node and player, because gameservice was fine
-			registerPlayer(/*nodeConnectionInfos,*/ playerId);
+			registerPlayer(playerId);
 			
 			return new RegistrationResult(true, Cause.OK);
 		} catch (MalformedURLException e) {
