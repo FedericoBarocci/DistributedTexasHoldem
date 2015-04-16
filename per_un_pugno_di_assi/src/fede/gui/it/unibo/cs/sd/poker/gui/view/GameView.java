@@ -62,9 +62,7 @@ public class GameView {
 	}
 	
 	public void initTableCards(List<Card> tableCards) {
-		for (CardGUI c : tableCardsGui) {
-			frame.getLayeredPane().remove(c);
-		}
+		tableCardsGui.forEach(c->frame.getLayeredPane().remove(c));
 		
 		for (int i = 0; i < 5; i++) {
 			CardGUI c = new CardGUI(GuiUtils.tableCardX + GuiUtils.tableCardSpan * i, GuiUtils.tableCardY);
