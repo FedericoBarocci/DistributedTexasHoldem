@@ -14,6 +14,7 @@ import it.unibo.cs.sd.poker.gui.view.elements.utils.GuiUtils;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -145,20 +146,13 @@ public class GameView {
 	}
 
 	public void showPlayersCards() {
-		Set<String> keys = playersGui.keySet();
-		
-		for(String key : keys) {
-			playersGui.get(key).showCards(frame);
-		}
+		Collection<PlayerGUI> collection = playersGui.values();
+		collection.forEach(p->p.showCards(frame));
 	}
 	
 	public void setViewToken(String playerName) {
-		Set<String> keys = playersGui.keySet();
-		
-		for(String key : keys) {
-			playersGui.get(key).unsetTokenView(frame);
-		}
-		
+		Collection<PlayerGUI> collection = playersGui.values();
+		collection.forEach(p->p.unsetTokenView(frame));
 		playersGui.get(playerName).setTokenView(frame);
 	}
 }
