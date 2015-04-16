@@ -26,6 +26,7 @@ public enum GuiUtils {
 	
 	private GuiUtils() {
 		bounds.put("frame", 	new Rectangle(0, 0, 1300, 480));
+		bounds.put("about", 	new Rectangle(0, 0, 800, 600));
 		bounds.put("title", 	new Rectangle(10, 10, 160, 100));
 		bounds.put("cardPanel", new Rectangle(370, 30, 740, 185));
 		bounds.put("name", 		new Rectangle(0, 134, 180, 50));
