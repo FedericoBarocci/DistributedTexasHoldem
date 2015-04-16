@@ -2,15 +2,14 @@ package it.unibo.cs.sd.poker.gui.view.elements;
 
 import it.unibo.cs.sd.poker.game.core.Card;
 import it.unibo.cs.sd.poker.gui.view.elements.utils.CardsUtils;
+import it.unibo.cs.sd.poker.gui.view.elements.utils.GuiUtils;
 
 import java.awt.Color;
-import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.border.LineBorder;
 
 public class PlayerGUI {
 	
@@ -22,8 +21,8 @@ public class PlayerGUI {
 	private CardGUI card2;
 	
 	private final JLabel name = new JLabel("", SwingConstants.CENTER);
-	private final JLabel action = new JLabel("WAIT", SwingConstants.CENTER);
-	private final JLabel scoreLabel = new JLabel("SCORE: 0", SwingConstants.CENTER);
+	private final JLabel action = new JLabel("", SwingConstants.CENTER);
+	private final JLabel score = new JLabel("", SwingConstants.CENTER);
 	private final JPanel box = new TransparentPanel();
 	private final JPanel scoreContainer = new TransparentPanel();
 	private final JPanel scoreLevel = new TransparentPanel();
@@ -32,80 +31,39 @@ public class PlayerGUI {
 		this.x = x;
 		this.y = y;
 		this.winnerScore = winnerScore;
+		this.card1 = new CardGUI(CardsUtils.INSTANCE_SMALL.getImageCard(card0), x + 15, y);
+		this.card2 = new CardGUI(CardsUtils.INSTANCE_SMALL.getImageCard(card1), x + 72, y);
 		
-		this.card1 = new CardGUI(CardsUtils.INSTANCE_SMALL.getImageCard(card0), x + 5, y);
-		this.card2 = new CardGUI(CardsUtils.INSTANCE_SMALL.getImageCard(card1), x + 62, y);
+		String txt = "<html><div style='border-bottom:2px solid black'>"+ playerId + "</div></html>";
 		
-		this.name.setText("<html><div style='border-bottom:2px solid black'>"+playerId+"</div></html>");
-		
-		//this.box.setBackground(new Color(255, 230, 0, 200));
-		this.box.setBackground(new Color(255, 255, 255, 80));
-		this.box.setBorder(new LineBorder(new Color(255, 230, 0, 255), 1));
-		this.box.setBounds(this.x, this.y+25, 120, 135);
-		
-		this.scoreContainer.setBackground(new Color(255, 255, 255, 60));
-		this.scoreContainer.setBounds(this.x-10, this.y+25, 10, 135);
-		
-		
+		GuiUtils.INSTANCE.initPanel(box, "playerBox", "glass", "playerBox", x+10, y+25);
+		GuiUtils.INSTANCE.initPanel(scoreContainer, "playerLevel", "glass2", x, y+25);
+		GuiUtils.INSTANCE.initLabel(name, "playerName", "black", "B15",txt , x+10, y+90);
+		GuiUtils.INSTANCE.initLabel(action, "playerAction", "black", "B11", "WAIT", x+10, y+120);
+		GuiUtils.INSTANCE.initLabel(score, "playerScore", "black", "B11", "SCORE: 0", x+10, y+135);
+
 		setScore(0);
 	}
 	
 	public void setScore(Integer score) {
 		int proportional = Math.floorDiv(135*score, winnerScore);
+		int red = 200 + Math.floorDiv(55*score, winnerScore);
+		int green = Math.floorDiv(230*score, winnerScore);
 		
-		this.scoreLevel.setBackground(new Color(200 + Math.floorDiv(55*score, winnerScore), Math.floorDiv(230*score, winnerScore), 0, 255));
-		this.scoreLevel.setBounds(this.x-10, this.y + 160 - proportional, 10, proportional);
-		this.scoreLabel.setText("SCORE: " + score);
-	}
-	
-	public CardGUI getCard1() {
-		return card1;
-	}
-	
-	public CardGUI getCard2() {
-		return card2;
-	}
-	
-	public String getName() {
-		return name.getText();
-	}
-	
-	public JLabel getLabel() {
-		return name;
+		this.scoreLevel.setBackground(new Color(red, green, 0));
+		this.scoreLevel.setBounds(this.x, this.y + 160 - proportional, 10, proportional);
+		this.score.setText("SCORE: " + score);
 	}
 
 	public void draw(JFrame frame) {
-		name.setBounds(this.x, this.y + 90, 115, 25);
-		name.setForeground(new Color(0, 0, 0));
-		name.setFont(new Font("SansSerif", Font.BOLD, 15));
-		
-		action.setBounds(this.x, this.y + 120, 115, 20);
-		action.setForeground(new Color(0, 0, 0));
-		action.setFont(new Font("SansSerif", Font.BOLD, 11));
-		
-		scoreLabel.setBounds(this.x, this.y + 135, 115, 20);
-		scoreLabel.setForeground(new Color(0, 0, 0));
-		scoreLabel.setFont(new Font("SansSerif", Font.BOLD, 11));
-		
-		/*JSlider slider = new JSlider(JSlider.VERTICAL, 0, 1000, 0);
-        slider.setPaintTicks(true);
-        slider.setPaintLabels(true);
-        slider.setMinorTickSpacing(1000/20);
-        slider.setMajorTickSpacing(1000/5);
-        slider.setBounds(this.x+20, 400, 80, 250);
-        slider.setOpaque(false);
-        slider.setForeground(new Color(0, 0, 0));
-        slider.setUI(new SliderGUI(slider));
-        frame.getContentPane().add(slider);*/
-		
-		frame.getContentPane().add(card1);
-		frame.getContentPane().add(card2);
-		frame.getContentPane().add(name);
-		frame.getContentPane().add(action);
-		frame.getContentPane().add(scoreLabel);
-		frame.getContentPane().add(box);
-		frame.getContentPane().add(scoreContainer);
-		frame.getContentPane().add(scoreLevel);
+		frame.getContentPane().add( card1 );
+		frame.getContentPane().add( card2 );
+		frame.getContentPane().add( name );
+		frame.getContentPane().add( action );
+		frame.getContentPane().add( score );
+		frame.getContentPane().add( box );
+		frame.getContentPane().add( scoreContainer );
+		frame.getContentPane().add( scoreLevel );
 	}
 	
 	public void clearFromGui(JFrame frame) {
@@ -113,7 +71,7 @@ public class PlayerGUI {
 		frame.getContentPane().remove( card2 );
 		frame.getContentPane().remove( name );
 		frame.getContentPane().remove( action );
-		frame.getContentPane().remove( scoreLabel );
+		frame.getContentPane().remove( score );
 		frame.getContentPane().remove( box );
 		frame.getContentPane().remove( scoreContainer );
 		frame.getContentPane().remove( scoreLevel );

@@ -180,7 +180,7 @@ public class GameView {
 		int x, y;
 		int i = playersGui.size();
 		
-		x = 195 + (140*i);
+		x = 185 + (140*i);
 		y = 250;
 				
 		PlayerGUI playerGui = new PlayerGUI(p.getName(),  
@@ -206,9 +206,9 @@ public class GameView {
 		buttons.values().stream().forEach(b->frame.getContentPane().remove(b));
 	}
 	
-	private void setToken(Integer i) {
-		playersGui.get(i).getLabel().setForeground(new Color(204, 0, 0));
-	}
+//	private void setToken(Integer i) {
+//		playersGui.get(i).getLabel().setForeground(new Color(204, 0, 0));
+//	}
 
 //	private void unsetToken() {
 //		for (int i = 0; i < getPlayers().size(); i++) {

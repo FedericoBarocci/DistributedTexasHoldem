@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="it/unibo/cs/sd/poker/gui/view/elements/utils/ButtonsUtils.java|it/unibo/cs/sd/poker/gui/controllers/actionlisteners/Fold.java|it/unibo/cs/sd/poker/gui/controllers/actionlisteners/Check.java|it/unibo/cs/sd/poker/gui/controllers/actionlisteners/Bet.java" kind="src" path="src/fede/gui"/>
+	<classpathentry excluding="it/unibo/cs/sd/poker/gui/view/elements/utils/ButtonsUtils.java|it/unibo/cs/sd/poker/gui/controllers/actionlisteners/Fold.java|it/unibo/cs/sd/poker/gui/controllers/actionlisteners/Check.java|it/unibo/cs/sd/poker/gui/controllers/actionlisteners/Bet.java|it/unibo/cs/sd/poker/gui/view/elements/SliderGUI.java" kind="src" path="src/fede/gui"/>
 	<classpathentry excluding="breads_and_aces/main/RegistrationGUI_CRASH.java" kind="src" path="src/max/main/core"/>
 	<classpathentry excluding="it/unibo/cs/sd/poker/game/core/Player.java|it/unibo/cs/sd/poker/game/core/GameTexasHoldemRunner.java|it/unibo/cs/sd/poker/game/core/GameTexasHoldem.java" kind="src" path="src/fede/game"/>
 	<classpathentry kind="src" path="src/max/registration"/>

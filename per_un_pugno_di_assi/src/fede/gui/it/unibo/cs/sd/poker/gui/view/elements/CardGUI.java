@@ -13,17 +13,6 @@ public class CardGUI extends ElementGUI {
 	}
 	
 	public CardGUI(ImageIcon card, int x, int y) {
-		//super(CardsUtils.INSTANCE_BIG.getImageCard(card), x, y);
 		super(card, x, y);
-	}
-	
-	/*public CardGUI(ImageIcon card, int x, int y) {
-		//super(CardsUtils.INSTANCE_SMALL.getImageCard(card), x, y, w, h);
-		super(card, x, y);
-	}*/
-
-	private void setCard(ImageIcon card) {
-		super.setSource(card);
-		//super.setBounds( x, y, card.getIconWidth(), card.getIconHeight() );
 	}
 }
