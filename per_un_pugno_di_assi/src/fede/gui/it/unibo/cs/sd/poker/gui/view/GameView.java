@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -56,7 +55,8 @@ public class GameView {
 		frame.setResizable(false);
 		frame.setVisible(true);
 		
-		JLabel lblTitle = new JLabel("<html><p style='text-align:center; border-bottom:1px solid #000;padding-bottom:10px;'>Poker Distributed Hold'em</p></html>", SwingConstants.CENTER);
+		String title = "<html><p style='text-align:center; border-bottom:1px solid #000;padding-bottom:10px;'>Poker Distributed Hold'em</p></html>";
+		JLabel lblTitle = new JLabel(title, SwingConstants.CENTER);
 		GuiUtils.INSTANCE.initLabel(lblTitle, "title", "gold", "B22");
 		frame.getContentPane().add(lblTitle);
 	}
