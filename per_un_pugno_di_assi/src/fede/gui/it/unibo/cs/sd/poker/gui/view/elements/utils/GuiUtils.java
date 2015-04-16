@@ -28,9 +28,9 @@ public enum GuiUtils {
 	
 	public BackgroundGUI background = new BackgroundGUI("elements" + File.separatorChar + "bg.jpg", 1300, 480);
 	
-	public static final int playerX = 185;
+	public static final int playerX = 45;
 	public static final int playerY = 250;
-	public static final int playerSpan = 140;
+	public static final int playerSpan = 1260;
 	
 	public static final int tableCardX = 395;
 	public static final int tableCardY = 52;

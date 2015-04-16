@@ -77,10 +77,13 @@ public class GameView {
 	}
 	
 	public void initPlayers(List<Player> players, String myname, int goal, int score) {
-		for (int i = 0; i < players.size(); i++) {
-			Player p = players.get(i);
-			int x = GuiUtils.playerX + (GuiUtils.playerSpan * i);
+		int size = players.size();
+		int span = Math.floorDiv(GuiUtils.playerSpan, size+1);
+		
+		for (int i = 0; i < size; i++) {
+			int x = GuiUtils.playerX + (span * (i+1));
 			int y = GuiUtils.playerY;
+			Player p = players.get(i);
 			
 			/*XXX*/	/* *** only for testing *** override param *** */ 
 				score = Math.floorDiv(goal, 7) * i;
@@ -102,7 +105,7 @@ public class GameView {
 		GuiUtils.INSTANCE.initLabel(lblPlayerName, "name", "black", "B13", clientPlayer);
 		GuiUtils.INSTANCE.initLabel(lblCoins, "coins", "black", "B13", "" + coins);
 		GuiUtils.INSTANCE.initLabel(lblScore, "score", "black", "B13", "" + score);
-		GuiUtils.INSTANCE.initLabel(lblWinners, "winners", "gold", "B16", "Il vincitore è ...");
+		GuiUtils.INSTANCE.initLabel(lblWinners, "winners", "gold", "B16", "Let's start the game!");
 		GuiUtils.INSTANCE.initLabel(lblBet, "bet", "black", "B25", "0");
 		GuiUtils.INSTANCE.initLabel(lblPot, "pot", "black", "B18", "0/0");
 		GuiUtils.INSTANCE.initPanel(leftPanel, "leftPanel", "alphaGreen");
