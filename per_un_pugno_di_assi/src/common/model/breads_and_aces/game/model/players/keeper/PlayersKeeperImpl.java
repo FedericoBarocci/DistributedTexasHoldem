@@ -24,6 +24,8 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 //	private /*static*/ final Map<String, Player> playersMap = new LinkedHashMap<>();
 	
 	private final NavigableMap<PlayerRegistrationId, Player> playersMap = new TreeMap<PlayerRegistrationId, Player>();
+
+	private String me;
 	
 	
 	@Override
@@ -111,5 +113,14 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 	@Override
 	public void notifyObservers(String data) {
 		observableDelegate.notifyObservers(data);		
+	}
+
+	@Override
+	public String getMe() {
+		return me;
+	}
+	@Override
+	public void setMe(String meId) {
+		this.me = meId;
 	}
 }
