@@ -57,6 +57,7 @@ public class infoButton implements MouseListener {
 		
 		frame.add(areaScrollPane);
 		frame.pack();
+		frame.setResizable(false);
 		frame.setVisible(true);
 	}
 

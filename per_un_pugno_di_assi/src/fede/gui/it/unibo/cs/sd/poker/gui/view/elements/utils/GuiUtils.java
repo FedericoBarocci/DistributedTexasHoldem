@@ -1,5 +1,7 @@
 package it.unibo.cs.sd.poker.gui.view.elements.utils;
 
+import it.unibo.cs.sd.poker.gui.view.elements.BackgroundGUI;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Rectangle;
@@ -23,6 +25,16 @@ public enum GuiUtils {
 	private final Map<String,Color> colors = new HashMap<>();
 	private final Map<String,Font> fonts = new HashMap<>();
 	private final Map<String,LineBorder> lines = new HashMap<>();
+	
+	public BackgroundGUI background = new BackgroundGUI("elements" + File.separatorChar + "bg.jpg", 1300, 480);
+	
+	public static final int playerX = 185;
+	public static final int playerY = 250;
+	public static final int playerSpan = 140;
+	
+	public static final int tableCardX = 395;
+	public static final int tableCardY = 52;
+	public static final int tableCardSpan = 150;
 	
 	private GuiUtils() {
 		bounds.put("frame", 	new Rectangle(0, 0, 1300, 480));
@@ -54,7 +66,6 @@ public enum GuiUtils {
 		colors.put("gold", 			new Color(255, 230, 0));
 		colors.put("white", 		new Color(255, 255, 255));
 		colors.put("royalRed", 		new Color(176, 23, 31));
-		colors.put("yellow", 		new Color(255, 230, 0));
 		colors.put("alphaBlue", 	new Color(174, 234, 255, 50));
 		colors.put("alphaGreen", 	new Color(65, 146, 75, 200));
 		colors.put("glass", 		new Color(255, 255, 255, 60));
@@ -69,7 +80,8 @@ public enum GuiUtils {
 		fonts.put("B25", new Font("SansSerif", Font.BOLD, 25));
 		
 		lines.put("cardBox", 	new LineBorder(getColor("white"), 1));
-		lines.put("playerBox", 	new LineBorder(getColor("yellow"), 1));
+		lines.put("playerBox", 	new LineBorder(getColor("gold"), 1));
+		lines.put("playerToken",new LineBorder(getColor("royalRed"), 3));
 	}
 	
 	public ImageIcon getImageGui(String element) {

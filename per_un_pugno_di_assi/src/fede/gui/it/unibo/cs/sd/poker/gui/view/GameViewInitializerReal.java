@@ -11,6 +11,12 @@ public class GameViewInitializerReal implements GameViewInitializer {
 
 	private final GameView view;
 	private final Game game;
+	
+	private static final int initialCoins = 200;
+	private static final int initialScore = 0;
+	private static final int initialGoal = 1000;
+	
+	private static final String myname = "Anna";
 
 	@Inject
 	public GameViewInitializerReal(GameView view, Game game) {
@@ -22,9 +28,9 @@ public class GameViewInitializerReal implements GameViewInitializer {
 	@Override
 	public void start() {
 		List<Player> players = game.getPlayersKeeper().getPlayers(); // business code
-		view.initPlayers(players);
+		view.initPlayers(players, myname, initialGoal, initialScore);
 		view.initTableCards(game.getTable().getCards());
-		view.initActionsGui("Player Name", 200, 0); ///*, players.get(0).getCards()*/);
+		view.initActionsGui("Player Name", initialCoins, initialScore); ///*, players.get(0).getCards()*/);
 //		view.init( players );
 	}
 }

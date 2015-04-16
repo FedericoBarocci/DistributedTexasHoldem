@@ -5,24 +5,21 @@ import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.betButton;
 import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.foldButton;
 import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.infoButton;
 import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.okButton;
-import it.unibo.cs.sd.poker.gui.view.elements.BackgroundGUI;
 import it.unibo.cs.sd.poker.gui.view.elements.CardGUI;
 import it.unibo.cs.sd.poker.gui.view.elements.ElementGUI;
 import it.unibo.cs.sd.poker.gui.view.elements.PlayerGUI;
 import it.unibo.cs.sd.poker.gui.view.elements.TransparentPanel;
 import it.unibo.cs.sd.poker.gui.view.elements.utils.GuiUtils;
 
-import java.awt.Color;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,7 +30,6 @@ import breads_and_aces.game.model.players.player.Player;
 public class GameView {
 	public JFrame frame = new JFrame();
 	
-	private BackgroundGUI background = new BackgroundGUI("elements/bg.jpg", 1300, 480);
 	// TODO usare playerskeeper
 	private Map<String, PlayerGUI> playersGui = new LinkedHashMap<>();
 	
@@ -41,7 +37,6 @@ public class GameView {
 	public CardGUI card1;
 	public CardGUI card2;
 	
-	private final Map<String, JButton> buttons = new HashMap<>();
 	public JLabel lblPlayerName = new JLabel("", SwingConstants.CENTER);
 	public JLabel lblScore = new JLabel("", SwingConstants.CENTER);
 	public JLabel lblCoins = new JLabel("", SwingConstants.CENTER);
@@ -53,10 +48,11 @@ public class GameView {
 		super();
 		frame.setLayout(null);
 		frame.setTitle("Poker Distributed Hold'em");
-		frame.setContentPane(background);
+		frame.setContentPane(GuiUtils.INSTANCE.background);
 		frame.setBounds(GuiUtils.INSTANCE.getBound("frame"));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setResizable(false);
 		frame.setVisible(true);
 		
 		JLabel lblTitle = new JLabel("<html><p style='text-align:center; border-bottom:1px solid #000;padding-bottom:10px;'>Poker Distributed Hold'em</p></html>", SwingConstants.CENTER);
@@ -64,17 +60,39 @@ public class GameView {
 		frame.getContentPane().add(lblTitle);
 	}
 	
-	private void initTableGui(List<Card> tableCards) {
-		// TODO use tableCards from model
+	public void initTableCards(List<Card> tableCards) {
+		for (CardGUI c : tableCardsGui) {
+			frame.getLayeredPane().remove(c);
+		}
+		
 		for (int i = 0; i < 5; i++) {
-			CardGUI c = new CardGUI(395 + 150*i, 52);
+			CardGUI c = new CardGUI(GuiUtils.tableCardX + GuiUtils.tableCardSpan * i, GuiUtils.tableCardY);
 			tableCardsGui.add(c);
-			addElementGui(c);
+			frame.getLayeredPane().add(c);
 		}
 		
 		JPanel panel = new TransparentPanel();
 		GuiUtils.INSTANCE.initPanel(panel, "cardPanel", "alphaBlue", "cardBox");
 		frame.getContentPane().add(panel);
+	}
+	
+	public void initPlayers(List<Player> players, String myname, int goal, int score) {
+		for (int i = 0; i < players.size(); i++) {
+			Player p = players.get(i);
+			int x = GuiUtils.playerX + (GuiUtils.playerSpan * i);
+			int y = GuiUtils.playerY;
+			
+			/*XXX*/	/* *** only for testing *** override param *** */ 
+				score = Math.floorDiv(goal, 7) * i;
+			
+			Boolean hideCards = (myname != p.getName());	
+			
+			PlayerGUI playerGui = new PlayerGUI(p.getName(), p.getCards().get(0), p.getCards().get(1), x, y, goal, score, hideCards);
+			playerGui.draw(frame);
+			playersGui.put(p.getName(), playerGui);
+		}
+		
+		frame.getContentPane().repaint();
 	}
 	
 	public void initActionsGui(String clientPlayer, int coins, int score) {
@@ -123,115 +141,21 @@ public class GameView {
 		frame.getContentPane().add(bottomPanel);
 	}
 
-	public void initPlayers(List<Player> players) {
-		for (Player p : players) {
-			createAndAddPlayerGui(p);
+	public void showPlayersCards() {
+		Set<String> keys = playersGui.keySet();
+		
+		for(String key : keys) {
+			playersGui.get(key).showCards(frame);
 		}
 	}
-	public void initTableCards(List<Card> tableCards) {
-		for (CardGUI c : tableCardsGui) {
-			removeElementGui(c);
-		}		
-		initTableGui(tableCards);
-	}
 	
-	// old
-	/*private void initElementsGUI(List<Player> players) {
-		for (Player p : players) {
-			createAndAddPlayerGui(p);
+	public void setViewToken(String playerName) {
+		Set<String> keys = playersGui.keySet();
+		
+		for(String key : keys) {
+			playersGui.get(key).unsetTokenView(frame);
 		}
 		
-		for (CardGUI c : tableCardsGui) {
-			removeElementGui(c);
-		}		
-		initTableGui();
-		
-		// TODO restore?
-//		this.resetToken();
-	}*/
-	
-	private void addElementGui(ElementGUI element) {
-		frame.getContentPane().add(element);
+		playersGui.get(playerName).setTokenView(frame);
 	}
-	
-	private void removeElementGui(ElementGUI element) {
-		frame.getContentPane().remove(element);
-	}
-	
-	/*private Collection<PlayerGUI> getPlayers() {
-		return playersGui.values();
-	}*/
-	
-	private void clearPlayers() {
-		playersGui.clear();
-	}
-	
-	/*private void showPlayersCards(List<Player> playerList) {
-//		for (PlayerGUI playerGui : playersGui.values()) {
-//			
-//		}
-		for(int i = 0; i < playerList.size(); i++) {
-			playersGui.get(i).setCard1(playerList.get(i).getCards().get(0));
-			playersGui.get(i).setCard2(playerList.get(i).getCards().get(1));
-		}
-	}*/
-	
-	private void createAndAddPlayerGui(Player p) {
-		int x, y;
-		int i = playersGui.size();
-		
-		x = 185 + (140*i);
-		y = 250;
-				
-		PlayerGUI playerGui = new PlayerGUI(p.getName(),  
-				p.getCards().get(0), 
-				p.getCards().get(1),
-				x, y, 1000);
-		
-		/*test*/ 
-		playerGui.setScore(Math.floorDiv(1000, 7) * i);
-		
-		playersGui.put(p.getName(), playerGui);
-		playerGui.draw(frame);
-		frame.getContentPane().repaint();
-	}
-	
-	private void clear() {
-		for(PlayerGUI playerGui : playersGui.values()) {
-			playerGui.clearFromGui(frame);
-		}
-		
-		playersGui.clear();
-		lblWinners.setText("");
-		buttons.values().stream().forEach(b->frame.getContentPane().remove(b));
-	}
-	
-//	private void setToken(Integer i) {
-//		playersGui.get(i).getLabel().setForeground(new Color(204, 0, 0));
-//	}
-
-//	private void unsetToken() {
-//		for (int i = 0; i < getPlayers().size(); i++) {
-//			unsetToken(i);
-//		}
-//	}
-//	
-//	private void unsetToken(Integer i) {
-//		getPlayers().get(i).getName().setForeground(new Color(0, 0, 0));
-//	}
-
-//	private void resetToken() {
-//		unsetToken();
-//		setToken(0);
-//	}
-
-//	public void create(List<Player> players) {
-//		// TODO Auto-generated method stub
-//		createGamePlay(players);
-//	}
-
-//	public void populatePlayers(List<Player> players) {
-//		// TODO Auto-generated method stub
-//		this.initElementsGUI(players);
-//	}
 }

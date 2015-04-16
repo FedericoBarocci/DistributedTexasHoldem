@@ -24,6 +24,9 @@ public enum CardsUtils {
 	private int width;
 	private int height;
 	
+	public static final int span1 = 15;
+	public static final int span2 = 72;
+	
 	private CardsUtils(int width, int height) {
 		this.width = width;
 		this.height = height;

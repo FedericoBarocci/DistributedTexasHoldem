@@ -41,11 +41,6 @@ public class Card implements Serializable {
 		}
 	}
 
-//	@Override
-//	public int hashCode() {
-//		return Integer.valueOf(String.valueOf(rank.ordinal()) + String.valueOf(suit.ordinal()));
-//	}
-
 	@Override
 	public String toString() {
 		return rank.toString().substring(1) + " " + suit.toString();
