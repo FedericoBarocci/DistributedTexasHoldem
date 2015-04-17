@@ -44,7 +44,7 @@ public enum GuiUtils {
 		bounds.put("name", 		new Rectangle(0, 134, 180, 50));
 		bounds.put("coins", 	new Rectangle(20, 185, 55, 50));
 		bounds.put("score", 	new Rectangle(105, 185, 55, 50));
-		bounds.put("winners", 	new Rectangle(20, 430, 500, 50));
+		bounds.put("message", 	new Rectangle(20, 430, 500, 50));
 		bounds.put("bet", 		new Rectangle(10, 330, 60, 50));
 		bounds.put("pot", 		new Rectangle(60, 240, 60, 50));
 		bounds.put("leftBox", 	new Rectangle(0, 0, 180, 670));

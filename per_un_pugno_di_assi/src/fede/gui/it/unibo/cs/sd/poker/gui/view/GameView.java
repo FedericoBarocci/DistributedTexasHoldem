@@ -42,7 +42,7 @@ public class GameView {
 	public JLabel lblCoins = new JLabel("", SwingConstants.CENTER);
 	public JLabel lblBet = new JLabel("", SwingConstants.CENTER);
 	public JLabel lblPot = new JLabel("", SwingConstants.CENTER);
-	public JLabel lblWinners = new JLabel("");
+	public JLabel lblMessage = new JLabel("");
 	
 	public GameView() {
 		super();
@@ -104,7 +104,7 @@ public class GameView {
 		GuiUtils.INSTANCE.initLabel(lblPlayerName, "name", "black", "B13", clientPlayer);
 		GuiUtils.INSTANCE.initLabel(lblCoins, "coins", "black", "B13", "" + coins);
 		GuiUtils.INSTANCE.initLabel(lblScore, "score", "black", "B13", "" + score);
-		GuiUtils.INSTANCE.initLabel(lblWinners, "winners", "gold", "B16", "Let's start the game!");
+		GuiUtils.INSTANCE.initLabel(lblMessage, "message", "gold", "B16", "Let's start the game!");
 		GuiUtils.INSTANCE.initLabel(lblBet, "bet", "black", "B25", "0");
 		GuiUtils.INSTANCE.initLabel(lblPot, "pot", "black", "B18", "0/0");
 		GuiUtils.INSTANCE.initPanel(leftPanel, "leftPanel", "alphaGreen");
@@ -130,7 +130,7 @@ public class GameView {
 		frame.getContentPane().add(lblPlayerName);
 		frame.getContentPane().add(lblCoins);
 		frame.getContentPane().add(lblScore);
-		frame.getContentPane().add(lblWinners);
+		frame.getContentPane().add(lblMessage);
 		frame.getContentPane().add(lblBet);
 		frame.getContentPane().add(lblPot);
 		frame.getContentPane().add(up);
