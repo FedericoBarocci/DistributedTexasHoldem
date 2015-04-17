@@ -1,6 +1,7 @@
 package it.unibo.cs.sd.poker.gui.controllers.actionlisteners;
 
 import it.unibo.cs.sd.poker.gui.view.elements.ElementGUI;
+import it.unibo.cs.sd.poker.gui.view.elements.utils.EnumRectangle;
 import it.unibo.cs.sd.poker.gui.view.elements.utils.GuiUtils;
 
 import java.awt.Dimension;
@@ -16,16 +17,16 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class infoButton implements MouseListener {
+public class InfoButton implements MouseListener {
 
-	public infoButton() {}
+	public InfoButton() {}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		JFrame frame = new JFrame();
 		frame.setLayout(new FlowLayout());
 		frame.setTitle("About");
-		frame.setBounds(GuiUtils.INSTANCE.getBound("about"));
+		frame.setBounds(GuiUtils.INSTANCE.getRectangle(EnumRectangle.about));
 		
 		String s = "";
 		

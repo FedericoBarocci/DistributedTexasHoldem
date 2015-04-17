@@ -1,6 +1,7 @@
 package breads_and_aces.services.rmi.game.core.impl;
 
 import it.unibo.cs.sd.poker.game.core.Card;
+import it.unibo.cs.sd.poker.gui.view.GameViewInitializerReal;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -32,9 +33,10 @@ public class GameServiceAsSessionInitializerClientable
 			Game game
 			, GamePlayersKeeper gamePlayersKeeper
 			, KeepersUtilDelegate keepersUtilDelegate
-			, @Assisted RegistrationInitializerClientable registrationInitializerClientable
+			, @Assisted RegistrationInitializerClientable registrationInitializerClientable,
+			GameViewInitializerReal gameViewInitializer
 			) throws RemoteException {
-		super(nodeId, game, gamePlayersKeeper);
+		super(nodeId, game, gamePlayersKeeper, gameViewInitializer);
 		this.keepersUtilDelegate = keepersUtilDelegate;
 		this.registrationInitializerClientable = registrationInitializerClientable;
 	}

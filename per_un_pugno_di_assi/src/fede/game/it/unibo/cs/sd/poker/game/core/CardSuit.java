@@ -1,26 +1,31 @@
 package it.unibo.cs.sd.poker.game.core;
 
 public enum CardSuit {
-	Cuori {
+	Hearts {
 		public String getSuitChar() {
-			return "h";
+			return h;
 		}
 	},
-	Quadri {
+	Diamonds {
 		public String getSuitChar() {
-			return "d";
+			return d;
 		}
 	},
-	Fiori {
+	Clubs {
 		public String getSuitChar() {
-			return "c";
+			return c;
 		}
 	},
-	Picche {
+	Spades {
 		public String getSuitChar() {
-			return "s";
+			return s;
 		}
 	};
 	
 	abstract public String getSuitChar();
+	
+	private static final String s = "s";
+	private static final String c = "c";
+	private static final String d = "d";
+	private static final String h = "h";
 }

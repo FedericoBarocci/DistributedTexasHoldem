@@ -61,4 +61,9 @@ public class GameViewInitializerGUIDummy implements GameViewInitializer {
 		/*TEST*/
 //		view.showPlayersCards();
 	}
+	
+	@Override
+	public GameView get() {
+		return view;
+	}
 }

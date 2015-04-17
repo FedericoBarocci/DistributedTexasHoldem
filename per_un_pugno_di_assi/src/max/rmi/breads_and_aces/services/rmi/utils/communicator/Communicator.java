@@ -2,6 +2,7 @@ package breads_and_aces.services.rmi.utils.communicator;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Optional;
 import java.util.Set;
@@ -26,17 +27,17 @@ public class Communicator {
 		this.crashHandler = crashHandler;
 	}
 	
-	public void toAll(String meId, CommunicatorFunctor communicatorFunctor) {
-		broadcast(meId, communicatorFunctor);
+	public List<String> toAll(String meId, CommunicatorFunctor communicatorFunctor) {
+		return broadcast(meId, communicatorFunctor);
 	}
 	
-	private void broadcast(String meId, CommunicatorFunctor communicatorFunctor) {
+	private List<String> broadcast(String meId, CommunicatorFunctor communicatorFunctor) {
 		// this below is always updated each times we arrive here, because, eventually "handleRemovingLocally" remove crashed id 
 		Set<String> idsFromGameService = gameServicesKeeper.getServices().keySet();
 		ArrayList<String> arrayList = new ArrayList<>(idsFromGameService);
 		ListIterator<String> idsListIterator = arrayList.listIterator();
 		
-		
+		List<String> crashed = new ArrayList<>();
 		// we use listiterator because we can not change a collection during its iteration, instead listiterator can do 
 		while(idsListIterator.hasNext()) {
 			String id = idsListIterator.next();
@@ -53,9 +54,12 @@ public class Communicator {
 					// TODO the node is unreachable, so handle the crash removing player/node/service
 					crashHandler.handleRemovingLocally(id);
 					idsListIterator.remove(); // needed ?
+					crashed.add(id);
 				}
 			});
 		}
+		
+		return crashed;
 //		return crashHandler.isHappenedCrash();
 	}
 	

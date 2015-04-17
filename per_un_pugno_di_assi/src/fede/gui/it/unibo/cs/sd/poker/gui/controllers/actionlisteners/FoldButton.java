@@ -6,10 +6,10 @@ import it.unibo.cs.sd.poker.gui.view.elements.utils.GuiUtils;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class foldButton implements MouseListener {
+public class FoldButton implements MouseListener {
 	
 
-	public foldButton() {}
+	public FoldButton() {}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {

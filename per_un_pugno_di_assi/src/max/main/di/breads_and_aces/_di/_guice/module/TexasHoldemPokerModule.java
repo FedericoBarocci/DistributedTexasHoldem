@@ -1,7 +1,5 @@
 package breads_and_aces._di._guice.module;
 
-import it.unibo.cs.sd.poker.gui.view.GameViewInitializer;
-import it.unibo.cs.sd.poker.gui.view.GameViewInitializerReal;
 import breads_and_aces._di.providers.node.inputhandler.InputHandlerProvider;
 import breads_and_aces._di.providers.node.inputhandler.gui.InputHandlerGUIProvider;
 import breads_and_aces._di.providers.registration.initializers.clientable.RegistrationInitializerClientableProvider;
@@ -14,7 +12,6 @@ import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
 import breads_and_aces.node.NodeFactory;
 import breads_and_aces.node.initializer.NodeInitializerFactory;
 import breads_and_aces.node.inputhandler.InputHandler;
-import breads_and_aces.node.inputhandler.gui.GameViewInitializerInstancer;
 import breads_and_aces.registration.initializers.clientable.RegistrationInitializerClientable;
 import breads_and_aces.registration.initializers.clientable._gui.RegistrationInitializerClientableGUIFactory;
 import breads_and_aces.registration.initializers.servable.RegistrationInitializerServable;
@@ -37,6 +34,12 @@ public class TexasHoldemPokerModule extends AbstractModule {
 		bind(GamePlayersKeeper.class).to(PlayersKeeperImpl.class);
 		
 //		install(new FactoryModuleBuilder().build(MeFactory.class));
+		
+		install(new FactoryModuleBuilder().build(GameServiceFactory.class));
+		
+//		install(new FactoryModuleBuilder().build(GameViewInitializerInstancer.class));
+//		bind(GameViewInitializer.class).to(GameViewInitializerReal.class);
+		
 		
 		bind(InputHandler.class).toProvider(InputHandlerProvider.class);
 		// gui
@@ -75,10 +78,7 @@ public class TexasHoldemPokerModule extends AbstractModule {
 //		install(new FactoryModuleBuilder().build(RegistrationInitializerClientableShellFactory.class));
 		
 		
-		install(new FactoryModuleBuilder().build(GameServiceFactory.class));
 		
-		install(new FactoryModuleBuilder().build(GameViewInitializerInstancer.class));
-		bind(GameViewInitializer.class).to(GameViewInitializerReal.class);
 
 		
 	}

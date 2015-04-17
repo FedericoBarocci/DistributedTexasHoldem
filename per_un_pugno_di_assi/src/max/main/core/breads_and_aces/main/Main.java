@@ -17,6 +17,7 @@ import com.google.inject.Injector;
 public class Main {
 	
 	public static Injector Injector;
+	public static String nodeid;
 
 	public static void main(String[] args) {
 		if (args.length<1) {
@@ -51,6 +52,7 @@ public class Main {
 			NodeInitializer nodeInitializer = null;
 			
 			String meId = loginResult.username;
+			nodeid = meId;
 			
 			if (loginResult.asServable) {
 				// waiter gui for players

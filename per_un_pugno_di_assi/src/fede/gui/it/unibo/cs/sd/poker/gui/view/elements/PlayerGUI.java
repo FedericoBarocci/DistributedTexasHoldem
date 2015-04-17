@@ -2,6 +2,10 @@ package it.unibo.cs.sd.poker.gui.view.elements;
 
 import it.unibo.cs.sd.poker.game.core.Card;
 import it.unibo.cs.sd.poker.gui.view.elements.utils.CardsUtils;
+import it.unibo.cs.sd.poker.gui.view.elements.utils.EnumColor;
+import it.unibo.cs.sd.poker.gui.view.elements.utils.EnumFont;
+import it.unibo.cs.sd.poker.gui.view.elements.utils.EnumLine;
+import it.unibo.cs.sd.poker.gui.view.elements.utils.EnumRectangle;
 import it.unibo.cs.sd.poker.gui.view.elements.utils.GuiUtils;
 
 import java.awt.Color;
@@ -48,11 +52,11 @@ public class PlayerGUI {
 		
 		String s = "<html><div style='border-bottom:2px solid black'>"+ playerId + "</div></html>";
 		
-		GuiUtils.INSTANCE.initPanel(box, "playerBox", "glass", "playerBox", x + 10, y + 25);
-		GuiUtils.INSTANCE.initPanel(scoreContainer, "playerLevel", "glass2", x, y + 25);
-		GuiUtils.INSTANCE.initLabel(name, "playerName", "black", "B15", s , x + 10, y + 90);
-		GuiUtils.INSTANCE.initLabel(action, "playerAction", "black", "B11", "WAIT", x + 10, y + 120);
-		GuiUtils.INSTANCE.initLabel(score, "playerScore", "black", "B11", "SCORE: 0", x + 10, y + 135);
+		GuiUtils.INSTANCE.initPanel(box, EnumRectangle.playerBox, EnumColor.glass, EnumLine.playerBox, x + 10, y + 25);
+		GuiUtils.INSTANCE.initPanel(scoreContainer, EnumRectangle.playerLevel, EnumColor.glass2, x, y + 25);
+		GuiUtils.INSTANCE.initLabel(name, EnumRectangle.playerName, EnumColor.black, EnumFont.B15, s , x + 10, y + 90);
+		GuiUtils.INSTANCE.initLabel(action, EnumRectangle.playerAction, EnumColor.black, EnumFont.B11, "WAIT", x + 10, y + 120);
+		GuiUtils.INSTANCE.initLabel(score, EnumRectangle.playerScore, EnumColor.black, EnumFont.B11, "SCORE: 0", x + 10, y + 135);
 
 		setScore(scoreVal);
 	}
@@ -78,13 +82,13 @@ public class PlayerGUI {
 	
 	public void unsetTokenView(JFrame frame) {
 		frame.getContentPane().remove( box );
-		GuiUtils.INSTANCE.initPanel(box, "playerBox", "glass", "playerBox", x + 10, y + 25);
+		GuiUtils.INSTANCE.initPanel(box, EnumRectangle.playerBox, EnumColor.glass, EnumLine.playerBox, x + 10, y + 25);
 		frame.getContentPane().add( box );
 	}
 	
 	public void setTokenView(JFrame frame) {
 		frame.getContentPane().remove( box );
-		GuiUtils.INSTANCE.initPanel(box, "playerBox", "alphaGreen", "playerToken", x + 10, y + 25);
+		GuiUtils.INSTANCE.initPanel(box, EnumRectangle.playerBox, EnumColor.alphaGreen, EnumLine.playerToken, x + 10, y + 25);
 		frame.getContentPane().add( box );
 	}
 

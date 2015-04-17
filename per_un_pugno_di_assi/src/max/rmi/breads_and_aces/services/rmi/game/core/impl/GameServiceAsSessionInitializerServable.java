@@ -1,5 +1,7 @@
 package breads_and_aces.services.rmi.game.core.impl;
 
+import it.unibo.cs.sd.poker.gui.view.GameViewInitializerReal;
+
 import java.rmi.RemoteException;
 
 import breads_and_aces._di.providers.registration.initializers.servable.registrar.GameRegistrarProvider;
@@ -14,23 +16,27 @@ import breads_and_aces.services.rmi.game.core.GameServiceServable;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 
-public class GameServiceAsSessionInitializerServable 
-	extends AbstractGameService 
-	implements GameServiceServable {
-	
+public class GameServiceAsSessionInitializerServable extends
+		AbstractGameService implements GameServiceServable {
+
 	private final GameRegistrarProvider gameRegistrarProvider;
 
 	@AssistedInject
-	public GameServiceAsSessionInitializerServable(@Assisted String nodeId, Game game, GamePlayersKeeper playersKeeper, GameRegistrarProvider gameRegistrarProvider) throws RemoteException {
-		super(nodeId, game, playersKeeper);
+	public GameServiceAsSessionInitializerServable(@Assisted String nodeId,
+			Game game, GamePlayersKeeper playersKeeper,
+			GameRegistrarProvider gameRegistrarProvider,
+			GameViewInitializerReal gameViewInitializer) throws RemoteException {
+		super(nodeId, game, playersKeeper, gameViewInitializer);
 		this.gameRegistrarProvider = gameRegistrarProvider;
 	}
 
 	@Override
-	public RegistrationResult registerPlayer(NodeConnectionInfos nodeConnectionInfos, String playerId) throws RemoteException {
+	public RegistrationResult registerPlayer(
+			NodeConnectionInfos nodeConnectionInfos, String playerId)
+			throws RemoteException {
 		GameRegistrar gameRegistrar = gameRegistrarProvider.get();
 		return gameRegistrar.registerPlayer(nodeConnectionInfos, playerId);
 	}
-	
+
 	private static final long serialVersionUID = 4075894245372521497L;
 }

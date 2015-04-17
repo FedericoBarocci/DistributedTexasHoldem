@@ -1,39 +1,50 @@
 package breads_and_aces.main.start.gui;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Font;
+import static javax.swing.GroupLayout.Alignment.BASELINE;
+import static javax.swing.GroupLayout.Alignment.LEADING;
+import static javax.swing.GroupLayout.Alignment.TRAILING;
+import it.unibo.cs.sd.poker.gui.view.elements.utils.EnumFont;
+import it.unibo.cs.sd.poker.gui.view.elements.utils.GuiUtils;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
+import javax.swing.BorderFactory;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 
 import breads_and_aces.main.Main.LoginResult;
 
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.FormSpecs;
-import com.jgoodies.forms.layout.RowSpec;
 
 public class StartOrRegisterGUI extends JFrame {
 	
-	private final JLabel titleLabel = new JLabel("Texas Hold'Em Registration");
+	private static final long serialVersionUID = 4397221565390084929L;
+
+	private final JLabel titleLabel = new JLabel("Poker Distributed Hold'em Registration");
 	private final JLabel nameLabel = new JLabel("Your name");
-	private final JTextField usernameField = new JTextField();
 	private final JLabel portLabel = new JLabel("Port");
 	private final JLabel hostLabel = new JLabel("Host");
-	private final JTextField hostTextField = new JTextField();
+	
+	private final JTextField usernameField = new JTextField();
+	private final JTextField hostTextField = new JTextField("10.0.0.1");
 	private final JTextField portTextField = new JTextField("33333");
-	private final JCheckBox servableCheckBox = new JCheckBox();
-	private final JLabel registrarLabel = new JLabel("As Registrar");
+	
+	private final JCheckBox servableCheckBox = new JCheckBox("Check if your node acts as initializer");
+	
 	private final JButton loginButton = new JButton("Register");
-	private final JLabel resultLabel = new JLabel("Check 'As Registrar' box if your node acts as initializer");
+	
+	private static final int gap = 20;
 	
 	public StartOrRegisterGUI(CountDownLatch latch, AtomicReference<LoginResult> loginResultAtomicReference) {
 		createLayout();
@@ -41,16 +52,18 @@ public class StartOrRegisterGUI extends JFrame {
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String serverHost = hostTextField.getText();
-				hostTextField.setEnabled(false);
 				String serverPort = portTextField.getText();
-				portTextField.setEnabled(false);
-				boolean asServable = servableCheckBox.isSelected();
-				servableCheckBox.setEnabled(false);
 				String username = usernameField.getText();
+				boolean asServable = servableCheckBox.isSelected();
+				
+				portTextField.setEnabled(false);
+				servableCheckBox.setEnabled(false);
+				hostTextField.setEnabled(false);
 				usernameField.setEnabled(false);
 				
 				LoginResult loginResult = new LoginResult(serverHost, serverPort, asServable, username);
 				loginResultAtomicReference.set(loginResult);
+
 				latch.countDown();
 			}
 		});
@@ -59,89 +72,79 @@ public class StartOrRegisterGUI extends JFrame {
 			if (servableCheckBox.isSelected()) {
 				hostTextField.setEnabled(false);
 				portTextField.setEnabled(false);
-			} else {
+				loginButton.setText("Accept Registrations");
+			} 
+			else {
 				hostTextField.setEnabled(true);
 				portTextField.setEnabled(true);
+				loginButton.setText("Register");
 			}
 		});
 	}
 	
-
-	private static final long serialVersionUID = 4397221565390084929L;
-	
-	
 	private void createLayout() {
-		Container contentPane = getContentPane();
-		getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("0px"),
-				ColumnSpec.decode("191px"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				RowSpec.decode("4dlu:grow"),
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.PARAGRAPH_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,}));
-		titleLabel.setFont(new Font("DejaVu Sans", Font.BOLD | Font.ITALIC, 16));
+		GroupLayout layout = new GroupLayout(getContentPane());
+		getContentPane().setLayout(layout);
+		layout.setAutoCreateGaps(true);
+		layout.setAutoCreateContainerGaps(true);
 		
-		contentPane.add(titleLabel, "6, 2, 14, 1, center, center");
+		titleLabel.setFont(GuiUtils.INSTANCE.getFont(EnumFont.B18));
+		servableCheckBox.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+		layout.setHorizontalGroup(layout.createSequentialGroup()
+			.addGroup(layout.createParallelGroup(LEADING)
+				.addComponent(titleLabel)
+				.addGroup(layout.createSequentialGroup()
+					.addGroup(layout.createParallelGroup(TRAILING)
+						.addComponent(nameLabel)
+						.addComponent(hostLabel)
+					)
+					.addGroup(layout.createParallelGroup(LEADING)
+						.addComponent(usernameField)
+						.addGroup(layout.createSequentialGroup()
+							.addComponent(hostTextField)
+							.addComponent(portLabel)
+							.addComponent(portTextField)
+						)
+						.addComponent(servableCheckBox)
+					)
+				)
+				.addGap(gap)
+				.addComponent(loginButton)
+			)
+		);
+       
+		layout.setVerticalGroup(layout.createSequentialGroup()
+			.addComponent(titleLabel)
+			.addGroup(layout.createParallelGroup(BASELINE)
+				.addComponent(nameLabel)
+				.addComponent(usernameField)
+			)
+			.addGroup(layout.createParallelGroup(BASELINE)
+				.addComponent(hostLabel)
+				.addGroup(layout.createSequentialGroup()
+					.addGroup(layout.createParallelGroup(BASELINE)
+						.addComponent(hostTextField)
+						.addComponent(portLabel)
+						.addComponent(portTextField)
+					)
+					.addComponent(servableCheckBox)
+				)
+			)
+			.addGap(gap)
+			.addComponent(loginButton)
+		);
 		
-		getContentPane().add(nameLabel, "6, 4, center, center");
-		
-		getContentPane().add(usernameField, "7, 4, 14, 1, fill, center");
-		contentPane.add(hostLabel, "6, 6, center, center");
-		contentPane.add(portLabel, "10, 6, 3, 1, center, center");
-		
-		getContentPane().add(registrarLabel, "14, 6, center, center");
-		getContentPane().setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{hostLabel, hostTextField, portLabel, portTextField}));
-		contentPane.add(hostTextField, "6, 8, fill, center");
-		contentPane.add(portTextField, "10, 8, 3, 1, center, center");
-		
-		getContentPane().add(servableCheckBox, "14, 8, center, center");
-		
-		contentPane.add(loginButton, "6, 10, 15, 1, fill, center");
-		getContentPane().add(resultLabel, "6, 14, 14, 3, center, center");
-		setSize(430, 230);
-		
+		layout.linkSize(SwingConstants.HORIZONTAL, loginButton, titleLabel);
+
+		getRootPane().registerKeyboardAction(
+			e -> { System.exit(1); }, 
+			KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+			JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+		pack();
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		setResizable(false);
 		setVisible(true);
 	}
 }
