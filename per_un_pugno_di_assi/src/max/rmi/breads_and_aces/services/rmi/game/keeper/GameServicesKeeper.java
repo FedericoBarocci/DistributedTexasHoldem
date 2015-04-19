@@ -14,7 +14,7 @@ public class GameServicesKeeper {
 	private final Map<String, GameService> servicesMap = new LinkedHashMap<>();
 
 	public void addService(String playerId, GameService gameService) {
-		servicesMap .put(playerId, gameService);
+		servicesMap.put(playerId, gameService);
 	}
 	
 	public Optional<GameService> getService(String playerId) {

@@ -5,10 +5,13 @@ import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.BetButton;
 import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.FoldButton;
 import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.InfoButton;
 import it.unibo.cs.sd.poker.gui.controllers.actionlisteners.OkButton;
+import it.unibo.cs.sd.poker.gui.view.elements.BackgroundGUI;
 import it.unibo.cs.sd.poker.gui.view.elements.CardGUI;
 import it.unibo.cs.sd.poker.gui.view.elements.ElementGUI;
+import it.unibo.cs.sd.poker.gui.view.elements.JFrameDefault;
 import it.unibo.cs.sd.poker.gui.view.elements.PlayerGUI;
 import it.unibo.cs.sd.poker.gui.view.elements.TransparentPanel;
+import it.unibo.cs.sd.poker.gui.view.elements.utils.CardsUtils;
 import it.unibo.cs.sd.poker.gui.view.elements.utils.EnumButton;
 import it.unibo.cs.sd.poker.gui.view.elements.utils.EnumColor;
 import it.unibo.cs.sd.poker.gui.view.elements.utils.EnumFont;
@@ -16,11 +19,9 @@ import it.unibo.cs.sd.poker.gui.view.elements.utils.EnumLine;
 import it.unibo.cs.sd.poker.gui.view.elements.utils.EnumRectangle;
 import it.unibo.cs.sd.poker.gui.view.elements.utils.GuiUtils;
 
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,65 +29,64 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
 import breads_and_aces.game.model.players.player.Player;
 
 @Singleton
 public class GameView {
-	public JFrame frame = new JFrame();
+	private JFrameDefault frame = new JFrameDefault("Poker Distributed Hold'em");
 	
-	// TODO usare playerskeeper
 	private Map<String, PlayerGUI> playersGui = new LinkedHashMap<>();
+	private List<CardGUI> tableCardsGui = new ArrayList<>();
+	private int displayedCards;
 	
-	public List<CardGUI> tableCardsGui = new ArrayList<>();
-	public CardGUI card1;
-	public CardGUI card2;
-	
-	public JLabel lblPlayerName = new JLabel("", SwingConstants.CENTER);
-	public JLabel lblScore = new JLabel("", SwingConstants.CENTER);
-	public JLabel lblCoins = new JLabel("", SwingConstants.CENTER);
-	public JLabel lblBet = new JLabel("", SwingConstants.CENTER);
-	public JLabel lblPot = new JLabel("", SwingConstants.CENTER);
-	public JLabel lblMessage = new JLabel("");
+	private JLabel lblPlayerName = new JLabel("", SwingConstants.CENTER);
+	private JLabel lblScore = new JLabel("", SwingConstants.CENTER);
+	private JLabel lblCoins = new JLabel("", SwingConstants.CENTER);
+	private JLabel lblBet = new JLabel("", SwingConstants.CENTER);
+	private JLabel lblPot = new JLabel("", SwingConstants.CENTER);
+	private JLabel lblMessage = new JLabel("");
 
 	private final OkButton okButton;
 	private final FoldButton foldButton;
+
+	private boolean refresh = false;
 	
 	@Inject
 	public GameView(OkButton okButton, FoldButton foldButton) {
-		super();
 		this.okButton = okButton;
 		this.foldButton = foldButton;
 		
-		frame.setLayout(null);
-		frame.setTitle("Poker Distributed Hold'em");
-		frame.setContentPane(GuiUtils.INSTANCE.background);
-		frame.setBounds(GuiUtils.INSTANCE.getRectangle(EnumRectangle.frame));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		BackgroundGUI bg = GuiUtils.INSTANCE.background;
+		bg.setLayout(null);
+		bg.setPreferredSize(GuiUtils.INSTANCE.getRectangle(EnumRectangle.frame).getSize());
+		bg.setBounds(GuiUtils.INSTANCE.getRectangle(EnumRectangle.frame));
 		
-		frame.getRootPane().registerKeyboardAction(
-				e -> { System.exit(1); }, 
-				KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-				JComponent.WHEN_IN_FOCUSED_WINDOW);
-		
-		frame.getContentPane().setLayout(null);
-		frame.setResizable(false);
-		frame.setVisible(true);
+		frame.setContentPane(bg);
+		frame.pack();
 		
 		String title = "<html><p style='text-align:center; border-bottom:1px solid #000;padding-bottom:10px;'>Poker Distributed Hold'em</p></html>";
 		JLabel lblTitle = new JLabel(title, SwingConstants.CENTER);
 		GuiUtils.INSTANCE.initLabel(lblTitle, EnumRectangle.title, EnumColor.gold, EnumFont.B22);
 		frame.getContentPane().add(lblTitle);
+		
+		JPanel panel = new TransparentPanel();
+		GuiUtils.INSTANCE.initPanel(panel, EnumRectangle.cardPanel, EnumColor.alphaBlue, EnumLine.cardBox);
+		frame.getContentPane().add(panel);
+		
+		initTableCards();
 	}
 	
-	public void initTableCards(List<Card> tableCards) {
+	public void start() {
+		frame.setVisible(true);
+	}
+	
+	private void initTableCards() {
 		tableCardsGui.forEach(c->frame.getLayeredPane().remove(c));
+		tableCardsGui.clear();
 		
 		for (int i = 0; i < 5; i++) {
 			CardGUI c = new CardGUI(GuiUtils.tableCardX + GuiUtils.tableCardSpan * i, GuiUtils.tableCardY);
@@ -94,14 +94,18 @@ public class GameView {
 			frame.getLayeredPane().add(c);
 		}
 		
-		JPanel panel = new TransparentPanel();
-		GuiUtils.INSTANCE.initPanel(panel, EnumRectangle.cardPanel, EnumColor.alphaBlue, EnumLine.cardBox);
-		frame.getContentPane().add(panel);
+		this.displayedCards = 0;
 	}
 	
-	public void initPlayers(List<Player> players, String myname, int goal, int score) {
+	public void initPlayers(List<Player> players, String myName, int goal) {
 		int size = players.size();
 		int span = Math.floorDiv(GuiUtils.playerSpan, size+1);
+		
+		playersGui.values().forEach(p->{
+			p.clearFromGui(frame);
+		});
+		
+		playersGui.clear();
 		
 		for (int i = 0; i < size; i++) {
 			int x = GuiUtils.playerX + (span * (i+1));
@@ -109,11 +113,14 @@ public class GameView {
 			Player p = players.get(i);
 			
 			/*XXX*/	/* *** only for testing *** override param *** */ 
-				score = Math.floorDiv(goal, 7) * i;
+				p.setScore(Math.floorDiv(goal, 7) * i);
 			
-			Boolean hideCards = (myname != p.getName());	
+			Boolean showCards = p.getName().equals(myName);	
 			
-			PlayerGUI playerGui = new PlayerGUI(p.getName(), p.getCards().get(0), p.getCards().get(1), x, y, goal, score, hideCards);
+			PlayerGUI playerGui = new PlayerGUI(p.getName(), p.getCards().get(0), p.getCards().get(1), x, y, goal, p.getScore(), showCards);
+			
+			if (p.hasToken()) playerGui.setTokenView(frame);
+			
 			playerGui.draw(frame);
 			playersGui.put(p.getName(), playerGui);
 		}
@@ -143,6 +150,9 @@ public class GameView {
 		
 		up.setName(EnumButton.UP.name());
 		down.setName(EnumButton.DOWN.name());
+		
+		okButton.setup(this, clientPlayer);
+		foldButton.setup(this, clientPlayer);
 
 		MouseListener betClick = new BetButton(lblBet, lblCoins, coins);
 		up.addMouseListener( betClick );
@@ -168,13 +178,63 @@ public class GameView {
 	}
 
 	public void showPlayersCards() {
-		Collection<PlayerGUI> collection = playersGui.values();
-		collection.forEach(p->p.showCards(frame));
+		playersGui.values().forEach(p->p.showCards(frame));
 	}
 	
 	public void setViewToken(String playerName) {
-		Collection<PlayerGUI> collection = playersGui.values();
-		collection.forEach(p->p.unsetTokenView(frame));
-		playersGui.get(playerName).setTokenView(frame);
+		playersGui.values().forEach(p->{
+			p.unsetTokenView(frame);
+			if (p.getId().equals(playerName)) p.setTokenView(frame);
+		});
+		
+		frame.repaint();
+	}
+	
+	public void addTableCards(List<Card> cards) {
+		//Show down
+		if(cards.size() == 5) 
+			displayedCards = 0;
+		
+		for (Card c : cards) {
+			tableCardsGui.get(displayedCards).changeImage(CardsUtils.INSTANCE_BIG.getImageCard(c));
+			displayedCards++;
+		}
+		
+		frame.repaint();
+	}
+	
+	public void showWinners(List<Player> players) {
+		for(PlayerGUI pg : playersGui.values()) {
+			boolean loser = true;
+			for(Player p : players) {
+				if (pg.getId().equals(p.getName())) {
+					pg.setWinner(frame);
+					loser = false;
+					break;
+				}
+			}
+			if (loser) {
+				pg.setLoser(frame);
+			}
+		}
+		
+		frame.repaint();
+	}
+
+	public boolean isSetRefresh() {
+		return refresh;
+	}
+
+	public void refresh(List<Player> players, String myName, int goal) {
+		initTableCards();
+		initPlayers(players, myName, goal);
+		
+		frame.repaint();
+		
+		refresh = false;
+	}
+
+	public void setRefresh() {
+		refresh = true;		
 	}
 }

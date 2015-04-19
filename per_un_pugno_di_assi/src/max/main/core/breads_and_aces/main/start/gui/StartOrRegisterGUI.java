@@ -3,12 +3,12 @@ package breads_and_aces.main.start.gui;
 import static javax.swing.GroupLayout.Alignment.BASELINE;
 import static javax.swing.GroupLayout.Alignment.LEADING;
 import static javax.swing.GroupLayout.Alignment.TRAILING;
+import it.unibo.cs.sd.poker.gui.view.elements.JFrameDefault;
 import it.unibo.cs.sd.poker.gui.view.elements.utils.EnumFont;
 import it.unibo.cs.sd.poker.gui.view.elements.utils.GuiUtils;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -16,18 +16,14 @@ import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
 
 import breads_and_aces.main.Main.LoginResult;
 
-
-public class StartOrRegisterGUI extends JFrame {
+public class StartOrRegisterGUI extends JFrameDefault {
 	
 	private static final long serialVersionUID = 4397221565390084929L;
 
@@ -51,20 +47,26 @@ public class StartOrRegisterGUI extends JFrame {
 		
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String serverHost = hostTextField.getText();
-				String serverPort = portTextField.getText();
 				String username = usernameField.getText();
-				boolean asServable = servableCheckBox.isSelected();
 				
-				portTextField.setEnabled(false);
-				servableCheckBox.setEnabled(false);
-				hostTextField.setEnabled(false);
-				usernameField.setEnabled(false);
-				
-				LoginResult loginResult = new LoginResult(serverHost, serverPort, asServable, username);
-				loginResultAtomicReference.set(loginResult);
-
-				latch.countDown();
+				if (username.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "You need to insert an unique name", "Warning", JOptionPane.WARNING_MESSAGE);
+				}
+				else {
+					String serverHost = hostTextField.getText();
+					String serverPort = portTextField.getText();
+					boolean asServable = servableCheckBox.isSelected();
+					
+					portTextField.setEnabled(false);
+					hostTextField.setEnabled(false);
+					usernameField.setEnabled(false);
+					servableCheckBox.setEnabled(false);
+					
+					LoginResult loginResult = new LoginResult(serverHost, serverPort, asServable, username);
+					loginResultAtomicReference.set(loginResult);
+	
+					latch.countDown();
+				}
 			}
 		});
 		
@@ -91,27 +93,25 @@ public class StartOrRegisterGUI extends JFrame {
 		titleLabel.setFont(GuiUtils.INSTANCE.getFont(EnumFont.B18));
 		servableCheckBox.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-		layout.setHorizontalGroup(layout.createSequentialGroup()
-			.addGroup(layout.createParallelGroup(LEADING)
-				.addComponent(titleLabel)
-				.addGroup(layout.createSequentialGroup()
-					.addGroup(layout.createParallelGroup(TRAILING)
-						.addComponent(nameLabel)
-						.addComponent(hostLabel)
-					)
-					.addGroup(layout.createParallelGroup(LEADING)
-						.addComponent(usernameField)
-						.addGroup(layout.createSequentialGroup()
-							.addComponent(hostTextField)
-							.addComponent(portLabel)
-							.addComponent(portTextField)
-						)
-						.addComponent(servableCheckBox)
-					)
+		layout.setHorizontalGroup(layout.createParallelGroup(LEADING)
+			.addComponent(titleLabel)
+			.addGroup(layout.createSequentialGroup()
+				.addGroup(layout.createParallelGroup(TRAILING)
+					.addComponent(nameLabel)
+					.addComponent(hostLabel)
 				)
-				.addGap(gap)
-				.addComponent(loginButton)
+				.addGroup(layout.createParallelGroup(LEADING)
+					.addComponent(usernameField)
+					.addGroup(layout.createSequentialGroup()
+						.addComponent(hostTextField)
+						.addComponent(portLabel)
+						.addComponent(portTextField)
+					)
+					.addComponent(servableCheckBox)
+				)
 			)
+			.addGap(gap)
+			.addComponent(loginButton)
 		);
        
 		layout.setVerticalGroup(layout.createSequentialGroup()
@@ -136,15 +136,7 @@ public class StartOrRegisterGUI extends JFrame {
 		);
 		
 		layout.linkSize(SwingConstants.HORIZONTAL, loginButton, titleLabel);
-
-		getRootPane().registerKeyboardAction(
-			e -> { System.exit(1); }, 
-			KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-			JComponent.WHEN_IN_FOCUSED_WINDOW);
-
 		pack();
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setResizable(false);
 		setVisible(true);
 	}
 }

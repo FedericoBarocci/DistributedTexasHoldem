@@ -11,6 +11,6 @@ public class NewPlayersObserverAsClientable implements Observer<String> {
 	}
 	
 	private void notifyNewPlayers(String allplayersIds) {
-			System.out.println("Synchronized players from initializer: "+allplayersIds);
+			System.out.println("Synchronized players from initializer: " + allplayersIds);
 	}
 }

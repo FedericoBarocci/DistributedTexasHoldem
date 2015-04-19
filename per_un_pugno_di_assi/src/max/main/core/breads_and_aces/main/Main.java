@@ -17,7 +17,7 @@ import com.google.inject.Injector;
 public class Main {
 	
 	public static Injector Injector;
-	public static String nodeid;
+//	public static String nodeid;
 
 	public static void main(String[] args) {
 		if (args.length<1) {
@@ -51,22 +51,23 @@ public class Main {
 			NodeInitializerFactory nodeInitializerFactory = Injector.getInstance(NodeInitializerFactory.class);
 			NodeInitializer nodeInitializer = null;
 			
-			String meId = loginResult.username;
-			nodeid = meId;
+			String myId = loginResult.username;
+//			nodeid = meId;
 			
 			if (loginResult.asServable) {
 				// waiter gui for players
 //				CountDownLatch initializerLatch = new CountDownLatch(1);
-				nodeInitializer = nodeInitializerFactory.createAsServable(meId, addressToBind
+				nodeInitializer = nodeInitializerFactory.createAsServable(myId, addressToBind
 						);
 				/*EventQueue.invokeLater(()->{
 				});*/
 //				initializerLatch.await();
-			} else {
+			} 
+			else {
 				String initializingHostAddress = loginResult.serverHost;
 //				CountDownLatch registrarLatch = new CountDownLatch(1);
 				nodeInitializer  = nodeInitializerFactory.createAsClientableWithInitializerPort(
-						meId, 
+						myId, 
 						addressToBind, 
 						initializingHostAddress, 
 						Integer.parseInt(loginResult.serverPort)
@@ -78,6 +79,7 @@ public class Main {
 				});*/
 //				registrarLatch.await();
 			}
+			
 			Node node = nodeInitializer.get();
 			
 			MemoryUtil.runGarbageCollector();
@@ -85,7 +87,7 @@ public class Main {
 			loginResult = null;
 			MemoryUtil.runGarbageCollector();
 			
-			node.start();
+			node.start(myId);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (Exception e1) {
@@ -96,11 +98,10 @@ public class Main {
 	}
 	
 	static public class LoginResult {
-
+		String username;
 		String serverHost;
 		String serverPort;
 		boolean asServable;
-		String username;
 
 		public LoginResult(String serverHost, String serverPort, boolean asServable, String username) {
 			this.serverHost = serverHost;

@@ -11,7 +11,6 @@ import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 
 public class RegistrationInitializerClientableGUI extends AbstractRegistrationInitializerClientable {
-	
 
 	private WaiterGameStartGUI waiterGameStartGUI;
 	private final CountDownLatch latch;

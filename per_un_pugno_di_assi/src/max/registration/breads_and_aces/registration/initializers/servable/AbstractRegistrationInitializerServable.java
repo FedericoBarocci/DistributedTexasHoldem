@@ -3,13 +3,11 @@ package breads_and_aces.registration.initializers.servable;
 import it.unibo.cs.sd.poker.game.core.Deck;
 
 import java.rmi.RemoteException;
-import java.util.stream.Collectors;
 
 import breads_and_aces._di.providers.registration.initializers.servable.registrar.GameRegistrarProvider;
 import breads_and_aces.game.Game;
 import breads_and_aces.game.model.players.keeper.PlayersObservable;
 import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
-import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.registration.initializers.servable.registrar.GameRegistrar;
 import breads_and_aces.registration.model.NodeConnectionInfos;
 import breads_and_aces.services.rmi.game.base._init.PlayersSynchronizar;
@@ -25,7 +23,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 	protected final Communicator communicator;
 	protected final Game game;
 	protected final Printer printer;
-	private final String meId;
+	private final String myId;
 //	private final CountDownLatch latch;
 	
 	public AbstractRegistrationInitializerServable(String nodeId, 
@@ -40,7 +38,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		this.gameRegistrarProvider = gameRegistrarProvider;
 		this.communicator = communicator;
 		this.game = game;
-		this.meId = nodeId;
+		this.myId = nodeId;
 		this.printer = printer;
 //		this.latch = latch;
 		((PlayersObservable)playersKeeper).addObserver( new NewPlayersObserverAsServable( nodeId) );
@@ -77,12 +75,13 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		gameRegistrarProvider.changeRegistrar();
 	}
 	private void giveCards() {
-		new Dealer(game.getTable(), gameRegistrarProvider.get().getRegisteredPlayersMap().values(), new Deck() ).deal();
+//		new Dealer(game.getTable(), gameRegistrarProvider.get().getRegisteredPlayersMap().values(), new Deck() ).deal();
+		new Dealer(game.getTable(), gameRegistrarProvider.get().getRegisteredPlayers(), new Deck() ).deal();
 	}
 	protected void updateAllNodesForPartecipants() {
-		printer.println("Ok: final list partecipants has: "
-				+gameRegistrarProvider.get().getRegisteredPlayersMap().values().stream().map(Player::getName).collect(Collectors.joining(", ")));
-		communicator.toAll(meId, this::updatePartecipantsOnClientFunction);
+//		printer.println("Ok: final list partecipants has: "
+//				+gameRegistrarProvider.get().getRegisteredPlayersMap().values().stream().map(Player::getName).collect(Collectors.joining(", ")));
+		communicator.toAll(myId, this::updatePartecipantsOnClientFunction);
 	}
 	
 	private void updatePartecipantsOnClientFunction(GameService clientGameServiceExternalInjected) throws RemoteException {
@@ -90,28 +89,36 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		GameRegistrar gameRegistrar = gameRegistrarProvider.get();
 		ps.synchronizeAllNodesAndPlayersFromInitiliazer(
 			gameRegistrar.getRegisteredNodesConnectionInfos(),
-			gameRegistrar.getRegisteredPlayersMap(),
+			gameRegistrar.getRegisteredPlayers(),
 			game.getTable().getCards()
 		);
 	}
 	
 	private void startGame() {
-		printer.print("Game can start! ");
+		printer.println("Game can start!");
 		game.setStarted();
-		passBucket();
-	}
-	private void passBucket() {
-		Player next = 
-//				playersKeeper.getNext(meId);
-				gameRegistrarProvider.get().getFirst();
-		String nextId = next.getName();
-		printer.println("First player is: "+nextId);
-		communicator.toOne(this::passBucket, nextId);
-	}
-	private void passBucket(GameService gameServiceExternalInjected) throws RemoteException {
-		gameServiceExternalInjected.receiveBucket();
+//		passBucket();
+//		printer.println("Inizio io perché comando io!");
+		game.getPlayersKeeper().getPlayer(myId).receiveToken();
+		communicator.toAll(myId, this::sayToAllStartGame);
 	}
 	
+//	private void passBucket() {
+////		Player next = gameRegistrarProvider.get().getFirst();
+////		String nextId = next.getName();
+////		printer.println("First player is: "+nextId);
+//		//communicator.toOne(this::passBucket, nextId);
+//		
+//	}
+	
+	/*private void passBucket(GameService gameServiceExternalInjected) throws RemoteException {
+		gameServiceExternalInjected.receiveBucket();
+		System.out.println("Ho passato bucket");
+	}*/
+	
+	private void sayToAllStartGame(GameService gameServiceExternalInjected) throws RemoteException {
+		gameServiceExternalInjected.receiveStartGame(myId);
+	}
 
 	/*protected void updateAllNodes() {
 	printer.print("We have " + nodesConnectionInfosRegistry.getNodesConnectionInfos().size() + " players: "+meId+" ");

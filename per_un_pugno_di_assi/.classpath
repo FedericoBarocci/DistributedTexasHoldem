@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="it/unibo/cs/sd/poker/gui/view/elements/utils/ButtonsUtils.java|it/unibo/cs/sd/poker/gui/controllers/actionlisteners/Fold.java|it/unibo/cs/sd/poker/gui/controllers/actionlisteners/Check.java|it/unibo/cs/sd/poker/gui/controllers/actionlisteners/Bet.java|it/unibo/cs/sd/poker/gui/view/elements/SliderGUI.java" kind="src" path="src/fede/gui"/>
-	<classpathentry excluding="breads_and_aces/main/RegistrationGUI_CRASH.java" kind="src" path="src/max/main/core"/>
+	<classpathentry excluding="it/unibo/cs/sd/poker/gui/view/elements/utils/ButtonsUtils.java|it/unibo/cs/sd/poker/gui/controllers/actionlisteners/Fold.java|it/unibo/cs/sd/poker/gui/controllers/actionlisteners/Check.java|it/unibo/cs/sd/poker/gui/controllers/actionlisteners/Bet.java|it/unibo/cs/sd/poker/gui/view/elements/SliderGUI.java|it/unibo/cs/sd/poker/gui/view/GameViewInitializerGUIDummy.java" kind="src" path="src/fede/gui"/>
+	<classpathentry excluding="breads_and_aces/main/RegistrationGUI_CRASH.java|breads_and_aces/main/start/gui/FocusTraversalOnArray.java" kind="src" path="src/max/main/core"/>
 	<classpathentry excluding="it/unibo/cs/sd/poker/game/core/Player.java|it/unibo/cs/sd/poker/game/core/GameTexasHoldemRunner.java|it/unibo/cs/sd/poker/game/core/GameTexasHoldem.java|it/unibo/cs/sd/poker/game/core/Assert.java" kind="src" path="src/fede/game"/>
 	<classpathentry kind="src" path="src/max/registration"/>
-	<classpathentry kind="src" path="src/max/node"/>
+	<classpathentry excluding="breads_and_aces/node/inputhandler/shell/InputHandlerShellFactory.java" kind="src" path="src/max/node"/>
 	<classpathentry kind="src" path="src/max/rmi"/>
 	<classpathentry kind="src" path="src/max/misc"/>
-	<classpathentry excluding="it/unibo/cs/sd/poker/mvc/Model.java" kind="src" path="src/fede/main_test"/>
-	<classpathentry excluding="breads_and_aces/game/model/players/player/PlayerFactory.java" kind="src" path="src/common/model"/>
+	<classpathentry excluding="it/unibo/cs/sd/poker/mvc/Model.java|it/unibo/cs/sd/poker/main/Main.java|it/unibo/cs/sd/poker/main/DummyModule.java" kind="src" path="src/fede/main_test"/>
+	<classpathentry excluding="breads_and_aces/game/model/players/keeper/RegistrarPlayersKeeper2.java|breads_and_aces/game/model/players/keeper/PlayersKeeperImpl2.java|breads_and_aces/game/model/players/player/PlayerRegistrationId.java" kind="src" path="src/common/model"/>
 	<classpathentry kind="src" path="src/max/main/di"/>
-	<classpathentry kind="src" path="src/max/dev"/>
+	<classpathentry excluding="breads_and_aces/main/MainShell.java|breads_and_aces/node/inputhandler/shell/InputHandlerShell.java|breads_and_aces/_di/providers/node/inputhandler/shell/InputHandlerShellProvider.java" kind="src" path="src/max/dev"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="libs/guice/aopalliance-1.0.jar"/>
 	<classpathentry kind="lib" path="libs/guice/guice-3.0.jar"/>

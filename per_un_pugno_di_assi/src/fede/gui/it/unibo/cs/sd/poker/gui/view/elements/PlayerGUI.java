@@ -27,6 +27,8 @@ public class PlayerGUI {
 	private Card card1;
 	private Card card2;
 	
+	private String playerId;
+	
 	private final JLabel name = new JLabel("", SwingConstants.CENTER);
 	private final JLabel action = new JLabel("", SwingConstants.CENTER);
 	private final JLabel score = new JLabel("", SwingConstants.CENTER);
@@ -34,20 +36,21 @@ public class PlayerGUI {
 	private final JPanel scoreContainer = new TransparentPanel();
 	private final JPanel scoreLevel = new TransparentPanel();
 	
-	public PlayerGUI(String playerId, Card card1, Card card2, Integer x, Integer y, Integer goal, Integer scoreVal, Boolean hideCards) {
+	public PlayerGUI(String playerId, Card card1, Card card2, Integer x, Integer y, Integer goal, Integer scoreVal, Boolean showCards) {
 		this.x = x;
 		this.y = y;
 		this.goal = goal;
 		this.card1 = card1;
 		this.card2 = card2;
+		this.playerId = playerId;
 		
-		if (hideCards) {
-			cardGui1 = new CardGUI(CardsUtils.INSTANCE_SMALL.getBackCard(), x + CardsUtils.span1, y);
-			cardGui2 = new CardGUI(CardsUtils.INSTANCE_SMALL.getBackCard(), x + CardsUtils.span2, y);
-		}
-		else {
+		if (showCards) {
 			cardGui1 = new CardGUI(CardsUtils.INSTANCE_SMALL.getImageCard(card1), x + CardsUtils.span1, y);
 			cardGui2 = new CardGUI(CardsUtils.INSTANCE_SMALL.getImageCard(card2), x + CardsUtils.span2, y);
+		}
+		else {
+			cardGui1 = new CardGUI(CardsUtils.INSTANCE_SMALL.getBackCard(), x + CardsUtils.span1, y);
+			cardGui2 = new CardGUI(CardsUtils.INSTANCE_SMALL.getBackCard(), x + CardsUtils.span2, y);
 		}
 		
 		String s = "<html><div style='border-bottom:2px solid black'>"+ playerId + "</div></html>";
@@ -91,10 +94,22 @@ public class PlayerGUI {
 		GuiUtils.INSTANCE.initPanel(box, EnumRectangle.playerBox, EnumColor.alphaGreen, EnumLine.playerToken, x + 10, y + 25);
 		frame.getContentPane().add( box );
 	}
-
+	
+	public void setWinner(JFrame frame) {
+		frame.getContentPane().remove( box );
+		GuiUtils.INSTANCE.initPanel(box, EnumRectangle.playerBox, EnumColor.alphaGold, EnumLine.winner, x + 10, y + 25);
+		frame.getContentPane().add( box );
+	}
+	
+	public void setLoser(JFrame frame) {
+		frame.getContentPane().remove( box );
+		GuiUtils.INSTANCE.initPanel(box, EnumRectangle.playerBox, EnumColor.alphaBlue, EnumLine.loser, x + 10, y + 25);
+		frame.getContentPane().add( box );
+	}
+	
 	public void draw(JFrame frame) {
-		frame.getContentPane().add( cardGui1 );
-		frame.getContentPane().add( cardGui2 );
+		frame.getLayeredPane().add( cardGui1 );
+		frame.getLayeredPane().add( cardGui2 );
 		frame.getContentPane().add( name );
 		frame.getContentPane().add( action );
 		frame.getContentPane().add( score );
@@ -104,13 +119,17 @@ public class PlayerGUI {
 	}
 	
 	public void clearFromGui(JFrame frame) {
-		frame.getContentPane().remove( cardGui1 );
-		frame.getContentPane().remove( cardGui2 );
+		frame.getLayeredPane().remove( cardGui1 );
+		frame.getLayeredPane().remove( cardGui2 );
 		frame.getContentPane().remove( name );
 		frame.getContentPane().remove( action );
 		frame.getContentPane().remove( score );
 		frame.getContentPane().remove( box );
 		frame.getContentPane().remove( scoreContainer );
 		frame.getContentPane().remove( scoreLevel );
+	}
+	
+	public String getId() {
+		return playerId; 
 	}
 }

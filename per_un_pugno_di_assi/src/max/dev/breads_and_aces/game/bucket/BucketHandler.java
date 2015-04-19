@@ -15,7 +15,7 @@ public class BucketHandler {
 
 	private final GamePlayersKeeper playersKeeper;
 	private final Communicator communicator;
-	private String currentMeId;
+	private String currentMyId;
 	
 	private String tmpDummyString;
 	
@@ -27,26 +27,37 @@ public class BucketHandler {
 	}
 	
 	public void play(String meId, String dummyString) {
-		this.currentMeId = meId;
-		Player playerMe = playersKeeper.getPlayer(currentMeId);
-		if (playerMe.hasBucket()) {
+		this.currentMyId = meId;
+		Player playerMe = playersKeeper.getPlayer(currentMyId);
+		if (playerMe.hasToken()) {
 			System.out.println("\t said: "+dummyString);
 //			communicator.toAll(Comparator::comparingDouble, dummyString, null);
 			this.tmpDummyString = dummyString;
 			communicator.toAll(meId, this::sayToAll);
-			Player next = playersKeeper.getNext(currentMeId);
-			communicator.toOne(this::passBucket, next.getName());
-			playerMe.passBucket();
+			Player next = playersKeeper.getNext(currentMyId);
+			communicator.toOne(this::passToken, next.getName());
+			playerMe.sendToken();
 		}
 	}
+	
 	private void sayToAll(GameService gameServiceExternalInjected) {
 		try {
-			gameServiceExternalInjected.echo(currentMeId, tmpDummyString);
+			gameServiceExternalInjected.echo(currentMyId, tmpDummyString);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-	}	
-	private void passBucket(GameService gameServiceExternalInjected) throws RemoteException {
+	}
+	/*
+	private void sayToAllIHaveToken(GameService gameServiceExternalInjected) {
+		try {
+			gameServiceExternalInjected.sayIHaveToken(this.currentMyId, currentMyId);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}*/
+	
+	private void passToken(GameService gameServiceExternalInjected) throws RemoteException {
 		gameServiceExternalInjected.receiveBucket();
+		//communicator.toAll(this.currentMyId, this::sayToAllIHaveToken);
 	}
 }

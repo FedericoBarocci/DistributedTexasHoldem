@@ -8,16 +8,14 @@ import breads_and_aces.node.inputhandler.InputHandler;
 
 public class InputHandlerGUI implements InputHandler {
 	
-	
-	private GameViewInitializerReal/*Instancer*/ gameViewInitializer/*Instancer*/;
+	private GameViewInitializerReal gameViewInitializer;
 
 	@Inject
-	public InputHandlerGUI(GameViewInitializerReal/*Instancer*/ gameViewInitializer/*Instancer*/) {
-		this.gameViewInitializer/*Instancer*/ = gameViewInitializer/*Instancer*/;
+	public InputHandlerGUI(GameViewInitializerReal gameViewInitializer) {
+		this.gameViewInitializer = gameViewInitializer;
 	}
 
-	public void exec() {
-//		gameViewInitializerInstancer.create().start();
-		gameViewInitializer.start();
+	public void exec(String myName) {
+		gameViewInitializer.start(myName);
 	}
 }

@@ -2,14 +2,11 @@ package breads_and_aces.registration.initializers.servable.registrar.registrars;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
-import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
 import breads_and_aces.game.model.players.player.Player;
-import breads_and_aces.game.model.players.player.PlayerRegistrationId;
 import breads_and_aces.registration.initializers.servable.registrar.GameRegistrar;
 import breads_and_aces.registration.initializers.servable.registrar.RegistrationResult;
 import breads_and_aces.registration.initializers.servable.registrar.RegistrationResult.Cause;
@@ -40,17 +37,23 @@ public class GameRegistrarStarted implements GameRegistrar {
 		return registeredNodesConnectionInfos;
 	}
 	
-	@Override
-	public Map<PlayerRegistrationId,Player> getRegisteredPlayersMap() {
-		return playersKeeper.getIdsPlayersMap();
-	}
+//	@Override
+//	public Map<PlayerRegistrationId,Player> getRegisteredPlayersMap() {
+//		return playersKeeper.getIdsPlayersMap();
+//	}
 	
-	@Override
-	public Player getFirst() {
-		return ((GamePlayersKeeper)playersKeeper).getPlayers().get(1);
-	}
+//	@Override
+//	public Player getFirst() {
+//		return ((GamePlayersKeeper)playersKeeper).getPlayers().get(1);
+//	}
 
 	public void passNodesInfos(List<NodeConnectionInfos> registeredNodesConnectionInfos) {
 		this.registeredNodesConnectionInfos.addAll(registeredNodesConnectionInfos);
+	}
+
+	@Override
+	public List<Player> getRegisteredPlayers() {
+		//return playersKeeper.getIdsPlayersMap();
+		return playersKeeper.getRegistredPlayers();
 	}
 }

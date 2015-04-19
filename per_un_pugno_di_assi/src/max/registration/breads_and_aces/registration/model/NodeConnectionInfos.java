@@ -2,7 +2,7 @@ package breads_and_aces.registration.model;
 
 import java.io.Serializable;
 
-public class NodeConnectionInfos implements Serializable, Comparable<NodeConnectionInfos> {
+public class NodeConnectionInfos implements Serializable/*, Comparable<NodeConnectionInfos>*/ {
 
 	private static final long serialVersionUID = -8647506914524193039L;
 
@@ -10,7 +10,7 @@ public class NodeConnectionInfos implements Serializable, Comparable<NodeConnect
 	private final int localPort;
 	private final String nodeId;
 
-	private long registrationTime;
+	//private long registrationTime;
 	
 	public NodeConnectionInfos(String nodeId, String addressToBind, int localPort) {
 		this.nodeId = nodeId;
@@ -30,17 +30,14 @@ public class NodeConnectionInfos implements Serializable, Comparable<NodeConnect
 		return localPort;
 	}
 
-	public void setRegisterTime(long registrationTime) {
-		this.registrationTime = registrationTime;
-	}
-
-	@Override
-	public int compareTo(NodeConnectionInfos nodeConnectionInfos) {
-		if (this.registrationTime < nodeConnectionInfos.registrationTime) return -1;
-		if (this.registrationTime > nodeConnectionInfos.registrationTime) return 1;
-		return 0;
-	}
-	
-	
-	
+//	public void setRegisterTime(long registrationTime) {
+//		this.registrationTime = registrationTime;
+//	}
+//
+//	@Override
+//	public int compareTo(NodeConnectionInfos nodeConnectionInfos) {
+//		if (this.registrationTime < nodeConnectionInfos.registrationTime) return -1;
+//		if (this.registrationTime > nodeConnectionInfos.registrationTime) return 1;
+//		return 0;
+//	}
 }

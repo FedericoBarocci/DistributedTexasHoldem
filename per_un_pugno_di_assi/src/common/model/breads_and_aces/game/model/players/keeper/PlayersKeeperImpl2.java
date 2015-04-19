@@ -1,7 +1,5 @@
 package breads_and_aces.game.model.players.keeper;
 
-import it.unibo.cs.sd.poker.game.core.Action;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,8 +10,8 @@ import breads_and_aces.utils.observatory.ObservableDelegate;
 import breads_and_aces.utils.observatory.Observer;
 
 @Singleton
-public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKeeper, PlayersObservable {
-
+public class PlayersKeeperImpl2 implements GamePlayersKeeper, RegistrarPlayersKeeper2, PlayersObservable {
+	
 	private List<Player> players = new ArrayList<Player>();
 	private final ObservableDelegate<String> observableDelegate = new ObservableDelegate<String>();
 	private String me;
@@ -59,8 +57,14 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 	}
 
 	@Override
-	public List<Player> getRegistredPlayers() {
-		return getPlayers();
+	public List<String> getIdsPlayersMap() {
+		List<String> list = new ArrayList<String>();
+		
+		for (Player p : players) { 
+			list.add(p.getName());
+		}
+		
+		return list;
 	}
 
 	@Override
@@ -109,18 +113,5 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 	@Override
 	public void notifyObservers(String data) {
 		observableDelegate.notifyObservers(data);
-	}
-
-	@Override
-	public void resetActions() {
-		for (Player p : players) {
-			p.setAction(Action.NONE);
-		}
-	}
-	
-	@Override
-	public void resetPlayers(List<Player> players) {
-		this.players.clear();
-		addPlayers(players);
 	}
 }

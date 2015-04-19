@@ -7,7 +7,6 @@ import javax.inject.Singleton;
 
 import breads_and_aces.game.Game;
 import breads_and_aces.game.model.players.player.Player;
-import breads_and_aces.main.Main;
 
 @Singleton
 public class GameViewInitializerReal implements GameViewInitializer {
@@ -19,26 +18,28 @@ public class GameViewInitializerReal implements GameViewInitializer {
 	private static final int initialScore = 0;
 	private static final int initialGoal = 1000;
 	
-	private final String myName;
-
 	@Inject
 	public GameViewInitializerReal(GameView view, Game game) {
 		this.view = view;
 		this.game = game;
-		this.myName = Main.nodeid;
-		System.out.println("GameViewInitializerReal: "+myName);
-//		this.playersKeeper = playersKeeper;
 	}
 
 	@Override
-	public void start() {
-		List<Player> players = game.getPlayersKeeper().getPlayers(); // business code
-		view.initPlayers(players, myName, initialGoal, initialScore);
-		view.initTableCards(game.getTable().getCards());
-		view.initActionsGui(myName, initialCoins, initialScore); ///*, players.get(0).getCards()*/);
-//		view.init( players );
+	public void start(String myName) {
+		List<Player> players = game.getPlayersKeeper().getPlayers();
+		game.getPlayersKeeper().setMe(myName);
+		game.setGoal(initialGoal);
+		
+		for (Player p : players) { 
+			p.setScore(initialScore);
+		}
+		
+		view.initPlayers(players, myName, initialGoal);
+//		view.initTableCards();
+		view.initActionsGui(myName, initialCoins, initialScore);
+		view.start();
 	}
-	
+
 	@Override
 	public GameView get() {
 		return view;

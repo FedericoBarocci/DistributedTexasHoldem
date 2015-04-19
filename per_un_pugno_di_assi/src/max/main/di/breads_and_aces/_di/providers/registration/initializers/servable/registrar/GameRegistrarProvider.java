@@ -1,13 +1,9 @@
 package breads_and_aces._di.providers.registration.initializers.servable.registrar;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
-
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
-import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.registration.initializers.servable.registrar.GameRegistrar;
 import breads_and_aces.registration.initializers.servable.registrar.registrars.GameRegistrarInit;
 import breads_and_aces.registration.initializers.servable.registrar.registrars.GameRegistrarStarted;
@@ -17,7 +13,7 @@ import breads_and_aces.utils.printer.Printer;
 public class GameRegistrarProvider implements Provider<GameRegistrar> {
 
 	private final GameRegistrarStarted gameRegistrarStarted;
-	private final Printer printer;
+//	private final Printer printer;
 	
 	private GameRegistrar instance;
 
@@ -25,7 +21,7 @@ public class GameRegistrarProvider implements Provider<GameRegistrar> {
 	public GameRegistrarProvider(GameRegistrarInit gameRegistrarInit, GameRegistrarStarted gameStarted, Printer printer) {
 		this.instance = gameRegistrarInit;
 		this.gameRegistrarStarted = gameStarted;
-		this.printer = printer;
+//		this.printer = printer;
 	}
 
 	public void changeRegistrar() {
@@ -33,10 +29,10 @@ public class GameRegistrarProvider implements Provider<GameRegistrar> {
 		instance = gameRegistrarStarted;
 		
 		// just for verbosity
-		Collection<Player> registeredPlayer = instance.getRegisteredPlayersMap().values();
-		printer.print("Ok: final list partecipants has: ");
-		printer.println(registeredPlayer.stream().map(Player::getName).collect(Collectors.joining(", "))
-		);
+//		Collection<Player> registeredPlayer = instance.getRegisteredPlayersMap().values();
+//		printer.print("Ok: final list partecipants has: ");
+//		printer.println(registeredPlayer.stream().map(Player::getName).collect(Collectors.joining(", "))
+//		);
 	}
 
 	@Override

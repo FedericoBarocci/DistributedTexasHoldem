@@ -6,29 +6,22 @@ import breads_and_aces.node.inputhandler.InputHandler;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 
-
 public class DefaultNode implements Node {
 
 	private final String nodeId;
 	private final InputHandler inputHandler;
-	
+
 	@AssistedInject
-	public DefaultNode(@Assisted String thisNodeId, 
-//			InputHandlerFactory inputHandlerFactory
-			InputHandlerProvider inputHandlerProvider
-			) {
+	public DefaultNode(@Assisted String thisNodeId, InputHandlerProvider inputHandlerProvider) {
 		this.nodeId = thisNodeId;
-		this.inputHandler = 
-//				inputHandlerFactory.create(thisNodeId);
-				inputHandlerProvider.init(thisNodeId).get();
-//				inputHandler;
+		this.inputHandler = inputHandlerProvider.init(thisNodeId).get();
 	}
 	
 	public String getId() {
 		return nodeId;
 	}
 	
-	public void start() {
-		inputHandler.exec();
+	public void start(String myName) {
+		inputHandler.exec(myName);
 	}
 }

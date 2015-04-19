@@ -14,8 +14,8 @@ import breads_and_aces.utils.observatory.Observer;
 class AccepterPlayerTableModel extends DefaultTableModel {
 		
 	private static final long serialVersionUID = 3138739482615283558L;
-	private final GamePlayersKeeper playersKeeper;
 	
+	private final GamePlayersKeeper playersKeeper;
 	private final List<Integer> n = new ArrayList<Integer>();
 
 	@Inject
@@ -24,6 +24,7 @@ class AccepterPlayerTableModel extends DefaultTableModel {
 		columns[0] = "Position";
 		columns[1] = "Name";
 		columns[2] = "IP";
+		
 		setColumnIdentifiers(columns);
 		this.playersKeeper = playersKeeper;
 		NewPlayerObserverDelegateForTableUpdate newPlayerObserverDelegateForTableUpdate = new NewPlayerObserverDelegateForTableUpdate();
@@ -39,7 +40,7 @@ class AccepterPlayerTableModel extends DefaultTableModel {
 		public void update(Observable<String> playersKeeper, String playerId) {
 			int nn = n.size()+1;
 			n.add(nn);
-			Object[] r = new Object[] {nn, playerId, playerId+ "'s ip"};
+			Object[] r = new Object[] {nn, playerId, playerId + "'s ip"};
 			addRow(r);
 		}
 	}

@@ -17,24 +17,27 @@ import breads_and_aces.game.model.utils.Pair;
 import breads_and_aces.main.Main;
 import breads_and_aces.utils.printer.Printer;
 
-public class Player implements Serializable, Comparable<Player> {
+public class Player implements Serializable/*, Comparable<Player>*/ {
 
 	private static final long serialVersionUID = -7618547420110997571L;
-	private final String name;
-	private final long registrationTime;
 	
-	private final List<Card> cards = new ArrayList<Card>();
-	private final Ranking rank = new Ranking();
-	private final PositiveInteger chips = new PositiveInteger();
+	private final String name;
+	//private final long registrationTime;
+	
+	private List<Card> cards = new ArrayList<Card>();
+	private Ranking rank = new Ranking();
+	private PositiveInteger chips = new PositiveInteger();
 	private Action action = Action.NONE;
 	
-	private boolean hasBucket;
+	private int score;
+	
+	private boolean hasToken;
 	
 	@Inject private Printer printer;
 
-	public Player(String name, long registrationTime/*, Printer printer*/) {
+	public Player(String name/*, long registrationTime, Printer printer*/) {
 		this.name = name;
-		this.registrationTime = registrationTime/*, Printer printer*/;
+		//this.registrationTime = registrationTime/*, Printer printer*/;
 		if (Main.Injector!=null)
 			Main.Injector.injectMembers(this);
 	}
@@ -47,6 +50,8 @@ public class Player implements Serializable, Comparable<Player> {
 	 * Game zone - start
 	 */
 	public void deal(Pair<Card> cards2) {
+		action = Action.NONE;
+		
 		cards.clear();
 		cards.add( cards2.getFirst() );
 		cards.add( cards2.getSecond() );
@@ -110,33 +115,50 @@ public class Player implements Serializable, Comparable<Player> {
 	
 
 	/*
-	 * Bucket zone - start
+	 * Token zone - start
 	 */
-	public void receiveBucket() {
-		hasBucket = true;
+	public void receiveToken() {
+		hasToken = true;
+		
 		if (printer!=null)
-			printer.println("bucket received");
+			printer.println(name + " token received");
 	}
-	public void receiveBucket(String receivedFrom) {
-		hasBucket = true;
+	
+	public void receiveToken(String receivedFrom) {
+		hasToken = true;
+		
 		if (printer!=null)
-			printer.println("bucket received from "+receivedFrom);
+			printer.println(name + " token received from "+receivedFrom);
 	}
-	public void passBucket() {
-		hasBucket = false;
+	
+	public void sendToken() {
+		hasToken = false;
+		
 		if (printer!=null)
-			printer.println("bucket passed");
+			printer.println(name + " token passed");
 	}
-	public void passBucket(String passedTo) {
-		hasBucket = false;
+	
+	public void sendToken(String passedTo) {
+		hasToken = false;
+		
 		if (printer!=null)
-			printer.println("bucket passed to "+passedTo);
+			printer.println(name + " token passed to "+passedTo);
 	}
-	public boolean hasBucket() {
-		return hasBucket;
+	
+	public boolean hasToken() {
+		return hasToken;
 	}
+
+	public Integer getScore() {
+		return this.score;
+	}
+	
+	public void setScore(int score) {
+		this.score = score;
+	}
+	
 	/*
-	 * Bucket zone - end
+	 * Token zone - end
 	 */
 
 	/*
@@ -146,12 +168,12 @@ public class Player implements Serializable, Comparable<Player> {
 //		this.registrationTime = registrationTime;
 //	}
 
-	@Override
-	public int compareTo(Player player) {
-		if (this.registrationTime < player.registrationTime) return -1;
-		if (this.registrationTime > player.registrationTime) return 1;
-		return 0;
-	}
+//	@Override
+//	public int compareTo(Player player) {
+//		if (this.registrationTime < player.registrationTime) return -1;
+//		if (this.registrationTime > player.registrationTime) return 1;
+//		return 0;
+//	}
 	/*
 	 * Register zone - end
 	 */

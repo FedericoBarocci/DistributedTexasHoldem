@@ -68,8 +68,10 @@ public enum GuiUtils {
 		colors.put(EnumColor.gold, 			new Color(255, 230, 0));
 		colors.put(EnumColor.white, 		new Color(255, 255, 255));
 		colors.put(EnumColor.royalRed, 		new Color(176, 23, 31));
+		colors.put(EnumColor.blue,		 	new Color(0, 51, 102));
 		colors.put(EnumColor.alphaBlue, 	new Color(174, 234, 255, 50));
 		colors.put(EnumColor.alphaGreen, 	new Color(65, 146, 75, 200));
+		colors.put(EnumColor.alphaGold, 	new Color(255, 230, 0, 160));
 		colors.put(EnumColor.glass, 		new Color(255, 255, 255, 60));
 		colors.put(EnumColor.glass2, 		new Color(255, 255, 255, 80));
 		
@@ -82,8 +84,10 @@ public enum GuiUtils {
 		fonts.put(EnumFont.B25, new Font("SansSerif", Font.BOLD, 25));
 		
 		lines.put(EnumLine.cardBox, 	new LineBorder(getColor(EnumColor.white), 1));
+		lines.put(EnumLine.loser, 		new LineBorder(getColor(EnumColor.blue), 3));
 		lines.put(EnumLine.playerBox, 	new LineBorder(getColor(EnumColor.gold), 1));
-		lines.put(EnumLine.playerToken,new LineBorder(getColor(EnumColor.royalRed), 3));
+		lines.put(EnumLine.winner, 		new LineBorder(getColor(EnumColor.gold), 3));
+		lines.put(EnumLine.playerToken, new LineBorder(getColor(EnumColor.royalRed), 3));
 	}
 	
 	public ImageIcon getImageGui(String element) {
