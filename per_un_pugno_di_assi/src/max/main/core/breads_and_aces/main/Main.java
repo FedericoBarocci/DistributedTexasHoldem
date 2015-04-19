@@ -17,8 +17,7 @@ import com.google.inject.Injector;
 public class Main {
 	
 	public static Injector Injector;
-//	public static String nodeid;
-
+	
 	public static void main(String[] args) {
 		if (args.length<1) {
 			System.out.println("minimum 1 arguments: \n"
@@ -52,32 +51,24 @@ public class Main {
 			NodeInitializer nodeInitializer = null;
 			
 			String myId = loginResult.username;
-//			nodeid = meId;
+			
+			//TODO
+			//Pass these two server values to clients and gameViewReal
+			
+			/*
+			int coins = loginResult.coins;
+			int goal = loginResult.goal;
+			*/
 			
 			if (loginResult.asServable) {
-				// waiter gui for players
-//				CountDownLatch initializerLatch = new CountDownLatch(1);
-				nodeInitializer = nodeInitializerFactory.createAsServable(myId, addressToBind
-						);
-				/*EventQueue.invokeLater(()->{
-				});*/
-//				initializerLatch.await();
+				nodeInitializer = nodeInitializerFactory.createAsServable(myId, addressToBind);
 			} 
 			else {
 				String initializingHostAddress = loginResult.serverHost;
-//				CountDownLatch registrarLatch = new CountDownLatch(1);
-				nodeInitializer  = nodeInitializerFactory.createAsClientableWithInitializerPort(
-						myId, 
-						addressToBind, 
-						initializingHostAddress, 
-						Integer.parseInt(loginResult.serverPort)
-//						,registrarLatch
-						);
-				// waiter gui for confirmed registration
-				
-				/*EventQueue.invokeLater(()->{
-				});*/
-//				registrarLatch.await();
+				nodeInitializer = nodeInitializerFactory
+						.createAsClientableWithInitializerPort(myId,
+								addressToBind, initializingHostAddress,
+								Integer.parseInt(loginResult.serverPort));
 			}
 			
 			Node node = nodeInitializer.get();
@@ -93,8 +84,6 @@ public class Main {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		
-//		System.exit(0);
 	}
 	
 	static public class LoginResult {
@@ -102,12 +91,16 @@ public class Main {
 		String serverHost;
 		String serverPort;
 		boolean asServable;
+		int coins;
+		int goal;
 
-		public LoginResult(String serverHost, String serverPort, boolean asServable, String username) {
+		public LoginResult(String serverHost, String serverPort, boolean asServable, String username, int coins, int goal) {
 			this.serverHost = serverHost;
 			this.serverPort = serverPort;
 			this.asServable = asServable;
 			this.username = username;
+			this.coins = coins;
+			this.goal = goal;
 		}
 	}
 }
