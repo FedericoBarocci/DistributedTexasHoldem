@@ -22,24 +22,19 @@ public class OkButton implements MouseListener {
 
 	private final Communicator communicator;
 	private String nodeId;
-	private Game game;
-	private GameView view;
-	private ControllerLogic controller;
+	private final Game game;
+	private final GameView view;
+	private final ControllerLogic controller;
 	private GameUpdater gameUpdater;
 
 	@Inject
-	public OkButton(Communicator communicator, Game game) {
+	public OkButton(Communicator communicator, Game game, GameView view, ControllerLogic controller) {
 		this.communicator = communicator;
 		this.game = game;
+		this.view = view;
+		this.controller = controller;
 	}
 	
-	public void setup(GameView view, String nodeId) {
-		this.nodeId = nodeId;
-		this.view = view;
-		
-		this.controller = new ControllerLogic(game, view, nodeId);
-	}
-
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		/*List<String> crashed = */

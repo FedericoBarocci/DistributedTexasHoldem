@@ -5,10 +5,12 @@ import it.unibo.cs.sd.poker.gui.view.GameViewInitializerReal;
 
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Map;
 
 import breads_and_aces.game.Game;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.players.player.Player;
+import breads_and_aces.game.model.players.player.PlayerRegistrationId;
 import breads_and_aces.registration.initializers.clientable.RegistrationInitializerClientable;
 import breads_and_aces.registration.model.NodeConnectionInfos;
 import breads_and_aces.services.rmi.game.core.AbstractGameService;
@@ -41,8 +43,9 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 	@Override
 	public void synchronizeAllNodesAndPlayersFromInitiliazer(
 			List<NodeConnectionInfos> nodesConnectionInfos,
-			// Map<PlayerRegistrationId, Player> playersMap,
-			List<Player> playersMap, List<Card> tablesCard)
+			Map<PlayerRegistrationId, Player> playersMap,
+//			List<Player> playersMap, 
+			List<Card> tablesCard)
 			throws RemoteException {
 		// System.out.println("here");
 		keepersUtilDelegate

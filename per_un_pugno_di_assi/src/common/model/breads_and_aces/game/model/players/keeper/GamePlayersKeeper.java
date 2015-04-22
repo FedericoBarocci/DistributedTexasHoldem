@@ -11,5 +11,5 @@ public interface GamePlayersKeeper extends PlayersKeeper {
 	public void resetActions();
 //	public boolean contains(String playerId);
 //	public void remove(String targetplayerId);
-	void resetPlayers(List<Player> players);
+//	void resetPlayers(List<Player> players);
 }

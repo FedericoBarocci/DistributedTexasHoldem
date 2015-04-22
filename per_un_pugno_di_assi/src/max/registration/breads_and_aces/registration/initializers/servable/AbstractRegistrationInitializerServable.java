@@ -75,8 +75,8 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		gameRegistrarProvider.changeRegistrar();
 	}
 	private void giveCards() {
-//		new Dealer(game.getTable(), gameRegistrarProvider.get().getRegisteredPlayersMap().values(), new Deck() ).deal();
-		new Dealer(game.getTable(), gameRegistrarProvider.get().getRegisteredPlayers(), new Deck() ).deal();
+		new Dealer(game.getTable(), gameRegistrarProvider.get().getRegisteredPlayers().values(), new Deck() ).deal();
+//		new Dealer(game.getTable(), gameRegistrarProvider.get().getRegisteredPlayers(), new Deck() ).deal();
 	}
 	protected void updateAllNodesForPartecipants() {
 //		printer.println("Ok: final list partecipants has: "

@@ -6,6 +6,7 @@ import it.unibo.cs.sd.poker.gui.view.GameView;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import breads_and_aces.game.Game;
@@ -19,6 +20,7 @@ public class ControllerLogic {
 	private GameView view;
 	private String nodeId;
 	
+	@Inject
 	public ControllerLogic(Game game, GameView gameView, String nodeId) {
 		this.game = game;
 		this.view = gameView;

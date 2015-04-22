@@ -17,12 +17,12 @@ import breads_and_aces.game.model.utils.Pair;
 import breads_and_aces.main.Main;
 import breads_and_aces.utils.printer.Printer;
 
-public class Player implements Serializable/*, Comparable<Player>*/ {
+public class Player implements Serializable, Comparable<Player> {
 
 	private static final long serialVersionUID = -7618547420110997571L;
 	
 	private final String name;
-	//private final long registrationTime;
+	private final long registrationTime;
 	
 	private List<Card> cards = new ArrayList<Card>();
 	private Ranking rank = new Ranking();
@@ -35,9 +35,9 @@ public class Player implements Serializable/*, Comparable<Player>*/ {
 	
 	@Inject private Printer printer;
 
-	public Player(String name/*, long registrationTime, Printer printer*/) {
+	public Player(String name, long registrationTime/*, Printer printer*/) {
 		this.name = name;
-		//this.registrationTime = registrationTime/*, Printer printer*/;
+		this.registrationTime = registrationTime;
 		if (Main.Injector!=null)
 			Main.Injector.injectMembers(this);
 	}
@@ -164,12 +164,12 @@ public class Player implements Serializable/*, Comparable<Player>*/ {
 //		this.registrationTime = registrationTime;
 //	}
 
-//	@Override
-//	public int compareTo(Player player) {
-//		if (this.registrationTime < player.registrationTime) return -1;
-//		if (this.registrationTime > player.registrationTime) return 1;
-//		return 0;
-//	}
+	@Override
+	public int compareTo(Player player) {
+		if (this.registrationTime < player.registrationTime) return -1;
+		if (this.registrationTime > player.registrationTime) return 1;
+		return 0;
+	}
 	/*
 	 * Register zone - end
 	 */

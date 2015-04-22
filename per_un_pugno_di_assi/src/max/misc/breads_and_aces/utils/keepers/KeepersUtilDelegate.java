@@ -5,12 +5,14 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
 import breads_and_aces.game.model.players.player.Player;
+import breads_and_aces.game.model.players.player.PlayerRegistrationId;
 import breads_and_aces.registration.initializers.servable.registrar.RegistrationResult;
 import breads_and_aces.registration.initializers.servable.registrar.RegistrationResult.Cause;
 import breads_and_aces.registration.model.NodeConnectionInfos;
@@ -49,14 +51,12 @@ public class KeepersUtilDelegate {
 	}
 
 	public void registerPlayer(String playerId) {
-		//long now = System.currentTimeMillis();
+		long now = System.currentTimeMillis();
 
-		// PlayerRegistrationId playerRegistrationId = new
-		// PlayerRegistrationId(playerId, now);
-		Player player = new Player(playerId);	//, now);
+		PlayerRegistrationId playerRegistrationId = new PlayerRegistrationId(playerId, now);
+		Player player = new Player(playerId, now);
 
-		// playersKeeper.addPlayer(playerRegistrationId, player);
-		playersKeeper.addPlayer(player);
+		playersKeeper.addPlayer(playerRegistrationId, player);
 	}
 
 	public void registerPlayer(String playerId, boolean isMe) {
@@ -94,8 +94,8 @@ public class KeepersUtilDelegate {
 	 */
 	public List<String> synchronizeNodesPlayersGameservicesLocallyAsClientable(
 			List<NodeConnectionInfos> nodesConnectionInfos,
-//			Map<PlayerRegistrationId, Player> playersMap) {
-			List<Player> playersMap) {
+			Map<PlayerRegistrationId, Player> playersMap) {
+//			List<Player> playersMap) {
 		// nodesConnectionInfosShelf.setNodesConnectionInfos(nodesConnectionInfosMap);
 		playersKeeper.addPlayers(playersMap);
 

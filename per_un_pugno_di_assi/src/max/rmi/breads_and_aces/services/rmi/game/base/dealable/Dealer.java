@@ -4,7 +4,7 @@ import it.unibo.cs.sd.poker.game.core.Card;
 import it.unibo.cs.sd.poker.game.core.Deck;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.game.model.table.Table;
@@ -16,9 +16,9 @@ public class Dealer implements Serializable {
 
 	private final Table table;
 	private final Deck deck;
-	private final List<Player> players;
+	private final Collection<Player> players;
 
-	public Dealer(Table table, List<Player> players, Deck deck) {
+	public Dealer(Table table, Collection<Player> players, Deck deck) {
 		this.table = table;
 		this.players = players;
 		this.deck = deck;

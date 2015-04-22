@@ -1,11 +1,14 @@
 package breads_and_aces.registration.initializers.servable.registrar.registrars;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import breads_and_aces.game.model.players.player.Player;
+import breads_and_aces.game.model.players.player.PlayerRegistrationId;
 import breads_and_aces.registration.initializers.servable.registrar.GameRegistrar;
 import breads_and_aces.registration.initializers.servable.registrar.RegistrationResult;
 import breads_and_aces.registration.initializers.servable.registrar.RegistrationResult.Cause;
@@ -55,9 +58,8 @@ public class GameRegistrarInit implements GameRegistrar {
 	}
 
 	@Override
-	public List<Player> getRegisteredPlayers() {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<PlayerRegistrationId, Player> getRegisteredPlayers() {
+		return Collections.emptyMap();
 	}
 
 //	@Override

@@ -151,7 +151,7 @@ public class GameView {
 		up.setName(EnumButton.UP.name());
 		down.setName(EnumButton.DOWN.name());
 		
-		okButton.setup(this, clientPlayer);
+//		okButton.setup(this, clientPlayer);
 		foldButton.setup(this, clientPlayer);
 
 		MouseListener betClick = new BetButton(lblBet, lblCoins, coins);
