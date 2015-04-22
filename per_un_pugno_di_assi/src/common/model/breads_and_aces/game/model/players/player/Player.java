@@ -120,29 +120,25 @@ public class Player implements Serializable/*, Comparable<Player>*/ {
 	public void receiveToken() {
 		hasToken = true;
 		
-		if (printer!=null)
-			printer.println(name + " token received");
+		println(name + " token received");
 	}
 	
 	public void receiveToken(String receivedFrom) {
 		hasToken = true;
 		
-		if (printer!=null)
-			printer.println(name + " token received from "+receivedFrom);
+		println(name + " token received from "+receivedFrom);
 	}
 	
 	public void sendToken() {
 		hasToken = false;
 		
-		if (printer!=null)
-			printer.println(name + " token passed");
+		println(name + " token passed");
 	}
 	
 	public void sendToken(String passedTo) {
 		hasToken = false;
 		
-		if (printer!=null)
-			printer.println(name + " token passed to "+passedTo);
+		println(name + " token passed to "+passedTo);
 	}
 	
 	public boolean hasToken() {
@@ -204,4 +200,13 @@ public class Player implements Serializable/*, Comparable<Player>*/ {
 		
 		return s;
 	}*/
+	
+	/*private void print(String msg) {
+		if (printer!=null)
+			printer.print(msg);
+	}*/
+	private void println(String msg) {
+		if (printer!=null)
+			printer.println(msg);
+	}
 }

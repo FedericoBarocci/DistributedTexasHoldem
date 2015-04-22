@@ -1,5 +1,7 @@
 package breads_and_aces._di._guice.module;
 
+import it.unibo.cs.sd.poker.gui.view.GameViewInitializer;
+import it.unibo.cs.sd.poker.gui.view.GameViewInitializerReal;
 import breads_and_aces._di.providers.node.inputhandler.InputHandlerProvider;
 import breads_and_aces._di.providers.node.inputhandler.gui.InputHandlerGUIProvider;
 import breads_and_aces._di.providers.registration.initializers.clientable.RegistrationInitializerClientableProvider;
@@ -38,7 +40,7 @@ public class TexasHoldemPokerModule extends AbstractModule {
 		install(new FactoryModuleBuilder().build(GameServiceFactory.class));
 		
 //		install(new FactoryModuleBuilder().build(GameViewInitializerInstancer.class));
-//		bind(GameViewInitializer.class).to(GameViewInitializerReal.class);
+		bind(GameViewInitializer.class).to(GameViewInitializerReal.class);
 		
 		
 		bind(InputHandler.class).toProvider(InputHandlerProvider.class);
@@ -76,10 +78,6 @@ public class TexasHoldemPokerModule extends AbstractModule {
 		// shell
 //		bind(RegistrationInitializerClientableProvider.class).to(RegistrationInitializerClientableShellProvider.class);
 //		install(new FactoryModuleBuilder().build(RegistrationInitializerClientableShellFactory.class));
-		
-		
-		
-
 		
 	}
 

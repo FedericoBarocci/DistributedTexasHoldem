@@ -56,7 +56,7 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 		System.out.println("Ho ricevuto il token");
 		
 		GameView gameView = gameViewInitializer.get();
-		gameView.setViewToken(playersKeeper.getPlayer(nodeId).getName());
+		gameView.setViewToken( playersKeeper.getPlayer(nodeId).getName() );
 	}
 	
 	@Override
