@@ -96,12 +96,17 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 	}
 
 	@Override
-	public String getMe() {
+	public String getMyName() {
 		return me;
+	}
+
+	@Override
+	public Player getMyPlayer() {
+		return getPlayer(getMyName());
 	}
 	
 	@Override
-	public void setMe(String playerId) {
+	public void setMyName(String playerId) {
 		this.me = playerId;
 	}
 

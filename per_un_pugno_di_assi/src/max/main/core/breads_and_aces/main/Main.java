@@ -78,7 +78,7 @@ public class Main {
 			loginResult = null;
 			MemoryUtil.runGarbageCollector();
 			
-			node.start(myId);
+			node.start();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (Exception e1) {

@@ -3,16 +3,15 @@ package breads_and_aces.services.rmi.game.base.dealable;
 import it.unibo.cs.sd.poker.game.core.Card;
 import it.unibo.cs.sd.poker.game.core.Deck;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.game.model.table.Table;
 import breads_and_aces.game.model.utils.Pair;
 
-public class Dealer implements Serializable {
+public class Dealer /*implements Serializable*/ {
 
-	private static final long serialVersionUID = -3583531332179018809L;
+//	private static final long serialVersionUID = -3583531332179018809L;
 
 	private final Table table;
 	private final Deck deck;

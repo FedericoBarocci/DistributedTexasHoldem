@@ -4,7 +4,7 @@ import it.unibo.cs.sd.poker.game.core.Card;
 
 import java.io.Serializable;
 
-public class PlayerElements implements Serializable {
+public class PlayerData implements Serializable {
 
 	private static final long serialVersionUID = 1218843694103815791L;
 	
@@ -13,7 +13,7 @@ public class PlayerElements implements Serializable {
 	private final Card card2;
 	private final int score;
 	
-	public PlayerElements(String name, Card card1, Card card2, int score) {
+	public PlayerData(String name, Card card1, Card card2, int score) {
 		this.name = name;
 		this.card1 = card1;
 		this.card2 = card2;

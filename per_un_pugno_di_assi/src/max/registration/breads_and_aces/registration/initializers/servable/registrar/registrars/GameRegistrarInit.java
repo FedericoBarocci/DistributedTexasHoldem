@@ -62,11 +62,6 @@ public class GameRegistrarInit implements GameRegistrar {
 		return Collections.emptyMap();
 	}
 
-//	@Override
-//	public Player getFirst() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
 	
 	/**
 	 * do not invoke
@@ -78,10 +73,10 @@ public class GameRegistrarInit implements GameRegistrar {
 //		return Collections.emptyMap();
 //	}
 //	
-//	@Override
-//	@Deprecated
-//	public Player getFirst() {
-//		// too bad, but this is never invoked
-//		return new Player("dummy player", 0/*, printer*/);
-//	}
+	@Override
+	@Deprecated
+	public Player getFirst() {
+		// too bad, but this is never invoked
+		return new Player("dummy player", 0/*, printer*/);
+	}
 }

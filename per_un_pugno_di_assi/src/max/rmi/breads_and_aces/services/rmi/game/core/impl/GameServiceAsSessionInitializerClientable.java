@@ -1,6 +1,7 @@
 package breads_and_aces.services.rmi.game.core.impl;
 
 import it.unibo.cs.sd.poker.game.core.Card;
+import it.unibo.cs.sd.poker.gui.controllers.ControllerLogic;
 import it.unibo.cs.sd.poker.gui.view.GameViewInitializerReal;
 
 import java.rmi.RemoteException;
@@ -26,6 +27,8 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 	
 	private final KeepersUtilDelegate keepersUtilDelegate;
 	private final RegistrationInitializerClientable registrationInitializerClientable;
+
+	private final GameViewInitializerReal gameViewInitializer;
 	
 	@AssistedInject
 	public GameServiceAsSessionInitializerClientable(
@@ -34,10 +37,12 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 			GamePlayersKeeper gamePlayersKeeper,
 			KeepersUtilDelegate keepersUtilDelegate,
 			@Assisted RegistrationInitializerClientable registrationInitializerClientable,
-			GameViewInitializerReal gameViewInitializer) throws RemoteException {
-		super(nodeId, game, gamePlayersKeeper, gameViewInitializer);
+			GameViewInitializerReal gameViewInitializer,
+			ControllerLogic controllerLogic) throws RemoteException {
+		super(nodeId, game, gamePlayersKeeper, controllerLogic);
 		this.keepersUtilDelegate = keepersUtilDelegate;
 		this.registrationInitializerClientable = registrationInitializerClientable;
+		this.gameViewInitializer = gameViewInitializer;
 	}
 
 	@Override
@@ -62,6 +67,16 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 		registrationInitializerClientable.goFurther();
 //		if (latch!=null)
 //			latch.countDown();
+	}
+	
+	@Override
+	public void receiveStartGame(String whoHasToken) {
+		playersKeeper.getPlayer(whoHasToken).receiveToken();
+
+		System.out.println("Game can start!");
+
+//		GameView gameView = gameViewInitializer.get();
+		gameViewInitializer.get().setViewToken(playersKeeper.getPlayer(whoHasToken).getName());
 	}
 	
 	/*private void update() {

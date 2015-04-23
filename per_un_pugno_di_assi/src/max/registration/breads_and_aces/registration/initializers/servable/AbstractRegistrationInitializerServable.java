@@ -13,6 +13,7 @@ import breads_and_aces.registration.model.NodeConnectionInfos;
 import breads_and_aces.services.rmi.game.base._init.PlayersSynchronizar;
 import breads_and_aces.services.rmi.game.base.dealable.Dealer;
 import breads_and_aces.services.rmi.game.core.GameService;
+import breads_and_aces.services.rmi.game.core.GameServiceClientable;
 import breads_and_aces.services.rmi.game.keeper.GameServicesKeeper;
 import breads_and_aces.services.rmi.utils.communicator.Communicator;
 import breads_and_aces.utils.printer.Printer;
@@ -25,6 +26,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 	protected final Printer printer;
 	private final String myId;
 //	private final CountDownLatch latch;
+	private final RegistrarPlayersKeeper playersKeeper;
 	
 	public AbstractRegistrationInitializerServable(String nodeId, 
 			GameRegistrarProvider gameRegistrarProvider,
@@ -36,6 +38,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 			Printer printer
 			) {
 		this.gameRegistrarProvider = gameRegistrarProvider;
+		this.playersKeeper = playersKeeper;
 		this.communicator = communicator;
 		this.game = game;
 		this.myId = nodeId;
@@ -98,26 +101,24 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		printer.println("Game can start!");
 		game.setStarted();
 //		passBucket();
-//		printer.println("Inizio io perché comando io!");
-		game.getPlayersKeeper().getPlayer(myId).receiveToken();
+		printer.println("Inizio io perché comando io!");
+		playersKeeper.getMyPlayer().receiveToken();
 		communicator.toAll(myId, this::sayToAllStartGame);
 	}
 	
-//	private void passBucket() {
-////		Player next = gameRegistrarProvider.get().getFirst();
-////		String nextId = next.getName();
-////		printer.println("First player is: "+nextId);
-//		//communicator.toOne(this::passBucket, nextId);
-//		
-//	}
-	
-	/*private void passBucket(GameService gameServiceExternalInjected) throws RemoteException {
+	/*private void passBucket() {
+		Player next = gameRegistrarProvider.get().getFirst();
+		String nextId = next.getName();
+//		printer.println("First player is: "+nextId);
+		communicator.toOne(this::passBucket, nextId);
+	}	
+	private void passBucket(GameService gameServiceExternalInjected) throws RemoteException {
 		gameServiceExternalInjected.receiveBucket();
 		System.out.println("Ho passato bucket");
 	}*/
 	
 	private void sayToAllStartGame(GameService gameServiceExternalInjected) throws RemoteException {
-		gameServiceExternalInjected.receiveStartGame(myId);
+		((GameServiceClientable) gameServiceExternalInjected).receiveStartGame(myId);
 	}
 
 	/*protected void updateAllNodes() {

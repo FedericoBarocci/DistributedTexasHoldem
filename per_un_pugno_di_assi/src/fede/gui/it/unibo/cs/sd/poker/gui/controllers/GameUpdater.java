@@ -13,23 +13,23 @@ public class GameUpdater implements Serializable {
 	
 	private static final long serialVersionUID = -5181566627348057259L;
 	
-	private List<Card> table = new ArrayList<Card>();
-	private List<PlayerElements> players = new ArrayList<PlayerElements>();
+	private List<Card> tableCards = new ArrayList<Card>();
+	private List<PlayerData> playersData = new ArrayList<PlayerData>();
 	
 	public GameUpdater(List<Player> players, Deck deck) {
 		for(int i=0; i<5; i++)
-			table.add(deck.pop());
+			tableCards.add(deck.pop());
 		
 		for(Player p : players) {
-			this.players.add(new PlayerElements(p.getName(), deck.pop(), deck.pop(), p.getScore()));
+			this.playersData.add(new PlayerData(p.getName(), deck.pop(), deck.pop(), p.getScore()));
 		}
 	}
 	
 	public List<Card> getTable() {
-		return this.table;
+		return this.tableCards;
 	}
 	
-	public List<PlayerElements> getPlayers() {
-		return this.players;
+	public List<PlayerData> getPlayers() {
+		return this.playersData;
 	}
 }

@@ -1,7 +1,9 @@
 package breads_and_aces.node;
 
+import com.google.inject.assistedinject.Assisted;
+
 public interface NodeFactory {
 //	Node create(String nodeId, Player player, ConnectionInfo connectionInfo, Map<String, GameService> map);
-	DefaultNode create(String nodeId/*, NodeConnectionInfos connectionInfo*/);
-	NodeAsInitializerClientable createAsClientable(String nodeId);
+	DefaultNode createAsServable(@Assisted(value="nodeFactoryIdAsServable") String dummyNodeId/*, NodeConnectionInfos connectionInfo*/);
+	NodeAsInitializerClientable createAsClientable(@Assisted(value="nodeFactoryIdAsClientable") String dummyNodeId);
 }

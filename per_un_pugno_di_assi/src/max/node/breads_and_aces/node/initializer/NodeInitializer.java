@@ -40,7 +40,7 @@ public class NodeInitializer {
 			NotBoundException, IOException {
 		this(nodeId, addressToBind, registrationInitializerServableProvider
 				.build(nodeId).get(), gameServiceFactory
-				.createAsServable(nodeId), nodeFactory::create, printer);
+				.createAsServable(nodeId), nodeFactory::createAsServable, printer);
 	}
 	
 	// as clientable with port
@@ -51,12 +51,16 @@ public class NodeInitializer {
 			RegistrationInitializerClientableProvider registrationInitializerClientableProvider,
 			@Assisted(value = "initializerHostAddressWithPort") String initializerHostAddress,
 			@Assisted(value = "initializerHostPortWithPort") int initializerHostPort,
-			GameServiceFactory gameServiceFactory, NodeFactory nodeFactory,
+			GameServiceFactory gameServiceFactory, 
+//			NodeProvider nodeProvider,
+			NodeFactory nodeFactory,
 			Printer printer) throws RemoteException, MalformedURLException,
 			NotBoundException, IOException {
 		this(nodeId, addressToBind, registrationInitializerClientableProvider
 				.build(initializerHostAddress, initializerHostPort).get(),
-				gameServiceFactory, nodeFactory::createAsClientable, printer);
+				gameServiceFactory, 
+				nodeFactory::createAsClientable, 
+				printer);
 	}
 	
 	// as clientable without port
@@ -67,27 +71,27 @@ public class NodeInitializer {
 			GameServiceFactory gameServiceFactory,
 			RegistrationInitializerClientableProvider registrationInitializerClientableProvider,
 			@Assisted(value = "initializerHostAddressWithoutPort") String initializerHostAddress,
-			NodeFactory nodeFactory, Printer printer) throws RemoteException,
+			NodeFactory nodeFactory, 
+			Printer printer) throws RemoteException,
 			MalformedURLException, NotBoundException, IOException {
 		this(nodeId, addressToBind, registrationInitializerClientableProvider
 				.build(initializerHostAddress, NODE_DEFAULT_PORT).get(),
-				gameServiceFactory, nodeFactory::createAsClientable, printer);
+				gameServiceFactory, 
+				nodeFactory::createAsClientable, 
+				printer);
 	}
 	
-	// as clientable
-	/*private NodeInitializer(String nodeId, String addressToBind,
-			RegistrationInitializerClientable registrationInitializerClientable,
-			GameServiceAsSessionInitializerClientable gameServiceAsSessionInitializerClientable, 
-			GameServiceFactory gameServiceFactory,
-			CountDownLatch clientableLatch
-			, NodeFactoryFunctor nodeFactoryFunctor,
-//			RegistrarPlayersKeeper playersKeeper,
-			Printer printer
-			) throws RemoteException, IOException, NotBoundException {
-		this.node = nodeFactoryFunctor.exec(nodeId);
-		this.printer = printer;
-		gameServiceFactory.createAsClientable(nodeId, clientableLatch);
-	}*/
+	// as servable
+	private NodeInitializer(String nodeId, String addressToBind,
+			RegistrationInitializer registrationInitializer,
+			GameService gameService, 
+			NodeFactoryFunctor nodeFactoryFunctor,
+			Printer printer) throws RemoteException, IOException,
+			NotBoundException {
+		this(nodeId, addressToBind, gameService, 
+				nodeFactoryFunctor,
+				registrationInitializer, printer);
+	}
 	
 	// as clientable
 	private NodeInitializer(
@@ -95,33 +99,21 @@ public class NodeInitializer {
 			String addressToBind,
 			RegistrationInitializerClientable registrationInitializerClientable,
 			GameServiceFactory gameServiceFactory,
-			NodeFactoryFunctor nodeFactoryFunctor, Printer printer)
+			NodeFactoryFunctor nodeFactoryFunctor, 
+			Printer printer)
 			throws RemoteException, IOException, NotBoundException {
 
 		this(nodeId, addressToBind, gameServiceFactory.createAsClientable(
-				nodeId, registrationInitializerClientable), nodeFactoryFunctor,
+				nodeId, registrationInitializerClientable), 
+				nodeFactoryFunctor,
 				registrationInitializerClientable, printer);
-		
-//		this.node = nodeFactoryFunctor.exec(nodeId);
-//		this.printer = printer;
-//		
-//		GameServiceAsSessionInitializerClientable gameServiceAsSessionInitializerClientable = gameServiceFactory.createAsClientable(nodeId, registrationInitializerClientable);
-//		final NodeConnectionInfos ownNodeConnectionInfos = startListen(nodeId, addressToBind, gameServiceAsSessionInitializerClientable);
-//		registrationInitializerClientable.initialize(ownNodeConnectionInfos, nodeId);
 	}
 	
-	// as servable
-	private NodeInitializer(String nodeId, String addressToBind,
-			RegistrationInitializer registrationInitializer,
-			GameService gameService, NodeFactoryFunctor nodeFactoryFunctor,
-			Printer printer) throws RemoteException, IOException,
-			NotBoundException {
-		this(nodeId, addressToBind, gameService, nodeFactoryFunctor,
-				registrationInitializer, printer);
-	}
+	
 	
 	private NodeInitializer(String nodeId, String addressToBind,
-			GameService gameService, NodeFactoryFunctor nodeFactoryFunctor,
+			GameService gameService, 
+			NodeFactoryFunctor nodeFactoryFunctor,
 			RegistrationInitializer registrationInitializer, Printer printer)
 			throws RemoteException, IOException, NotBoundException {
 
@@ -139,7 +131,8 @@ public class NodeInitializer {
 	
 	@FunctionalInterface
 	private interface NodeFactoryFunctor {
-		Node exec(String nodeId);
+		// TODO remove this parameter
+		Node exec(String dummyNodeId);
 	}
 	
 	private NodeConnectionInfos startListen(String nodeId, String addressToBind, GameService service) throws IOException {

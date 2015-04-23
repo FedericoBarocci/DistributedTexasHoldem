@@ -8,20 +8,20 @@ import com.google.inject.assistedinject.AssistedInject;
 
 public class DefaultNode implements Node {
 
-	private final String nodeId;
+//	private final String nodeId;
 	private final InputHandler inputHandler;
 
 	@AssistedInject
-	public DefaultNode(@Assisted String thisNodeId, InputHandlerProvider inputHandlerProvider) {
-		this.nodeId = thisNodeId;
-		this.inputHandler = inputHandlerProvider.init(thisNodeId).get();
+	public DefaultNode(@Assisted(value="nodeFactoryIdAsServable") String thisNodeId, InputHandlerProvider inputHandlerProvider) {
+//		this.nodeId = thisNodeId;
+		this.inputHandler = inputHandlerProvider.init(/*thisNodeId*/).get();
 	}
 	
-	public String getId() {
-		return nodeId;
-	}
+//	public String getId() {
+//		return nodeId;
+//	}
 	
-	public void start(String myName) {
-		inputHandler.exec(myName);
+	public void start() {
+		inputHandler.exec();
 	}
 }

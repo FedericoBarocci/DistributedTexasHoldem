@@ -16,7 +16,7 @@ public class InputHandlerGUIProvider implements InputHandlerProvider {
 	}
 	
 	@Override
-	public InputHandlerProvider init(String nodeId) {
+	public InputHandlerProvider init(/*String nodeId*/) {
 		return this;
 	}
 

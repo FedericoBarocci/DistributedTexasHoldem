@@ -15,7 +15,7 @@ public interface GameService extends Echo, Bucketable {
 //	void receiveCall(String fromPlayer, int coins) throws RemoteException;
 //	void receiveCheckAndDeal(String fromPlayer, String toPlayer, GameUpdater gameUpdater) throws RemoteException;
 	
-	void receiveStartGame(String whoHasToken) throws RemoteException;
+//	void receiveStartGame(String whoHasToken) throws RemoteException;
 	
 	void receiveAction(String fromPlayer, Action action) throws RemoteException;
 	void receiveActionAndDeal(String fromPlayer, Action action, GameUpdater gameUpdater) throws RemoteException;

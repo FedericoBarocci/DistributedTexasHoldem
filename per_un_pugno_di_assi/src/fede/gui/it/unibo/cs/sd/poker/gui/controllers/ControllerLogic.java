@@ -12,6 +12,8 @@ import javax.inject.Singleton;
 
 import breads_and_aces.game.Game;
 import breads_and_aces.game.exception.WinnerException;
+import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
+import breads_and_aces.game.model.players.player.MeProvider;
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.game.model.table.TableState;
 import breads_and_aces.game.model.utils.Pair;
@@ -25,11 +27,15 @@ public class ControllerLogic {
 //	private Action myAction = Action.NONE;
 	private ActionLogic actionlogic = ActionLogic.NULL;
 	
+	private boolean refresh = false;
+	private final GamePlayersKeeper gamePlayersKeeper;
+	
 	@Inject
-	public ControllerLogic(Game game, GameView gameView, String nodeId) {
+	public ControllerLogic(Game game, GameView gameView, GamePlayersKeeper gamePlayersKeeper, MeProvider meProvider) {
 		this.game = game;
 		this.view = gameView;
-		this.nodeId = nodeId;
+		this.gamePlayersKeeper = gamePlayersKeeper;
+		this.nodeId = meProvider.getMe();
 	}
 	
 	/*for recovery*/
@@ -68,12 +74,12 @@ public class ControllerLogic {
 		
 		String successor = getSuccessor(fromPlayer).getName();
 		
-		game.getPlayer(fromPlayer).setAction(action);
+		gamePlayersKeeper.getPlayer(fromPlayer).setAction(action);
 		setActionLogic(action);
 //		setMyAction(action);
 		
-		game.getPlayer(fromPlayer).sendToken(successor);
-		game.getPlayer(successor).receiveToken(fromPlayer);
+		gamePlayersKeeper.getPlayer(fromPlayer).sendToken(successor);
+		gamePlayersKeeper.getPlayer(successor).receiveToken(fromPlayer);
 		view.setViewToken(successor);
 		
 		if(evaluateLogicModel()) {
@@ -84,18 +90,18 @@ public class ControllerLogic {
 	}
 	
 	private boolean invalidAction(String fromPlayer) {
-		return nodeId.equals(fromPlayer) && (! game.getMe().hasToken()); 
+		return nodeId.equals(fromPlayer) && (! gamePlayersKeeper.getMyPlayer().hasToken()); 
 	}
 	
 	private Player getSuccessor(String playerId) throws SinglePlayerException {
 		Player next;
 		
-		if (game.getPlayers().size() == 1) { 
+		if (gamePlayersKeeper.getPlayers().size() == 1) { 
 			throw new SinglePlayerException();
 		}
 		
 		do {
-			next = game.getPlayersKeeper().getNext(playerId);
+			next = gamePlayersKeeper.getNext(playerId);
 			
 			if (next.getName().equals(playerId)) { 
 				throw new SinglePlayerException();
@@ -112,7 +118,7 @@ public class ControllerLogic {
 				System.out.println("evaluateTable returning TRUE - go to next state");
 				
 				game.getTable().setNextState();
-				game.getPlayersKeeper().resetActions();
+				gamePlayersKeeper.resetActions();
 				
 				if (game.getTable().getState().equals(TableState.WINNER)) {
 					throw new WinnerException();
@@ -142,7 +148,7 @@ public class ControllerLogic {
 	}
 	
 	private boolean evaluateTable() throws WinnerException {
-		List<Player> players = game.getPlayers();
+		List<Player> players = gamePlayersKeeper.getPlayers();
 		
 //		Stream<Player> filtered = players.stream().filter(p->!p.getAction().equals(Action.FOLD));
 		
@@ -204,17 +210,48 @@ public class ControllerLogic {
 			System.out.println("Update table: " + card);
 		});
 		
-		for(PlayerElements pe : gameUpdater.getPlayers()) {
-			Player p = game.getPlayersKeeper().getPlayer(pe.getName());
+		for(PlayerData pd : gameUpdater.getPlayers()) {
+			Player p = gamePlayersKeeper.getPlayer(pd.getName());
 			
 			if (p != null) {
-				p.deal(new Pair<>(pe.getCard1(), pe.getCard2()));
-				p.setScore(pe.getScore());
+				p.deal(new Pair<>(pd.getCard1(), pd.getCard2()));
+				p.setScore(pd.getScore());
 			}
 		}
 		
-		System.out.println("Update my cards: " + game.getMe().getCards().get(0) + " " +  game.getMe().getCards().get(1));
+		System.out.println("Update my cards: " + gamePlayersKeeper.getMyPlayer().getCards().get(0) + " " +  gamePlayersKeeper.getMyPlayer().getCards().get(1));
 		
-		view.setRefresh();
+		setRefresh();
+	}
+
+	public void refresh(/*List<Player> players, String myName, int goal*/) {
+//		System.out.println("REFRESHING GAME VIEW");
+//		view.initTableCards();
+////		initPlayers(players, myName, goal);
+//		view.initPlayers(game.getPlayers(), nodeId, game.getGoal());
+//		
+//		viframe.repaint();
+		
+		view.refresh(gamePlayersKeeper.getPlayers(), nodeId, game.getGoal());
+		refresh = false;
+	}
+	
+	public boolean isSetRefresh() {
+		System.out.println("isSetRefresh " + refresh);
+		return refresh;
+	}
+
+	private void setRefresh() {
+		System.out.println("now setRefresh is true");
+		refresh = true;		
+	}
+	
+	public void handleToken() {
+		Player player = gamePlayersKeeper.getPlayer(nodeId);
+		player.receiveToken();
+
+		System.out.println("Ho ricevuto il token");
+
+		view.setViewToken(player.getName());
 	}
 }

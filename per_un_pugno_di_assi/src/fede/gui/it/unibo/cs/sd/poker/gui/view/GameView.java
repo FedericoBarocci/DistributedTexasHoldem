@@ -52,8 +52,6 @@ public class GameView {
 
 	private final OkButton okButton;
 	private final FoldButton foldButton;
-	
-	private boolean refresh = false;
 
 	@Inject
 	public GameView(OkButton okButton, FoldButton foldButton) {
@@ -151,8 +149,8 @@ public class GameView {
 		up.setName(EnumButton.UP.name());
 		down.setName(EnumButton.DOWN.name());
 		
-		okButton.setup(clientPlayer, this);
-		foldButton.setup(clientPlayer, this);
+//		okButton.setup(clientPlayer);
+//		foldButton.setup(clientPlayer);
 
 		MouseListener betClick = new BetButton(lblBet, lblCoins, coins);
 		up.addMouseListener( betClick );
@@ -220,23 +218,13 @@ public class GameView {
 		
 		frame.repaint();
 	}
-
+	
 	public void refresh(List<Player> players, String myName, int goal) {
 		System.out.println("REFRESHING GAME VIEW");
 		initTableCards();
 		initPlayers(players, myName, goal);
+//		initPlayers(game.getPlayers(), nodeId, game.getGoal());
 		
 		frame.repaint();
-		refresh = false;
-	}
-	
-	public boolean isSetRefresh() {
-		System.out.println("isSetRefresh " + refresh);
-		return refresh;
-	}
-
-	public void setRefresh() {
-		System.out.println("now setRefresh is true");
-		refresh = true;		
 	}
 }

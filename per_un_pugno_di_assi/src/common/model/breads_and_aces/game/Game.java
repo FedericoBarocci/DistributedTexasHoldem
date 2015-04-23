@@ -28,25 +28,21 @@ public class Game {
 		this.table = table;
 	}
 
-	public Player getMe() {
-		return gamePlayersKeeper.getPlayer(gamePlayersKeeper.getMe());
-	}
+//	public Player getMe() {
+//		return gamePlayersKeeper.getPlayer(gamePlayersKeeper.getMyName());
+//	}
 	
-	public String getNextId() {
-		return gamePlayersKeeper.getNext(gamePlayersKeeper.getMe()).getName();
-	}
+//	public GamePlayersKeeper getPlayersKeeper() {
+//		return gamePlayersKeeper;
+//	}
 	
-	public GamePlayersKeeper getPlayersKeeper() {
-		return gamePlayersKeeper;
-	}
-	
-	public Player getPlayer(String name) {
-		return gamePlayersKeeper.getPlayer(name);
-	}
-	
-	public List<Player> getPlayers() {
-		return gamePlayersKeeper.getPlayers();
-	}
+//	public Player getPlayer(String name) {
+//		return gamePlayersKeeper.getPlayer(name);
+//	}
+//	
+//	public List<Player> getPlayers() {
+//		return gamePlayersKeeper.getPlayers();
+//	}
 	
 	public boolean isStarted() {
 		return isStarted;

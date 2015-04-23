@@ -8,7 +8,7 @@
 	<classpathentry kind="src" path="src/max/rmi"/>
 	<classpathentry kind="src" path="src/max/misc"/>
 	<classpathentry excluding="it/unibo/cs/sd/poker/mvc/Model.java|it/unibo/cs/sd/poker/main/Main.java|it/unibo/cs/sd/poker/main/DummyModule.java" kind="src" path="src/fede/main_test"/>
-	<classpathentry excluding="breads_and_aces/game/model/players/keeper/RegistrarPlayersKeeper2.java|breads_and_aces/game/model/players/keeper/PlayersKeeperImpl2.java" kind="src" path="src/common/model"/>
+	<classpathentry excluding="breads_and_aces/game/model/players/keeper/RegistrarPlayersKeeper2.java|breads_and_aces/game/model/players/keeper/PlayersKeeperImpl2.java|breads_and_aces/game/model/players/player/PlayerFactory.java" kind="src" path="src/common/model"/>
 	<classpathentry kind="src" path="src/max/main/di"/>
 	<classpathentry excluding="breads_and_aces/main/MainShell.java|breads_and_aces/node/inputhandler/shell/InputHandlerShell.java|breads_and_aces/_di/providers/node/inputhandler/shell/InputHandlerShellProvider.java" kind="src" path="src/max/dev"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>

@@ -6,7 +6,6 @@ import it.unibo.cs.sd.poker.gui.controllers.ControllerLogic;
 import it.unibo.cs.sd.poker.gui.controllers.GameUpdater;
 import it.unibo.cs.sd.poker.gui.controllers.exceptions.DealEventException;
 import it.unibo.cs.sd.poker.gui.controllers.exceptions.SinglePlayerException;
-import it.unibo.cs.sd.poker.gui.view.GameView;
 import it.unibo.cs.sd.poker.gui.view.elements.ElementGUI;
 import it.unibo.cs.sd.poker.gui.view.elements.utils.GuiUtils;
 
@@ -16,49 +15,52 @@ import java.rmi.RemoteException;
 
 import javax.inject.Inject;
 
-import breads_and_aces.game.Game;
+import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.services.rmi.game.core.GameService;
 import breads_and_aces.services.rmi.utils.communicator.Communicator;
 
 public class FoldButton implements MouseListener {
 	
 	private final Communicator communicator;
-	private String nodeId;
-	private Game game;
-	private GameView view;
-	private ControllerLogic controller;
+	private final String nodeId;
+	private final ControllerLogic controllerLogic;
+	private final GamePlayersKeeper gamePlayersKeeper; 
+	
 	private GameUpdater gameUpdater;
 	private Action myAction;
 
 	@Inject
-	public FoldButton(Communicator communicator, Game game) {
+	public FoldButton(Communicator communicator,
+			ControllerLogic controllerLogic, GamePlayersKeeper gamePlayersKeeper) {
 		this.communicator = communicator;
-		this.game = game;
+		this.gamePlayersKeeper = gamePlayersKeeper;
+		this.nodeId = gamePlayersKeeper.getMyName();
+		this.controllerLogic = controllerLogic;
 	}
 	
-	public void setup(String nodeId, GameView view) {
-		this.nodeId = nodeId;
-		this.view = view;
-		this.controller = new ControllerLogic(game, view, nodeId);
-	}
+//	public void setup(String nodeId, GameView view) {
+//		this.nodeId = nodeId;
+////		this.view = view;
+//		this.controller = new ControllerLogic(game, view, nodeId);
+//	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(view.isSetRefresh()) {
-			view.refresh(game.getPlayers(), nodeId, game.getGoal());
+		if(this.controllerLogic.isSetRefresh()) {
+			this.controllerLogic.refresh(/*game.getPlayers(), nodeId, game.getGoal()*/);
 		}
 		else {
 			myAction = Action.FOLD;
 			
 			try {
-				if(controller.updateAction(nodeId, Action.FOLD)) {
+				if(this.controllerLogic.updateAction(nodeId, Action.FOLD)) {
 					System.out.println("Executing " + myAction);
 					communicator.toAll(nodeId, this::performAction);
 				}
 			}catch (DealEventException e1) {
-				gameUpdater = new GameUpdater(game.getPlayers(), new Deck());
+				gameUpdater = new GameUpdater(gamePlayersKeeper.getPlayers(), new Deck());
 				communicator.toAll(nodeId, this::performActionAndDeal);
-				controller.update(gameUpdater);
+				this.controllerLogic.update(gameUpdater);
 			} catch (SinglePlayerException e1) {
 //				gameUpdater = new GameUpdater(game.getPlayers(), new Deck());
 				communicator.toAll(nodeId, this::performWinnerEndGame);

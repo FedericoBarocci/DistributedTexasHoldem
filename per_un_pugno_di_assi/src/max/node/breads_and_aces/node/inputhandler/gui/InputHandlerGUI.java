@@ -15,7 +15,7 @@ public class InputHandlerGUI implements InputHandler {
 		this.gameViewInitializer = gameViewInitializer;
 	}
 
-	public void exec(String myName) {
-		gameViewInitializer.start(myName);
+	public void exec() {
+		gameViewInitializer.start();
 	}
 }

@@ -1,5 +1,6 @@
 package breads_and_aces.services.rmi.game.core.impl;
 
+import it.unibo.cs.sd.poker.gui.controllers.ControllerLogic;
 import it.unibo.cs.sd.poker.gui.view.GameViewInitializerReal;
 
 import java.rmi.RemoteException;
@@ -27,8 +28,9 @@ public class GameServiceAsSessionInitializerServable extends
 	public GameServiceAsSessionInitializerServable(@Assisted String nodeId,
 			Game game, GamePlayersKeeper playersKeeper,
 			GameRegistrarProvider gameRegistrarProvider,
-			GameViewInitializerReal gameViewInitializer) throws RemoteException {
-		super(nodeId, game, playersKeeper, gameViewInitializer);
+			GameViewInitializerReal gameViewInitializer,
+			ControllerLogic controllerLogic) throws RemoteException {
+		super(nodeId, game, playersKeeper, controllerLogic);
 		this.gameRegistrarProvider = gameRegistrarProvider;
 	}
 

@@ -61,7 +61,7 @@ public class KeepersUtilDelegate {
 
 	public void registerPlayer(String playerId, boolean isMe) {
 		registerPlayer(playerId);
-		playersKeeper.setMe(playerId);
+		playersKeeper.setMyName(playerId);
 	}
 
 	public RegistrationResult registerNodePlayerGameServiceAsClientable(

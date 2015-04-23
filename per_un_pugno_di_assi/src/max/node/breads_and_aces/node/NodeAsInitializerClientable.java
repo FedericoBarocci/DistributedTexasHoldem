@@ -12,15 +12,16 @@ public class NodeAsInitializerClientable extends DefaultNode {
 	private Game game;
 
 	@AssistedInject
-	public NodeAsInitializerClientable(@Assisted String thisNodeId,
+	public NodeAsInitializerClientable(
+			@Assisted(value="nodeFactoryIdAsClientable") String thisNodeId,
 			InputHandlerProvider inputHandlerProvider, Game game) {
 		super(thisNodeId, inputHandlerProvider);
 		this.game = game;
 	}
 	
 	@Override
-	public void start(String myName) {
+	public void start() {
 		Waiter.sleep(game::isStarted, 1);
-		super.start(myName);
+		super.start();
 	}
 }
