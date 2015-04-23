@@ -1,23 +1,16 @@
 package breads_and_aces.game;
 
-import it.unibo.cs.sd.poker.game.core.Action;
 import it.unibo.cs.sd.poker.game.core.Card;
 import it.unibo.cs.sd.poker.game.exceptions.DrawException;
-import it.unibo.cs.sd.poker.gui.controllers.GameUpdater;
-import it.unibo.cs.sd.poker.gui.controllers.PlayerElements;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import breads_and_aces.game.exception.PlayerCheckException;
-import breads_and_aces.game.exception.WinnerException;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.game.model.table.Table;
-import breads_and_aces.game.model.table.TableState;
-import breads_and_aces.game.model.utils.Pair;
 
 import com.google.inject.Singleton;
 
@@ -130,25 +123,6 @@ public class Game {
 
 		throw new DrawException();
 	}
-
-	public boolean evaluateLogicModel() throws WinnerException {
-		try {
-			for(Player p : getPlayers()) {
-				if(! p.getAction().equals(Action.CHECK)) 
-					throw new PlayerCheckException();
-			}
-		}
-		catch(PlayerCheckException e) {
-			return false;
-		}
-		
-		table.setNextState();
-		gamePlayersKeeper.resetActions();
-		
-		if (table.getState().equals(TableState.WINNER)) throw new WinnerException();
-		
-		return true;
-	}
 	
 	public List<Card> showCards() {
 		List<Card> list = table.showCards();
@@ -166,24 +140,5 @@ public class Game {
 	
 	public int getGoal() {
 		return goal;
-	}
-
-	public void update(GameUpdater gameUpdater) {
-		table.reset();
-		gameUpdater.getTable().forEach(card->{
-			table.addCards(card);
-			System.out.println("Update table: " + card);
-		});
-		
-		for(PlayerElements pe : gameUpdater.getPlayers()) {
-			Player p = gamePlayersKeeper.getPlayer(pe.getName());
-			
-			if (p != null) {
-				p.deal(new Pair<>(pe.getCard1(), pe.getCard2()));
-				p.setScore(pe.getScore());
-			}
-		}
-		
-		System.out.println("Update my cards: " + getMe().getCards().get(0) + " " +  getMe().getCards().get(1));
 	}
 }

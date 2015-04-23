@@ -105,14 +105,10 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 		this.me = playerId;
 	}
 
-	
-
 	@Override
 	public Map<PlayerRegistrationId, Player> getRegisteredPlayers() {
 		return playersMap;
 	}
-
-	
 
 	/**
 	 * @return Players list, in same insertion order
@@ -156,12 +152,4 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 			p.setAction(Action.NONE);
 		}
 	}
-	
-	
-	
-//	@Override
-//	public void resetPlayers(List<Player> players) {
-//		this.players.clear();
-//		addPlayers(players);
-//	}
 }

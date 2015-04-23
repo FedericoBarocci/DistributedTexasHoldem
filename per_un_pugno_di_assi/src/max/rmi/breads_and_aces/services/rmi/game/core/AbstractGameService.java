@@ -1,8 +1,10 @@
 package breads_and_aces.services.rmi.game.core;
 
+import it.unibo.cs.sd.poker.game.core.Action;
 import it.unibo.cs.sd.poker.gui.controllers.ControllerLogic;
 import it.unibo.cs.sd.poker.gui.controllers.GameUpdater;
 import it.unibo.cs.sd.poker.gui.controllers.exceptions.DealEventException;
+import it.unibo.cs.sd.poker.gui.controllers.exceptions.SinglePlayerException;
 import it.unibo.cs.sd.poker.gui.view.GameView;
 import it.unibo.cs.sd.poker.gui.view.GameViewInitializerReal;
 
@@ -40,16 +42,6 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 	}
 	
 	@Override
-	public void receiveStartGame(String whoHasToken) {
-		playersKeeper.getPlayer(whoHasToken).receiveToken();
-		
-		System.out.println("Game can start!");
-		
-		GameView gameView = gameViewInitializer.get();
-		gameView.setViewToken(playersKeeper.getPlayer(whoHasToken).getName());
-	}
-	
-	@Override
 	public void receiveBucket() throws RemoteException {
 		playersKeeper.getPlayer(nodeId).receiveToken();
 		
@@ -60,6 +52,53 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 	}
 	
 	@Override
+	public void receiveStartGame(String whoHasToken) {
+		playersKeeper.getPlayer(whoHasToken).receiveToken();
+		
+		System.out.println("Game can start!");
+		
+		GameView gameView = gameViewInitializer.get();
+		gameView.setViewToken(playersKeeper.getPlayer(whoHasToken).getName());
+	}
+	
+	@Override
+	public void receiveAction(String fromPlayer, Action action) {
+		System.out.println("receiveAction " + fromPlayer + " :: " + action);
+		try {
+			controllerLogic.updateAction(fromPlayer, action);
+		} catch (DealEventException e) {
+			System.out.println("receiveCheck should not be here");
+		} catch (SinglePlayerException e) {
+			System.out.println("receiveCheck should not be here");
+		}
+	}
+	
+	@Override
+	public void receiveActionAndDeal(String fromPlayer, Action action, GameUpdater gameUpdater) {
+		try {
+			controllerLogic.updateAction(fromPlayer, action);
+		} catch (DealEventException e) {
+			System.out.println("receiveActionAndDeal DealEventException");
+			controllerLogic.update(gameUpdater);
+		} catch (SinglePlayerException e) {
+			System.out.println("receiveActionAndDeal SinglePlayerException");
+			controllerLogic.update(gameUpdater);
+		}
+	}
+	
+	@Override
+	public void receiveWinnerEndGame(String fromPlayer, Action action) {
+		try {
+			controllerLogic.updateAction(fromPlayer, action);
+		} catch (DealEventException e) {
+			System.out.println("receiveWinnerEndGame DealEventException");
+		} catch (SinglePlayerException e) {
+			System.out.println("receiveWinnerEndGame SinglePlayerException");
+		}
+	}
+
+	/*
+	@Override
 	public void receiveCheck(String fromPlayer, String toPlayer) {
 		try {
 			controllerLogic.check(fromPlayer, toPlayer);
@@ -67,15 +106,7 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 			System.out.println("receiveCheck should not be here");
 		}
 	}
-	
-	@Override
-	public void receiveCheckAndDeal(String fromPlayer, String toPlayer, GameUpdater gameUpdater) {
-		try {
-			controllerLogic.check(fromPlayer, toPlayer);
-		} catch (DealEventException e) {
-			game.update(gameUpdater);
-		}
-	}
+	*/
 	
 	/*@Override
 	public void sayIHaveToken(String from, String id) {
@@ -84,10 +115,4 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 		GameView gameView = gameViewInitializer.get();
 		gameView.setViewToken(playersKeeper.getPlayer(id).getName());
 	}*/
-	
-	@Override
-	public void receiveCall(String fromPlayer, int coins) {
-		// TODO Auto-generated method stub
-		
-	}
 }

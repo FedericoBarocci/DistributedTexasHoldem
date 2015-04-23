@@ -1,9 +1,11 @@
 package it.unibo.cs.sd.poker.gui.controllers.actionlisteners;
 
+import it.unibo.cs.sd.poker.game.core.Action;
 import it.unibo.cs.sd.poker.game.core.Deck;
 import it.unibo.cs.sd.poker.gui.controllers.ControllerLogic;
 import it.unibo.cs.sd.poker.gui.controllers.GameUpdater;
 import it.unibo.cs.sd.poker.gui.controllers.exceptions.DealEventException;
+import it.unibo.cs.sd.poker.gui.controllers.exceptions.SinglePlayerException;
 import it.unibo.cs.sd.poker.gui.view.GameView;
 import it.unibo.cs.sd.poker.gui.view.elements.ElementGUI;
 import it.unibo.cs.sd.poker.gui.view.elements.utils.GuiUtils;
@@ -22,49 +24,70 @@ public class OkButton implements MouseListener {
 
 	private final Communicator communicator;
 	private String nodeId;
-	private final Game game;
-	private final GameView view;
-	private final ControllerLogic controller;
+	private Game game;
+	private GameView view;
+	private ControllerLogic controller;
 	private GameUpdater gameUpdater;
+	private Action myAction;
 
 	@Inject
-	public OkButton(Communicator communicator, Game game, GameView view, ControllerLogic controller) {
+	public OkButton(Communicator communicator, Game game, GameView view) {
 		this.communicator = communicator;
 		this.game = game;
 		this.view = view;
-		this.controller = controller;
 	}
 	
+	public void setup(String nodeId, GameView view) {
+		this.nodeId = nodeId;
+		this.view = view;
+		this.controller = new ControllerLogic(game, view, nodeId);
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		/*List<String> crashed = */
 		if(view.isSetRefresh()) {
 			view.refresh(game.getPlayers(), nodeId, game.getGoal());
 		}
 		else {
+			myAction = Action.CHECK;
+			
 			try {
-				if(controller.check(nodeId, game.getNextId())) {
-					communicator.toAll(nodeId, this::performCheck);
+				if(controller.updateAction(nodeId, Action.CHECK)) {
+					System.out.println("Executing " + myAction);
+					communicator.toAll(nodeId, this::performAction);
 				}
-			} catch (DealEventException e1) {
+			}catch (DealEventException e1) {
 				gameUpdater = new GameUpdater(game.getPlayers(), new Deck());
-				communicator.toAll(nodeId, this::performCheckAndDeal);
-				game.update(gameUpdater);
+				communicator.toAll(nodeId, this::performActionAndDeal);
+				controller.update(gameUpdater);
+			} catch (SinglePlayerException e1) {
+//				gameUpdater = new GameUpdater(game.getPlayers(), new Deck());
+				communicator.toAll(nodeId, this::performWinnerEndGame);
+//				game.update(gameUpdater);
 			}
 		}
 	}
 	
-	private void performCheck(GameService gameService) {
+	private void performAction(GameService gameService) {
 		try {
-			gameService.receiveCheck(nodeId, game.getNextId());
+			gameService.receiveAction(nodeId, myAction);
+		} catch (RemoteException e) {
+			//Game Recovery
+			e.printStackTrace();
+		}
+	}
+	
+	private void performActionAndDeal(GameService gameService) {
+		try {
+			gameService.receiveActionAndDeal(nodeId, myAction, gameUpdater);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void performCheckAndDeal(GameService gameService) {
+	private void performWinnerEndGame(GameService gameService) {
 		try {
-			gameService.receiveCheckAndDeal(nodeId, game.getNextId(), gameUpdater);
+			gameService.receiveWinnerEndGame(nodeId, myAction);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

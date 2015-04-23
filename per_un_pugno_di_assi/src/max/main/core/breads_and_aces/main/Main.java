@@ -37,7 +37,7 @@ public class Main {
 			StartOrRegisterGUI rg = new StartOrRegisterGUI(registrationLatch, loginResultAtomicReference);
 			startOrRegistrarReference.set(rg);
 		});
-		
+
 		try {
 			registrationLatch.await();
 			StartOrRegisterGUI startOrRegisterGUI = startOrRegistrarReference.get();
