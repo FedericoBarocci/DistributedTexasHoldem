@@ -1,14 +1,16 @@
 package breads_and_aces.game.model.players.player;
 
-import breads_and_aces.game.model.players.keeper.PlayersKeeper;
+import javax.inject.Inject;
+
+import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 
 public class MeProvider {
 
-	private final PlayersKeeper playersKeeper;
+	private final GamePlayersKeeper playersKeeper;
 
-	public MeProvider(PlayersKeeper playersKeeper) {
+	@Inject
+	public MeProvider(GamePlayersKeeper playersKeeper) {
 		this.playersKeeper = playersKeeper;
-		// TODO Auto-generated constructor stub
 	}
 
 	public Player getMyPlayer() {

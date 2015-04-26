@@ -1,10 +1,9 @@
 package breads_and_aces.services.rmi.game.core;
 
-import it.unibo.cs.sd.poker.game.core.Action;
-import it.unibo.cs.sd.poker.gui.controllers.GameUpdater;
-
 import java.rmi.RemoteException;
 
+import breads_and_aces.game.core.Action;
+import breads_and_aces.game.updater.GameUpdater;
 import breads_and_aces.services.rmi.game.base.bucketable.Bucketable;
 import breads_and_aces.services.rmi.game.base.echo.Echo;
 

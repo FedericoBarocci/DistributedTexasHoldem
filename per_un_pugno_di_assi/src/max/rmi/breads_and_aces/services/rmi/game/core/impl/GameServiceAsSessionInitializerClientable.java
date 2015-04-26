@@ -1,17 +1,16 @@
 package breads_and_aces.services.rmi.game.core.impl;
 
-import it.unibo.cs.sd.poker.game.core.Card;
-import it.unibo.cs.sd.poker.gui.controllers.ControllerLogic;
-import it.unibo.cs.sd.poker.gui.view.GameViewInitializerReal;
-
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 
 import breads_and_aces.game.Game;
+import breads_and_aces.game.core.Card;
+import breads_and_aces.game.model.controller.DistributedController;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.game.model.players.player.PlayerRegistrationId;
+import breads_and_aces.game.model.table.Table;
 import breads_and_aces.registration.initializers.clientable.RegistrationInitializerClientable;
 import breads_and_aces.registration.model.NodeConnectionInfos;
 import breads_and_aces.services.rmi.game.core.AbstractGameService;
@@ -27,22 +26,25 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 	
 	private final KeepersUtilDelegate keepersUtilDelegate;
 	private final RegistrationInitializerClientable registrationInitializerClientable;
-
-	private final GameViewInitializerReal gameViewInitializer;
+	private final Game game;
+	private final Table table;
+	private final DistributedController distributedController;
 	
 	@AssistedInject
 	public GameServiceAsSessionInitializerClientable(
 			@Assisted String nodeId,
+			Table table,
 			Game game,
 			GamePlayersKeeper gamePlayersKeeper,
 			KeepersUtilDelegate keepersUtilDelegate,
 			@Assisted RegistrationInitializerClientable registrationInitializerClientable,
-			GameViewInitializerReal gameViewInitializer,
-			ControllerLogic controllerLogic) throws RemoteException {
-		super(nodeId, game, gamePlayersKeeper, controllerLogic);
+			DistributedController distributedController) throws RemoteException {
+		super(nodeId, gamePlayersKeeper, distributedController);
+		this.table = table;
+		this.game = game;
 		this.keepersUtilDelegate = keepersUtilDelegate;
 		this.registrationInitializerClientable = registrationInitializerClientable;
-		this.gameViewInitializer = gameViewInitializer;
+		this.distributedController = distributedController;
 	}
 
 	@Override
@@ -56,7 +58,7 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 		keepersUtilDelegate
 				.synchronizeNodesPlayersGameservicesLocallyAsClientable(
 						nodesConnectionInfos, playersMap);
-		game.getTable().getCards().addAll(tablesCard);
+		table.getAllCards().addAll(tablesCard);
 
 		// broadcast for update crashed player will be skipping here, because we don't really need this:
 		// if any player crashs during each sync, we can hide this event until the bucket arrives to that 
@@ -71,12 +73,7 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 	
 	@Override
 	public void receiveStartGame(String whoHasToken) {
-		playersKeeper.getPlayer(whoHasToken).receiveToken();
-
-		System.out.println("Game can start!");
-
-//		GameView gameView = gameViewInitializer.get();
-		gameViewInitializer.get().setViewToken(playersKeeper.getPlayer(whoHasToken).getName());
+		distributedController.receiveStartGame(whoHasToken);
 	}
 	
 	/*private void update() {

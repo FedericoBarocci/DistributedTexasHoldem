@@ -2,9 +2,6 @@ package breads_and_aces.main.start.gui;
 
 import static javax.swing.GroupLayout.Alignment.LEADING;
 import static javax.swing.GroupLayout.Alignment.TRAILING;
-import it.unibo.cs.sd.poker.gui.view.elements.JFrameDefault;
-import it.unibo.cs.sd.poker.gui.view.elements.utils.EnumFont;
-import it.unibo.cs.sd.poker.gui.view.elements.utils.GuiUtils;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +18,9 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import breads_and_aces.gui.view.elements.frame.JFrameDefault;
+import breads_and_aces.gui.view.elements.utils.EnumFont;
+import breads_and_aces.gui.view.elements.utils.GuiUtils;
 import breads_and_aces.main.Main.LoginResult;
 
 public class StartOrRegisterGUI extends JFrameDefault {
