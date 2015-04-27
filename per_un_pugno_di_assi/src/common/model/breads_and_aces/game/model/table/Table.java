@@ -1,23 +1,28 @@
 package breads_and_aces.game.model.table;
 
-import it.unibo.cs.sd.poker.game.core.Card;
-
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
+import javax.inject.Singleton;
+
+import breads_and_aces.game.core.Card;
+
+@Singleton
 public class Table {
 	
-	private List<Card> tableCards = new ArrayList<>();
+	private final List<Card> tableCards = new LinkedList<>();
 	private TableState state = TableState.DEAL;
 	
-	public Table() {}
-
-	public void addCards(Card card) {
+	public void addCard(Card card) {
 		tableCards.add(card);
 	}
 	
-	public List<Card> getCards() {
+	public List<Card> getAllCards() {
 		return tableCards;
+	}
+
+	public void setState(TableState tableState) {
+		this.state = tableState;		
 	}
 	
 	public void setNextState() {
@@ -28,12 +33,12 @@ public class Table {
 		return state;
 	}
 	
-	public List<Card> showCards() {
+	public List<Card> getRoundCards() {
 		return state.getCards(tableCards);
 	}
 
 	public void reset() {
 		state = TableState.DEAL;
-		tableCards = new ArrayList<>();
+		tableCards.clear();
 	}
 }

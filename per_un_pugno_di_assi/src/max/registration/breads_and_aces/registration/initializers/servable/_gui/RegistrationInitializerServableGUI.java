@@ -6,6 +6,7 @@ import java.util.concurrent.CountDownLatch;
 import breads_and_aces._di.providers.registration.initializers.servable.registrar.GameRegistrarProvider;
 import breads_and_aces.game.Game;
 import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
+import breads_and_aces.game.model.table.Table;
 import breads_and_aces.registration.initializers.servable.AbstractRegistrationInitializerServable;
 import breads_and_aces.services.rmi.game.keeper.GameServicesKeeper;
 import breads_and_aces.services.rmi.utils.communicator.Communicator;
@@ -24,10 +25,10 @@ public class RegistrationInitializerServableGUI extends
 			GameRegistrarProvider gameRegistrarProvider,
 			GameServicesKeeper gameServicesRegistry,
 			RegistrarPlayersKeeper playersKeeper, Communicator communicator,
-			Game game, Printer printer,
+			Table table, Game game, Printer printer,
 			AccepterPlayersGUIFactory accepterPlayersGUIFactory) {
 		super(nodeId, gameRegistrarProvider, gameServicesRegistry,
-				playersKeeper, communicator, game, printer);
+				playersKeeper, communicator, table, game, printer);
 		this.accepterPlayersGUIFactory = accepterPlayersGUIFactory;
 	}
 

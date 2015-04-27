@@ -1,7 +1,5 @@
 package breads_and_aces.game.model.players.keeper;
 
-import it.unibo.cs.sd.poker.game.core.Action;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +10,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Singleton;
 
+import breads_and_aces.game.core.Action;
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.game.model.players.player.PlayerRegistrationId;
 import breads_and_aces.utils.observatory.ObservableDelegate;
@@ -152,9 +151,11 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 	 */
 
 	@Override
-	public void resetActions() {
+	public void resetActions(boolean forceReset) {
 		for (Player p : playersMap.values()) {
-			p.setAction(Action.NONE);
+			if (forceReset || !p.getAction().equals(Action.FOLD)) {
+				p.setAction(Action.NONE);
+			}
 		}
 	}
 }

@@ -1,7 +1,6 @@
 package breads_and_aces.registration.initializers.clientable._gui;
 
 import static javax.swing.GroupLayout.Alignment.LEADING;
-import it.unibo.cs.sd.poker.gui.view.elements.JFrameDefault;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,11 +9,12 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import breads_and_aces.gui.view.elements.frame.JFrameDefault;
 import breads_and_aces.registration.initializers.servable.registrar.RegistrationResult;
 
 public class WaiterGameStartGUI {
 	
-	private final JFrameDefault frame = new JFrameDefault("Poker Distributed Hold'em");
+	private final JFrameDefault frame = new JFrameDefault();
 	
 	private final String labelStateTextWaitingRegistration = "Waiting for registration...";
 	private final String labelStateTextAccepted = "You are confirmed as new player";
@@ -28,6 +28,8 @@ public class WaiterGameStartGUI {
 	private final JButton buttonExit = new JButton("Exit");
 	
 	public WaiterGameStartGUI() {
+		frame.setTitle("Poker Distributed Hold'em");
+		
 		buttonExit.setVisible(false);
 		buttonExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

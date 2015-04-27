@@ -1,9 +1,9 @@
 package breads_and_aces.game.model.table;
 
-import it.unibo.cs.sd.poker.game.core.Card;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import breads_and_aces.game.core.Card;
 
 public enum TableState {
 	DEAL {

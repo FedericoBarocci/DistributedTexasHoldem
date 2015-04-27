@@ -1,5 +1,6 @@
 package breads_and_aces.services.rmi.utils.crashhandler;
 
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -71,13 +72,18 @@ public class CrashHandler {
 			List<String> eventuallyCrashedAgain = communicator.broadcast(meId, this::updatePlayersFunctor, new CrashedHolder(eventuallyCrashedPeers));
 			if (eventuallyCrashedAgain.size() > 0) {
 				eventuallyCrashedPeers.addAll(eventuallyCrashedAgain);
-			} else
-				inCrash = false;			
+			} else {
+				inCrash = false;
+			}
 		}
 		return eventuallyCrashedPeers;
 	}
 	private void updatePlayersFunctor(GameService gameService, CrashedHolder crashedHolderPeers) {
-		gameService.removePlayersAndService(null);
+		try {
+			gameService.removePlayersAndService( crashedHolderPeers.getCrashed() );
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
 
 //	public void addCrashed(String id) {

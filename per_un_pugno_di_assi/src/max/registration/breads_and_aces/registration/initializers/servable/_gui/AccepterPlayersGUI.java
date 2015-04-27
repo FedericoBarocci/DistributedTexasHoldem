@@ -1,7 +1,5 @@
 package breads_and_aces.registration.initializers.servable._gui;
 
-import it.unibo.cs.sd.poker.gui.view.elements.JFrameDefault;
-
 import java.util.concurrent.CountDownLatch;
 
 import javax.swing.GroupLayout;
@@ -9,6 +7,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
+import breads_and_aces.gui.view.elements.frame.JFrameDefault;
 
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;

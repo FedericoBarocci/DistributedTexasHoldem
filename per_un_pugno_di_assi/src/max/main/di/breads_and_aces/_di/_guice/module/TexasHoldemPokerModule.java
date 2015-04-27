@@ -1,13 +1,13 @@
 package breads_and_aces._di._guice.module;
 
-import it.unibo.cs.sd.poker.gui.view.GameViewInitializer;
-import it.unibo.cs.sd.poker.gui.view.GameViewInitializerReal;
 import breads_and_aces._di.providers.node.inputhandler.InputHandlerProvider;
 import breads_and_aces._di.providers.node.inputhandler.gui.InputHandlerGUIProvider;
 import breads_and_aces._di.providers.registration.initializers.clientable.RegistrationInitializerClientableProvider;
 import breads_and_aces._di.providers.registration.initializers.clientable._gui.RegistrationInitializerClientableGUIProvider;
 import breads_and_aces._di.providers.registration.initializers.servable.RegistrationInitializerServableProvider;
 import breads_and_aces._di.providers.registration.initializers.servable._gui.RegistrationInitializerServableProviderGUI;
+import breads_and_aces.game.GameInitializer;
+import breads_and_aces.game.GameInitializerReal;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.players.keeper.PlayersKeeperImpl;
 import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
@@ -40,7 +40,7 @@ public class TexasHoldemPokerModule extends AbstractModule {
 		install(new FactoryModuleBuilder().build(GameServiceFactory.class));
 		
 //		install(new FactoryModuleBuilder().build(GameViewInitializerInstancer.class));
-		bind(GameViewInitializer.class).to(GameViewInitializerReal.class);
+		bind(GameInitializer.class).to(GameInitializerReal.class);
 		
 		
 		bind(InputHandler.class).toProvider(InputHandlerProvider.class);

@@ -1,18 +1,17 @@
 package breads_and_aces.game.model.players.player;
 
-import it.unibo.cs.sd.poker.game.core.Action;
-import it.unibo.cs.sd.poker.game.core.Card;
-import it.unibo.cs.sd.poker.game.core.MaxReachedException;
-import it.unibo.cs.sd.poker.game.core.PositiveInteger;
-import it.unibo.cs.sd.poker.game.core.Ranking;
-import it.unibo.cs.sd.poker.game.core.Rankings;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import breads_and_aces.game.core.Action;
+import breads_and_aces.game.core.Card;
+import breads_and_aces.game.core.PositiveInteger;
+import breads_and_aces.game.core.Ranking;
+import breads_and_aces.game.core.Rankings;
+import breads_and_aces.game.exceptions.MaxReachedException;
 import breads_and_aces.game.model.utils.Pair;
 import breads_and_aces.main.Main;
 import breads_and_aces.utils.printer.Printer;
@@ -68,7 +67,12 @@ public class Player implements Serializable, Comparable<Player> {
 	}
 	
 	public void evaluateRanking(List<Card> tablecards) {
-		rank.setCards(cards, tablecards);
+		if (action.equals(Action.FOLD)) {
+			rank.setRankNotDef();
+		}
+		else {
+			rank.setCards(cards, tablecards);
+		}
 	}
 	
 	public Rankings getRanking() {
@@ -85,6 +89,14 @@ public class Player implements Serializable, Comparable<Player> {
 	
 	public List<Card> getCards() {
 		return cards;
+	}
+	
+	public Card getFirstCard() {
+		return cards.get(0);
+	}
+	
+	public Card getSecondCard() {
+		return cards.get(1);
 	}
 	
 	public Action getAction() {

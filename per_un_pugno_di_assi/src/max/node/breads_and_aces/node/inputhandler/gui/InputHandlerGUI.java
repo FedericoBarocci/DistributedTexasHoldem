@@ -1,17 +1,16 @@
 package breads_and_aces.node.inputhandler.gui;
 
-import it.unibo.cs.sd.poker.gui.view.GameViewInitializerReal;
-
 import javax.inject.Inject;
 
+import breads_and_aces.game.GameInitializerReal;
 import breads_and_aces.node.inputhandler.InputHandler;
 
 public class InputHandlerGUI implements InputHandler {
 	
-	private GameViewInitializerReal gameViewInitializer;
+	private GameInitializerReal gameViewInitializer;
 
 	@Inject
-	public InputHandlerGUI(GameViewInitializerReal gameViewInitializer) {
+	public InputHandlerGUI(GameInitializerReal gameViewInitializer) {
 		this.gameViewInitializer = gameViewInitializer;
 	}
 
