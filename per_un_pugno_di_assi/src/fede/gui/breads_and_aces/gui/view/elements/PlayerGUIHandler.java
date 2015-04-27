@@ -15,7 +15,7 @@ import breads_and_aces.gui.view.elements.utils.EnumLine;
 import breads_and_aces.gui.view.elements.utils.EnumRectangle;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
-public class PlayerGUI extends GameViewHandler {
+public class PlayerGUIHandler extends GameViewHandler {
 
 	private final Player player;
 	private final Integer x;
@@ -32,7 +32,7 @@ public class PlayerGUI extends GameViewHandler {
 	private final JPanel scoreContainer = new TransparentPanelGUI();
 	private final JPanel scoreLevel = new TransparentPanelGUI();
 	
-	public PlayerGUI(Player player, Integer x, Integer y, Integer goal, Boolean showCards) {
+	public PlayerGUIHandler(Player player, Integer x, Integer y, Integer goal, Boolean showCards) {
 		super();
 		
 		this.player = player;

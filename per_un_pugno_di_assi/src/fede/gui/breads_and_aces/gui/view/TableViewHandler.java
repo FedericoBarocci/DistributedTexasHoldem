@@ -11,7 +11,7 @@ import breads_and_aces.gui.view.elements.CardGUI;
 import breads_and_aces.gui.view.elements.utils.CardsUtils;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
-public class TableView extends GameViewHandler {
+public class TableViewHandler extends GameViewHandler {
 	
 	private final Table table;
 	
@@ -19,7 +19,7 @@ public class TableView extends GameViewHandler {
 	private int displayedCards = 0;
 
 	@Inject
-	public TableView(Table table) {
+	public TableViewHandler(Table table) {
 		this.table = table;
 	}
 

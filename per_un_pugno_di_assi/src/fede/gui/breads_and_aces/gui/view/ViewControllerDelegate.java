@@ -11,14 +11,14 @@ import breads_and_aces.game.model.players.player.Player;
 public class ViewControllerDelegate {
 
 	private final ViewInitalizer viewInitializer;
-	private final TableView tableView;
-	private final PlayersView playersView;
+	private final TableViewHandler tableView;
+	private final PlayersViewHandler playersView;
 	
 	private boolean refresh = false;
 	private int goal;
 
 	@Inject
-	public ViewControllerDelegate(ViewInitalizer viewInitializer, TableView tableView, PlayersView playersView) {
+	public ViewControllerDelegate(ViewInitalizer viewInitializer, TableViewHandler tableView, PlayersViewHandler playersView) {
 		this.viewInitializer = viewInitializer;
 		this.tableView = tableView;
 		this.playersView = playersView;

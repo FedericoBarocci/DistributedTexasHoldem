@@ -7,13 +7,13 @@ import java.util.Map;
 import javax.inject.Singleton;
 
 import breads_and_aces.game.model.players.player.Player;
-import breads_and_aces.gui.view.elements.PlayerGUI;
+import breads_and_aces.gui.view.elements.PlayerGUIHandler;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
 @Singleton
-public class PlayersView extends GameViewHandler {
+public class PlayersViewHandler extends GameViewHandler {
 	
-	private Map<String, PlayerGUI> playersGui = new LinkedHashMap<>();
+	private Map<String, PlayerGUIHandler> playersGui = new LinkedHashMap<>();
 	
 	public void init(List<Player> players, String myName, int goal) {
 		int size = players.size();
@@ -31,7 +31,7 @@ public class PlayersView extends GameViewHandler {
 				//player.setScore(Math.floorDiv(goal, 7) * i);
 			
 			boolean showCards = player.getName().equals(myName);	
-			PlayerGUI playerGui = new PlayerGUI(player, x, y, goal, showCards);
+			PlayerGUIHandler playerGui = new PlayerGUIHandler(player, x, y, goal, showCards);
 			
 			if (player.hasToken()) {
 				playerGui.setTokenView();
@@ -60,7 +60,7 @@ public class PlayersView extends GameViewHandler {
 	}
 	
 	public void showWinners(List<Player> winners) {
-		for(PlayerGUI pg : playersGui.values()) {
+		for(PlayerGUIHandler pg : playersGui.values()) {
 			boolean loser = true;
 			
 			for(Player p : winners) {
