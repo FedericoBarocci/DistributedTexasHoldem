@@ -43,7 +43,7 @@ public class FoldButton implements MouseListener {
 					communicator.toAll(gamePlayersKeeper.getMyName(), this::performAction);
 					break;
 					
-				case DEAL: 
+				case DEAL:
 					GameUpdater gameUpdater = new GameUpdater(gamePlayersKeeper.getPlayers(), new Deck());
 					communicator.toAll(gamePlayersKeeper.getMyName(), this::performActionAndDeal, gameUpdater);
 					distributedController.update(gameUpdater);

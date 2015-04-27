@@ -8,12 +8,13 @@ import breads_and_aces.gui.view.elements.ImageGUI;
 import breads_and_aces.gui.view.elements.frame.JFrameGame;
 import breads_and_aces.gui.view.elements.frame.JFrameGameProvider;
 
-public class GameViewHandler {
+abstract public class GameViewHandler {
 	
 	private final JFrameGame frame;
 	
-	public GameViewHandler() {
-		frame = JFrameGameProvider.INSTANCE.get();
+	public GameViewHandler(JFrameGameProvider jFrameGameProvider) {
+//		frame = JFrameGameProvider.INSTANCE.get();
+		frame = jFrameGameProvider.get();
 	}
 	
 	protected void addElement(JLabel e) {

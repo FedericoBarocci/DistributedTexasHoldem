@@ -11,6 +11,7 @@ import breads_and_aces.game.GameInitializerReal;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.players.keeper.PlayersKeeperImpl;
 import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
+import breads_and_aces.gui.view.elements.PlayerGUIHandlerFactory;
 import breads_and_aces.node.NodeFactory;
 import breads_and_aces.node.initializer.NodeInitializerFactory;
 import breads_and_aces.node.inputhandler.InputHandler;
@@ -79,6 +80,7 @@ public class TexasHoldemPokerModule extends AbstractModule {
 //		bind(RegistrationInitializerClientableProvider.class).to(RegistrationInitializerClientableShellProvider.class);
 //		install(new FactoryModuleBuilder().build(RegistrationInitializerClientableShellFactory.class));
 		
+		install(new FactoryModuleBuilder().build(PlayerGUIHandlerFactory.class));
 	}
 
 }

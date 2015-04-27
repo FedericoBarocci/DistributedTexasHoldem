@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import breads_and_aces.game.core.Card;
 import breads_and_aces.game.model.table.Table;
 import breads_and_aces.gui.view.elements.CardGUI;
+import breads_and_aces.gui.view.elements.frame.JFrameGameProvider;
 import breads_and_aces.gui.view.elements.utils.CardsUtils;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
@@ -19,7 +20,8 @@ public class TableViewHandler extends GameViewHandler {
 	private int displayedCards = 0;
 
 	@Inject
-	public TableViewHandler(Table table) {
+	public TableViewHandler(JFrameGameProvider jFrameGameProvider, Table table) {
+		super(jFrameGameProvider);
 		this.table = table;
 	}
 

@@ -1,6 +1,8 @@
 package breads_and_aces.main;
 
 import java.awt.EventQueue;
+import java.lang.reflect.Field;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -13,6 +15,7 @@ import breads_and_aces.utils.misc.MemoryUtil;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.spi.Message;
 
 public class Main {
 	
@@ -82,7 +85,21 @@ public class Main {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			if (e1.getCause()!=null) { 
+				e1.printStackTrace();
+			} else {
+				try {
+					Field field = e1.getClass().getDeclaredField("messages");
+					field.setAccessible(true);
+					@SuppressWarnings("unchecked")
+					Set<Message> messages = (Set<Message>) field.get(e1);
+					messages.forEach(m->{
+						System.err.println(m);
+					});
+				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 	

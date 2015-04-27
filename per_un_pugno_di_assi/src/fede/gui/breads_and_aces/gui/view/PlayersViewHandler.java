@@ -4,16 +4,26 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.gui.view.elements.PlayerGUIHandler;
+import breads_and_aces.gui.view.elements.PlayerGUIHandlerFactory;
+import breads_and_aces.gui.view.elements.frame.JFrameGameProvider;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
 @Singleton
 public class PlayersViewHandler extends GameViewHandler {
 	
-	private Map<String, PlayerGUIHandler> playersGui = new LinkedHashMap<>();
+	private final Map<String, PlayerGUIHandler> playersGui = new LinkedHashMap<>();
+	private final PlayerGUIHandlerFactory playerGUIHandlerFactory;
+	
+	@Inject
+	public PlayersViewHandler(JFrameGameProvider jFrameGameProvider, PlayerGUIHandlerFactory playerGUIHandlerFactory) {
+		super(jFrameGameProvider);
+		this.playerGUIHandlerFactory = playerGUIHandlerFactory;
+	}
 	
 	public void init(List<Player> players, String myName, int goal) {
 		int size = players.size();
@@ -31,7 +41,9 @@ public class PlayersViewHandler extends GameViewHandler {
 				//player.setScore(Math.floorDiv(goal, 7) * i);
 			
 			boolean showCards = player.getName().equals(myName);	
-			PlayerGUIHandler playerGui = new PlayerGUIHandler(player, x, y, goal, showCards);
+			PlayerGUIHandler playerGui = 
+//					new PlayerGUIHandler(player, x, y, goal, showCards);
+					playerGUIHandlerFactory.create(player, x, y, goal, showCards);
 			
 			if (player.hasToken()) {
 				playerGui.setTokenView();
@@ -41,7 +53,7 @@ public class PlayersViewHandler extends GameViewHandler {
 			playersGui.put(player.getName(), playerGui);
 		}
 		
-		this.repaint();
+		super.repaint();
 	}
 	
 	public void showPlayersCards() {

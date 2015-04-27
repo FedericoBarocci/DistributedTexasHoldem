@@ -13,6 +13,7 @@ import breads_and_aces.gui.labels.LabelBet;
 import breads_and_aces.gui.labels.LabelCoins;
 import breads_and_aces.gui.view.elements.ImageGUI;
 import breads_and_aces.gui.view.elements.TransparentPanelGUI;
+import breads_and_aces.gui.view.elements.frame.JFrameGameProvider;
 import breads_and_aces.gui.view.elements.utils.EnumColor;
 import breads_and_aces.gui.view.elements.utils.EnumFont;
 import breads_and_aces.gui.view.elements.utils.EnumLine;
@@ -31,7 +32,8 @@ public class ViewInitalizer extends GameViewHandler {
 	private JLabel lblMessage = new JLabel("");
 	
 	@Inject
-	public ViewInitalizer(LabelBet lblBet, LabelCoins lblCoins) {
+	public ViewInitalizer(JFrameGameProvider jFrameGameProvider, LabelBet lblBet, LabelCoins lblCoins) {
+		super(jFrameGameProvider);
 		this.lblBet = lblBet;
 		this.lblCoins = lblCoins;
 	}

@@ -6,8 +6,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
+
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.gui.view.GameViewHandler;
+import breads_and_aces.gui.view.elements.frame.JFrameGameProvider;
 import breads_and_aces.gui.view.elements.utils.CardsUtils;
 import breads_and_aces.gui.view.elements.utils.EnumColor;
 import breads_and_aces.gui.view.elements.utils.EnumFont;
@@ -32,8 +36,11 @@ public class PlayerGUIHandler extends GameViewHandler {
 	private final JPanel scoreContainer = new TransparentPanelGUI();
 	private final JPanel scoreLevel = new TransparentPanelGUI();
 	
-	public PlayerGUIHandler(Player player, Integer x, Integer y, Integer goal, Boolean showCards) {
-		super();
+
+	@AssistedInject
+	public PlayerGUIHandler(JFrameGameProvider jFrameGameProvider, 
+			@Assisted Player player, @Assisted(value="x") Integer x, @Assisted(value="y") Integer y, @Assisted(value="goal") Integer goal, @Assisted Boolean showCards) {
+		super(jFrameGameProvider);
 		
 		this.player = player;
 		this.x = x;
@@ -75,58 +82,58 @@ public class PlayerGUIHandler extends GameViewHandler {
 	}
 	
 	public void showCards() {
-		this.removeElement( cardGui1 );
-		this.removeElement( cardGui2 );
+		super.removeElement( cardGui1 );
+		super.removeElement( cardGui2 );
 		cardGui1 = new CardGUI(CardsUtils.INSTANCE_SMALL.getImageCard(player.getFirstCard()), x + CardsUtils.span1, y);
 		cardGui2 = new CardGUI(CardsUtils.INSTANCE_SMALL.getImageCard(player.getSecondCard()), x + CardsUtils.span2, y);
-		this.addElement( cardGui1 );
-		this.addElement( cardGui2 );
+		super.addElement( cardGui1 );
+		super.addElement( cardGui2 );
 	}
 	
 	public void unsetTokenView() {
-		this.removeElement( box );
+		super.removeElement( box );
 		GuiUtils.INSTANCE.initPanel(box, EnumRectangle.playerBox, EnumColor.glass, EnumLine.playerBox, x + 10, y + 25);
-		this.addElement( box );
+		super.addElement( box );
 	}
 	
 	public void setTokenView() {
-		this.removeElement( box );
+		super.removeElement( box );
 		GuiUtils.INSTANCE.initPanel(box, EnumRectangle.playerBox, EnumColor.alphaGreen, EnumLine.playerToken, x + 10, y + 25);
-		this.addElement( box );
+		super.addElement( box );
 	}
 	
 	public void setWinner() {
-		this.removeElement( box );
+		super.removeElement( box );
 		GuiUtils.INSTANCE.initPanel(box, EnumRectangle.playerBox, EnumColor.alphaGold, EnumLine.winner, x + 10, y + 25);
-		this.addElement( box );
+		super.addElement( box );
 	}
 	
 	public void setLoser() {
-		this.removeElement( box );
+		super.removeElement( box );
 		GuiUtils.INSTANCE.initPanel(box, EnumRectangle.playerBox, EnumColor.alphaBlue, EnumLine.loser, x + 10, y + 25);
-		this.addElement( box );
+		super.addElement( box );
 	}
 	
 	public void draw() {
-		this.addElement( cardGui1 );
-		this.addElement( cardGui2 );
-		this.addElement( name );
-		this.addElement( action );
-		this.addElement( score );
-		this.addElement( box );
-		this.addElement( scoreContainer );
-		this.addElement( scoreLevel );
+		super.addElement( cardGui1 );
+		super.addElement( cardGui2 );
+		super.addElement( name );
+		super.addElement( action );
+		super.addElement( score );
+		super.addElement( box );
+		super.addElement( scoreContainer );
+		super.addElement( scoreLevel );
 	}
 	
 	public void clearFromGui() {
-		this.removeElement( cardGui1 );
-		this.removeElement( cardGui2 );
-		this.removeElement( name );
-		this.removeElement( action );
-		this.removeElement( score );
-		this.removeElement( box );
-		this.removeElement( scoreContainer );
-		this.removeElement( scoreLevel );
+		super.removeElement( cardGui1 );
+		super.removeElement( cardGui2 );
+		super.removeElement( name );
+		super.removeElement( action );
+		super.removeElement( score );
+		super.removeElement( box );
+		super.removeElement( scoreContainer );
+		super.removeElement( scoreLevel );
 	}
 	
 	public String getId() {

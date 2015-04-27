@@ -8,6 +8,7 @@ import breads_and_aces.gui.controllers.actionlisteners.InfoButton;
 import breads_and_aces.gui.controllers.actionlisteners.OkButton;
 import breads_and_aces.gui.view.GameViewHandler;
 import breads_and_aces.gui.view.elements.ElementGUI;
+import breads_and_aces.gui.view.elements.frame.JFrameGameProvider;
 import breads_and_aces.gui.view.elements.utils.EnumButton;
 import breads_and_aces.gui.view.elements.utils.EnumRectangle;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
@@ -19,7 +20,8 @@ public class ListenersInitializer extends GameViewHandler {
 	private final BetButton betButton;
 
 	@Inject
-	public ListenersInitializer(OkButton okButton, FoldButton foldButton, BetButton betButton) {
+	public ListenersInitializer(JFrameGameProvider jFrameGameProvider, OkButton okButton, FoldButton foldButton, BetButton betButton) {
+		super(jFrameGameProvider);
 		this.okButton = okButton;
 		this.foldButton = foldButton;
 		this.betButton = betButton;

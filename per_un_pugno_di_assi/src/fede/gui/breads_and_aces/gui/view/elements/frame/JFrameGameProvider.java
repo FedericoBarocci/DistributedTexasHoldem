@@ -1,15 +1,22 @@
 package breads_and_aces.gui.view.elements.frame;
 
-public enum JFrameGameProvider {
+import javax.inject.Provider;
+import javax.inject.Singleton;
 
-	INSTANCE;
+//public enum JFrameGameProvider {
+@Singleton
+public class JFrameGameProvider implements Provider<JFrameGame> {
+
+//	INSTANCE;
 	
 	private final JFrameGame frame;
 	
-	private JFrameGameProvider() {
+//	private JFrameGameProvider() {
+	public JFrameGameProvider() {
 		frame = new JFrameGame();
 	}
 	
+	@Override
 	public JFrameGame get() {
 		return frame;
 	}
