@@ -77,7 +77,7 @@ public class GameOracle {
 	public OracleResponses ask() {
 		List<Player> players = gamePlayersKeeper.getPlayers();
 
-		if (ConditionAllIn(players) || ConditionSinglePlayer(players)) {
+		if (conditionAllIn(players) || conditionSinglePlayer(players)) {
 			System.out.println("Oracle think allin for all players or single player. WINNER.");
 			table.setState(TableState.WINNER);
 			
@@ -86,14 +86,14 @@ public class GameOracle {
 		
 		System.out.println("Oracle think no immediate player win.");
 		
-		if (ConditionPlayersHaveToSpeek(players)) {
+		if (conditionPlayersHaveToSpeek(players)) {
 			System.out.println("Oracle think players have to speak. OK.");
 			return OracleResponses.OK;
 		}
 		
 		System.out.println("Oracle think all players speaked.");
 		
-		if (ConditionAllAgree(players) || ConditionCallToMostOneRaise(players)) {
+		if (conditionAllAgree(players) || conditionCallToMostOneRaise(players)) {
 			System.out.println("Oracle think all players agee OR call.");
 			
 			table.setNextState();
@@ -202,23 +202,23 @@ public class GameOracle {
 		throw new DrawException();
 	}
 	
-	private boolean ConditionAllIn(List<Player> players) {
+	private boolean conditionAllIn(List<Player> players) {
 		return players.stream().allMatch(p->p.getAction().equals(Action.FOLD) || p.getAction().equals(Action.ALLIN));
 	}
 	
-	private boolean ConditionSinglePlayer(List<Player> players) {
+	private boolean conditionSinglePlayer(List<Player> players) {
 		return players.stream().filter(p->!p.getAction().equals(Action.FOLD)).count() == 1;
 	}
 	
-	private boolean ConditionPlayersHaveToSpeek(List<Player> players) {
+	private boolean conditionPlayersHaveToSpeek(List<Player> players) {
 		return players.stream().filter(p->p.getAction().equals(Action.NONE)).count() > 0;
 	}
 	
-	private boolean ConditionAllAgree(List<Player> players) {
+	private boolean conditionAllAgree(List<Player> players) {
 		return players.stream().allMatch(p->p.getAction().equals(Action.FOLD) || p.getAction().equals(Action.CHECK));
 	}
 	
-	private boolean ConditionCallToMostOneRaise(List<Player> players) {
+	private boolean conditionCallToMostOneRaise(List<Player> players) {
 		return players.stream().allMatch(p -> p.getAction().equals(Action.FOLD) || p.getAction().equals(Action.RAISE) || p.getAction().equals(Action.CALL)) 
 				&& players.stream() .filter(p -> p.getAction().equals(Action.RAISE)).count() <= 1;
 	}
