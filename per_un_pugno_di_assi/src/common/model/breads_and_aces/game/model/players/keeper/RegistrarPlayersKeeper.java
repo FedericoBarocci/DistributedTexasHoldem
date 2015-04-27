@@ -13,4 +13,8 @@ public interface RegistrarPlayersKeeper extends PlayersKeeper {
 //	void addPlayers(List<Player> players);
 //	List<Player> getRegistredPlayers();
 	void setMyName(String playerId);
+	
+//	public Player getPlayer(String playerId);
+//	public List<Player> getPlayers();
+	public Player getNext(String playerId);
 }

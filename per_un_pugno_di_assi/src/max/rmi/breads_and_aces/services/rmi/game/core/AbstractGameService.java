@@ -111,4 +111,9 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 	 * GameView gameView = gameViewInitializer.get();
 	 * gameView.setViewToken(playersKeeper.getPlayer(id).getName()); }
 	 */
+	
+	@Override
+	public void removePlayersAndService() {
+		
+	}
 }

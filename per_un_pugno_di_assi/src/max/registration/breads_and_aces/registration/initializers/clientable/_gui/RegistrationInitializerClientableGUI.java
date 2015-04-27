@@ -58,11 +58,8 @@ public class RegistrationInitializerClientableGUI extends AbstractRegistrationIn
 	public void goFurther() {
 		waiterGameStartGUI.dispose();
 		waiterGameStartGUI = null;
-//		super.goFurther();
 		if (latch!=null) {
 			latch.countDown();
-//			waiterGameStartGUI.dispose();
-//			waiterGameStartGUI = null;
 		}
 	}
 }

@@ -53,9 +53,7 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 			List<Card> tablesCard)
 			throws RemoteException {
 		// System.out.println("here");
-		keepersUtilDelegate
-				.synchronizeNodesPlayersGameservicesLocallyAsClientable(
-						nodesConnectionInfos, playersMap);
+		keepersUtilDelegate.synchronizeNodesPlayersGameservicesLocallyAsClientable(nodesConnectionInfos, playersMap);
 		game.getTable().getCards().addAll(tablesCard);
 
 		// broadcast for update crashed player will be skipping here, because we don't really need this:
@@ -64,9 +62,8 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 		
 		// TODO too bad here, but it works
 		game.setStarted();
+		
 		registrationInitializerClientable.goFurther();
-//		if (latch!=null)
-//			latch.countDown();
 	}
 	
 	@Override
