@@ -4,7 +4,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.inject.Inject;
-import javax.swing.JLabel;
 
 import breads_and_aces.game.Game;
 import breads_and_aces.game.core.PositiveInteger;
@@ -17,22 +16,21 @@ import breads_and_aces.gui.view.elements.utils.EnumButton;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
 public class BetButton implements MouseListener {
-	private final JLabel lblBet;
-	private final JLabel lblScore;
+	private final LabelBet lblBet;
+	private final LabelCoins lblCoins;
 	private final Game game;
 	
 	@Inject
-	public BetButton(LabelBet lblBet, LabelCoins lblcoins, Game game/*JLabel lblBet, JLabel lblScore, Integer coins*/) {
-		//		this.viewInitalizer = viewInitalizer;/*JLabel lblBet, JLabel lblScore, Integer coins*/
+	public BetButton(LabelBet lblBet, LabelCoins lblcoins, Game game) {
 		this.lblBet = lblBet;
-		this.lblScore = lblcoins;
+		this.lblCoins = lblcoins;
 		this.game = game;
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		ElementGUI lbl = (ElementGUI) (e.getSource());
-		PositiveInteger i = new PositiveInteger(Integer.parseInt(lblBet.getText()), game.getCoins());
+		PositiveInteger i = new PositiveInteger(lblBet.getValue(), game.getCoins());
 
 		switch (EnumButton.valueOf(lbl.getName())) {
 			case UP:
@@ -52,9 +50,10 @@ public class BetButton implements MouseListener {
 				break;
 		}
 
-		lblBet.setText("" + i.getIntValue());
-		int score = game.getCoins() - i.getIntValue();
-		lblScore.setText("" + score);
+		int value = i.getIntValue();
+
+		lblBet.setValue(value);
+		lblCoins.setText("" + (game.getCoins() - value));
 	}
 
 	@Override
