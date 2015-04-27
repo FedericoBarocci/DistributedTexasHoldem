@@ -46,7 +46,6 @@ public class ViewControllerDelegate {
 	}
 
 	public void setViewToken(String playerName) {
-		System.out.println("SetViewToken to " + playerName);
 		playersView.setViewToken(playerName);
 	}
 

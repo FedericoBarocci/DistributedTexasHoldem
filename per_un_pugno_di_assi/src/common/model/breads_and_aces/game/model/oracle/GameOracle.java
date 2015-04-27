@@ -74,24 +74,39 @@ public class GameOracle {
 	public OracleResponses ask() {
 		List<Player> players = gamePlayersKeeper.getPlayers();
 
-		if (ConditionPlayersHaveToSpeek(players)) {
-			return OracleResponses.OK;
-		}
-		
 		if (ConditionAllIn(players) || ConditionSinglePlayer(players)) {
+			System.out.println("Oracle think allin for all players or single player. WINNER.");
+			table.setState(TableState.WINNER);
+			
 			return OracleResponses.WINNER;
 		}
 		
+		System.out.println("Oracle think no immediate player win.");
+		
+		if (ConditionPlayersHaveToSpeek(players)) {
+			System.out.println("Oracle think players have to speak. OK.");
+			return OracleResponses.OK;
+		}
+		
+		System.out.println("Oracle think all players speaked.");
+		
 		if (ConditionAllAgree(players) || ConditionCallToMostOneRaise(players)) {
+			System.out.println("Oracle think all players agee OR call.");
+			
 			table.setNextState();
 			gamePlayersKeeper.resetActions();
 			
 			if (table.getState().equals(TableState.WINNER)) {
+				System.out.println(" -> Oracle think this is last step. WINNER.");
 				return OracleResponses.WINNER;
 			}
 			
+			System.out.println(" -> Oracle think next step. NEXT_STEP.");
+			
 			return OracleResponses.NEXT_STEP;
 		}
+		
+		System.out.println("__Oracle think no changes required. OK.");
 		
 		return OracleResponses.OK;
 	}

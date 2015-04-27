@@ -40,7 +40,7 @@ public class RankingEvaluator implements Serializable {
 		return rankings;
 	}
 	
-	private void setRankings(Rankings rankings) {
+	public void setRankings(Rankings rankings) {
 		this.rankings = rankings;
 	}
 	

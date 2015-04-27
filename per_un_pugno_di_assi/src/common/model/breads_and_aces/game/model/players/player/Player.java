@@ -67,7 +67,12 @@ public class Player implements Serializable, Comparable<Player> {
 	}
 	
 	public void evaluateRanking(List<Card> tablecards) {
-		rank.setCards(cards, tablecards);
+		if (action.equals(Action.FOLD)) {
+			rank.setRankNotDef();
+		}
+		else {
+			rank.setCards(cards, tablecards);
+		}
 	}
 	
 	public Rankings getRanking() {

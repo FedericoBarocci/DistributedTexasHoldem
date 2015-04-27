@@ -1,6 +1,9 @@
 package breads_and_aces.game.core;
 
 public enum Rankings {
+	NOT_DEF {
+		public String toString() { return ""; }
+	},
 	CARTA_ALTA {
 		public String toString() { return "Carta Alta"; }
 	},
@@ -30,8 +33,5 @@ public enum Rankings {
 	},
 	SCALA_REALE {
 		public String toString() { return "Scala Reale"; }
-	},
-	NOT_DEF {
-		public String toString() { return ""; }
 	}
 }

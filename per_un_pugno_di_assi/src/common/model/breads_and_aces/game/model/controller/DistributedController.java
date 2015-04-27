@@ -60,8 +60,10 @@ public class DistributedController {
 		
 		try {
 			successor = gameOracle.getSuccessor(fromPlayer).getName();
+			System.out.println("Oracle tell successor: " + successor);
 		} 
 		catch (SinglePlayerException e) {
+			System.out.println("Oracle tell NOT successor. END.");
 			return Communication.END;
 		}
 		
@@ -73,6 +75,8 @@ public class DistributedController {
 		gameOracle.nextGameState(action);
 		
 		OracleResponses response = gameOracle.ask();
+		
+		System.out.println("Oracle tell: " + response);
 		
 		switch (response) {
 		case OK:

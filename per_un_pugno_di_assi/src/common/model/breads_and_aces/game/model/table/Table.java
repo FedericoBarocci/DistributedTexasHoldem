@@ -3,8 +3,11 @@ package breads_and_aces.game.model.table;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.inject.Singleton;
+
 import breads_and_aces.game.core.Card;
 
+@Singleton
 public class Table {
 	
 	private final List<Card> tableCards = new LinkedList<>();
@@ -16,6 +19,10 @@ public class Table {
 	
 	public List<Card> getAllCards() {
 		return tableCards;
+	}
+
+	public void setState(TableState tableState) {
+		this.state = tableState;		
 	}
 	
 	public void setNextState() {

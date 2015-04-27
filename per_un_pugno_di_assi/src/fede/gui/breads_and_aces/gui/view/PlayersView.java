@@ -52,11 +52,7 @@ public class PlayersView extends GameView {
 		playersGui.values().forEach(p->{
 			p.unsetTokenView();
 			if (p.getId().equals(playerName)) {
-				System.out.println(p.getId() + " now set token to view");
 				p.setTokenView();
-			}
-			else {
-				System.out.println(p.getId() + " don't have token to view");
 			}
 		});
 		
