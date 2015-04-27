@@ -151,9 +151,11 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 	 */
 
 	@Override
-	public void resetActions() {
+	public void resetActions(boolean forceReset) {
 		for (Player p : playersMap.values()) {
-			p.setAction(Action.NONE);
+			if (forceReset || !p.getAction().equals(Action.FOLD)) {
+				p.setAction(Action.NONE);
+			}
 		}
 	}
 }

@@ -8,7 +8,7 @@ public interface GamePlayersKeeper extends PlayersKeeper {
 	public Player getPlayer(String playerId);
 	public List<Player> getPlayers();
 	public Player getNext(String playerId);
-	public void resetActions();
+	public void resetActions(boolean forceReset);
 //	public boolean contains(String playerId);
 //	public void remove(String targetplayerId);
 //	void resetPlayers(List<Player> players);

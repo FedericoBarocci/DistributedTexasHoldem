@@ -54,17 +54,20 @@ public class GameOracle {
 	
 	public Player getSuccessor(String playerId) throws SinglePlayerException {
 		Player next;
+		String actualPlayerId = playerId;
 		
 		if (gamePlayersKeeper.getPlayers().size() == 1) { 
 			throw new SinglePlayerException();
 		}
 		
 		do {
-			next = gamePlayersKeeper.getNext(playerId);
+			next = gamePlayersKeeper.getNext(actualPlayerId);
 			
 			if (next.getName().equals(playerId)) { 
 				throw new SinglePlayerException();
 			}
+			
+			actualPlayerId = next.getName();
 		}
 		while (next.getAction().equals(Action.FOLD));
 		
@@ -94,14 +97,16 @@ public class GameOracle {
 			System.out.println("Oracle think all players agee OR call.");
 			
 			table.setNextState();
-			gamePlayersKeeper.resetActions();
 			
 			if (table.getState().equals(TableState.WINNER)) {
 				System.out.println(" -> Oracle think this is last step. WINNER.");
+				gamePlayersKeeper.resetActions(true);
+				
 				return OracleResponses.WINNER;
 			}
 			
 			System.out.println(" -> Oracle think next step. NEXT_STEP.");
+			gamePlayersKeeper.resetActions(false);
 			
 			return OracleResponses.NEXT_STEP;
 		}
