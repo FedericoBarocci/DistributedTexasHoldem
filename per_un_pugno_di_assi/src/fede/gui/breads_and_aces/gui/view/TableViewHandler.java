@@ -12,7 +12,7 @@ import breads_and_aces.gui.view.elements.frame.JFrameGameProvider;
 import breads_and_aces.gui.view.elements.utils.CardsUtils;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
-public class TableViewHandler extends GameViewHandler {
+public class TableViewHandler extends GameViewHandler implements InitableView {
 	
 	private final Table table;
 	
@@ -25,6 +25,7 @@ public class TableViewHandler extends GameViewHandler {
 		this.table = table;
 	}
 
+	@Override
 	public void init() {
 		tableCardsGui.forEach(c->this.removeElement(c));
 		tableCardsGui.clear();

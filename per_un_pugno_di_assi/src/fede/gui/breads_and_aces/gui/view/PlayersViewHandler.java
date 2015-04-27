@@ -25,6 +25,7 @@ public class PlayersViewHandler extends GameViewHandler {
 		this.playerGUIHandlerFactory = playerGUIHandlerFactory;
 	}
 	
+//	@Override
 	public void init(List<Player> players, String myName, int goal) {
 		int size = players.size();
 		int span = Math.floorDiv(GuiUtils.playerSpan, size+1);

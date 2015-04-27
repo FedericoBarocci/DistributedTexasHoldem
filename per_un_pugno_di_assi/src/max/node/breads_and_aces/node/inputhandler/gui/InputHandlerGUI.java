@@ -2,15 +2,15 @@ package breads_and_aces.node.inputhandler.gui;
 
 import javax.inject.Inject;
 
-import breads_and_aces.game.GameInitializerReal;
+import breads_and_aces.game.GameInitializer;
 import breads_and_aces.node.inputhandler.InputHandler;
 
 public class InputHandlerGUI implements InputHandler {
 	
-	private GameInitializerReal gameViewInitializer;
+	private GameInitializer gameViewInitializer;
 
 	@Inject
-	public InputHandlerGUI(GameInitializerReal gameViewInitializer) {
+	public InputHandlerGUI(GameInitializer gameViewInitializer) {
 		this.gameViewInitializer = gameViewInitializer;
 	}
 

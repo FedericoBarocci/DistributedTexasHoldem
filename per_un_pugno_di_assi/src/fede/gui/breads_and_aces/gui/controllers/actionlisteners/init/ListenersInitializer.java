@@ -7,13 +7,14 @@ import breads_and_aces.gui.controllers.actionlisteners.FoldButton;
 import breads_and_aces.gui.controllers.actionlisteners.InfoButton;
 import breads_and_aces.gui.controllers.actionlisteners.OkButton;
 import breads_and_aces.gui.view.GameViewHandler;
+import breads_and_aces.gui.view.InitableView;
 import breads_and_aces.gui.view.elements.ElementGUI;
 import breads_and_aces.gui.view.elements.frame.JFrameGameProvider;
 import breads_and_aces.gui.view.elements.utils.EnumButton;
 import breads_and_aces.gui.view.elements.utils.EnumRectangle;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
-public class ListenersInitializer extends GameViewHandler {
+public class ListenersInitializer extends GameViewHandler implements InitableView {
 
 	private final OkButton okButton;
 	private final FoldButton foldButton;
@@ -27,6 +28,7 @@ public class ListenersInitializer extends GameViewHandler {
 		this.betButton = betButton;
 	}
 	
+	@Override
 	public void init() {
 		ElementGUI up   = 	new ElementGUI( GuiUtils.INSTANCE.getImageGui("up.png"), 	GuiUtils.INSTANCE.getRectangle(EnumRectangle.up) 	);
 		ElementGUI down = 	new ElementGUI( GuiUtils.INSTANCE.getImageGui("down.png"),	GuiUtils.INSTANCE.getRectangle(EnumRectangle.down) 	);

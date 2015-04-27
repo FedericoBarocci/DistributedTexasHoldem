@@ -27,7 +27,7 @@ public class ViewControllerDelegate {
 	public void init(List<Player> players, String myName, int goal, int initialCoins) {
 		this.goal = goal;
 		
-		this.refresh(players, myName);
+		refresh(players, myName);
 		viewInitializer.init(myName, initialCoins);
 	}
 

@@ -12,18 +12,19 @@ public class GameInitializerReal implements GameInitializer {
 
 	private final Game game;
 	private final GamePlayersKeeper gamePlayersKeeper;
-	private final ListenersInitializer viewControllerInitializer;
+	private final ListenersInitializer listenersInitializer;
 	private final ViewControllerDelegate viewControllerDelegate;
 
 	private static final int initialCoins = 200;
 	private static final int initialGoal = 1000;
 
 	@Inject
-	public GameInitializerReal(Game game, GamePlayersKeeper gamePlayersKeeper, ListenersInitializer viewControllerInitializer,
+	public GameInitializerReal(Game game, GamePlayersKeeper gamePlayersKeeper, 
+			ListenersInitializer listenersInitializer,
 			ViewControllerDelegate viewControllerDelegate) {
 		this.game = game;
 		this.gamePlayersKeeper = gamePlayersKeeper;
-		this.viewControllerInitializer = viewControllerInitializer;
+		this.listenersInitializer = listenersInitializer;
 		this.viewControllerDelegate = viewControllerDelegate;
 	}
 
@@ -34,7 +35,9 @@ public class GameInitializerReal implements GameInitializer {
 		
 		gamePlayersKeeper.getPlayers().forEach(p -> p.setScore(game.getCoins()));
 		
-		viewControllerInitializer.init();
+		// TODO start the view here
+		listenersInitializer.init();
+		
 		viewControllerDelegate.init(gamePlayersKeeper.getPlayers(),
 				gamePlayersKeeper.getMyName(), game.getGoal(), game.getCoins());
 	}

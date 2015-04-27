@@ -60,19 +60,19 @@ public class ViewInitalizer extends GameViewHandler {
 		GuiUtils.INSTANCE.initPanel(bottomPanel, EnumRectangle.bottom, EnumColor.royalRed);
 		
 		
-		this.addElement(lblTitle);
-		this.addElement(tablePanel);
-		this.addElement(lblPlayerName);
-		this.addElement(lblCoins);
-		this.addElement(lblScore);
-		this.addElement(lblMessage);
-		this.addElement(lblBet);
-		this.addElement(lblPot);
+		super.addElement(lblTitle);
+		super.addElement(tablePanel);
+		super.addElement(lblPlayerName);
+		super.addElement(lblCoins);
+		super.addElement(lblScore);
+		super.addElement(lblMessage);
+		super.addElement(lblBet);
+		super.addElement(lblPot);
 		
-		this.addElement(leftBox);
+		super.addElement(leftBox);
 		
-		this.addElement(leftPanel);
-		this.addElement(bottomPanel);
+		super.addElement(leftPanel);
+		super.addElement(bottomPanel);
 		
 		repaint();
 		show();
