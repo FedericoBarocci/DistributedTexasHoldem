@@ -3,8 +3,6 @@ package breads_and_aces.gui.view.elements.frame;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
-import breads_and_aces.utils.misc.MemoryUtil;
-
 //public enum JFrameGameProvider {
 @Singleton
 public class JFrameGameProvider implements Provider<JFrameGame> {
