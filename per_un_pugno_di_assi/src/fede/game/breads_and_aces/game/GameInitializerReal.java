@@ -40,9 +40,8 @@ public class GameInitializerReal implements GameInitializer {
 		game.setGoal(initialGoal);
 		game.setCoins(initialCoins);
 		
-		gamePlayersKeeper.getPlayers().forEach(p -> p.setScore(game.getCoins()));
+		gamePlayersKeeper.getPlayers().forEach(p -> p.setScore( initialCoins ));
 		
-		// TODO start the view here
 		viewCreator.init(null);
 		listenersInitializer.init(null);
 		

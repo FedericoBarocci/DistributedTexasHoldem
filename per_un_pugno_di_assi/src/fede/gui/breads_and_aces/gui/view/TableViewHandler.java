@@ -12,7 +12,7 @@ import breads_and_aces.gui.view.elements.frame.JFrameGame;
 import breads_and_aces.gui.view.elements.utils.CardsUtils;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
-public class TableViewHandler extends AbstractViewHandler implements InitableView<Void> {
+public class TableViewHandler extends AbstractViewHandler<Void> {
 	
 	private final Table table;
 	

@@ -5,10 +5,11 @@ import java.util.List;
 import breads_and_aces.game.model.players.player.Player;
 
 public interface PlayersKeeper {
-	public Player getPlayer(String playerId);
-	public List<Player> getPlayers();
+	Player getPlayer(String playerId);
+	List<Player> getPlayers();
 	boolean contains(String playerId);
 	void remove(String targetplayerId);
+	Player getFirst();
 	
 	String getMyName();
 	void setMyName(String me);

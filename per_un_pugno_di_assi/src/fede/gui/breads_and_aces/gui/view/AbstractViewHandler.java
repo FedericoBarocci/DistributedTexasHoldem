@@ -7,7 +7,7 @@ import breads_and_aces.gui.view.elements.ElementGUI;
 import breads_and_aces.gui.view.elements.ImageGUI;
 import breads_and_aces.gui.view.elements.frame.JFrameGame;
 
-abstract public class AbstractViewHandler {
+abstract public class AbstractViewHandler<T> implements InitableView<T> {
 	
 	private final JFrameGame frame;
 	

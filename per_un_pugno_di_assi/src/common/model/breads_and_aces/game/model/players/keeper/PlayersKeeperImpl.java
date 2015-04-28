@@ -158,4 +158,9 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 			}
 		}
 	}
+
+	@Override
+	public Player getFirst() {
+		return new LinkedList<Player>(playersMap.values()).get(0);
+	}
 }

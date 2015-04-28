@@ -7,14 +7,13 @@ import breads_and_aces.gui.controllers.actionlisteners.FoldButton;
 import breads_and_aces.gui.controllers.actionlisteners.InfoButton;
 import breads_and_aces.gui.controllers.actionlisteners.OkButton;
 import breads_and_aces.gui.view.AbstractViewHandler;
-import breads_and_aces.gui.view.InitableView;
 import breads_and_aces.gui.view.elements.ElementGUI;
 import breads_and_aces.gui.view.elements.frame.JFrameGame;
 import breads_and_aces.gui.view.elements.utils.EnumButton;
 import breads_and_aces.gui.view.elements.utils.EnumRectangle;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
-public class ListenersInitializer extends AbstractViewHandler implements InitableView<Void> {
+public class ListenersInitializer extends AbstractViewHandler<Void> {
 
 	private final OkButton okButton;
 	private final FoldButton foldButton;

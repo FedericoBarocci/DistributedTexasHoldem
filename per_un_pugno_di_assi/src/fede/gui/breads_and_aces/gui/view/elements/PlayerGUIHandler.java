@@ -8,7 +8,6 @@ import javax.swing.SwingConstants;
 
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.gui.view.AbstractViewHandler;
-import breads_and_aces.gui.view.InitableView;
 import breads_and_aces.gui.view.elements.frame.JFrameGame;
 import breads_and_aces.gui.view.elements.utils.CardsUtils;
 import breads_and_aces.gui.view.elements.utils.EnumColor;
@@ -20,7 +19,7 @@ import breads_and_aces.gui.view.elements.utils.GuiUtils;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 
-public class PlayerGUIHandler extends AbstractViewHandler implements InitableView<Void> {
+public class PlayerGUIHandler extends AbstractViewHandler<Void> {
 
 	private final Player player;
 	private final Integer x;

@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.game.model.players.player.PlayerRegistrationId;
@@ -18,11 +17,11 @@ import breads_and_aces.registration.model.NodeConnectionInfos;
 public class GameRegistrarStarted implements GameRegistrar {
 
 	private final List<NodeConnectionInfos> registeredNodesConnectionInfos = new ArrayList<>();
-	private final RegistrarPlayersKeeper playersKeeper;
+	private final RegistrarPlayersKeeper registrarPlayersKeeper;
 	
 	@Inject
 	public GameRegistrarStarted(RegistrarPlayersKeeper playersKeeper) {
-		this.playersKeeper = playersKeeper;
+		this.registrarPlayersKeeper = playersKeeper;
 	}
 
 	@Override
@@ -47,7 +46,7 @@ public class GameRegistrarStarted implements GameRegistrar {
 	
 	@Override
 	public Player getFirst() {
-		return ((GamePlayersKeeper)playersKeeper).getPlayers().get(1);
+		return registrarPlayersKeeper.getFirst();
 	}
 
 	public void passNodesInfos(List<NodeConnectionInfos> registeredNodesConnectionInfos) {
@@ -57,6 +56,6 @@ public class GameRegistrarStarted implements GameRegistrar {
 	@Override
 	public Map<PlayerRegistrationId, Player> getRegisteredPlayers() {
 		//return playersKeeper.getIdsPlayersMap();
-		return playersKeeper.getRegisteredPlayers();
+		return registrarPlayersKeeper.getRegisteredPlayers();
 	}
 }

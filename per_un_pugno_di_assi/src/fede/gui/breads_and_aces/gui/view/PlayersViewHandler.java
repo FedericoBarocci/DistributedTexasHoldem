@@ -17,7 +17,7 @@ import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
 @LazySingleton
 //@Singleton
-public class PlayersViewHandler extends AbstractViewHandler implements InitableView<PlayersViewHandlerInitArgs> {
+public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerInitArgs> {
 	
 	private final Map<String, PlayerGUIHandler> playersGui = new LinkedHashMap<>();
 	private final PlayerGUIHandlerFactory playerGUIHandlerFactory;

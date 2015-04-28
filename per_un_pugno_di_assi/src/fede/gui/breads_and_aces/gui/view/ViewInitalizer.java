@@ -24,7 +24,7 @@ import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
 @LazySingleton
 //@Singleton
-public class ViewInitalizer extends AbstractViewHandler implements InitableView<ViewInitializerInitArgs> {
+public class ViewInitalizer extends AbstractViewHandler<ViewInitializerInitArgs> {
 
 	private final LabelBet lblBet;
 	private final LabelCoins lblCoins;
