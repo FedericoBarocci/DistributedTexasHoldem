@@ -14,7 +14,6 @@ import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.game.updater.GameUpdater;
 import breads_and_aces.gui.controllers.exceptions.SinglePlayerException;
 import breads_and_aces.gui.view.ViewControllerDelegate;
-import breads_and_aces.services.rmi.utils.communicator.Communicator;
 
 @Singleton
 public class DistributedController {
@@ -44,10 +43,10 @@ public class DistributedController {
 	}
 
 	// TODO when Communicator will be completed, this will have be public and setLocalAction below will have to be private
-	private void setLocalActionAndPropagate(Action myAction, Communicator communicator) {
+	/*private void setLocalActionAndPropagate(Action myAction, Communicator communicator) {
 		Communication c = setLocalAction(myAction);
 		c.sendCommunication(gamePlayersKeeper.getMyName(), myAction, gamePlayersKeeper.getPlayers(), communicator);
-	}
+	}*/
 	public Communication setLocalAction(Action myAction) {
 		return setAction(gamePlayersKeeper.getMyName(), myAction);
 	}
