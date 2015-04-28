@@ -1,9 +1,10 @@
 #!/bin/bash
 
 function randomName() {
-   
+echo $(shuf -n1 nomi.txt)
 }
 function randomLastIPOctet() {
+   echo $((RANDOM%8+2))
 }
 
 if [ -z "$(ip addr show  dev eth0 | grep 10.0.0 2>/dev/null)" ]; then

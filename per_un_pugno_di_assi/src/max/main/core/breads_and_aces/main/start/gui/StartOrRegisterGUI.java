@@ -48,6 +48,7 @@ public class StartOrRegisterGUI extends JFrameDefault {
 	private static final int gap = 20;
 	
 	public StartOrRegisterGUI(CountDownLatch latch, AtomicReference<LoginResult> loginResultAtomicReference) {
+		init();
 		createLayout();
 		
 		loginButton.addActionListener(new ActionListener() {

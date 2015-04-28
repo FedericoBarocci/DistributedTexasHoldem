@@ -83,16 +83,18 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 	protected void updateAllNodesForPartecipants() {
 //		printer.println("Ok: final list partecipants has: "
 //				+gameRegistrarProvider.get().getRegisteredPlayersMap().values().stream().map(Player::getName).collect(Collectors.joining(", ")));
-		communicator.toAll(myId, this::updatePartecipantsOnClientFunction, null);
+		communicator.toAll(myId, this::updatePartecipantsOnClientFunction);
 	}
 	
-	private void updatePartecipantsOnClientFunction(GameService clientGameServiceExternalInjected, Void noArg) throws RemoteException {
+	private void updatePartecipantsOnClientFunction(GameService clientGameServiceExternalInjected) throws RemoteException {
 		GameRegistrar gameRegistrar = gameRegistrarProvider.get();
 		PlayersSynchronizar ps = ((PlayersSynchronizar) clientGameServiceExternalInjected);
 		ps.synchronizeAllNodesAndPlayersFromInitiliazer(
 			gameRegistrar.getRegisteredNodesConnectionInfos(),
 			gameRegistrar.getRegisteredPlayers(),
-			table.getAllCards()
+			table.getAllCards(),
+			game.getCoins(),
+			game.getGoal()
 		);
 	}
 	
@@ -102,7 +104,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 //		passBucket();
 		printer.println("Inizio io perché comando io!");
 		playersKeeper.getMyPlayer().receiveToken();
-		communicator.toAll(myId, this::sayToAllStartGame, null);
+		communicator.toAll(myId, this::sayToAllStartGame);
 	}
 	
 	/*private void passBucket() {
@@ -116,7 +118,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		System.out.println("Ho passato bucket");
 	}*/
 	
-	private void sayToAllStartGame(GameService gameServiceExternalInjected, Void noArg) throws RemoteException {
+	private void sayToAllStartGame(GameService gameServiceExternalInjected) throws RemoteException {
 		((GameServiceClientable) gameServiceExternalInjected).receiveStartGame(myId);
 	}
 

@@ -53,7 +53,9 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 			List<NodeConnectionInfos> nodesConnectionInfos,
 			Map<PlayerRegistrationId, Player> playersMap,
 //			List<Player> playersMap, 
-			List<Card> tablesCard)
+			List<Card> tablesCard,
+			int initialCoins,
+			int initialGoal)
 			throws RemoteException {
 		// System.out.println("here");
 		keepersUtilDelegateForClientable.synchronizeNodesPlayersGameservicesLocallyAsClientable(nodesConnectionInfos, playersMap);
@@ -64,6 +66,8 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 		// (and the game will be in "opening" phase"), so its predecessor will handle its crash 
 		
 		// TODO too bad here, but it works
+		game.setCoins(initialCoins);
+		game.setGoal(initialGoal);
 		game.setStarted();
 		
 		registrationInitializerClientable.goFurther();
