@@ -13,7 +13,6 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -56,9 +55,11 @@ public class StartOrRegisterGUI extends JFrameDefault {
 				String username = usernameField.getText();
 				
 				if (username.isEmpty()) {
-					JOptionPane.showMessageDialog(null, "You need to insert an unique name", "Warning", JOptionPane.WARNING_MESSAGE);
+					// TODO restore
+//					JOptionPane.showMessageDialog(null, "You need to insert an unique name", "Warning", JOptionPane.WARNING_MESSAGE);
+					System.out.println("dev");
 				}
-				else {
+//				else { // TODO restore
 					String serverHost = hostTextField.getText();
 					String serverPort = portTextField.getText();
 					boolean asServable = servableCheckBox.isSelected();
@@ -74,7 +75,7 @@ public class StartOrRegisterGUI extends JFrameDefault {
 					loginResultAtomicReference.set(loginResult);
 	
 					latch.countDown();
-				}
+//				} // TODO restore
 			}
 		});
 		

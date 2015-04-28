@@ -23,6 +23,9 @@ import breads_and_aces.registration.initializers.servable.RegistrationInitialize
 import breads_and_aces.registration.initializers.servable._gui.AccepterPlayersGUIFactory;
 import breads_and_aces.registration.initializers.servable._gui.RegistrationInitializerServableGUIFactory;
 import breads_and_aces.services.rmi.game.core.impl.GameServiceFactory;
+import breads_and_aces.utils.keepers.KeepersUtilDelegate;
+import breads_and_aces.utils.keepers.KeepersUtilDelegateForClientable;
+import breads_and_aces.utils.keepers.KeepersUtilDelegateForServable;
 import breads_and_aces.utils.printer.ConsolePrinter.ConsolePrinterReal;
 import breads_and_aces.utils.printer.Printer;
 
@@ -43,6 +46,9 @@ LimeWireInjectModule {
 		bind(GamePlayersKeeper.class).to(PlayersKeeperImpl.class);
 		
 //		install(new FactoryModuleBuilder().build(MeFactory.class));
+		
+		bind(KeepersUtilDelegateForServable.class).to(KeepersUtilDelegate.class);
+		bind(KeepersUtilDelegateForClientable.class).to(KeepersUtilDelegate.class);
 		
 		install(new FactoryModuleBuilder().build(GameServiceFactory.class));
 		

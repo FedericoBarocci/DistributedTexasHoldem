@@ -22,7 +22,7 @@ import breads_and_aces.services.rmi.game.utils.ServiceUtils;
 import breads_and_aces.utils.printer.Printer;
 
 @Singleton
-public class KeepersUtilDelegate {
+public class KeepersUtilDelegate implements KeepersUtilDelegateForServable, KeepersUtilDelegateForClientable {
 
 	private final RegistrarPlayersKeeper playersKeeper;
 	private final GameServicesKeeper gameServiceKeeper;
@@ -43,6 +43,10 @@ public class KeepersUtilDelegate {
 		this.printer = printer;
 	}
 
+	/*
+	 * servable zone - start
+	 */
+	@Override
 	public boolean contains(String playerId) {
 		if (playersKeeper.contains(playerId)
 				&& gameServiceKeeper.contains(playerId))
@@ -50,6 +54,7 @@ public class KeepersUtilDelegate {
 		return false;
 	}
 
+	@Override
 	public void registerPlayer(String playerId) {
 		long now = System.currentTimeMillis();
 
@@ -59,12 +64,14 @@ public class KeepersUtilDelegate {
 		playersKeeper.addPlayer(playerRegistrationId, player);
 	}
 
+	@Override
 	public void registerPlayer(String playerId, boolean isMe) {
 		registerPlayer(playerId);
 		playersKeeper.setMyName(playerId);
 	}
 
-	public RegistrationResult registerNodePlayerGameServiceAsClientable(
+	@Override
+	public RegistrationResult registerClientableNodePlayerGameService(
 			NodeConnectionInfos nodeConnectionInfos, String playerId) {
 		try {
 			GameService gameService = ServiceUtils.lookup(
@@ -86,12 +93,19 @@ public class KeepersUtilDelegate {
 			return new RegistrationResult(false, Cause.ERROR);
 		}
 	}
+	/*
+	 * servable zone - end
+	 */
 
+	/*
+	 * clientable zone - start
+	 */
 	/**
 	 * @param nodesConnectionInfosMap
 	 * @param playersMap
 	 * @return
 	 */
+	@Override
 	public List<String> synchronizeNodesPlayersGameservicesLocallyAsClientable(
 			List<NodeConnectionInfos> nodesConnectionInfos,
 			Map<PlayerRegistrationId, Player> playersMap) {
@@ -131,10 +145,13 @@ public class KeepersUtilDelegate {
 		// crashHandler.handleRemovingLocally(crashedDuringSync);
 		return crashedDuringSync;
 	}
+	/*
+	 * clientable zone - end
+	 */
 
-	public void removePlayerGameService(String id) {
+	/*public void removePlayerGameService(String id) {
 		gameServiceKeeper.removeService(id);
 		// nodesConnectionInfosShelf.removeNode(id);
 		playersKeeper.remove(id);
-	}
+	}*/
 }

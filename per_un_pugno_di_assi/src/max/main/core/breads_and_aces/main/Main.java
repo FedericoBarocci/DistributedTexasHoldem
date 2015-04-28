@@ -53,15 +53,16 @@ public class Main {
 			NodeInitializerFactory nodeInitializerFactory = Injector.getInstance(NodeInitializerFactory.class);
 			NodeInitializer nodeInitializer = null;
 			
+			
+			// TODO only for test during development - it works only with: ./run HOST_IP playerName [0|1,true|false] 
+			if (args.length>1) {
+				loginResult.username = args[1];
+				loginResult.asServable = Boolean.parseBoolean(args[2]);
+				System.out.println(loginResult.username+" "+loginResult.asServable);
+			}
+			
+
 			String myId = loginResult.username;
-			
-			//TODO
-			//Pass these two server values to clients and gameViewReal
-			
-			/*
-			int coins = loginResult.coins;
-			int goal = loginResult.goal;
-			*/
 			
 			if (loginResult.asServable) {
 				nodeInitializer = nodeInitializerFactory.createAsServable(myId, addressToBind);
@@ -75,13 +76,15 @@ public class Main {
 			}
 			
 			Node node = nodeInitializer.get();
+			int coins = loginResult.coins;
+			int goal = loginResult.goal;
 			
 			MemoryUtil.runGarbageCollector();
 			nodeInitializer = null;
 			loginResult = null;
 			MemoryUtil.runGarbageCollector();
 			
-			node.start();
+			node.start(goal, coins);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (Exception e1) {

@@ -15,7 +15,7 @@ import breads_and_aces.registration.model.NodeConnectionInfos;
 import breads_and_aces.services.rmi.game.core.AbstractGameService;
 import breads_and_aces.services.rmi.game.core.GameServiceClientable;
 import breads_and_aces.services.rmi.utils.crashhandler.CrashHandler;
-import breads_and_aces.utils.keepers.KeepersUtilDelegate;
+import breads_and_aces.utils.keepers.KeepersUtilDelegateForClientable;
 
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
@@ -24,7 +24,7 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 
 	private static final long serialVersionUID = 5332389646575258965L;
 	
-	private final KeepersUtilDelegate keepersUtilDelegate;
+	private final KeepersUtilDelegateForClientable keepersUtilDelegateForClientable;
 	private final RegistrationInitializerClientable registrationInitializerClientable;
 	private final Game game;
 	private final Table table;
@@ -36,14 +36,14 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 			Table table,
 			Game game,
 //			GamePlayersKeeper gamePlayersKeeper,
-			KeepersUtilDelegate keepersUtilDelegate,
+			KeepersUtilDelegateForClientable keepersUtilDelegateForClientable,
 			@Assisted RegistrationInitializerClientable registrationInitializerClientable,
 			DistributedController distributedController,
 			CrashHandler crashHandler) throws RemoteException {
 		super(/*nodeId, gamePlayersKeeper,*/distributedController, crashHandler);
 		this.table = table;
 		this.game = game;
-		this.keepersUtilDelegate = keepersUtilDelegate;
+		this.keepersUtilDelegateForClientable = keepersUtilDelegateForClientable;
 		this.registrationInitializerClientable = registrationInitializerClientable;
 		this.distributedController = distributedController;
 	}
@@ -56,7 +56,7 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 			List<Card> tablesCard)
 			throws RemoteException {
 		// System.out.println("here");
-		keepersUtilDelegate.synchronizeNodesPlayersGameservicesLocallyAsClientable(nodesConnectionInfos, playersMap);
+		keepersUtilDelegateForClientable.synchronizeNodesPlayersGameservicesLocallyAsClientable(nodesConnectionInfos, playersMap);
 		table.getAllCards().addAll(tablesCard);
 
 		// broadcast for update crashed player will be skipping here, because we don't really need this:

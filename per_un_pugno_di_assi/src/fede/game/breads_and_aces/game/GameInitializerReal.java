@@ -18,8 +18,8 @@ public class GameInitializerReal implements GameInitializer {
 	private final ListenersInitializer listenersInitializer;
 	private final ViewControllerDelegate viewControllerDelegate;
 
-	private static final int initialCoins = 200;
-	private static final int initialGoal = 1000;
+//	private static final int initialCoins = 200;
+//	private static final int initialGoal = 1000;
 	
 
 	@Inject
@@ -36,7 +36,7 @@ public class GameInitializerReal implements GameInitializer {
 	}
 
 	@Override
-	public void start() {
+	public void start(int initialGoal, int initialCoins) {
 		game.setGoal(initialGoal);
 		game.setCoins(initialCoins);
 		

@@ -20,8 +20,8 @@ public class NodeAsInitializerClientable extends DefaultNode {
 	}
 	
 	@Override
-	public void start() {
+	public void start(int initialGoal, int initialCoins) {
 		Waiter.sleep(game::isStarted, 1);
-		super.start();
+		super.start(initialGoal, initialCoins);
 	}
 }

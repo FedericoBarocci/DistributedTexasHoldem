@@ -21,7 +21,7 @@ public class DefaultNode implements Node {
 //		return nodeId;
 //	}
 	
-	public void start() {
-		inputHandler.exec();
+	public void start(int initialGoal, int initialCoins) {
+		inputHandler.exec(initialGoal, initialCoins);
 	}
 }
