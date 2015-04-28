@@ -18,7 +18,7 @@ else
    if [ $# -eq 0 ]; then # servable
       args="10.0.0.1 $(randomName) true"
    else # clientable
-      args="10.0.0."$(randomLastIPOctet)" false"
+      args="10.0.0."$(randomLastIPOctet)" $(randomName) false"
    fi
 
    java -cp ${guice_path}:${guice_enhanced_path}:${jgoodies_path}:bin breads_and_aces.main.Main ${args}

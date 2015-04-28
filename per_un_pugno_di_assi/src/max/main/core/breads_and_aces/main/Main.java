@@ -55,7 +55,8 @@ public class Main {
 			
 			
 			// TODO only for test during development - it works only with: ./run HOST_IP playerName [0|1,true|false] 
-			if (args.length>1) {
+			if (args.length>2) {
+				System.out.println("dev");
 				loginResult.username = args[1];
 				loginResult.asServable = Boolean.parseBoolean(args[2]);
 				System.out.println(loginResult.username+" "+loginResult.asServable);

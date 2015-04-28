@@ -1,0 +1,5 @@
+lanciare sudo ./set_ips
+lanciare "./run_dev" per far partire il servable/registrar -> clickare su "register" nonostante i campi siano vuoti
+lanciare "./run_dev c" per far partire i clientables -> idem come sopra
+
+infine clickare "close registration and start game" quando si vuole chiudere le registrazioni e far partire il gioco

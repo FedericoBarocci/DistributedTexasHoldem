@@ -46,6 +46,6 @@ public class GameInitializerReal implements GameInitializer {
 		listenersInitializer.init(null);
 		
 		viewControllerDelegate.init(gamePlayersKeeper.getPlayers(),
-				gamePlayersKeeper.getMyName(), game.getGoal(), game.getCoins());
+				gamePlayersKeeper.getMyName(), game.getGoal(), game.getCoins() );
 	}
 }

@@ -1,14 +1,14 @@
 package breads_and_aces.gui.view.elements.frame;
 
 
-import javax.inject.Singleton;
+import org.limewire.inject.LazySingleton;
 
 import breads_and_aces.gui.view.elements.BackgroundGUI;
 import breads_and_aces.gui.view.elements.utils.EnumRectangle;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
-//@LazySingleton
-@Singleton
+@LazySingleton
+//@Singleton
 public class JFrameGame extends JFrameDefault {
 
 	private static final long serialVersionUID = 795031168834302954L;
