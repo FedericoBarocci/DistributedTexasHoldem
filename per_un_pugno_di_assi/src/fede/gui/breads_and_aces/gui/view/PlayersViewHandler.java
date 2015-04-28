@@ -5,29 +5,34 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
+
+import org.limewire.inject.LazySingleton;
 
 import breads_and_aces.game.model.players.player.Player;
+import breads_and_aces.gui.view.PlayersViewHandler.PlayersViewHandlerInitArgs;
 import breads_and_aces.gui.view.elements.PlayerGUIHandler;
 import breads_and_aces.gui.view.elements.PlayerGUIHandlerFactory;
-import breads_and_aces.gui.view.elements.frame.JFrameGameProvider;
+import breads_and_aces.gui.view.elements.frame.JFrameGame;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
-@Singleton
-public class PlayersViewHandler extends GameViewHandler {
+@LazySingleton
+//@Singleton
+public class PlayersViewHandler extends AbstractViewHandler implements InitableView<PlayersViewHandlerInitArgs> {
 	
 	private final Map<String, PlayerGUIHandler> playersGui = new LinkedHashMap<>();
 	private final PlayerGUIHandlerFactory playerGUIHandlerFactory;
 	
 	@Inject
-	public PlayersViewHandler(JFrameGameProvider jFrameGameProvider, PlayerGUIHandlerFactory playerGUIHandlerFactory) {
-		super(jFrameGameProvider);
+	public PlayersViewHandler(JFrameGame/*Provider*/ jFrameGame/*Provider*/, PlayerGUIHandlerFactory playerGUIHandlerFactory) {
+		super(jFrameGame/*Provider*/);
 		this.playerGUIHandlerFactory = playerGUIHandlerFactory;
 	}
 	
 //	@Override
-	public void init(List<Player> players, String myName, int goal) {
-		int size = players.size();
+	// TODO we want this override inittable method
+//	public void init(List<Player> players, String myName, int goal) {
+	public void init(PlayersViewHandlerInitArgs args) {
+		int size = args.players.size();
 		int span = Math.floorDiv(GuiUtils.playerSpan, size+1);
 		
 		playersGui.values().forEach(p->p.clearFromGui());
@@ -36,22 +41,23 @@ public class PlayersViewHandler extends GameViewHandler {
 		for (int i = 0; i < size; i++) {
 			int x = GuiUtils.playerX + (span * (i+1));
 			int y = GuiUtils.playerY;
-			Player player = players.get(i);
+			Player player = args.players.get(i);
 			
 			/* *** only for testing *** override param *** */ 
 				//player.setScore(Math.floorDiv(goal, 7) * i);
 			
-			boolean showCards = player.getName().equals(myName);	
-			PlayerGUIHandler playerGui = 
+			boolean showCards = player.getName().equals(args.myName);	
+			PlayerGUIHandler playerGUIHandler = 
 //					new PlayerGUIHandler(player, x, y, goal, showCards);
-					playerGUIHandlerFactory.create(player, x, y, goal, showCards);
+					playerGUIHandlerFactory.create(player, x, y, args.goal, showCards);
+			playerGUIHandler.init(null);
 			
 			if (player.hasToken()) {
-				playerGui.setTokenView();
+				playerGUIHandler.setTokenView();
 			}
 			
-			playerGui.draw();
-			playersGui.put(player.getName(), playerGui);
+			playerGUIHandler.draw();
+			playersGui.put(player.getName(), playerGUIHandler);
 		}
 		
 		super.repaint();
@@ -91,5 +97,16 @@ public class PlayersViewHandler extends GameViewHandler {
 		}
 		
 		this.repaint();
+	}
+	
+	static public class PlayersViewHandlerInitArgs {
+		List<Player> players; 
+		String myName;
+		int goal;
+		public PlayersViewHandlerInitArgs(List<Player> players, String myName, int goal) {
+			this.players = players;
+			this.myName = myName;
+			this.goal = goal;
+		}
 	}
 }

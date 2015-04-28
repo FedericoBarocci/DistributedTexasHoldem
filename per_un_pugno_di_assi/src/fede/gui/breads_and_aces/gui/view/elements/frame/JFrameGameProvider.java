@@ -3,8 +3,6 @@ package breads_and_aces.gui.view.elements.frame;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
-import breads_and_aces.utils.misc.MemoryUtil;
-
 //public enum JFrameGameProvider {
 @Singleton
 public class JFrameGameProvider implements Provider<JFrameGame> {
@@ -20,6 +18,9 @@ public class JFrameGameProvider implements Provider<JFrameGame> {
 		frame = new JFrameGame();
 //		System.out.println(this.getClass().getName()+":21");
 //		MemoryUtil.runGarbageCollector();
+	}
+	
+	public void init() {
 	}
 	
 	@Override

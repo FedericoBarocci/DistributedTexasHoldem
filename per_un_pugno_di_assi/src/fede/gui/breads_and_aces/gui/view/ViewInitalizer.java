@@ -3,25 +3,28 @@ package breads_and_aces.gui.view;
 import java.io.File;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import org.limewire.inject.LazySingleton;
+
 import breads_and_aces.gui.labels.LabelBet;
 import breads_and_aces.gui.labels.LabelCoins;
+import breads_and_aces.gui.view.ViewInitalizer.ViewInitializerInitArgs;
 import breads_and_aces.gui.view.elements.ImageGUI;
 import breads_and_aces.gui.view.elements.TransparentPanelGUI;
-import breads_and_aces.gui.view.elements.frame.JFrameGameProvider;
+import breads_and_aces.gui.view.elements.frame.JFrameGame;
 import breads_and_aces.gui.view.elements.utils.EnumColor;
 import breads_and_aces.gui.view.elements.utils.EnumFont;
 import breads_and_aces.gui.view.elements.utils.EnumLine;
 import breads_and_aces.gui.view.elements.utils.EnumRectangle;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
-@Singleton
-public class ViewInitalizer extends GameViewHandler {
+@LazySingleton
+//@Singleton
+public class ViewInitalizer extends AbstractViewHandler implements InitableView<ViewInitializerInitArgs> {
 
 	private final LabelBet lblBet;
 	private final LabelCoins lblCoins;
@@ -32,13 +35,17 @@ public class ViewInitalizer extends GameViewHandler {
 	private JLabel lblMessage = new JLabel("");
 	
 	@Inject
-	public ViewInitalizer(JFrameGameProvider jFrameGameProvider, LabelBet lblBet, LabelCoins lblCoins) {
-		super(jFrameGameProvider);
+	public ViewInitalizer(JFrameGame/*Provider*/ jFrameGame/*Provider*/, LabelBet lblBet, LabelCoins lblCoins) {
+		super(jFrameGame/*Provider*/);
 		this.lblBet = lblBet;
 		this.lblCoins = lblCoins;
 	}
+	
+	public void init(ViewInitializerInitArgs initArgs) {
+		init(initArgs.clientPlayer, initArgs.coins);
+	}
 
-	public void init(String clientPlayer, Integer coins) {
+	private void init(String clientPlayer, Integer coins) {
 		String title = "<html><p style='text-align:center; border-bottom:1px solid #000;padding-bottom:10px;'>Poker Distributed Hold'em</p></html>";
 
 		ImageGUI leftBox = new ImageGUI(new ImageIcon("elements" + File.separatorChar + "left.png"), GuiUtils.INSTANCE.getRectangle(EnumRectangle.leftBox));
@@ -76,5 +83,13 @@ public class ViewInitalizer extends GameViewHandler {
 		
 		repaint();
 		show();
+	}
+	
+	public static class ViewInitializerInitArgs {
+		String clientPlayer; Integer coins;
+		public ViewInitializerInitArgs(String clientPlayer, Integer coins) {
+			this.clientPlayer = clientPlayer;
+			this.coins = coins;
+		}
 	}
 }

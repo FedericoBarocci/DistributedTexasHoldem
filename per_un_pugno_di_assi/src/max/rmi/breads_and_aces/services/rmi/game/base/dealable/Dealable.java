@@ -1,5 +1,10 @@
 package breads_and_aces.services.rmi.game.base.dealable;
 
-public interface Dealable {
+import java.rmi.RemoteException;
 
+import breads_and_aces.game.core.Action;
+import breads_and_aces.game.updater.GameUpdater;
+
+public interface Dealable {
+	void receiveActionAndDeal(String fromPlayer, Action action, GameUpdater gameUpdater) throws RemoteException;
 }

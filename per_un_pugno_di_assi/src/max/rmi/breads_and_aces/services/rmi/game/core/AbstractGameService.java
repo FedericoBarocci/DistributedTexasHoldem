@@ -14,16 +14,11 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 
 	private static final long serialVersionUID = 7999272435762156455L;
 
-//	protected final String nodeId;
-//	protected final GamePlayersKeeper playersKeeper;
-
 	private final DistributedController distributedController;
 
 	private final CrashHandler crashHandler;
 
 	public AbstractGameService(
-//			String nodeId,
-//			GamePlayersKeeper playersKeeper,
 			DistributedController distributedController,
 			CrashHandler crashHandler) throws RemoteException {
 		super();

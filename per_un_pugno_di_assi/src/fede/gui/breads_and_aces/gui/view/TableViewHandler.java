@@ -8,11 +8,11 @@ import javax.inject.Inject;
 import breads_and_aces.game.core.Card;
 import breads_and_aces.game.model.table.Table;
 import breads_and_aces.gui.view.elements.CardGUI;
-import breads_and_aces.gui.view.elements.frame.JFrameGameProvider;
+import breads_and_aces.gui.view.elements.frame.JFrameGame;
 import breads_and_aces.gui.view.elements.utils.CardsUtils;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
-public class TableViewHandler extends GameViewHandler implements InitableView {
+public class TableViewHandler extends AbstractViewHandler implements InitableView<Void> {
 	
 	private final Table table;
 	
@@ -20,13 +20,13 @@ public class TableViewHandler extends GameViewHandler implements InitableView {
 	private int displayedCards = 0;
 
 	@Inject
-	public TableViewHandler(JFrameGameProvider jFrameGameProvider, Table table) {
-		super(jFrameGameProvider);
+	public TableViewHandler(JFrameGame/*Provider*/ jFrameGame/*Provider*/, Table table) {
+		super(jFrameGame/*Provider*/);
 		this.table = table;
 	}
 
 	@Override
-	public void init() {
+	public void init(Void noArg) {
 		tableCardsGui.forEach(c->this.removeElement(c));
 		tableCardsGui.clear();
 		

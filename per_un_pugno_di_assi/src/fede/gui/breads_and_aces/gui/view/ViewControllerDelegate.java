@@ -1,13 +1,18 @@
 package breads_and_aces.gui.view;
 
+
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
+
+import org.limewire.inject.LazySingleton;
 
 import breads_and_aces.game.model.players.player.Player;
+import breads_and_aces.gui.view.PlayersViewHandler.PlayersViewHandlerInitArgs;
+import breads_and_aces.gui.view.ViewInitalizer.ViewInitializerInitArgs;
 
-@Singleton
+@LazySingleton
+//@Singleton
 public class ViewControllerDelegate {
 
 	private final ViewInitalizer viewInitializer;
@@ -24,11 +29,18 @@ public class ViewControllerDelegate {
 		this.playersView = playersView;
 	}
 
-	public void init(List<Player> players, String myName, int goal, int initialCoins) {
+//	public void init(InitArgs args) {
+//		this.goal = args.goal;
+//		
+//		refresh(args.players, args.myName);
+//		viewInitializer.init(args.myName, args.initialCoins);
+//	}
+	public void init(List<Player> players, String myName, int goal, int initialCoins) {		
 		this.goal = goal;
 		
 		refresh(players, myName);
-		viewInitializer.init(myName, initialCoins);
+		ViewInitializerInitArgs viewInitializerInitArgs = new ViewInitializerInitArgs(myName, initialCoins);
+		viewInitializer.init(viewInitializerInitArgs);
 	}
 
 	public void setRefresh() {
@@ -40,8 +52,10 @@ public class ViewControllerDelegate {
 	}
 	
 	public void refresh(List<Player> players, String myName) {
-		tableView.init();
-		playersView.init(players, myName, goal);
+		tableView.init(null);
+//		playersView.init(players, myName, goal);
+		PlayersViewHandlerInitArgs initArgs = new PlayersViewHandlerInitArgs(players, myName, goal);
+		playersView.init( initArgs );
 		refresh = false;
 	}
 
@@ -57,5 +71,18 @@ public class ViewControllerDelegate {
 		tableView.addTableCards();
 		playersView.showPlayersCards();
 		playersView.showWinners(winners);
+	}
+	
+	static class InitArgs {
+		List<Player> players; 
+		String myName; 
+		int goal;
+		int initialCoins;
+		public InitArgs(List<Player> players, String myName, int goal, int initialCoins) {
+			this.players = players;
+			this.myName = myName;
+			this.goal = goal;
+			this.initialCoins = initialCoins;
+		}
 	}
 }

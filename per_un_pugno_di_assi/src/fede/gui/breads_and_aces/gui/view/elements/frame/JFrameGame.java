@@ -1,15 +1,24 @@
 package breads_and_aces.gui.view.elements.frame;
 
+
+import javax.inject.Singleton;
+
 import breads_and_aces.gui.view.elements.BackgroundGUI;
 import breads_and_aces.gui.view.elements.utils.EnumRectangle;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
+//@LazySingleton
+@Singleton
 public class JFrameGame extends JFrameDefault {
 
 	private static final long serialVersionUID = 795031168834302954L;
 
 	public JFrameGame() {
 		super();
+	}
+	
+	public void init() {
+		super.init();
 		
 		setTitle("Poker Distributed Hold'em");
 		

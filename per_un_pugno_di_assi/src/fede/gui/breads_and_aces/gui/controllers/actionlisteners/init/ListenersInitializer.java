@@ -6,30 +6,30 @@ import breads_and_aces.gui.controllers.actionlisteners.BetButton;
 import breads_and_aces.gui.controllers.actionlisteners.FoldButton;
 import breads_and_aces.gui.controllers.actionlisteners.InfoButton;
 import breads_and_aces.gui.controllers.actionlisteners.OkButton;
-import breads_and_aces.gui.view.GameViewHandler;
+import breads_and_aces.gui.view.AbstractViewHandler;
 import breads_and_aces.gui.view.InitableView;
 import breads_and_aces.gui.view.elements.ElementGUI;
-import breads_and_aces.gui.view.elements.frame.JFrameGameProvider;
+import breads_and_aces.gui.view.elements.frame.JFrameGame;
 import breads_and_aces.gui.view.elements.utils.EnumButton;
 import breads_and_aces.gui.view.elements.utils.EnumRectangle;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
-public class ListenersInitializer extends GameViewHandler implements InitableView {
+public class ListenersInitializer extends AbstractViewHandler implements InitableView<Void> {
 
 	private final OkButton okButton;
 	private final FoldButton foldButton;
 	private final BetButton betButton;
 
 	@Inject
-	public ListenersInitializer(JFrameGameProvider jFrameGameProvider, OkButton okButton, FoldButton foldButton, BetButton betButton) {
-		super(jFrameGameProvider);
+	public ListenersInitializer(JFrameGame/*Provider*/ jFrameGame/*Provider*/, OkButton okButton, FoldButton foldButton, BetButton betButton) {
+		super(jFrameGame/*Provider*/);
 		this.okButton = okButton;
 		this.foldButton = foldButton;
 		this.betButton = betButton;
 	}
 	
 	@Override
-	public void init() {
+	public void init(Void noArg) {
 		ElementGUI up   = 	new ElementGUI( GuiUtils.INSTANCE.getImageGui("up.png"), 	GuiUtils.INSTANCE.getRectangle(EnumRectangle.up) 	);
 		ElementGUI down = 	new ElementGUI( GuiUtils.INSTANCE.getImageGui("down.png"),	GuiUtils.INSTANCE.getRectangle(EnumRectangle.down) 	);
 		ElementGUI ok   = 	new ElementGUI( GuiUtils.INSTANCE.getImageGui("ok.png"),	GuiUtils.INSTANCE.getRectangle(EnumRectangle.ok) 	);
@@ -45,10 +45,10 @@ public class ListenersInitializer extends GameViewHandler implements InitableVie
 		fold.addMouseListener( foldButton );
 		info.addMouseListener( new InfoButton() );
 		
-		this.addElement(up);
-		this.addElement(down);
-		this.addElement(ok);
-		this.addElement(fold);
-		this.addElement(info);
+		super.addElement(up);
+		super.addElement(down);
+		super.addElement(ok);
+		super.addElement(fold);
+		super.addElement(info);
 	}
 }

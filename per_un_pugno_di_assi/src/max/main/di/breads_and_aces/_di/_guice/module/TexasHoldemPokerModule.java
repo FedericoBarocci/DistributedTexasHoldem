@@ -1,5 +1,7 @@
 package breads_and_aces._di._guice.module;
 
+import org.limewire.inject.LimeWireInjectModule;
+
 import breads_and_aces._di.providers.node.inputhandler.InputHandlerProvider;
 import breads_and_aces._di.providers.node.inputhandler.gui.InputHandlerGUIProvider;
 import breads_and_aces._di.providers.registration.initializers.clientable.RegistrationInitializerClientableProvider;
@@ -24,13 +26,17 @@ import breads_and_aces.services.rmi.game.core.impl.GameServiceFactory;
 import breads_and_aces.utils.printer.ConsolePrinter.ConsolePrinterReal;
 import breads_and_aces.utils.printer.Printer;
 
-import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
-public class TexasHoldemPokerModule extends AbstractModule {
+public class TexasHoldemPokerModule extends 
+LimeWireInjectModule {
+//AbstractModule {
 
 	@Override
 	protected void configure() {
+		// from Limewire inject, in order to have LazySingleton
+		super.configure();
+		
 		bind(Printer.class).to(ConsolePrinterReal.class);
 		
 		bind(RegistrarPlayersKeeper.class).to(PlayersKeeperImpl.class);

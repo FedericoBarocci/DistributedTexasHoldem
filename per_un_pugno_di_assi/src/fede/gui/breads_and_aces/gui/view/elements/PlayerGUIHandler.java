@@ -6,12 +6,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import com.google.inject.assistedinject.Assisted;
-import com.google.inject.assistedinject.AssistedInject;
-
 import breads_and_aces.game.model.players.player.Player;
-import breads_and_aces.gui.view.GameViewHandler;
-import breads_and_aces.gui.view.elements.frame.JFrameGameProvider;
+import breads_and_aces.gui.view.AbstractViewHandler;
+import breads_and_aces.gui.view.InitableView;
+import breads_and_aces.gui.view.elements.frame.JFrameGame;
 import breads_and_aces.gui.view.elements.utils.CardsUtils;
 import breads_and_aces.gui.view.elements.utils.EnumColor;
 import breads_and_aces.gui.view.elements.utils.EnumFont;
@@ -19,12 +17,17 @@ import breads_and_aces.gui.view.elements.utils.EnumLine;
 import breads_and_aces.gui.view.elements.utils.EnumRectangle;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
-public class PlayerGUIHandler extends GameViewHandler {
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
+
+public class PlayerGUIHandler extends AbstractViewHandler implements InitableView<Void> {
 
 	private final Player player;
 	private final Integer x;
 	private final Integer y;
 	private final Integer goal;
+	
+	private final Boolean showCards;
 	
 	private CardGUI cardGui1;
 	private CardGUI cardGui2;
@@ -35,18 +38,23 @@ public class PlayerGUIHandler extends GameViewHandler {
 	private final JPanel box = new TransparentPanelGUI();
 	private final JPanel scoreContainer = new TransparentPanelGUI();
 	private final JPanel scoreLevel = new TransparentPanelGUI();
-	
 
 	@AssistedInject
-	public PlayerGUIHandler(JFrameGameProvider jFrameGameProvider, 
+	public PlayerGUIHandler(JFrameGame/*Provider */jFrameGame/*Provider*/, 
 			@Assisted Player player, @Assisted(value="x") Integer x, @Assisted(value="y") Integer y, @Assisted(value="goal") Integer goal, @Assisted Boolean showCards) {
-		super(jFrameGameProvider);
+		super(jFrameGame/*Provider*/);
 		
 		this.player = player;
 		this.x = x;
 		this.y = y;
 		this.goal = goal;
-		
+		this.showCards = showCards;
+	
+//		init(null);
+	}
+	
+	@Override
+	public void init(Void noArg) {
 		if (showCards) {
 			cardGui1 = new CardGUI(CardsUtils.INSTANCE_SMALL.getImageCard(player.getFirstCard()), x + CardsUtils.span1, y);
 			cardGui2 = new CardGUI(CardsUtils.INSTANCE_SMALL.getImageCard(player.getSecondCard()), x + CardsUtils.span2, y);

@@ -13,7 +13,9 @@ public class JFrameDefault extends JFrame {
 	
 	public JFrameDefault() {
 		super();
-		
+	}
+	
+	public void init() {
 		getRootPane().registerKeyboardAction(e -> {
 			System.exit(1);
 		}, 

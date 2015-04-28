@@ -1,6 +1,7 @@
 package breads_and_aces.game;
 
-import com.google.inject.Singleton;
+import javax.inject.Singleton;
+
 
 @Singleton
 public class Game {

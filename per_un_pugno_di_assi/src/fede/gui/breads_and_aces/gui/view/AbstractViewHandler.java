@@ -6,15 +6,16 @@ import javax.swing.JPanel;
 import breads_and_aces.gui.view.elements.ElementGUI;
 import breads_and_aces.gui.view.elements.ImageGUI;
 import breads_and_aces.gui.view.elements.frame.JFrameGame;
-import breads_and_aces.gui.view.elements.frame.JFrameGameProvider;
 
-abstract public class GameViewHandler {
+abstract public class AbstractViewHandler {
 	
 	private final JFrameGame frame;
 	
-	public GameViewHandler(JFrameGameProvider jFrameGameProvider) {
+	public AbstractViewHandler(JFrameGame/*Provider*/ jFrameGame/*Provider*/) {
 //		frame = JFrameGameProvider.INSTANCE.get();
-		frame = jFrameGameProvider.get();
+		frame = 
+//				jFrameGameProvider.get();
+		jFrameGame;
 	}
 	
 	protected void addElement(JLabel e) {

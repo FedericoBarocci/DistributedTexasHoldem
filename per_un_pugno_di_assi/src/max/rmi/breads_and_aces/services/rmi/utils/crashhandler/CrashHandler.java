@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 
 import breads_and_aces.services.rmi.game.core.GameService;
 import breads_and_aces.services.rmi.game.keeper.GameServicesKeeper;
-import breads_and_aces.services.rmi.utils.communicator.Communicator;
+import breads_and_aces.services.rmi.utils.communicator.Deliverator;
 import breads_and_aces.utils.printer.Printer;
 
 @Singleton
@@ -17,40 +17,37 @@ public class CrashHandler {
 
 //	private final KeepersUtilDelegate registriesUtils;
 	private final GameServicesKeeper gameServicesKeeper;
-	
 	private final Printer printer;
+	private final Deliverator deliverator;
 	
-	private boolean isExistingCrash = false;
+//	private boolean isExistingCrash = false;
 	
-//	private final Set<String> crashed = new HashSet<>();
 	
 	@Inject
-	public CrashHandler(/*KeepersUtilDelegate keepersUtilDelegate,*/ GameServicesKeeper gameServicesKeeper, Printer printer) {
+	public CrashHandler(/*KeepersUtilDelegate keepersUtilDelegate,*/ GameServicesKeeper gameServicesKeeper, Deliverator deliverator, Printer printer) {
 //		this.registriesUtils = keepersUtilDelegate;
 		this.gameServicesKeeper = gameServicesKeeper;
+		this.deliverator = deliverator;
 		this.printer = printer;
 	}
 	
-	public void noMoreCrash() {
-		setHappenedCrash(false);
-//		crashed.clear();
-	}
-	private void setHappenedCrash(boolean isExistingCrashed) {
-		this.isExistingCrash = isExistingCrashed;
-	}
-	public boolean isHappenedCrash() {
-		return isExistingCrash;
-	}
+//	public void noMoreCrash() {
+//		setHappenedCrash(false);
+//	}
+//	private void setHappenedCrash(boolean isExistingCrashed) {
+//		this.isExistingCrash = isExistingCrashed;
+//	}
+//	public boolean isHappenedCrash() {
+//		return isExistingCrash;
+//	}
 
 	public void handleCrashLocallyRemovingFromLocalGameServiceKeeper(String id) {
-		setHappenedCrash(true);
-//		registriesUtils.removePlayerGameService(id);
+//		setHappenedCrash(true);
 		gameServicesKeeper.removeService(id);
 		printer.println(id+" not responding, removed it.");
-//		crashed.remove(id);
 	}
 	public void removeFromLocalGameServiceKeeper(List<String> crashedDuringSync) {
-		setHappenedCrash(true);
+//		setHappenedCrash(true);
 		ListIterator<String> listIterator = crashedDuringSync.listIterator();
 		while (listIterator.hasNext()) {
 			String next = listIterator.next();
@@ -60,7 +57,7 @@ public class CrashHandler {
 		}
 	}
 	
-	public List<String> handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(String meId, Communicator communicator, List<String> eventuallyCrashedPeers) {
+	public List<String> handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(String meId/*, Communicator communicator*/, List<String> eventuallyCrashedPeers) {
 		boolean inCrash = false;
 		if (eventuallyCrashedPeers.size() > 0)
 			inCrash = true;
@@ -69,7 +66,7 @@ public class CrashHandler {
 			removeFromLocalGameServiceKeeper(eventuallyCrashedPeers);
 			
 			// we say to all to update players removing those specified in list
-			List<String> eventuallyCrashedAgain = communicator.broadcast(meId, this::updatePlayersFunctor, new CrashedHolder(eventuallyCrashedPeers));
+			List<String> eventuallyCrashedAgain = deliverator.broadcast(meId, this::updatePlayersFunctor, new CrashedHolder(eventuallyCrashedPeers));
 			if (eventuallyCrashedAgain.size() > 0) {
 				eventuallyCrashedPeers.addAll(eventuallyCrashedAgain);
 			} else {
@@ -86,8 +83,4 @@ public class CrashHandler {
 		}
 	}
 
-//	public void addCrashed(String id) {
-//		crashed.add(id);
-//	}
-	
 }
