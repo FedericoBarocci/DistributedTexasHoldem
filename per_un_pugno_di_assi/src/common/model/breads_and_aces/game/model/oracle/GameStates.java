@@ -3,17 +3,18 @@ package breads_and_aces.game.model.oracle;
 import java.util.Arrays;
 import java.util.List;
 
-import breads_and_aces.game.core.Action;
+import breads_and_aces.game.model.oracle.actions.Action;
 
 public enum GameStates {
 	NULL {
 		public GameStates nextState(Action action) {
-			switch(action) {
-				case ALLIN: 	return ALLIN;
-				case CHECK:  	return CHECK;
-				case RAISE: 	return RAISE;
-				default: 		return NULL;
-			}
+			/*switch(action) {
+				case ActionSimple.ALLIN: 	return ALLIN;
+				case ActionSimple.CHECK:  	return CHECK;
+				case ActionValue.RAISE: 	return RAISE;
+				default: 					return NULL;
+			}*/
+			return action.getGameState();
 		}
 		
 		public List<GameStates> getEdges() {
@@ -22,11 +23,12 @@ public enum GameStates {
 	},
 	CHECK {
 		public GameStates nextState(Action action) {
-			switch(action) {
+			/*switch(action) {
 				case ALLIN: 	return ALLIN;
 				case RAISE: 	return RAISE;
 				default: 		return CHECK;
-			}
+			}*/
+			return action.getGameState();
 		}
 		
 		public List<GameStates> getEdges() {
@@ -35,11 +37,12 @@ public enum GameStates {
 	},
 	RAISE {
 		public GameStates nextState(Action action) {
-			switch(action) {
+			/*switch(action) {
 				case ALLIN: 	return ALLIN;
 				case CALL:  	return CALL;
 				default: 		return RAISE;
-			}
+			}*/
+			return action.getGameState();
 		}
 		
 		public List<GameStates> getEdges() {
@@ -48,11 +51,12 @@ public enum GameStates {
 	},
 	CALL {
 		public GameStates nextState(Action action) {
-			switch(action) {
+			/*switch(action) {
 				case ALLIN: 	return ALLIN;
 				case RAISE: 	return RAISE;
 				default: 		return CALL;
-			}	
+			}	*/
+			return action.getGameState();
 		}
 		
 		public List<GameStates> getEdges() {

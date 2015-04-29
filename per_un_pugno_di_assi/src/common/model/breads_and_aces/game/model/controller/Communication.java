@@ -1,67 +1,62 @@
 package breads_and_aces.game.model.controller;
 
 import java.rmi.RemoteException;
-import java.util.List;
 
-import breads_and_aces.game.core.Action;
-import breads_and_aces.game.core.Deck;
-import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.game.updater.GameUpdater;
 import breads_and_aces.services.rmi.game.core.GameService;
-import breads_and_aces.services.rmi.utils.communicator.Communicator;
 
-// TODO to improve with future actions (raise, call, etc)
-public enum Communication {
+public enum Communication implements ICommunication {
+	
 	ACTION {
 		@Override
-		public void sendCommunication(String meId, Action action, List<Player> players, Communicator communicator) {
+		public void sendCommunication(Communicate communicate) {
 			class ActionClass {
 				private void performAction(GameService gameService) {
 					try {
-						gameService.receiveAction(meId, action);
+						gameService.receiveAction(communicate.getMe(), communicate.getAction());
 					} catch (RemoteException e) {
 						//Game Recovery
 						e.printStackTrace();
 					}
 				}
 			}
-			communicator.toAll(meId, new ActionClass()::performAction);
-		};
+			communicate.getCommunicator().toAll(communicate.getMe(), new ActionClass()::performAction);
+		}
 	},
 	DEAL {
 		@Override
-		public void sendCommunication(String meId, Action action, List<Player> players, Communicator communicator) {
+		public void sendCommunication(Communicate communicate) {
 			class ActionClass {
 				private void performActionAndDeal(GameService gameService, GameUpdater gameUpdater) {
 					try {
-						gameService.receiveActionAndDeal(meId, action, gameUpdater);
+						gameService.receiveActionAndDeal(communicate.getMe(), communicate.getAction(), gameUpdater);
 					} catch (RemoteException e) {
 						e.printStackTrace();
 					}
 				}
 			}
-			GameUpdater gameUpdater = new GameUpdater(players, new Deck());
-			communicator.toAll(meId, new ActionClass()::performActionAndDeal, gameUpdater);
+//			GameUpdater gameUpdater = new GameUpdater(communicate.getPlayers(), new Deck());
+			communicate.getCommunicator().toAll(communicate.getMe(), new ActionClass()::performActionAndDeal, communicate.getGameUpdater());
 //			distributedController.update(gameUpdater);
 		};
 	},
 	END {
 		@Override
-		public void sendCommunication(String meId, Action action, List<Player> players, Communicator communicator) {
+		public void sendCommunication(Communicate communicate) {
 			class ActionClass {
 				private void performWinnerEndGame(GameService gameService) {
 					try {
-						gameService.receiveWinnerEndGame(meId, Action.FOLD);
+						gameService.receiveWinnerEndGame(communicate.getMe(), communicate.getAction());
 					} catch (RemoteException e) {
 						e.printStackTrace();
 					}
 				}
 			}
 			
-			communicator.toAll(meId, new ActionClass()::performWinnerEndGame);
+			communicate.getCommunicator().toAll(communicate.getMe(), new ActionClass()::performWinnerEndGame);
 		}
 		
 	};
-
-	abstract public void sendCommunication(String meId, Action action, List<Player> players, Communicator communicator);
+	
+	abstract public void sendCommunication(Communicate communicate);
 }

@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Singleton;
 
-import breads_and_aces.game.core.Action;
+import breads_and_aces.game.model.oracle.actions.ActionSimple;
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.game.model.players.player.PlayerRegistrationId;
 import breads_and_aces.utils.observatory.ObservableDelegate;
@@ -153,8 +153,8 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 	@Override
 	public void resetActions(boolean forceReset) {
 		for (Player p : playersMap.values()) {
-			if (forceReset || !p.getAction().equals(Action.FOLD)) {
-				p.setAction(Action.NONE);
+			if (forceReset || !p.getAction().equals(ActionSimple.FOLD)) {
+				p.setAction(ActionSimple.NONE);
 			}
 		}
 	}

@@ -6,12 +6,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import breads_and_aces.game.core.Action;
 import breads_and_aces.game.core.Card;
 import breads_and_aces.game.core.PositiveInteger;
 import breads_and_aces.game.core.Ranking;
 import breads_and_aces.game.core.Rankings;
 import breads_and_aces.game.exceptions.MaxReachedException;
+import breads_and_aces.game.model.oracle.actions.Action;
+import breads_and_aces.game.model.oracle.actions.ActionSimple;
 import breads_and_aces.game.model.utils.Pair;
 import breads_and_aces.main.Main;
 import breads_and_aces.utils.printer.Printer;
@@ -26,7 +27,7 @@ public class Player implements Serializable, Comparable<Player> {
 	private List<Card> cards = new ArrayList<Card>();
 	private Ranking rank = new Ranking();
 	private PositiveInteger chips = new PositiveInteger();
-	private Action action = Action.NONE;
+	private Action action = ActionSimple.NONE;
 	
 	private int score;
 	
@@ -49,7 +50,7 @@ public class Player implements Serializable, Comparable<Player> {
 	 * Game zone - start
 	 */
 	public void deal(Pair<Card> cards2) {
-		action = Action.NONE;
+		action = ActionSimple.NONE;
 		
 		cards.clear();
 		cards.add( cards2.getFirst() );
@@ -67,7 +68,7 @@ public class Player implements Serializable, Comparable<Player> {
 	}
 	
 	public void evaluateRanking(List<Card> tablecards) {
-		if (action.equals(Action.FOLD)) {
+		if (action.equals(ActionSimple.FOLD)) {
 			rank.setRankNotDef();
 		}
 		else {
@@ -103,7 +104,7 @@ public class Player implements Serializable, Comparable<Player> {
 		return action;
 	}
 
-	public void setAction(Action action) {
+	public void setAction(ActionSimple action) {
 		this.action = action;
 	}
 	

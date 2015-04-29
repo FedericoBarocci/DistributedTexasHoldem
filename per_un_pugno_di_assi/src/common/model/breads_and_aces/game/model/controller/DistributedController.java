@@ -5,10 +5,10 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import breads_and_aces.game.core.Action;
 import breads_and_aces.game.model.oracle.GameOracle;
 import breads_and_aces.game.model.oracle.GameStates;
 import breads_and_aces.game.model.oracle.OracleResponses;
+import breads_and_aces.game.model.oracle.actions.ActionSimple;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.game.updater.GameUpdater;
@@ -21,12 +21,14 @@ public class DistributedController {
 	private final ViewControllerDelegate viewControllerDelegate;
 	private final GameOracle gameOracle;
 	private final GamePlayersKeeper gamePlayersKeeper;
+	private final CommunicationService communicationService;
 
 	@Inject
-	public DistributedController(ViewControllerDelegate viewControllerDelegate, GameOracle gameOracle, GamePlayersKeeper gamePlayersKeeper) {
+	public DistributedController(ViewControllerDelegate viewControllerDelegate, GameOracle gameOracle, GamePlayersKeeper gamePlayersKeeper, CommunicationService communicationService) {
 		this.viewControllerDelegate = viewControllerDelegate;
 		this.gameOracle = gameOracle;
 		this.gamePlayersKeeper = gamePlayersKeeper;
+		this.communicationService = communicationService;
 	}
 
 	public void handleToken() {
@@ -42,24 +44,31 @@ public class DistributedController {
 		System.out.println("Game can start!");
 	}
 
-	// TODO when Communicator will be completed, this will have be public and setLocalAction below will have to be private
-	/*private void setLocalActionAndPropagate(Action myAction, Communicator communicator) {
-		Communication c = setLocalAction(myAction);
-		c.sendCommunication(gamePlayersKeeper.getMyName(), myAction, gamePlayersKeeper.getPlayers(), communicator);
-	}*/
-	public Communication setLocalAction(Action myAction) {
-		return setAction(gamePlayersKeeper.getMyName(), myAction);
+	public void setAction(ActionSimple action) {
+		Communication communication = setActionAndUpdate(gamePlayersKeeper.getMyName(), action);
+		
+		
+		
+		if(communication.equals(Communication.DEAL)) {
+			communicationService.makeGameUpdater(gamePlayersKeeper.getPlayers());
+			communicationService.exec(communication, action);
+			gameOracle.update(communicationService.getGameUpdater());
+		}
+		else {
+			communicationService.exec(communication, action);
+		}
 	}
-	public void setRemoteAction(String fromPlayer, Action action) {
-		setAction(fromPlayer, action);
+	
+	public void setAction(String fromPlayer, ActionSimple action) {
+		setActionAndUpdate(fromPlayer, action);
 	}
 
-	public void updateRemoteAction(String fromPlayer, Action action, GameUpdater gameUpdater) {
-		setAction(fromPlayer, action);
+	public void setAction(String fromPlayer, ActionSimple action, GameUpdater gameUpdater) {
+		setActionAndUpdate(fromPlayer, action);
 		gameOracle.update(gameUpdater);
 	}
 	
-	private Communication setAction(String fromPlayer, Action action) {
+	private Communication setActionAndUpdate(String fromPlayer, ActionSimple action) {
 		String successor;
 		
 		try {
@@ -74,8 +83,8 @@ public class DistributedController {
 		gamePlayersKeeper.getPlayer(fromPlayer).setAction(action);
 		gamePlayersKeeper.getPlayer(fromPlayer).sendToken(successor);
 		gamePlayersKeeper.getPlayer(successor).receiveToken(fromPlayer);
-		
 		viewControllerDelegate.setViewToken(successor);
+		
 		gameOracle.nextGameState(action);
 		
 		OracleResponses response = gameOracle.ask();
@@ -122,9 +131,5 @@ public class DistributedController {
 		}
 		
 		return gamePlayersKeeper.getMyPlayer().hasToken();
-	}
-
-	public void update(GameUpdater gameUpdater) {
-		gameOracle.update(gameUpdater);
 	}
 }

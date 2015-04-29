@@ -28,6 +28,7 @@ public class WaiterGameStartGUI {
 	private final JButton buttonExit = new JButton("Exit");
 	
 	public WaiterGameStartGUI() {
+		frame.init();
 		frame.setTitle("Poker Distributed Hold'em");
 		
 		buttonExit.setVisible(false);

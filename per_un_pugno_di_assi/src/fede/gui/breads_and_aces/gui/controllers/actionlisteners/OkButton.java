@@ -2,48 +2,46 @@ package breads_and_aces.gui.controllers.actionlisteners;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.rmi.RemoteException;
 
 import javax.inject.Inject;
 
-import breads_and_aces.game.core.Action;
-import breads_and_aces.game.core.Deck;
-import breads_and_aces.game.model.controller.Communication;
 import breads_and_aces.game.model.controller.DistributedController;
+import breads_and_aces.game.model.oracle.actions.ActionSimple;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
-import breads_and_aces.game.updater.GameUpdater;
+import breads_and_aces.gui.labels.LabelBet;
 import breads_and_aces.gui.view.elements.ElementGUI;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
-import breads_and_aces.services.rmi.game.core.GameService;
-import breads_and_aces.services.rmi.utils.communicator.Communicator;
 
 public class OkButton implements MouseListener {
 
-	private final Communicator communicator;
+//	private final Communicator communicator;
 //	private final String nodeId;
 	private final DistributedController distributedController;
-	private GameUpdater gameUpdater;
-	private Action myAction;
+//	private GameUpdater gameUpdater;
+	private ActionSimple myAction;
 	private final GamePlayersKeeper gamePlayersKeeper;
+	private final LabelBet labelBet;
 
 	@Inject
-	public OkButton(Communicator communicator, DistributedController distributedController,
-			GamePlayersKeeper gamePlayersKeeper) {
-		this.communicator = communicator;
+	public OkButton(/*Communicator communicator, */DistributedController distributedController,
+			GamePlayersKeeper gamePlayersKeeper, LabelBet labelBet) {
+//		this.communicator = communicator;
 		this.gamePlayersKeeper = gamePlayersKeeper;
 //		this.nodeId = gamePlayersKeeper.getMyName();
 		this.distributedController = distributedController;
+		this.labelBet = labelBet;
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (distributedController.leader()) {
 			System.out.println(gamePlayersKeeper.getMyName() + " executing Check");
-			myAction = Action.CHECK;
+			myAction = ActionSimple.CHECK;
 			
-			Communication c = distributedController.setLocalAction(myAction);
+			/*Communication c = */
+			distributedController.setAction(myAction);
 			
-			switch (c) {
+			/*switch (c) {
 				case ACTION:
 					communicator.toAll(gamePlayersKeeper.getMyName(), this::performAction);
 					break;
@@ -57,11 +55,11 @@ public class OkButton implements MouseListener {
 				case END:
 					communicator.toAll(gamePlayersKeeper.getMyName(), this::performWinnerEndGame);
 					break;
-			}
+			}*/
 		}
 	}
 
-	private void performAction(GameService gameService) {
+	/*private void performAction(GameService gameService) {
 		try {
 			gameService.receiveAction(gamePlayersKeeper.getMyName(), myAction);
 		} catch (RemoteException e) {
@@ -84,7 +82,7 @@ public class OkButton implements MouseListener {
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	@Override
 	public void mousePressed(MouseEvent e) {

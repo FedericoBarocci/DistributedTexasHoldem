@@ -19,6 +19,7 @@ public class AccepterPlayersGUI extends JFrameDefault {
 	
 	@AssistedInject
 	public AccepterPlayersGUI(@Assisted CountDownLatch startLatch , AccepterPlayerTableModel dataModel) {
+		init();
 		setTitle("Poker Distributed Hold'em");
 		
 		GroupLayout layout = new GroupLayout(getContentPane());

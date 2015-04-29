@@ -2,31 +2,25 @@ package breads_and_aces.gui.controllers.actionlisteners;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.rmi.RemoteException;
 
 import javax.inject.Inject;
 
-import breads_and_aces.game.core.Action;
-import breads_and_aces.game.core.Deck;
-import breads_and_aces.game.model.controller.Communication;
 import breads_and_aces.game.model.controller.DistributedController;
+import breads_and_aces.game.model.oracle.actions.ActionSimple;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
-import breads_and_aces.game.updater.GameUpdater;
 import breads_and_aces.gui.view.elements.ElementGUI;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
-import breads_and_aces.services.rmi.game.core.GameService;
-import breads_and_aces.services.rmi.utils.communicator.Communicator;
 
 public class FoldButton implements MouseListener {
 	
-	private final Communicator communicator;
+//	private final Communicator communicator;
 	private final DistributedController distributedController;
 	private final GamePlayersKeeper gamePlayersKeeper;
 	
 	@Inject
-	public FoldButton(Communicator communicator,
+	public FoldButton(//Communicator communicator,
 			DistributedController distributedController, GamePlayersKeeper gamePlayersKeeper) {
-		this.communicator = communicator;
+//		this.communicator = communicator;
 		this.gamePlayersKeeper = gamePlayersKeeper;
 		this.distributedController = distributedController;
 	}
@@ -36,9 +30,10 @@ public class FoldButton implements MouseListener {
 		if (distributedController.leader()) {
 			System.out.println(gamePlayersKeeper.getMyName() + " executing FOLD");
 			
-			Communication c = distributedController.setLocalAction(Action.FOLD);
+			/*Communication c = */
+			distributedController.setAction(ActionSimple.FOLD);
 			
-			switch (c) {
+			/*switch (c) {
 				case ACTION:
 					communicator.toAll(gamePlayersKeeper.getMyName(), this::performAction);
 					break;
@@ -52,13 +47,13 @@ public class FoldButton implements MouseListener {
 				case END:
 					communicator.toAll(gamePlayersKeeper.getMyName(), this::performWinnerEndGame);
 					break;
-			}
+			}*/
 			
 //			distributedController.setLocalActionAndPropagate(Action.FOLD, communicator);
 		}
 	}
 	
-	private void performAction(GameService gameService) {
+/*	private void performAction(GameService gameService) {
 		try {
 			gameService.receiveAction(gamePlayersKeeper.getMyName(), Action.FOLD);
 		} catch (RemoteException e) {
@@ -83,7 +78,7 @@ public class FoldButton implements MouseListener {
 			//Game Recovery
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	@Override
 	public void mousePressed(MouseEvent e) {

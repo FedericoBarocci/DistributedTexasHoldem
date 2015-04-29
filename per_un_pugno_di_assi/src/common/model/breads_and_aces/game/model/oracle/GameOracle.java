@@ -6,9 +6,10 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import breads_and_aces.game.core.Action;
 import breads_and_aces.game.core.Card;
 import breads_and_aces.game.exceptions.DrawException;
+import breads_and_aces.game.model.oracle.actions.ActionSimple;
+import breads_and_aces.game.model.oracle.actions.ActionValue;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.game.model.table.Table;
@@ -43,7 +44,7 @@ public class GameOracle {
 	}
 	
 	/*for recovery*/
-	public void nextGameState(Action m) {
+	public void nextGameState(ActionSimple m) {
 		actionlogic = actionlogic.nextState(m);
 	}
 	
@@ -69,7 +70,7 @@ public class GameOracle {
 			
 			actualPlayerId = next.getName();
 		}
-		while (next.getAction().equals(Action.FOLD));
+		while (next.getAction().equals(ActionSimple.FOLD));
 		
 		return next;
 	}
@@ -94,7 +95,7 @@ public class GameOracle {
 		System.out.println("Oracle think all players speaked.");
 		
 		if (conditionAllAgree(players) || conditionCallToMostOneRaise(players)) {
-			System.out.println("Oracle think all players agee OR call.");
+			System.out.println("Oracle think all players agree OR call.");
 			
 			table.setNextState();
 			
@@ -203,23 +204,23 @@ public class GameOracle {
 	}
 	
 	private boolean conditionAllIn(List<Player> players) {
-		return players.stream().allMatch(p->p.getAction().equals(Action.FOLD) || p.getAction().equals(Action.ALLIN));
+		return players.stream().allMatch(p->p.getAction().equals(ActionSimple.FOLD) || p.getAction().equals(ActionSimple.ALLIN));
 	}
 	
 	private boolean conditionSinglePlayer(List<Player> players) {
-		return players.stream().filter(p->!p.getAction().equals(Action.FOLD)).count() == 1;
+		return players.stream().filter(p->!p.getAction().equals(ActionSimple.FOLD)).count() == 1;
 	}
 	
 	private boolean conditionPlayersHaveToSpeek(List<Player> players) {
-		return players.stream().filter(p->p.getAction().equals(Action.NONE)).count() > 0;
+		return players.stream().filter(p->p.getAction().equals(ActionSimple.NONE)).count() > 0;
 	}
 	
 	private boolean conditionAllAgree(List<Player> players) {
-		return players.stream().allMatch(p->p.getAction().equals(Action.FOLD) || p.getAction().equals(Action.CHECK));
+		return players.stream().allMatch(p->p.getAction().equals(ActionSimple.FOLD) || p.getAction().equals(ActionSimple.CHECK));
 	}
 	
 	private boolean conditionCallToMostOneRaise(List<Player> players) {
-		return players.stream().allMatch(p -> p.getAction().equals(Action.FOLD) || p.getAction().equals(Action.RAISE) || p.getAction().equals(Action.CALL)) 
-				&& players.stream() .filter(p -> p.getAction().equals(Action.RAISE)).count() <= 1;
+		return players.stream().allMatch(p -> p.getAction().equals(ActionSimple.FOLD) || p.getAction().equals(ActionValue.RAISE) || p.getAction().equals(ActionValue.CALL)) 
+				&& players.stream() .filter(p -> p.getAction().equals(ActionValue.RAISE)).count() <= 1;
 	}
 }
