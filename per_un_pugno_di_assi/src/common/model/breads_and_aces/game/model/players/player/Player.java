@@ -104,7 +104,7 @@ public class Player implements Serializable, Comparable<Player> {
 		return action;
 	}
 
-	public void setAction(ActionSimple action) {
+	public void setAction(Action action) {
 		this.action = action;
 	}
 	

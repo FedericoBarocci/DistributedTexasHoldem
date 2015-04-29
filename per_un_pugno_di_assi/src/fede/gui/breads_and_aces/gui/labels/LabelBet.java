@@ -5,6 +5,9 @@ import javax.swing.SwingConstants;
 
 import org.limewire.inject.LazySingleton;
 
+import breads_and_aces.game.model.oracle.actions.Action;
+import breads_and_aces.game.model.oracle.actions.ActionSimple;
+
 @LazySingleton
 public class LabelBet extends JLabel {
 
@@ -23,5 +26,10 @@ public class LabelBet extends JLabel {
 	
 	public int getValue() {
 		return value;
+	}
+
+	public Action getAction() {
+		// TODO Auto-generated method stub
+		return ActionSimple.CHECK;
 	}
 }

@@ -5,7 +5,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Collection;
 
 import breads_and_aces.game.model.controller.DistributedController;
-import breads_and_aces.game.model.oracle.actions.ActionSimple;
+import breads_and_aces.game.model.oracle.actions.Action;
 import breads_and_aces.game.updater.GameUpdater;
 import breads_and_aces.services.rmi.utils.crashhandler.CrashHandler;
 
@@ -40,17 +40,17 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 	}
 
 	@Override
-	public void receiveAction(String fromPlayer, ActionSimple action) {
+	public void receiveAction(String fromPlayer, Action action) {
 		distributedController.setAction(fromPlayer, action);
 	}
 
 	@Override
-	public void receiveActionAndDeal(String fromPlayer, ActionSimple action, GameUpdater gameUpdater) {
+	public void receiveActionAndDeal(String fromPlayer, Action action, GameUpdater gameUpdater) {
 		distributedController.setAction(fromPlayer, action, gameUpdater);
 	}
 
 	@Override
-	public void receiveWinnerEndGame(String fromPlayer, ActionSimple action) {
+	public void receiveWinnerEndGame(String fromPlayer, Action action) {
 		distributedController.setAction(fromPlayer, action);
 	}
 

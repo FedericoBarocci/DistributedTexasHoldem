@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 
 import breads_and_aces.game.core.Card;
 import breads_and_aces.game.exceptions.DrawException;
+import breads_and_aces.game.model.oracle.actions.Action;
 import breads_and_aces.game.model.oracle.actions.ActionSimple;
 import breads_and_aces.game.model.oracle.actions.ActionValue;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
@@ -44,7 +45,7 @@ public class GameOracle {
 	}
 	
 	/*for recovery*/
-	public void nextGameState(ActionSimple m) {
+	public void nextGameState(Action m) {
 		actionlogic = actionlogic.nextState(m);
 	}
 	
