@@ -35,12 +35,11 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 			@Assisted String nodeId,
 			Table table,
 			Game game,
-//			GamePlayersKeeper gamePlayersKeeper,
 			KeepersUtilDelegateForClientable keepersUtilDelegateForClientable,
 			@Assisted RegistrationInitializerClientable registrationInitializerClientable,
 			DistributedController distributedController,
 			CrashHandler crashHandler) throws RemoteException {
-		super(/*nodeId, gamePlayersKeeper,*/distributedController, crashHandler);
+		super(distributedController, crashHandler);
 		this.table = table;
 		this.game = game;
 		this.keepersUtilDelegateForClientable = keepersUtilDelegateForClientable;
@@ -52,12 +51,10 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 	public void synchronizeAllNodesAndPlayersFromInitiliazer(
 			List<NodeConnectionInfos> nodesConnectionInfos,
 			Map<PlayerRegistrationId, Player> playersMap,
-//			List<Player> playersMap, 
 			List<Card> tablesCard,
 			int initialCoins,
 			int initialGoal)
 			throws RemoteException {
-		// System.out.println("here");
 		keepersUtilDelegateForClientable.synchronizeNodesPlayersGameservicesLocallyAsClientable(nodesConnectionInfos, playersMap);
 		table.getAllCards().addAll(tablesCard);
 
@@ -77,18 +74,4 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 	public void receiveStartGame(String whoHasToken) {
 		distributedController.receiveStartGame(whoHasToken);
 	}
-	
-	/*private void update() {
-		Map<String, GameService> services = gameServicesShelf.getServices();
-		
-	}*/
-	
-	/*private void updatePartecipants(GameService gameServiceExternalInjected) {
-		PlayersSynchronizar ps = ((PlayersSynchronizar) gameServiceExternalInjected);
-		if (gameServiceExternalInjected.getId().equals(nodeId);
-		ps.synchronizeAllNodesAndPlayersFromInitiliazer(
-				nodesConnectionInfosShelf.getNodesConnectionInfosMap(), 
-				playersShelf.getIdsPlayersMap() 
-				);
-	}*/
 }

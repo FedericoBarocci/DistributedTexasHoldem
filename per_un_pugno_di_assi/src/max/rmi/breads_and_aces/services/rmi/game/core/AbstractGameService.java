@@ -71,8 +71,7 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 	
 	@Override
 	public void removePlayersAndService(Collection<String> crashedPeers) throws RemoteException {
-		// TODO remove gameService from GameServiceKeeper and player from playersKeeper 
-//		distributedController.RIMUOVI_PLAYERS
+		//	TODO distributedController.RIMUOVI_PLAYERS
 		crashedPeers.forEach(c->{
 			crashHandler.handleCrashLocallyRemovingFromLocalGameServiceKeeper(c);
 		});

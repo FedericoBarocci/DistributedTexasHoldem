@@ -29,7 +29,6 @@ public class LabelBet extends JLabel {
 	}
 
 	public Action getAction() {
-		// TODO Auto-generated method stub
 		return ActionSimple.CHECK;
 	}
 }
