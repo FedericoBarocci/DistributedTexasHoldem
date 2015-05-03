@@ -60,7 +60,7 @@ public class ViewInitalizer extends AbstractViewHandler<ViewInitializerInitArgs>
 		GuiUtils.INSTANCE.initLabel(lblPlayerName, EnumRectangle.name, EnumColor.black, EnumFont.B13, clientPlayer);
 		GuiUtils.INSTANCE.initLabel(lblCoins, EnumRectangle.coins, EnumColor.black, EnumFont.B13, "" + coins);
 		GuiUtils.INSTANCE.initLabel(lblScore, EnumRectangle.score, EnumColor.black, EnumFont.B13, "" + coins);
-		GuiUtils.INSTANCE.initLabel(lblMessage, EnumRectangle.message, EnumColor.gold, EnumFont.B16, "Let's start the game!");
+		GuiUtils.INSTANCE.initLabel(lblMessage, EnumRectangle.message, EnumColor.gold, EnumFont.B16, "");
 		GuiUtils.INSTANCE.initLabel(lblBet, EnumRectangle.bet, EnumColor.black, EnumFont.B25, "0");
 		GuiUtils.INSTANCE.initLabel(lblPot, EnumRectangle.pot, EnumColor.black, EnumFont.B18, "0/0");
 		GuiUtils.INSTANCE.initPanel(leftPanel, EnumRectangle.leftPanel, EnumColor.alphaGreen);
@@ -85,8 +85,14 @@ public class ViewInitalizer extends AbstractViewHandler<ViewInitializerInitArgs>
 		show();
 	}
 	
+	public void printMessage(String msg) {
+		lblMessage.setText(msg);
+	}
+	
 	public static class ViewInitializerInitArgs {
-		String clientPlayer; Integer coins;
+		String clientPlayer; 
+		Integer coins;
+		
 		public ViewInitializerInitArgs(String clientPlayer, Integer coins) {
 			this.clientPlayer = clientPlayer;
 			this.coins = coins;

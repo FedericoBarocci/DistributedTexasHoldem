@@ -4,4 +4,5 @@ import breads_and_aces.game.model.oracle.GameStates;
 
 public interface Action {
 	abstract public GameStates getGameState();
+	abstract public String toString();
 }

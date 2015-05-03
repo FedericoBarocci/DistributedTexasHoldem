@@ -8,20 +8,36 @@ public enum ActionSimple implements Action {
 		public GameStates getGameState() {
 			return GameStates.NULL;
 		}
+		
+		public String toString() {
+			return "WAIT";
+		}
 	},
 	CHECK {
 		public GameStates getGameState() {
 			return GameStates.CHECK;
+		}
+		
+		public String toString() {
+			return "CHECK";
 		}
 	},
 	FOLD {
 		public GameStates getGameState() {
 			return GameStates.NULL;
 		}
+		
+		public String toString() {
+			return "FOLD";
+		}
 	},
 	ALLIN {
 		public GameStates getGameState() {
 			return GameStates.ALLIN;
+		}
+		
+		public String toString() {
+			return "ALL IN";
 		}
 	};
 }

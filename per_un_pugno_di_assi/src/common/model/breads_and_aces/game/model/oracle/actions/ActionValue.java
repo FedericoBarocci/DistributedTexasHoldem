@@ -17,6 +17,10 @@ public enum ActionValue implements Action {
 		public GameStates getGameState() {
 			return GameStates.RAISE;
 		}
+		
+		public String toString() {
+			return "RAISE " + value;
+		}
 	},
 	CALL {
 		private int value;
@@ -31,6 +35,10 @@ public enum ActionValue implements Action {
 
 		public GameStates getGameState() {
 			return GameStates.CALL;
+		}
+		
+		public String toString() {
+			return "CALL " + value;
 		}
 	};
 	

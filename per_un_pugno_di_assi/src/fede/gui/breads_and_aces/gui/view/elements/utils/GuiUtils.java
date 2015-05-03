@@ -46,7 +46,7 @@ public enum GuiUtils {
 		rectangles.put(EnumRectangle.name, 		new Rectangle(0, 134, 180, 50));
 		rectangles.put(EnumRectangle.coins, 	new Rectangle(20, 185, 55, 50));
 		rectangles.put(EnumRectangle.score, 	new Rectangle(105, 185, 55, 50));
-		rectangles.put(EnumRectangle.message, 	new Rectangle(20, 430, 500, 50));
+		rectangles.put(EnumRectangle.message, 	new Rectangle(20, 430, 1200, 50));
 		rectangles.put(EnumRectangle.bet, 		new Rectangle(10, 330, 60, 50));
 		rectangles.put(EnumRectangle.pot, 		new Rectangle(60, 240, 60, 50));
 		rectangles.put(EnumRectangle.leftBox, 	new Rectangle(0, 0, 180, 670));

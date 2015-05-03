@@ -1,5 +1,7 @@
 package breads_and_aces.game.model.players.keeper;
 
+import java.util.List;
+
 import breads_and_aces.game.model.players.player.Player;
 
 
@@ -13,4 +15,6 @@ public interface GamePlayersKeeper extends PlayersKeeper {
 //	public boolean contains(String playerId);
 //	public void remove(String targetplayerId);
 //	void resetPlayers(List<Player> players);
+
+	public List<Player> getActivePlayers();
 }

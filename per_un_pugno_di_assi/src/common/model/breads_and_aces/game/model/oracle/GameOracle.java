@@ -139,17 +139,24 @@ public class GameOracle {
 	}
 	
 	public List<Player> getWinner() {
-		checkPlayersRanking();
-		
+		List<Player> players = gamePlayersKeeper.getPlayers();
 		List<Player> winnerList = new ArrayList<Player>();
 		
-		List<Player> players = gamePlayersKeeper.getPlayers();
+		for (Player p : players) {
+			p.evaluateRanking(table.getAllCards());
+		}
+		
 		Player winner = players.get(0);
 		Integer winnerRank = winner.getRankingInt();
 		winnerList.add(winner);
 		
 		for (int i = 1; i < players.size(); i++) {
 			Player player = players.get(i);
+			
+			if (player.getAction().equals(ActionSimple.FOLD)) {
+				continue;
+			}
+			
 			Integer playerRank = player.getRankingInt();
 			
 			//Draw game
@@ -177,13 +184,6 @@ public class GameOracle {
 		}
 		
 		return winnerList;
-	}
-	
-	private void checkPlayersRanking() {
-		List<Player> players = gamePlayersKeeper.getPlayers();
-		for (Player p : players) {
-			p.evaluateRanking(table.getAllCards());
-		}
 	}
 	
 	//ok

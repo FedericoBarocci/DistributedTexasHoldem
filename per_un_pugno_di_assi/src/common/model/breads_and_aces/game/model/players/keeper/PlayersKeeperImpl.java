@@ -1,5 +1,6 @@
 package breads_and_aces.game.model.players.keeper;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -162,5 +163,18 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 	@Override
 	public Player getFirst() {
 		return new LinkedList<Player>(playersMap.values()).get(0);
+	}
+
+	@Override
+	public List<Player> getActivePlayers() {
+		List<Player> activePlayers = new ArrayList<Player> ();
+		
+		getPlayers().forEach(p->{
+			if (! p.getAction().equals(ActionSimple.FOLD)) {
+				activePlayers.add(p);
+			}
+		});
+		
+		return activePlayers;
 	}
 }

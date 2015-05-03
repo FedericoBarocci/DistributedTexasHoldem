@@ -6,6 +6,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import breads_and_aces.game.model.oracle.actions.Action;
+import breads_and_aces.game.model.oracle.actions.ActionSimple;
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.gui.view.AbstractViewHandler;
 import breads_and_aces.gui.view.elements.frame.JFrameGame;
@@ -71,6 +73,7 @@ public class PlayerGUIHandler extends AbstractViewHandler<Void> {
 		GuiUtils.INSTANCE.initLabel(action, EnumRectangle.playerAction, EnumColor.black, EnumFont.B11, "WAIT", x + 10, y + 120);
 		GuiUtils.INSTANCE.initLabel(score, EnumRectangle.playerScore, EnumColor.black, EnumFont.B11, "SCORE: 0", x + 10, y + 135);
 
+		action.setText(ActionSimple.NONE.toString());
 		setScore(player.getScore());
 		
 		if (player.hasToken()) {
@@ -113,12 +116,16 @@ public class PlayerGUIHandler extends AbstractViewHandler<Void> {
 		super.removeElement( box );
 		GuiUtils.INSTANCE.initPanel(box, EnumRectangle.playerBox, EnumColor.alphaGold, EnumLine.winner, x + 10, y + 25);
 		super.addElement( box );
+		
+		this.action.setText("WIN");
 	}
 	
 	public void setLoser() {
 		super.removeElement( box );
 		GuiUtils.INSTANCE.initPanel(box, EnumRectangle.playerBox, EnumColor.alphaBlue, EnumLine.loser, x + 10, y + 25);
 		super.addElement( box );
+		
+		this.action.setText("LOSE");
 	}
 	
 	public void draw() {
@@ -145,5 +152,9 @@ public class PlayerGUIHandler extends AbstractViewHandler<Void> {
 	
 	public String getId() {
 		return player.getName(); 
+	}
+
+	public void setAction(Action actionValue) {
+		this.action.setText(actionValue.toString());
 	}
 }

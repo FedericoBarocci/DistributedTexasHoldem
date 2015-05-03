@@ -83,6 +83,8 @@ public class DistributedController {
 		}
 		
 		gamePlayersKeeper.getPlayer(fromPlayer).setAction(action);
+		viewControllerDelegate.setPlayerAction(fromPlayer, action);
+		
 		gamePlayersKeeper.getPlayer(fromPlayer).sendToken(successor);
 		gamePlayersKeeper.getPlayer(successor).receiveToken(fromPlayer);
 		viewControllerDelegate.setViewToken(successor);
@@ -98,7 +100,7 @@ public class DistributedController {
 			return Communication.ACTION;
 
 		case NEXT_STEP:
-			viewControllerDelegate.addTableCards();
+			viewControllerDelegate.addTableCards(gamePlayersKeeper.getActivePlayers());
 			return Communication.ACTION;
 
 		case WINNER:

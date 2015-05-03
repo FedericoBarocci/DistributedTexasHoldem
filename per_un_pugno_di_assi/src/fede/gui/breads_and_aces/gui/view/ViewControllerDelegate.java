@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.limewire.inject.LazySingleton;
 
+import breads_and_aces.game.model.oracle.actions.Action;
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.gui.view.PlayersViewHandler.PlayersViewHandlerInitArgs;
 import breads_and_aces.gui.view.ViewInitalizer.ViewInitializerInitArgs;
@@ -41,6 +42,8 @@ public class ViewControllerDelegate {
 		refresh(players, myName);
 		ViewInitializerInitArgs viewInitializerInitArgs = new ViewInitializerInitArgs(myName, initialCoins);
 		viewInitializer.init(viewInitializerInitArgs);
+		
+		viewInitializer.printMessage("Let's start the game! Your goal is "+goal+" starting with "+initialCoins);
 	}
 
 	public void setRefresh() {
@@ -63,14 +66,29 @@ public class ViewControllerDelegate {
 		playersView.setViewToken(playerName);
 	}
 
-	public void addTableCards() {
+	public void addTableCards(List<Player> players) {
 		tableView.addTableCards();
+		playersView.resetActions(players);
 	}
 
 	public void showDown(List<Player> winners) {
 		tableView.addTableCards();
 		playersView.showPlayersCards();
 		playersView.showWinners(winners);
+		
+		String winnersString = winners.get(0).getName();
+		
+		for (int i = 1; i < winners.size(); i++) {
+			winnersString += ", " + winners.get(i).getName();
+		}
+		
+		winnersString += " win the hand!";
+		viewInitializer.printMessage(winnersString);
+	}
+
+	public void setPlayerAction(String fromPlayer, Action action) {
+		playersView.setPlayerAction(fromPlayer, action);
+		viewInitializer.printMessage(fromPlayer + " perform " + action.toString() + " action.");
 	}
 	
 	static class InitArgs {
@@ -78,6 +96,7 @@ public class ViewControllerDelegate {
 		String myName; 
 		int goal;
 		int initialCoins;
+		
 		public InitArgs(List<Player> players, String myName, int goal, int initialCoins) {
 			this.players = players;
 			this.myName = myName;
