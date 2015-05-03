@@ -24,11 +24,13 @@ public class RegistrationInitializerServableGUI extends
 	public RegistrationInitializerServableGUI(@Assisted String nodeId,
 			GameRegistrarProvider gameRegistrarProvider,
 			GameServicesKeeper gameServicesRegistry,
-			RegistrarPlayersKeeper playersKeeper, Communicator communicator,
+			RegistrarPlayersKeeper registrarPlayersKeeper, 
+			Communicator communicator,
 			Table table, Game game, Printer printer,
 			AccepterPlayersGUIFactory accepterPlayersGUIFactory) {
-		super(nodeId, gameRegistrarProvider, gameServicesRegistry,
-				playersKeeper, communicator, table, game, printer);
+		super(nodeId, gameRegistrarProvider,
+				registrarPlayersKeeper,
+				communicator, table, game, printer);
 		this.accepterPlayersGUIFactory = accepterPlayersGUIFactory;
 	}
 
@@ -37,7 +39,7 @@ public class RegistrationInitializerServableGUI extends
 		CountDownLatch startLatch = new CountDownLatch(1);
 		
 		EventQueue.invokeLater(() -> {
-			accepterPlayersGUIFactory.create(startLatch).setVisible(true);
+			accepterPlayersGUIFactory.create(startLatch)/*.setVisible(true)*/;
 		});
 		
 		try {

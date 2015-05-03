@@ -14,41 +14,40 @@ import breads_and_aces.services.rmi.game.base._init.PlayersSynchronizar;
 import breads_and_aces.services.rmi.game.base.dealable.Dealer;
 import breads_and_aces.services.rmi.game.core.GameService;
 import breads_and_aces.services.rmi.game.core.GameServiceClientable;
-import breads_and_aces.services.rmi.game.keeper.GameServicesKeeper;
 import breads_and_aces.services.rmi.utils.communicator.Communicator;
 import breads_and_aces.utils.printer.Printer;
 
 public abstract class AbstractRegistrationInitializerServable implements RegistrationInitializerServable {
 	
-	protected final GameRegistrarProvider gameRegistrarProvider;
-	protected final Communicator communicator;
-	protected final Table table;
-	protected final Printer printer;
 	private final String myId;
-	private final RegistrarPlayersKeeper playersKeeper;
+	private final GameRegistrarProvider gameRegistrarProvider;
+	private final Communicator communicator;
+	private final Table table;
+	
+	private final RegistrarPlayersKeeper registrarPlayersKeeper;
 	private final Game game;
+	private final Printer printer;
 	
 	public AbstractRegistrationInitializerServable(String nodeId, 
 			GameRegistrarProvider gameRegistrarProvider,
-			GameServicesKeeper gameServicesRegistry,
-			RegistrarPlayersKeeper playersKeeper, 
+			RegistrarPlayersKeeper registrarPlayersKeeper,
 			Communicator communicator,
 			Table table,
 			Game game,
 			Printer printer
 			) {
+		this.myId = nodeId;
 		this.gameRegistrarProvider = gameRegistrarProvider;
-		this.playersKeeper = playersKeeper;
+		this.registrarPlayersKeeper = registrarPlayersKeeper;
 		this.communicator = communicator;
 		this.table = table;
-		this.myId = nodeId;
 		this.game = game;
 		this.printer = printer;
-		((PlayersObservable)playersKeeper).addObserver( new NewPlayersObserverAsServable( nodeId) );
+		((PlayersObservable)registrarPlayersKeeper).addObserver( new NewPlayersObserverAsServable( nodeId) );
 	}
 
 	@Override
-	public void initialize(NodeConnectionInfos thisNodeConnectionInfo, String playerId/*, CountDownLatch latch*/) {
+	public void initialize(NodeConnectionInfos thisNodeConnectionInfo, String playerId) {
 		printer.println("Acting as initializer: waiting for players");
 
 		registerMyPlayer(thisNodeConnectionInfo, playerId);
@@ -63,8 +62,6 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		giveCards();
 		updateAllNodesForPartecipants();
 		startGame();
-//		if (latch!=null) 
-//			latch.countDown();
 	}
 
 	private void registerMyPlayer(NodeConnectionInfos thisNodeConnectionInfo, String playerId) {
@@ -78,11 +75,9 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		gameRegistrarProvider.changeRegistrar();
 	}
 	private void giveCards() {
-		new Dealer(table, gameRegistrarProvider.get().getRegisteredPlayers().values(), new Deck() ).deal();
+		Dealer.deal(table, gameRegistrarProvider.get().getRegisteredPlayers().values(), new Deck() );
 	}
 	protected void updateAllNodesForPartecipants() {
-//		printer.println("Ok: final list partecipants has: "
-//				+gameRegistrarProvider.get().getRegisteredPlayersMap().values().stream().map(Player::getName).collect(Collectors.joining(", ")));
 		communicator.toAll(myId, this::updatePartecipantsOnClientFunction);
 	}
 	
@@ -103,7 +98,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		game.setStarted();
 //		passBucket();
 		printer.println("Inizio io perché comando io!");
-		playersKeeper.getMyPlayer().receiveToken();
+		registrarPlayersKeeper.getMyPlayer().receiveToken();
 		communicator.toAll(myId, this::sayToAllStartGame);
 	}
 	
@@ -121,51 +116,4 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 	private void sayToAllStartGame(GameService gameServiceExternalInjected) throws RemoteException {
 		((GameServiceClientable) gameServiceExternalInjected).receiveStartGame(myId);
 	}
-
-	/*protected void updateAllNodes() {
-	printer.print("We have " + nodesConnectionInfosRegistry.getNodesConnectionInfos().size() + " players: "+meId+" ");
-	Map<String, NodeConnectionInfos> nodesConnectionInfosMap = nodesConnectionInfosRegistry.getNodesConnectionInfosMap();
-//	Map<PlayerRegistrationId, Player> playersMap = playersRegistry.getIdsPlayersMap();
-	ListIterator<NodeConnectionInfos> nodeConnectionInfosIterator = nodesConnectionInfosRegistry.getNodesConnectionInfos().listIterator();
-//	boolean error = false;
-	while (nodeConnectionInfosIterator.hasNext() && !error) {
-		NodeConnectionInfos nodeConnectionInfo = nodeConnectionInfosIterator.next();
-		String nodeId = nodeConnectionInfo.getNodeId();
-		if (nodeId.equals(meId)) {
-//			System.out.println("skipping me "+meId);
-			continue;
-		}
-		
-		sendPlayersAndNodesConnectionInfosToNode(nodeId, nodeConnectionInfo.getAddress(), nodeConnectionInfo.getPort(), 
-				nodesConnectionInfosMap,
-				playersRegistry.getIdsPlayersMap(),
-				nodeConnectionInfosIterator
-		);
-	}
-	printer.println("- ok");
-	}*/
-	/*private void sendPlayersAndNodesConnectionInfosToNode(String targetnodeId, String targetnodeAddress, int targetnodePort,
-			Map<String, NodeConnectionInfos> nodesConnectionInfosMap,
-			Map<PlayerRegistrationId, Player> playersMap,
-			ListIterator<NodeConnectionInfos> nodeConnectionInfosIterator) {
-		
-		try {
-//			PlayersSynchronizar gameServerFromRemoteNode = 
-			GameService lookup = ServiceUtils.lookup(targetnodeAddress, targetnodePort);
-			PlayersSynchronizar gameServerFromRemoteNode = (PlayersSynchronizar) lookup;
-//			gameServiceRegistry.add(targetnodeId, lookup);
-			gameServerFromRemoteNode.synchronizeAllNodesAndPlayersFromInitiliazer(nodesConnectionInfosMap, playersMap);
-			printer.print(targetnodeId+" ");
-		} catch (MalformedURLException e) {
-		} catch (RemoteException|NotBoundException e) {
-			// remote host not responding, so remove
-			playersRegistry.remove(targetnodeId);
-//			playersMap.remove(targetnodeId);
-			nodeConnectionInfosIterator.remove();
-			printer.println("(removed: not responding)");
-//			e.printStackTrace();
-		}
-	}*/
-	
-//	public static String START_GAME = "START";
 }

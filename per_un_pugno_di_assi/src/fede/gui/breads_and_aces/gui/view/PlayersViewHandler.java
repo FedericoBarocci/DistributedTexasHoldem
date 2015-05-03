@@ -31,7 +31,6 @@ public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerIn
 	}
 	
 //	@Override
-	// TODO we want this override inittable method
 //	public void init(List<Player> players, String myName, int goal) {
 	public void init(PlayersViewHandlerInitArgs args) {
 		int size = args.players.size();

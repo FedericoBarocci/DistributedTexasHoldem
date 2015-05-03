@@ -56,11 +56,11 @@ public class StartOrRegisterGUI extends JFrameDefault {
 				String username = usernameField.getText();
 				
 				if (username.isEmpty()) {
-					// TODO restore
+					// TODO restore in production
 //					JOptionPane.showMessageDialog(null, "You need to insert an unique name", "Warning", JOptionPane.WARNING_MESSAGE);
 					System.out.println("dev");
 				}
-//				else { // TODO restore
+//				else { // TODO restore in production
 					String serverHost = hostTextField.getText();
 					String serverPort = portTextField.getText();
 					boolean asServable = servableCheckBox.isSelected();
@@ -76,7 +76,7 @@ public class StartOrRegisterGUI extends JFrameDefault {
 					loginResultAtomicReference.set(loginResult);
 	
 					latch.countDown();
-//				} // TODO restore
+//				} // TODO restore in production
 			}
 		});
 		

@@ -10,17 +10,17 @@ import breads_and_aces.game.model.utils.Pair;
 
 public class Dealer {
 
-	private final Table table;
-	private final Deck deck;
-	private final Collection<Player> players;
-
-	public Dealer(Table table, Collection<Player> players, Deck deck) {
-		this.table = table;
-		this.players = players;
-		this.deck = deck;
-	}
+//	private final Table table;
+//	private final Deck deck;
+//	private final Collection<Player> players;
+//
+//	public Dealer(Table table, Collection<Player> players, Deck deck) {
+//		this.table = table;
+//		this.players = players;
+//		this.deck = deck;
+//	}
 	
-	public void deal() {
+	public static void deal(Table table, Collection<Player> players, Deck deck) {
 		table.reset();
 		
 		for (int i=0; i<5; i++) {

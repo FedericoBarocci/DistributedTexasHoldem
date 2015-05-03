@@ -26,20 +26,14 @@ public class KeepersUtilDelegate implements KeepersUtilDelegateForServable, Keep
 
 	private final RegistrarPlayersKeeper playersKeeper;
 	private final GameServicesKeeper gameServiceKeeper;
-	// private final CrashHandler crashHandler;
-
 	private final Printer printer;
-
-	// private final PlayerFactory playerFactory;
 
 	@Inject
 	public KeepersUtilDelegate(RegistrarPlayersKeeper playersKeeper,
 			GameServicesKeeper gameServiceKeeper,
-			// PlayerFactory playerFactory,
 			Printer printer) {
 		this.playersKeeper = playersKeeper;
 		this.gameServiceKeeper = gameServiceKeeper;
-		// this.playerFactory = playerFactory;
 		this.printer = printer;
 	}
 
@@ -87,9 +81,7 @@ public class KeepersUtilDelegate implements KeepersUtilDelegateForServable, Keep
 			printer.print(e.getMessage());
 			return new RegistrationResult(false, Cause.ERROR);
 		} catch (RemoteException | NotBoundException e) {
-			// crashed.add(playerId); // TODO really needed ?
-			printer.print("Player " + playerId
-					+ " not registered: no more responding");
+			printer.print("Player " + playerId+ " not registered: no more responding");
 			return new RegistrationResult(false, Cause.ERROR);
 		}
 	}
@@ -109,49 +101,29 @@ public class KeepersUtilDelegate implements KeepersUtilDelegateForServable, Keep
 	public List<String> synchronizeNodesPlayersGameservicesLocallyAsClientable(
 			List<NodeConnectionInfos> nodesConnectionInfos,
 			Map<PlayerRegistrationId, Player> playersMap) {
-//			List<Player> playersMap) {
-		// nodesConnectionInfosShelf.setNodesConnectionInfos(nodesConnectionInfosMap);
 		playersKeeper.addPlayers(playersMap);
 
 		List<String> crashedDuringSync = new ArrayList<>();
 
 		nodesConnectionInfos.iterator().forEachRemaining(
 				nodeConnectionInfos -> {
-					// String id = nci.getKey();
 					String id = nodeConnectionInfos.getNodeId();
-					// NodeConnectionInfos nodeConnectionInfos = nci.getValue();
 					try {
 						GameService gameService = ServiceUtils.lookup(
 								nodeConnectionInfos.getAddress(),
 								nodeConnectionInfos.getPort());
 						gameServiceKeeper.addService(id, gameService);
-						// playersMap.keySet().stream().parallel().filter(pri->{return
-						// pri.getId().equals(id);}).findFirst().ifPresent(pri->
-						// { playersShelf.addPlayer(pri, playersMap.get(pri) );}
-						// );
 					} catch (MalformedURLException e) {
 					} catch (RemoteException | NotBoundException e) {
 						if (!crashedDuringSync.contains(id)) {
 							crashedDuringSync.add(id);
-
-							// TODO to be improved: could be better not to add
-							// playersmap to shelfs,
-							// instead add per-playerid after game service is
-							// bound? (the row 101 commented above
 							playersKeeper.remove(id);
 						}
 					}
 				});
-		// crashHandler.handleRemovingLocally(crashedDuringSync);
 		return crashedDuringSync;
 	}
 	/*
 	 * clientable zone - end
 	 */
-
-	/*public void removePlayerGameService(String id) {
-		gameServiceKeeper.removeService(id);
-		// nodesConnectionInfosShelf.removeNode(id);
-		playersKeeper.remove(id);
-	}*/
 }
