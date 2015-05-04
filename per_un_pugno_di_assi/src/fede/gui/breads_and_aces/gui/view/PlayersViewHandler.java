@@ -10,6 +10,7 @@ import org.limewire.inject.LazySingleton;
 
 import breads_and_aces.game.model.oracle.actions.Action;
 import breads_and_aces.game.model.oracle.actions.ActionSimple;
+import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.gui.view.PlayersViewHandler.PlayersViewHandlerInitArgs;
 import breads_and_aces.gui.view.elements.PlayerGUIHandler;
@@ -23,11 +24,14 @@ public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerIn
 	
 	private final Map<String, PlayerGUIHandler> playersGui = new LinkedHashMap<>();
 	private final PlayerGUIHandlerFactory playerGUIHandlerFactory;
+	private final GamePlayersKeeper gamePlayersKeeper;
 	
 	@Inject
-	public PlayersViewHandler(JFrameGame/*Provider*/ jFrameGame/*Provider*/, PlayerGUIHandlerFactory playerGUIHandlerFactory) {
+	public PlayersViewHandler(JFrameGame/*Provider*/ jFrameGame/*Provider*/, PlayerGUIHandlerFactory playerGUIHandlerFactory,
+			GamePlayersKeeper gamePlayersKeeper) {
 		super(jFrameGame/*Provider*/);
 		this.playerGUIHandlerFactory = playerGUIHandlerFactory;
+		this.gamePlayersKeeper = gamePlayersKeeper;
 	}
 	
 //	@Override
@@ -76,7 +80,20 @@ public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerIn
 			}
 		});
 		
-		this.repaint();
+		super.repaint();
+	}
+	
+	public void showWinnerId(String winner) {
+		for(PlayerGUIHandler pg : playersGui.values()) {
+			if (pg.getId().equals(winner)) {
+				pg.setWinner(gamePlayersKeeper.getPlayer(pg.getId()).getScore());
+			}
+			else {
+				pg.setLoser(gamePlayersKeeper.getPlayer(pg.getId()).getScore());
+			}
+		}
+			
+		super.repaint();
 	}
 	
 	public void showWinners(List<Player> winners) {
@@ -85,7 +102,7 @@ public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerIn
 			
 			for(Player p : winners) {
 				if (pg.getId().equals(p.getName())) {
-					pg.setWinner();
+					pg.setWinner(p.getScore());
 					loser = false;
 					
 					break;
@@ -93,11 +110,11 @@ public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerIn
 			}
 			
 			if (loser) {
-				pg.setLoser();
+				pg.setLoser(gamePlayersKeeper.getPlayer(pg.getId()).getScore());
 			}
 		}
 		
-		this.repaint();
+		super.repaint();
 	}
 
 	public void setPlayerAction(String fromPlayer, Action action) {

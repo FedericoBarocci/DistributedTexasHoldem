@@ -90,6 +90,11 @@ public class ViewControllerDelegate {
 		playersView.setPlayerAction(fromPlayer, action);
 		viewInitializer.printMessage(fromPlayer + " perform " + action.toString() + " action.");
 	}
+
+	public void endGame(String player) {
+		playersView.showWinnerId(player);
+		viewInitializer.printMessage("Hands up! The winner is " + player);
+	}
 	
 	static class InitArgs {
 		List<Player> players; 

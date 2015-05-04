@@ -78,6 +78,7 @@ public class DistributedController {
 			System.out.println("Oracle tell successor: " + successor);
 		} 
 		catch (SinglePlayerException e) {
+			viewControllerDelegate.endGame(fromPlayer);
 			System.out.println("Oracle tell NOT successor. END.");
 			return Communication.END;
 		}
@@ -108,6 +109,7 @@ public class DistributedController {
 			return winnerEvent();
 
 		case END_GAME:
+			viewControllerDelegate.endGame(fromPlayer);
 			return Communication.END;
 		}
 		
@@ -120,8 +122,10 @@ public class DistributedController {
 		
 		viewControllerDelegate.showDown(winners);
 		
-		for (Player p : winners) 
-			System.out.println("VINCE " + p.getName() + " con " + p.getRanking().toString());
+		for (Player p : winners) {
+			p.setScore(p.getScore() + 50);
+//			System.out.println("VINCE " + p.getName() + " con " + p.getRanking().toString());
+		}
 		
 		gameOracle.setGameState(GameStates.NULL);
 		

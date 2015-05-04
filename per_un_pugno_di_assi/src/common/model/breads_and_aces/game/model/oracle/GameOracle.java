@@ -120,22 +120,13 @@ public class GameOracle {
 
 	public void update(GameUpdater gameUpdater) {
 		table.reset();
-		
-		gameUpdater.getTable().forEach(card->{
-			table.addCard(card);
-			System.out.println("Update table: " + card);
-		});
+		gameUpdater.getTable().forEach(card->table.addCard(card));
 		
 		for(PlayerData pd : gameUpdater.getPlayers()) {
 			Player p = gamePlayersKeeper.getPlayer(pd.getName());
-			
-			if (p != null) {
-				p.deal(new Pair<>(pd.getCard1(), pd.getCard2()));
-				p.setScore(pd.getScore());
-			}
+			p.deal(new Pair<>(pd.getCard1(), pd.getCard2()));
+			p.setScore(pd.getScore());
 		}
-		
-		System.out.println("Update my cards: " + gamePlayersKeeper.getMyPlayer().getCards().get(0) + " " +  gamePlayersKeeper.getMyPlayer().getCards().get(1));
 	}
 	
 	public List<Player> getWinner() {

@@ -112,7 +112,9 @@ public class PlayerGUIHandler extends AbstractViewHandler<Void> {
 		super.addElement( box );
 	}
 	
-	public void setWinner() {
+	public void setWinner(int score) {
+		setScore(score);
+		
 		super.removeElement( box );
 		GuiUtils.INSTANCE.initPanel(box, EnumRectangle.playerBox, EnumColor.alphaGold, EnumLine.winner, x + 10, y + 25);
 		super.addElement( box );
@@ -120,7 +122,9 @@ public class PlayerGUIHandler extends AbstractViewHandler<Void> {
 		this.action.setText("WIN");
 	}
 	
-	public void setLoser() {
+	public void setLoser(int score) {
+		setScore(score);
+		
 		super.removeElement( box );
 		GuiUtils.INSTANCE.initPanel(box, EnumRectangle.playerBox, EnumColor.alphaBlue, EnumLine.loser, x + 10, y + 25);
 		super.addElement( box );
