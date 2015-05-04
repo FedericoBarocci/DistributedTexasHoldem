@@ -15,13 +15,13 @@ import breads_and_aces.gui.view.elements.ElementGUI;
 import breads_and_aces.gui.view.elements.utils.EnumButton;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
-public class BetButton implements MouseListener {
+public class BetListener implements MouseListener {
 	private final LabelBet lblBet;
 	private final LabelCoins lblCoins;
 	private final Game game;
 	
 	@Inject
-	public BetButton(LabelBet lblBet, LabelCoins lblcoins, Game game) {
+	public BetListener(LabelBet lblBet, LabelCoins lblcoins, Game game) {
 		this.lblBet = lblBet;
 		this.lblCoins = lblcoins;
 		this.game = game;

@@ -2,10 +2,10 @@ package breads_and_aces.gui.controllers.actionlisteners.init;
 
 import javax.inject.Inject;
 
-import breads_and_aces.gui.controllers.actionlisteners.BetButton;
-import breads_and_aces.gui.controllers.actionlisteners.FoldButton;
-import breads_and_aces.gui.controllers.actionlisteners.InfoButton;
-import breads_and_aces.gui.controllers.actionlisteners.OkButton;
+import breads_and_aces.gui.controllers.actionlisteners.BetListener;
+import breads_and_aces.gui.controllers.actionlisteners.FoldListener;
+import breads_and_aces.gui.controllers.actionlisteners.InfoListener;
+import breads_and_aces.gui.controllers.actionlisteners.OkListener;
 import breads_and_aces.gui.view.AbstractViewHandler;
 import breads_and_aces.gui.view.ButtonsViewHandler;
 import breads_and_aces.gui.view.elements.ElementGUI;
@@ -15,12 +15,12 @@ import breads_and_aces.gui.view.elements.utils.EnumButton;
 public class ListenersInitializer extends AbstractViewHandler<Void> {
 
 	private final ButtonsViewHandler buttonsViewHandler;
-	private final OkButton okButton;
-	private final FoldButton foldButton;
-	private final BetButton betButton;
+	private final OkListener okButton;
+	private final FoldListener foldButton;
+	private final BetListener betButton;
 
 	@Inject
-	public ListenersInitializer(JFrameGame/*Provider*/ jFrameGame/*Provider*/, ButtonsViewHandler buttonsViewHandler, OkButton okButton, FoldButton foldButton, BetButton betButton) {
+	public ListenersInitializer(JFrameGame/*Provider*/ jFrameGame/*Provider*/, ButtonsViewHandler buttonsViewHandler, OkListener okButton, FoldListener foldButton, BetListener betButton) {
 		super(jFrameGame/*Provider*/);
 		this.buttonsViewHandler = buttonsViewHandler;
 		this.okButton = okButton;
@@ -43,6 +43,6 @@ public class ListenersInitializer extends AbstractViewHandler<Void> {
 		down.addMouseListener( betButton );
 		ok.addMouseListener( okButton );
 		fold.addMouseListener( foldButton );
-		info.addMouseListener( new InfoButton() );
+		info.addMouseListener( new InfoListener() );
 	}
 }

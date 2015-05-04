@@ -10,13 +10,13 @@ import breads_and_aces.gui.labels.LabelBet;
 import breads_and_aces.gui.view.elements.ElementGUI;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
-public class OkButton implements MouseListener {
+public class OkListener implements MouseListener {
 
 	private final DistributedController distributedController;
 	private final LabelBet labelBet;
 
 	@Inject
-	public OkButton(DistributedController distributedController,
+	public OkListener(DistributedController distributedController,
 			LabelBet labelBet) {
 		this.distributedController = distributedController;
 		this.labelBet = labelBet;

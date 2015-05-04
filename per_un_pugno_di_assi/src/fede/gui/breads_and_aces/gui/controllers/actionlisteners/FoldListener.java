@@ -11,14 +11,14 @@ import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.gui.view.elements.ElementGUI;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
-public class FoldButton implements MouseListener {
+public class FoldListener implements MouseListener {
 	
 //	private final Communicator communicator;
 	private final DistributedController distributedController;
 	private final GamePlayersKeeper gamePlayersKeeper;
 	
 	@Inject
-	public FoldButton(//Communicator communicator,
+	public FoldListener(//Communicator communicator,
 			DistributedController distributedController, GamePlayersKeeper gamePlayersKeeper) {
 //		this.communicator = communicator;
 		this.gamePlayersKeeper = gamePlayersKeeper;

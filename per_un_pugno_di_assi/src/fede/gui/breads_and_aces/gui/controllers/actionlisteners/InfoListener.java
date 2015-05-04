@@ -17,9 +17,9 @@ import breads_and_aces.gui.view.elements.ElementGUI;
 import breads_and_aces.gui.view.elements.utils.EnumRectangle;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
-public class InfoButton implements MouseListener {
+public class InfoListener implements MouseListener {
 
-	public InfoButton() {}
+	public InfoListener() {}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
