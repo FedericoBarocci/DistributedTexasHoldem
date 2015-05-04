@@ -135,6 +135,7 @@ public class DistributedController {
 	public boolean leader() {
 		if (viewControllerDelegate.isSetRefresh()) {
 			viewControllerDelegate.refresh(gamePlayersKeeper.getPlayers(), gamePlayersKeeper.getMyName());
+			viewControllerDelegate.enableButtons(gamePlayersKeeper.getMyPlayer().hasToken());
 			return false;
 		}
 		

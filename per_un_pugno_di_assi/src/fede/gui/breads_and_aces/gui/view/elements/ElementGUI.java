@@ -11,6 +11,8 @@ public class ElementGUI extends JLabel {
 	
 	private static final long serialVersionUID = 2817608666404375068L;
 	
+	private boolean enable = true;
+	
 	protected Rectangle r;
 
 	public ElementGUI(ImageIcon icon, Rectangle r) {
@@ -33,5 +35,13 @@ public class ElementGUI extends JLabel {
 		
 		ImageIcon i = (ImageIcon) getIcon();
 		i.setImage( CardsUtils.rescaleImage( i.getImage(), (int) r.getWidth(), (int) r.getHeight()) );
+	}
+	
+	public void setEnable(boolean enable) {
+		this.enable = enable;
+	}
+	
+	public boolean isEnable() {
+		return enable;
 	}
 }

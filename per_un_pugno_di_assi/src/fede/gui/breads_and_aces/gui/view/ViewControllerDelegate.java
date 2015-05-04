@@ -19,15 +19,17 @@ public class ViewControllerDelegate {
 	private final ViewInitalizer viewInitializer;
 	private final TableViewHandler tableView;
 	private final PlayersViewHandler playersView;
+	private final ButtonsViewHandler buttonsViewHandler;
 	
 	private boolean refresh = false;
 	private int goal;
 
 	@Inject
-	public ViewControllerDelegate(ViewInitalizer viewInitializer, TableViewHandler tableView, PlayersViewHandler playersView) {
+	public ViewControllerDelegate(ViewInitalizer viewInitializer, TableViewHandler tableView, PlayersViewHandler playersView, ButtonsViewHandler buttonsViewHandler) {
 		this.viewInitializer = viewInitializer;
 		this.tableView = tableView;
 		this.playersView = playersView;
+		this.buttonsViewHandler = buttonsViewHandler;
 	}
 
 //	public void init(InitArgs args) {
@@ -41,8 +43,9 @@ public class ViewControllerDelegate {
 		
 		refresh(players, myName);
 		ViewInitializerInitArgs viewInitializerInitArgs = new ViewInitializerInitArgs(myName, initialCoins);
-		viewInitializer.init(viewInitializerInitArgs);
 		
+		buttonsViewHandler.init(null);
+		viewInitializer.init(viewInitializerInitArgs);
 		viewInitializer.printMessage("Let's start the game! Your goal is "+goal+" starting with "+initialCoins);
 	}
 
@@ -63,7 +66,14 @@ public class ViewControllerDelegate {
 	}
 
 	public void setViewToken(String playerName) {
+		if (isSetRefresh()) { return; }
+		
 		playersView.setViewToken(playerName);
+		buttonsViewHandler.enableButtons(playerName);
+	}
+
+	public void enableButtons(boolean hasToken) {
+		buttonsViewHandler.enableButtons(hasToken);
 	}
 
 	public void addTableCards(List<Player> players) {
@@ -84,6 +94,7 @@ public class ViewControllerDelegate {
 		
 		winnersString += " win the hand!";
 		viewInitializer.printMessage(winnersString);
+		buttonsViewHandler.enableButtons();
 	}
 
 	public void setPlayerAction(String fromPlayer, Action action) {

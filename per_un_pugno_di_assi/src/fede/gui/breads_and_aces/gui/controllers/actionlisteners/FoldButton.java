@@ -82,21 +82,29 @@ public class FoldButton implements MouseListener {
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		((ElementGUI) (e.getSource())).changeImage(GuiUtils.INSTANCE.getImageGui("fold_click.png"));
+		if (((ElementGUI) (e.getSource())).isEnable()) {
+			((ElementGUI) (e.getSource())).changeImage(GuiUtils.INSTANCE.getImageGui("fold_click.png"));
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		((ElementGUI) (e.getSource())).changeImage(GuiUtils.INSTANCE.getImageGui("fold_over.png"));
+		if (((ElementGUI) (e.getSource())).isEnable()) {
+			((ElementGUI) (e.getSource())).changeImage(GuiUtils.INSTANCE.getImageGui("fold_over.png"));
+		}
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		((ElementGUI) (e.getSource())).changeImage(GuiUtils.INSTANCE.getImageGui("fold_over.png"));
+		if (((ElementGUI) (e.getSource())).isEnable()) {
+			((ElementGUI) (e.getSource())).changeImage(GuiUtils.INSTANCE.getImageGui("fold_over.png"));
+		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		((ElementGUI) (e.getSource())).changeImage(GuiUtils.INSTANCE.getImageGui("fold.png"));
+		if (((ElementGUI) (e.getSource())).isEnable()) {
+			((ElementGUI) (e.getSource())).changeImage(GuiUtils.INSTANCE.getImageGui("fold.png"));
+		}
 	}
 }
