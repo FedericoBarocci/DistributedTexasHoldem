@@ -46,17 +46,19 @@ public enum GuiUtils {
 		rectangles.put(EnumRectangle.name, 		new Rectangle(0, 134, 180, 50));
 		rectangles.put(EnumRectangle.coins, 	new Rectangle(20, 185, 55, 50));
 		rectangles.put(EnumRectangle.score, 	new Rectangle(105, 185, 55, 50));
-		rectangles.put(EnumRectangle.message, 	new Rectangle(20, 430, 1200, 50));
-		rectangles.put(EnumRectangle.bet, 		new Rectangle(10, 330, 60, 50));
+		rectangles.put(EnumRectangle.message, 	new Rectangle(200, 430, 1100, 50));
+		rectangles.put(EnumRectangle.bet, 		new Rectangle(15, 360, 60, 50));
 		rectangles.put(EnumRectangle.pot, 		new Rectangle(60, 240, 60, 50));
-		rectangles.put(EnumRectangle.leftBox, 	new Rectangle(0, 0, 180, 670));
-		rectangles.put(EnumRectangle.up, 		new Rectangle(15, 297, 50, 50));
-		rectangles.put(EnumRectangle.down, 		new Rectangle(15, 363, 50, 50));
-		rectangles.put(EnumRectangle.ok, 		new Rectangle(100, 300, 50, 50));
-		rectangles.put(EnumRectangle.fold, 		new Rectangle(100, 365, 50, 50));
+		rectangles.put(EnumRectangle.leftBG, 	new Rectangle(0, 0, 180, 670));
+		rectangles.put(EnumRectangle.up, 		new Rectangle(20, 325, 50, 50));
+		rectangles.put(EnumRectangle.down, 		new Rectangle(20, 395, 50, 50));
+		rectangles.put(EnumRectangle.ok, 		new Rectangle(100, 320, 50, 50));
+		rectangles.put(EnumRectangle.okOuter, 	new Rectangle(100, 320, 70, 70));
+		rectangles.put(EnumRectangle.fold, 		new Rectangle(100, 400, 50, 50));
+		rectangles.put(EnumRectangle.foldOuter,	new Rectangle(100, 400, 70, 70));
 		rectangles.put(EnumRectangle.info, 		new Rectangle(1250, 15, 35, 35));
-		rectangles.put(EnumRectangle.leftPanel, new Rectangle(0, 0, 180, 430));
-		rectangles.put(EnumRectangle.bottom, 	new Rectangle(0, 430, 1300, 50));
+		rectangles.put(EnumRectangle.leftPanel, new Rectangle(0, 0, 180, 480));
+		rectangles.put(EnumRectangle.bottom, 	new Rectangle(180, 430, 1120, 50));
 		
 		rectangles.put(EnumRectangle.playerName, 	new Rectangle(115, 25));
 		rectangles.put(EnumRectangle.playerAction, 	new Rectangle(115, 25));
@@ -170,7 +172,7 @@ public enum GuiUtils {
 		return fonts.get(font);
 	}
 	
-	private Color getColor(EnumColor color) {
+	public Color getColor(EnumColor color) {
 		return colors.get(color);
 	}
 	

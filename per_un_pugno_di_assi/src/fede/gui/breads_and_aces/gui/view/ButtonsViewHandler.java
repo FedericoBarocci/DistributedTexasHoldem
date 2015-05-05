@@ -16,8 +16,8 @@ public class ButtonsViewHandler extends AbstractViewHandler<Void> {
 	
 	private ElementGUI up   = 	new ElementGUI( GuiUtils.INSTANCE.getImageGui("up.png"), 	GuiUtils.INSTANCE.getRectangle(EnumRectangle.up) 	);
 	private ElementGUI down = 	new ElementGUI( GuiUtils.INSTANCE.getImageGui("down.png"),	GuiUtils.INSTANCE.getRectangle(EnumRectangle.down) 	);
-	private ElementGUI ok   = 	new ElementGUI( GuiUtils.INSTANCE.getImageGui("ok.png"),	GuiUtils.INSTANCE.getRectangle(EnumRectangle.ok) 	);
-	private ElementGUI fold = 	new ElementGUI( GuiUtils.INSTANCE.getImageGui("fold.png"), 	GuiUtils.INSTANCE.getRectangle(EnumRectangle.fold) 	);
+	private ElementGUI ok   = 	new ElementGUI( GuiUtils.INSTANCE.getImageGui("ok.png"),	GuiUtils.INSTANCE.getRectangle(EnumRectangle.ok), GuiUtils.INSTANCE.getRectangle(EnumRectangle.okOuter)	);
+	private ElementGUI fold = 	new ElementGUI( GuiUtils.INSTANCE.getImageGui("fold.png"), 	GuiUtils.INSTANCE.getRectangle(EnumRectangle.fold), GuiUtils.INSTANCE.getRectangle(EnumRectangle.foldOuter) );
 	private ElementGUI info = 	new ElementGUI( GuiUtils.INSTANCE.getImageGui("info.png"),	GuiUtils.INSTANCE.getRectangle(EnumRectangle.info) 	);
 	
 	@Inject
@@ -28,6 +28,17 @@ public class ButtonsViewHandler extends AbstractViewHandler<Void> {
 
 	@Override
 	public void init(Void noArgs) {
+		ok.setText("CHECK");
+//		ok.setVerticalTextPosition(JLabel.BOTTOM);
+//		ok.setHorizontalTextPosition(JLabel.CENTER);
+//		ok.setForeground(GuiUtils.INSTANCE.getColor(EnumColor.black));
+		//ok.setSize(50, 70);
+		fold.setText("FOLD");
+//		fold.setVerticalTextPosition(JLabel.BOTTOM);
+//		fold.setHorizontalTextPosition(JLabel.CENTER);
+//		fold.setForeground(GuiUtils.INSTANCE.getColor(EnumColor.black));
+		//fold.setSize(50, 70);
+		
 		super.addElement(up);
 		super.addElement(down);
 		super.addElement(ok);

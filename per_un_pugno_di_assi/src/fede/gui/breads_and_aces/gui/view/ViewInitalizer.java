@@ -48,7 +48,7 @@ public class ViewInitalizer extends AbstractViewHandler<ViewInitializerInitArgs>
 	private void init(String clientPlayer, Integer coins) {
 		String title = "<html><p style='text-align:center; border-bottom:1px solid #000;padding-bottom:10px;'>Poker Distributed Hold'em</p></html>";
 
-		ImageGUI leftBox = new ImageGUI(new ImageIcon("elements" + File.separatorChar + "left.png"), GuiUtils.INSTANCE.getRectangle(EnumRectangle.leftBox));
+		ImageGUI leftBox = new ImageGUI(new ImageIcon("elements" + File.separatorChar + "left.png"), GuiUtils.INSTANCE.getRectangle(EnumRectangle.leftBG));
 		
 		JLabel lblTitle = new JLabel(title, SwingConstants.CENTER);
 		JPanel tablePanel = new TransparentPanelGUI();
