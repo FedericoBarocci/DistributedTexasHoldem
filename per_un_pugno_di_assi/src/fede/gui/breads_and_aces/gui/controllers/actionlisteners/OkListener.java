@@ -25,7 +25,7 @@ public class OkListener implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (distributedController.leader()) {
-			//TODO x Benny
+			//TODO x Benni
 			//Qui è tutto ok, cerca di far ritornare CHECK, RAISE o ALLIN da labelBet.getAction()
 			distributedController.setAction(labelBet.getAction());
 		}
