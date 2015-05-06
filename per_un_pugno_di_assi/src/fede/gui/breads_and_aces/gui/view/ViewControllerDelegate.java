@@ -42,11 +42,11 @@ public class ViewControllerDelegate {
 		this.goal = goal;
 		
 		refresh(players, myName);
-		ViewInitializerInitArgs viewInitializerInitArgs = new ViewInitializerInitArgs(myName, initialCoins);
+		ViewInitializerInitArgs viewInitializerInitArgs = new ViewInitializerInitArgs(myName, initialCoins, goal);
 		
 		buttonsViewHandler.init(null);
 		viewInitializer.init(viewInitializerInitArgs);
-		viewInitializer.printMessage("Let's start the game! Your goal is "+goal+" starting with "+initialCoins);
+		viewInitializer.printMessage("Let's start the game!");
 	}
 
 	public void setRefresh() {
