@@ -1,6 +1,6 @@
 package breads_and_aces.game.model.oracle.actions;
 
-import breads_and_aces.game.model.oracle.GameStates;
+import breads_and_aces.game.model.state.ActionsLogic;
 
 public enum ActionValue implements Action {
 	RAISE {
@@ -14,8 +14,8 @@ public enum ActionValue implements Action {
 			return value;
 		}
 		
-		public GameStates getGameState() {
-			return GameStates.RAISE;
+		public ActionsLogic getGameState() {
+			return ActionsLogic.RAISE;
 		}
 		
 		public String toString() {
@@ -33,8 +33,8 @@ public enum ActionValue implements Action {
 			return value;
 		}
 
-		public GameStates getGameState() {
-			return GameStates.CALL;
+		public ActionsLogic getGameState() {
+			return ActionsLogic.CALL;
 		}
 		
 		public String toString() {

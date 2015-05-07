@@ -1,13 +1,13 @@
-package breads_and_aces.game.model.oracle;
+package breads_and_aces.game.model.state;
 
 import java.util.Arrays;
 import java.util.List;
 
 import breads_and_aces.game.model.oracle.actions.Action;
 
-public enum GameStates {
+public enum ActionsLogic {
 	NULL {
-		public GameStates nextState(Action action) {
+		public ActionsLogic nextState(Action action) {
 			/*switch(action) {
 				case ActionSimple.ALLIN: 	return ALLIN;
 				case ActionSimple.CHECK:  	return CHECK;
@@ -17,12 +17,12 @@ public enum GameStates {
 			return action.getGameState();
 		}
 		
-		public List<GameStates> getEdges() {
+		public List<ActionsLogic> getEdges() {
 			return Arrays.asList(ALLIN, CHECK, RAISE);
 		}
 	},
 	CHECK {
-		public GameStates nextState(Action action) {
+		public ActionsLogic nextState(Action action) {
 			/*switch(action) {
 				case ALLIN: 	return ALLIN;
 				case RAISE: 	return RAISE;
@@ -31,12 +31,12 @@ public enum GameStates {
 			return action.getGameState();
 		}
 		
-		public List<GameStates> getEdges() {
+		public List<ActionsLogic> getEdges() {
 			return Arrays.asList(ALLIN, CHECK, RAISE);
 		}
 	},
 	RAISE {
-		public GameStates nextState(Action action) {
+		public ActionsLogic nextState(Action action) {
 			/*switch(action) {
 				case ALLIN: 	return ALLIN;
 				case CALL:  	return CALL;
@@ -45,12 +45,12 @@ public enum GameStates {
 			return action.getGameState();
 		}
 		
-		public List<GameStates> getEdges() {
+		public List<ActionsLogic> getEdges() {
 			return Arrays.asList(ALLIN, RAISE, CALL);
 		}
 	},
 	CALL {
-		public GameStates nextState(Action action) {
+		public ActionsLogic nextState(Action action) {
 			/*switch(action) {
 				case ALLIN: 	return ALLIN;
 				case RAISE: 	return RAISE;
@@ -59,20 +59,20 @@ public enum GameStates {
 			return action.getGameState();
 		}
 		
-		public List<GameStates> getEdges() {
+		public List<ActionsLogic> getEdges() {
 			return Arrays.asList(ALLIN, RAISE, CALL);
 		}
 	},
 	ALLIN {
-		public GameStates nextState(Action action) {
+		public ActionsLogic nextState(Action action) {
 			return ALLIN;
 		}
 		
-		public List<GameStates> getEdges() {
+		public List<ActionsLogic> getEdges() {
 			return Arrays.asList(ALLIN);
 		}
 	};
 	
-	abstract GameStates nextState(Action action);
-	abstract List<GameStates> getEdges();
+	abstract ActionsLogic nextState(Action action);
+	abstract List<ActionsLogic> getEdges();
 }

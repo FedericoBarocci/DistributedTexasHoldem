@@ -10,6 +10,7 @@ import breads_and_aces._di.providers.registration.initializers.servable.Registra
 import breads_and_aces._di.providers.registration.initializers.servable._gui.RegistrationInitializerServableProviderGUI;
 import breads_and_aces.game.GameInitializer;
 import breads_and_aces.game.GameInitializerReal;
+import breads_and_aces.game.model.oracle.responses.OracleResponseFactory;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.players.keeper.PlayersKeeperImpl;
 import breads_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
@@ -93,6 +94,8 @@ LimeWireInjectModule {
 //		install(new FactoryModuleBuilder().build(RegistrationInitializerClientableShellFactory.class));
 		
 		install(new FactoryModuleBuilder().build(PlayerGUIHandlerFactory.class));
+		
+		install(new FactoryModuleBuilder().build(OracleResponseFactory.class));
 	}
 
 }

@@ -1,12 +1,12 @@
 package breads_and_aces.game.model.oracle.actions;
 
-import breads_and_aces.game.model.oracle.GameStates;
+import breads_and_aces.game.model.state.ActionsLogic;
 
 
 public enum ActionSimple implements Action {
 	NONE {
-		public GameStates getGameState() {
-			return GameStates.NULL;
+		public ActionsLogic getGameState() {
+			return ActionsLogic.NULL;
 		}
 		
 		public String toString() {
@@ -14,8 +14,8 @@ public enum ActionSimple implements Action {
 		}
 	},
 	CHECK {
-		public GameStates getGameState() {
-			return GameStates.CHECK;
+		public ActionsLogic getGameState() {
+			return ActionsLogic.CHECK;
 		}
 		
 		public String toString() {
@@ -23,8 +23,8 @@ public enum ActionSimple implements Action {
 		}
 	},
 	FOLD {
-		public GameStates getGameState() {
-			return GameStates.NULL;
+		public ActionsLogic getGameState() {
+			return ActionsLogic.NULL;
 		}
 		
 		public String toString() {
@@ -32,8 +32,8 @@ public enum ActionSimple implements Action {
 		}
 	},
 	ALLIN {
-		public GameStates getGameState() {
-			return GameStates.ALLIN;
+		public ActionsLogic getGameState() {
+			return ActionsLogic.ALLIN;
 		}
 		
 		public String toString() {

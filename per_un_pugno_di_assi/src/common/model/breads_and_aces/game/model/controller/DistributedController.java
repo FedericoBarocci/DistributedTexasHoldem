@@ -1,16 +1,13 @@
 package breads_and_aces.game.model.controller;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import breads_and_aces.game.model.oracle.GameOracle;
-import breads_and_aces.game.model.oracle.GameStates;
-import breads_and_aces.game.model.oracle.OracleResponses;
 import breads_and_aces.game.model.oracle.actions.Action;
+import breads_and_aces.game.model.oracle.responses.OracleResponse;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
-import breads_and_aces.game.model.players.player.Player;
+import breads_and_aces.game.model.state.GameState;
 import breads_and_aces.game.updater.GameUpdater;
 import breads_and_aces.gui.controllers.exceptions.SinglePlayerException;
 import breads_and_aces.gui.view.ViewControllerDelegate;
@@ -21,13 +18,17 @@ public class DistributedController {
 
 	private final ViewControllerDelegate viewControllerDelegate;
 	private final GameOracle gameOracle;
+	private final GameState gameState;
 	private final GamePlayersKeeper gamePlayersKeeper;
 	private final Communicator communicator;
 
 	@Inject
-	public DistributedController(ViewControllerDelegate viewControllerDelegate, GameOracle gameOracle, GamePlayersKeeper gamePlayersKeeper, Communicator communicator) {
+	public DistributedController(ViewControllerDelegate viewControllerDelegate,
+			GameOracle gameOracle, GameState gameState,
+			GamePlayersKeeper gamePlayersKeeper, Communicator communicator) {
 		this.viewControllerDelegate = viewControllerDelegate;
 		this.gameOracle = gameOracle;
+		this.gameState = gameState;
 		this.gamePlayersKeeper = gamePlayersKeeper;
 		this.communicator = communicator;
 	}
@@ -46,19 +47,7 @@ public class DistributedController {
 	}
 
 	public void setAction(Action action) {
-		setActionAndUpdate(gamePlayersKeeper.getMyName(), action).exec(communicator, gamePlayersKeeper, action).ifPresent(c->gameOracle.update(c));
-		
-		//distributedController.update(gameUpdater);
-		
-		
-		/*if(communication.equals(Communication.DEAL)) {
-			communicationService.makeGameUpdater(gamePlayersKeeper.getPlayers());
-			communicationService.exec(communication, action);
-			gameOracle.update(communicationService.getGameUpdater());
-		}
-		else {
-			communicationService.exec(communication, action);
-		}*/
+		setActionAndUpdate(gamePlayersKeeper.getMyName(), action).exec(communicator, gamePlayersKeeper, action).ifPresent(c -> gameOracle.update(c));
 	}
 	
 	public void setAction(String fromPlayer, Action action) {
@@ -90,46 +79,13 @@ public class DistributedController {
 		gamePlayersKeeper.getPlayer(successor).receiveToken(fromPlayer);
 		viewControllerDelegate.setViewToken(successor);
 		
-		gameOracle.nextGameState(action);
+		gameState.nextGameState(action);
 		
-		OracleResponses response = gameOracle.ask();
+		OracleResponse response = gameOracle.ask();
 		
 		System.out.println("Oracle tell: " + response);
 		
-		switch (response) {
-		case OK:
-			return Communication.ACTION;
-
-		case NEXT_STEP:
-			viewControllerDelegate.addTableCards(gamePlayersKeeper.getActivePlayers());
-			return Communication.ACTION;
-
-		case WINNER:
-			viewControllerDelegate.setRefresh();
-			return winnerEvent();
-
-		case END_GAME:
-			viewControllerDelegate.endGame(fromPlayer);
-			return Communication.END;
-		}
-		
-		/* Should never be here */
-		return Communication.ACTION;
-	}
-
-	private Communication winnerEvent() {
-		List<Player> winners = gameOracle.getWinner();
-		
-		viewControllerDelegate.showDown(winners);
-		
-		for (Player p : winners) {
-			p.setScore(p.getScore() + 50);
-//			System.out.println("VINCE " + p.getName() + " con " + p.getRanking().toString());
-		}
-		
-		gameOracle.setGameState(GameStates.NULL);
-		
-		return Communication.DEAL;
+		return response.exec();
 	}
 
 	public boolean leader() {

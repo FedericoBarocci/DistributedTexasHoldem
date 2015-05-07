@@ -8,9 +8,10 @@ import javax.inject.Singleton;
 
 import breads_and_aces.game.core.Card;
 import breads_and_aces.game.exceptions.DrawException;
-import breads_and_aces.game.model.oracle.actions.Action;
 import breads_and_aces.game.model.oracle.actions.ActionSimple;
 import breads_and_aces.game.model.oracle.actions.ActionValue;
+import breads_and_aces.game.model.oracle.responses.OracleResponse;
+import breads_and_aces.game.model.oracle.responses.OracleResponseFactory;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.game.model.table.Table;
@@ -25,33 +26,13 @@ public class GameOracle {
 	
 	private final GamePlayersKeeper gamePlayersKeeper;
 	private final Table table;
+	private final OracleResponseFactory oracleResponseFactory;
 
-	private GameStates actionlogic = GameStates.NULL;
-	
 	@Inject
-	public GameOracle(Table table, GamePlayersKeeper gamePlayersKeeper) {
+	public GameOracle(Table table, GamePlayersKeeper gamePlayersKeeper, OracleResponseFactory oracleResponseFactory) {
 		this.table = table;
 		this.gamePlayersKeeper = gamePlayersKeeper;
-	}
-	
-	/*for recovery*/
-	public void setGameState(GameStates actionlogic) {
-		this.actionlogic = actionlogic;
-	}
-	
-	/*for recovery*/
-	public GameStates getGameState() {
-		return actionlogic;
-	}
-	
-	/*for recovery*/
-	public void nextGameState(Action m) {
-		actionlogic = actionlogic.nextState(m);
-	}
-	
-	/* for gui: possible user input */
-	public List<GameStates> getLegalActions() {
-		return actionlogic.getEdges();
+		this.oracleResponseFactory = oracleResponseFactory;
 	}
 	
 	public Player getSuccessor(String playerId) throws SinglePlayerException {
@@ -76,21 +57,21 @@ public class GameOracle {
 		return next;
 	}
 	
-	public OracleResponses ask() {
+	public OracleResponse ask() {
 		List<Player> players = gamePlayersKeeper.getPlayers();
 
 		if (conditionAllIn(players) || conditionSinglePlayer(players)) {
 			System.out.println("Oracle think allin for all players or single player. WINNER.");
 			table.setState(TableState.WINNER);
 			
-			return OracleResponses.WINNER;
+			return oracleResponseFactory.createOracleResponseWinner(getWinner());
 		}
 		
 		System.out.println("Oracle think no immediate player win.");
 		
 		if (conditionPlayersHaveToSpeek(players)) {
 			System.out.println("Oracle think players have to speak. OK.");
-			return OracleResponses.OK;
+			return oracleResponseFactory.createOracleResponseOk();
 		}
 		
 		System.out.println("Oracle think all players speaked.");
@@ -104,18 +85,18 @@ public class GameOracle {
 				System.out.println(" -> Oracle think this is last step. WINNER.");
 				gamePlayersKeeper.resetActions(true);
 				
-				return OracleResponses.WINNER;
+				return oracleResponseFactory.createOracleResponseWinner(getWinner());
 			}
 			
 			System.out.println(" -> Oracle think next step. NEXT_STEP.");
 			gamePlayersKeeper.resetActions(false);
 			
-			return OracleResponses.NEXT_STEP;
+			return oracleResponseFactory.createOracleResponseNextStep(gamePlayersKeeper.getActivePlayers());
 		}
 		
 		System.out.println("__Oracle think no changes required. OK.");
 		
-		return OracleResponses.OK;
+		return oracleResponseFactory.createOracleResponseOk();
 	}
 
 	public void update(GameUpdater gameUpdater) {
@@ -129,7 +110,7 @@ public class GameOracle {
 		}
 	}
 	
-	public List<Player> getWinner() {
+	private List<Player> getWinner() {
 		List<Player> players = gamePlayersKeeper.getPlayers();
 		List<Player> winnerList = new ArrayList<Player>();
 		
