@@ -2,6 +2,7 @@ package breads_and_aces.registration.initializers.servable;
 
 import java.rmi.RemoteException;
 
+import bread_and_aces.utils.DevPrinter;
 import breads_and_aces._di.providers.registration.initializers.servable.registrar.GameRegistrarProvider;
 import breads_and_aces.game.Game;
 import breads_and_aces.game.core.Deck;
@@ -78,19 +79,41 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		Dealer.deal(table, gameRegistrarProvider.get().getRegisteredPlayers().values(), new Deck() );
 	}
 	protected void updateAllNodesForPartecipants() {
+		
+//		communicator.toAll(myId, (gameService)->{
+//			try {
+//				updatePartecipantsOnClientFunction(gameService);
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		});
+		
+//		try {
+		new DevPrinter(new Throwable()).println();
 		communicator.toAll(myId, this::updatePartecipantsOnClientFunction);
+//		} catch (RemoteException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 	
-	private void updatePartecipantsOnClientFunction(GameService clientGameServiceExternalInjected) throws RemoteException {
+	private void updatePartecipantsOnClientFunction(GameService clientGameServiceExternalInjected)/* throws RemoteException */{
 		GameRegistrar gameRegistrar = gameRegistrarProvider.get();
 		PlayersSynchronizar ps = ((PlayersSynchronizar) clientGameServiceExternalInjected);
-		ps.synchronizeAllNodesAndPlayersFromInitiliazer(
-			gameRegistrar.getRegisteredNodesConnectionInfos(),
-			gameRegistrar.getRegisteredPlayers(),
-			table.getAllCards(),
-			game.getCoins(),
-			game.getGoal()
-		);
+		try {
+			ps.synchronizeAllNodesAndPlayersFromInitiliazer(
+				gameRegistrar.getRegisteredNodesConnectionInfos(),
+				gameRegistrar.getRegisteredPlayers(),
+				table.getAllCards(),
+				game.getCoins(),
+				game.getGoal()
+			);
+		} catch (RemoteException e) {
+			new DevPrinter(new Throwable()).println("");
+			// TODO Auto-generated catch block
+//			e.printStackTrace();
+		}
 	}
 	
 	private void startGame() {
@@ -99,7 +122,12 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 //		passBucket();
 		printer.println("Inizio io perché comando io!");
 		registrarPlayersKeeper.getMyPlayer().receiveToken();
+		new DevPrinter(new Throwable()).println("just before to sayToAllStartGame");
 		communicator.toAll(myId, this::sayToAllStartGame);
+		
+//		communicator.toAll(myId, (gameService) ->{
+//				sayToAllStartGame(gameService);
+//		});
 	}
 	
 	/*private void passBucket() {
@@ -113,7 +141,13 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		System.out.println("Ho passato bucket");
 	}*/
 	
-	private void sayToAllStartGame(GameService gameServiceExternalInjected) throws RemoteException {
-		((GameServiceClientable) gameServiceExternalInjected).receiveStartGame(myId);
+	private void sayToAllStartGame(GameService gameServiceExternalInjected) /*throws RemoteException*/ {
+		try {
+			((GameServiceClientable) gameServiceExternalInjected).receiveStartGame(myId);
+		} catch (RemoteException e) {
+			System.out.println("sayToAllStartGame exception");
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}
 	}
 }

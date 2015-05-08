@@ -120,4 +120,8 @@ public class ViewControllerDelegate {
 			this.initialCoins = initialCoins;
 		}
 	}
+
+	public void remove(String playerId) {
+		playersView.removeElement(playerId);
+	}
 }

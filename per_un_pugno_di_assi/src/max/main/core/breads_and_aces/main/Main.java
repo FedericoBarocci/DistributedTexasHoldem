@@ -89,6 +89,7 @@ public class Main {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (Exception e1) {
+			e1.printStackTrace();
 			if (e1.getCause()!=null) { 
 				e1.printStackTrace();
 			} else {

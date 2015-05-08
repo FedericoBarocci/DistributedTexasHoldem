@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Collection;
 
+import bread_and_aces.utils.DevPrinter;
 import breads_and_aces.game.model.controller.DistributedController;
 import breads_and_aces.game.model.oracle.actions.Action;
 import breads_and_aces.game.updater.GameUpdater;
@@ -40,18 +41,18 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 	}
 
 	@Override
-	public void receiveAction(String fromPlayer, Action action) {
-		distributedController.setAction(fromPlayer, action);
+	public void receiveAction(String fromPlayer, Action action)/* throws RemoteException*/ {
+		distributedController.setActionOnReceive(fromPlayer, action);
 	}
 
 	@Override
-	public void receiveActionAndDeal(String fromPlayer, Action action, GameUpdater gameUpdater) {
-		distributedController.setAction(fromPlayer, action, gameUpdater);
+	public void receiveActionAndDeal(String fromPlayer, Action action, GameUpdater gameUpdater) throws RemoteException {
+		distributedController.setActionOnReceive(fromPlayer, action, gameUpdater);
 	}
 
 	@Override
-	public void receiveWinnerEndGame(String fromPlayer, Action action) {
-		distributedController.setAction(fromPlayer, action);
+	public void receiveWinnerEndGame(String fromPlayer, Action action) throws RemoteException {
+		distributedController.setActionOnReceive(fromPlayer, action);
 	}
 
 	/*
@@ -70,10 +71,17 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 	 */
 	
 	@Override
-	public void removePlayersAndService(Collection<String> crashedPeers) throws RemoteException {
-		//	TODO distributedController.RIMUOVI_PLAYERS
+	public void removeService(Collection<String> crashedPeers) throws RemoteException {
+		new DevPrinter(new Throwable()).println("");
 		crashedPeers.forEach(c->{
 			crashHandler.handleCrashLocallyRemovingFromLocalGameServiceKeeper(c);
+			distributedController.removePlayer(c);
 		});
+	}
+	@Override
+	public void removeService(String crashedPeer) throws RemoteException {
+		new DevPrinter(new Throwable()).println("");
+		crashHandler.handleCrashLocallyRemovingFromLocalGameServiceKeeper(crashedPeer);
+		distributedController.removePlayer(crashedPeer);
 	}
 }

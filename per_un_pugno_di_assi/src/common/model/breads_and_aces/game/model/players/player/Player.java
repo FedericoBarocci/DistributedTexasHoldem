@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
+import bread_and_aces.utils.DevPrinter;
 import breads_and_aces.game.core.Card;
 import breads_and_aces.game.core.PositiveInteger;
 import breads_and_aces.game.core.Ranking;
@@ -14,8 +13,6 @@ import breads_and_aces.game.exceptions.MaxReachedException;
 import breads_and_aces.game.model.oracle.actions.Action;
 import breads_and_aces.game.model.oracle.actions.ActionSimple;
 import breads_and_aces.game.model.utils.Pair;
-import breads_and_aces.main.Main;
-import breads_and_aces.utils.printer.Printer;
 
 public class Player implements Serializable, Comparable<Player> {
 
@@ -33,13 +30,13 @@ public class Player implements Serializable, Comparable<Player> {
 	
 	private boolean hasToken;
 	
-	@Inject private Printer printer;
+//	@Inject private Printer printer;
 
 	public Player(String name, long registrationTime/*, Printer printer*/) {
 		this.name = name;
 		this.registrationTime = registrationTime;
-		if (Main.Injector!=null)
-			Main.Injector.injectMembers(this);
+//		if (Main.Injector!=null)
+//			Main.Injector.injectMembers(this);
 	}
 	
 	public String getName() {
@@ -219,7 +216,9 @@ public class Player implements Serializable, Comparable<Player> {
 			printer.print(msg);
 	}*/
 	private void println(String msg) {
-		if (printer!=null)
-			printer.println(msg);
+//		if (printer!=null)
+//			printer.println(msg);
+		
+		new DevPrinter(new Throwable()).println(msg);
 	}
 }

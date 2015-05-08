@@ -138,4 +138,9 @@ public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerIn
 			this.goal = goal;
 		}
 	}
+
+	public void removeElement(String playerId) {
+		playersGui.get(playerId).clearFromGui();
+		playersGui.remove(playerId);
+	}
 }

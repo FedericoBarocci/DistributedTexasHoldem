@@ -3,8 +3,11 @@ package breads_and_aces.game.model.controller;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import bread_and_aces.utils.DevPrinter;
+import breads_and_aces.game.model.controller.Communication.GameHolder;
 import breads_and_aces.game.model.oracle.GameOracle;
 import breads_and_aces.game.model.oracle.actions.Action;
+import breads_and_aces.game.model.oracle.actions.ActionSimple;
 import breads_and_aces.game.model.oracle.responses.OracleResponse;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.state.GameState;
@@ -46,15 +49,26 @@ public class DistributedController {
 		System.out.println("Game can start!");
 	}
 
-	public void setAction(Action action) {
-		setActionAndUpdate(gamePlayersKeeper.getMyName(), action).exec(communicator, gamePlayersKeeper, action).ifPresent(c -> gameOracle.update(c));
+	public void setActionOnSend(Action action) {
+		GameHolder gh = setActionAndUpdate(gamePlayersKeeper.getMyName(), action).exec(communicator, gamePlayersKeeper, action);
+		gh.getCrashedOptional().ifPresent(c->{
+			Communication communication = removePlayer(c);
+			nestedSetActionOnSend(communication, action);
+		});
+		
+		gh.getGameupdaterOptional().ifPresent(c->{gameOracle.update(c);});
+//			gameOracle.update(c)	
 	}
 	
-	public void setAction(String fromPlayer, Action action) {
+	private void nestedSetActionOnSend(Communication communication, Action action) {
+		communication.exec(communicator, gamePlayersKeeper, action);
+	}
+	
+	public void setActionOnReceive(String fromPlayer, Action action) {
 		setActionAndUpdate(fromPlayer, action);
 	}
 
-	public void setAction(String fromPlayer, Action action, GameUpdater gameUpdater) {
+	public void setActionOnReceive(String fromPlayer, Action action, GameUpdater gameUpdater) {
 		setActionAndUpdate(fromPlayer, action);
 		gameOracle.update(gameUpdater);
 	}
@@ -96,5 +110,14 @@ public class DistributedController {
 		}
 		
 		return gamePlayersKeeper.getMyPlayer().hasToken();
+	}
+
+	public Communication removePlayer(String playerId) {
+		new DevPrinter(new Throwable()).println("HO RICEVUTO UNA NOTIFICA DI CRASH PER " + playerId);
+		Communication communication = setActionAndUpdate(playerId, ActionSimple.FOLD);
+		gamePlayersKeeper.remove(playerId);
+		viewControllerDelegate.remove(playerId);
+		
+		return communication;
 	}
 }
