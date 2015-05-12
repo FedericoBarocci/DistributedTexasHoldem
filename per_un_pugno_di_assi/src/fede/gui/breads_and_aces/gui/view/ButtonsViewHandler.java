@@ -91,6 +91,10 @@ public class ButtonsViewHandler extends AbstractViewHandler<Void> {
 		super.repaint();
 	}
 	
+	public void updateText(String action) {
+		ok.setText(action);
+	}
+	
 	public ElementGUI getUp() 	{return up;}
 	public ElementGUI getDown() {return down;}
 	public ElementGUI getOk() 	{return ok;}

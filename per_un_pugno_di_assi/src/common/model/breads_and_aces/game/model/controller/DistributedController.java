@@ -4,10 +4,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import bread_and_aces.utils.DevPrinter;
+import breads_and_aces.game.core.PotManager;
 import breads_and_aces.game.model.controller.Communication.GameHolder;
 import breads_and_aces.game.model.oracle.GameOracle;
 import breads_and_aces.game.model.oracle.actions.Action;
 import breads_and_aces.game.model.oracle.actions.ActionSimple;
+import breads_and_aces.game.model.oracle.actions.ActionValue;
 import breads_and_aces.game.model.oracle.responses.OracleResponse;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.state.GameState;
@@ -24,16 +26,18 @@ public class DistributedController {
 	private final GameState gameState;
 	private final GamePlayersKeeper gamePlayersKeeper;
 	private final Communicator communicator;
+	private final PotManager potManager;
 
 	@Inject
 	public DistributedController(ViewControllerDelegate viewControllerDelegate,
 			GameOracle gameOracle, GameState gameState,
-			GamePlayersKeeper gamePlayersKeeper, Communicator communicator) {
+			GamePlayersKeeper gamePlayersKeeper, Communicator communicator, PotManager potManager) {
 		this.viewControllerDelegate = viewControllerDelegate;
 		this.gameOracle = gameOracle;
 		this.gameState = gameState;
 		this.gamePlayersKeeper = gamePlayersKeeper;
 		this.communicator = communicator;
+		this.potManager = potManager;
 	}
 
 	public void handleToken() {
@@ -93,6 +97,10 @@ public class DistributedController {
 		gamePlayersKeeper.getPlayer(successor).receiveToken(fromPlayer);
 		viewControllerDelegate.setViewToken(successor);
 		
+		if(action == ActionValue.CALL) 
+			potManager.setCurrentPot(ActionValue.CALL.getValue());
+		if(action == ActionValue.RAISE)
+			potManager.setCurrentPot(ActionValue.RAISE.getValue());
 		gameState.nextGameState(action);
 		
 		OracleResponse response = gameOracle.ask();

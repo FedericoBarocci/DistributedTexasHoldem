@@ -17,8 +17,9 @@ public class PositiveInteger implements Serializable {
 		this.positiveInteger = Math.abs(integer);
 	}
 
-	public PositiveInteger(int integer, int max) {
+	public PositiveInteger(int integer, int min, int max) {
 		this(integer);
+		this.min = min;
 		this.max = max;
 	}
 
