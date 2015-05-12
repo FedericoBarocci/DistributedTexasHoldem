@@ -42,13 +42,15 @@ public class LabelBet extends JLabel {
 		if ((value == potManager.getCurrentPot()) && value == 0)
 			result = ActionSimple.CHECK;
 
-		if ((value == potManager.getCurrentPot()) && value != 0) {
-			ActionValue.CALL.setValue(value);
+		if ((value == potManager.getCurrentPot()) && (value != 0) && (value != potManager.getMax())) {
+		//	ActionValue.CALL.setValue(value);
 			result = ActionValue.CALL;
+			result.setValue(value);
 		}
 		if ((value > potManager.getCurrentPot()) && (value < potManager.getMax())) {
-			ActionValue.RAISE.setValue(value);
+	//		ActionValue.RAISE.setValue(value);
 			result = ActionValue.RAISE;
+			result.setValue(value);
 		}
 		if (value == potManager.getMax())
 			result = ActionSimple.ALLIN;

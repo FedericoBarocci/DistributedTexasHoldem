@@ -98,9 +98,11 @@ public class DistributedController {
 		viewControllerDelegate.setViewToken(successor);
 		
 		if(action == ActionValue.CALL) 
-			potManager.setCurrentPot(ActionValue.CALL.getValue());
+			potManager.setCurrentPot(action.getValue());
+			//potManager.setCurrentPot(ActionValue.CALL.getValue());
 		if(action == ActionValue.RAISE)
-			potManager.setCurrentPot(ActionValue.RAISE.getValue());
+			potManager.setCurrentPot(action.getValue());
+			//potManager.setCurrentPot(ActionValue.RAISE.getValue());
 		gameState.nextGameState(action);
 		
 		OracleResponse response = gameOracle.ask();

@@ -42,6 +42,5 @@ public enum ActionValue implements Action {
 		}
 	};
 	
-	abstract public void setValue(int value);
-	abstract public int getValue();
+
 }
