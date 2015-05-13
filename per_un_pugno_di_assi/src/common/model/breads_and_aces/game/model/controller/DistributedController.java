@@ -90,6 +90,13 @@ public class DistributedController {
 			return Communication.END;
 		}
 		
+		if(action == ActionValue.CALL) 
+			potManager.setCurrentPot(action.getValue());
+			//potManager.setCurrentPot(ActionValue.CALL.getValue());
+		if(action == ActionValue.RAISE)
+			potManager.setCurrentPot(action.getValue());
+			//potManager.setCurrentPot(ActionValue.RAISE.getValue());
+		
 		gamePlayersKeeper.getPlayer(fromPlayer).setAction(action);
 		viewControllerDelegate.setPlayerAction(fromPlayer, action);
 		
@@ -97,12 +104,7 @@ public class DistributedController {
 		gamePlayersKeeper.getPlayer(successor).receiveToken(fromPlayer);
 		viewControllerDelegate.setViewToken(successor);
 		
-		if(action == ActionValue.CALL) 
-			potManager.setCurrentPot(action.getValue());
-			//potManager.setCurrentPot(ActionValue.CALL.getValue());
-		if(action == ActionValue.RAISE)
-			potManager.setCurrentPot(action.getValue());
-			//potManager.setCurrentPot(ActionValue.RAISE.getValue());
+
 		gameState.nextGameState(action);
 		
 		OracleResponse response = gameOracle.ask();
