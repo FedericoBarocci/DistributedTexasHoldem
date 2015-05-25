@@ -51,23 +51,33 @@ public class PotManager {
 	public Action getAction(int value) {
 		Action result = ActionSimple.CHECK;
 
+		// come avvertire il giocatore che deve puntare almeno quanto currentBet...?
+		
+		if (value < currentBet) 
+			result = ActionSimple.NONE;
+		
 		if ((value == currentBet) && (currentBet == 0))
 			result = ActionSimple.CHECK;
 		
 		else {
 			result.setValue(value);
-			currentPot = currentPot + value;
+			// va veramente aggiornato in questo modo..?
+			currentPot = currentPot + value; // <<---------
 			
-			if ((value == currentBet) && (currentBet > 0))
+			if ((value == currentBet) && (currentBet > 0) && (currentBet < game.getCoins()))
 				result = ActionValue.CALL;
 
-			if (value > currentBet) {
+			if ((value > currentBet) && (currentBet < game.getCoins())) {
 				result = ActionValue.RAISE;
-				currentBet = value;
+				// va veramente aggiornato in questo modo.. ?
+				currentBet = value;  // <<--------
 			}
 
-			if (value == game.getCoins())
+			if ((value == game.getCoins())) {
+				// va veramente aggiornato in questo modo.. ?
+				currentBet = value; // <<---------
 				result = ActionSimple.ALLIN;
+			}
 		}
 		
 		return result;
