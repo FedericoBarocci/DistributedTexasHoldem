@@ -37,6 +37,10 @@ public class LabelBet extends JLabel {
 
 	public Action getAction() {
 
+		return potManager.getAction(value);
+		
+		
+		/*
 		Action result = null;
 		
 		if ((value == potManager.getCurrentPot()) && value == 0)
@@ -55,7 +59,7 @@ public class LabelBet extends JLabel {
 		if (value == potManager.getMax())
 			result = ActionSimple.ALLIN;
 
-		return result;
+		return result; */
 
 	}
 }
