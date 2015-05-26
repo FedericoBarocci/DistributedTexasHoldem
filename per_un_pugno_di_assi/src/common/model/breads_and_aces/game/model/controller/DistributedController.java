@@ -90,12 +90,19 @@ public class DistributedController {
 			return Communication.END;
 		}
 		
+		//aggiornamento di PotManager nel caso di puntata
 		if(action == ActionValue.CALL) 
 			potManager.setCurrentPot(action.getValue());
 			//potManager.setCurrentPot(ActionValue.CALL.getValue());
-		if(action == ActionValue.RAISE)
+		if(action == ActionValue.RAISE) {
 			potManager.setCurrentPot(action.getValue());
+			potManager.setCurrentBet(action.getValue());
 			//potManager.setCurrentPot(ActionValue.RAISE.getValue());
+		}
+		if(action == ActionSimple.ALLIN) {
+			potManager.setCurrentPot(action.getValue());
+			potManager.setCurrentBet(action.getValue());
+		}
 		
 		gamePlayersKeeper.getPlayer(fromPlayer).setAction(action);
 		viewControllerDelegate.setPlayerAction(fromPlayer, action);

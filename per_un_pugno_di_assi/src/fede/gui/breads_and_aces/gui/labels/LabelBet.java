@@ -37,8 +37,7 @@ public class LabelBet extends JLabel {
 
 	public Action getAction() {
 
-		return potManager.getAction(value);
-		
+		return potManager.getAction(value);	
 		
 		/*
 		Action result = null;

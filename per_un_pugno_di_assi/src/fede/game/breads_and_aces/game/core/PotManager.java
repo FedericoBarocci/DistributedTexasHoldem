@@ -31,10 +31,14 @@ public class PotManager {
 		return this.currentPot;
 	}
 
-	public void setCurrentPot(int pot) {
-		this.currentPot = pot;
+	// tipicamente usato per resettare il valore di currentPot
+	public void resetCurrentPot() {
+		this.currentPot = 0;
 	}
 
+	public void setCurrentPot(int pot) {
+		this.currentPot = currentPot + pot;
+	}
 	// la puntata per vedere la fase successiva della mano (turn, river, flop)
 	public int getCurrentBet() {
 		return this.currentBet;
@@ -59,25 +63,17 @@ public class PotManager {
 		if ((value == currentBet) && (currentBet == 0))
 			result = ActionSimple.CHECK;
 		
-		else {
+		if (value > 0) {
 			result.setValue(value);
-			// va veramente aggiornato in questo modo..?
-			currentPot = currentPot + value; // <<---------
-			
-			if ((value == currentBet) && (currentBet > 0) && (currentBet < game.getCoins()))
+
+			if ((value == currentBet)  && (currentBet < game.getCoins()))
 				result = ActionValue.CALL;
 
-			if ((value > currentBet) && (currentBet < game.getCoins())) {
+			if ((value > currentBet) && (currentBet < game.getCoins())) 
 				result = ActionValue.RAISE;
-				// va veramente aggiornato in questo modo.. ?
-				currentBet = value;  // <<--------
-			}
-
-			if ((value == game.getCoins())) {
-				// va veramente aggiornato in questo modo.. ?
-				currentBet = value; // <<---------
+			
+			if ((value == game.getCoins())) 
 				result = ActionSimple.ALLIN;
-			}
 		}
 		
 		return result;

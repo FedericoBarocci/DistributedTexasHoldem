@@ -62,7 +62,8 @@ public class BetListener implements MouseListener {
 	
 			lblBet.setValue(value);
 			lblCoins.setText("" + (game.getCoins() - value));
-			//buttonsView.updateText(potManager.getAction(value).toString());
+			
+			buttonsView.updateText(potManager.getAction(value).toString());
 		
 		}
 	}
