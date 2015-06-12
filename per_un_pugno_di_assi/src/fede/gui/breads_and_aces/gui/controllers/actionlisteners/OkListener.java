@@ -5,30 +5,29 @@ import java.awt.event.MouseListener;
 
 import javax.inject.Inject;
 
+import breads_and_aces.game.core.BetManager;
 import breads_and_aces.game.model.controller.DistributedController;
-import breads_and_aces.game.model.oracle.actions.*;
-import breads_and_aces.gui.labels.LabelBet;
 import breads_and_aces.gui.view.elements.ElementGUI;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
 public class OkListener implements MouseListener {
 
 	private final DistributedController distributedController;
-	private final LabelBet labelBet;
+	private final BetManager betManager;
+
 
 	@Inject
-	public OkListener(DistributedController distributedController,
-			LabelBet labelBet) {
+	public OkListener(DistributedController distributedController, 
+			BetManager betManager) {
 		this.distributedController = distributedController;
-		this.labelBet = labelBet;
+		this.betManager = betManager;
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
 		if (distributedController.leader()) {
-				distributedController.setActionOnSend(labelBet.getAction());
-
+			distributedController.setActionOnSend(betManager.getActionKeeper());
+			betManager.updateBet();
 		}
 	}
 

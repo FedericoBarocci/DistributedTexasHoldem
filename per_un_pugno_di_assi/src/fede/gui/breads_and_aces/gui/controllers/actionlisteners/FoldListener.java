@@ -7,20 +7,18 @@ import javax.inject.Inject;
 
 import breads_and_aces.game.model.controller.DistributedController;
 import breads_and_aces.game.model.oracle.actions.Action;
+import breads_and_aces.game.model.oracle.actions.ActionKeeperFactory;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.gui.view.elements.ElementGUI;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
 
 public class FoldListener implements MouseListener {
 	
-//	private final Communicator communicator;
 	private final DistributedController distributedController;
 	private final GamePlayersKeeper gamePlayersKeeper;
 	
 	@Inject
-	public FoldListener(//Communicator communicator,
-			DistributedController distributedController, GamePlayersKeeper gamePlayersKeeper) {
-//		this.communicator = communicator;
+	public FoldListener(DistributedController distributedController, GamePlayersKeeper gamePlayersKeeper) {
 		this.gamePlayersKeeper = gamePlayersKeeper;
 		this.distributedController = distributedController;
 	}
@@ -30,55 +28,9 @@ public class FoldListener implements MouseListener {
 		if (distributedController.leader()) {
 			System.out.println(gamePlayersKeeper.getMyName() + " executing FOLD");
 			
-			/*Communication c = */
-			distributedController.setActionOnSend(Action.FOLD);
-			
-			/*switch (c) {
-				case ACTION:
-					communicator.toAll(gamePlayersKeeper.getMyName(), this::performAction);
-					break;
-					
-				case DEAL:
-					GameUpdater gameUpdater = new GameUpdater(gamePlayersKeeper.getPlayers(), new Deck());
-					communicator.toAll(gamePlayersKeeper.getMyName(), this::performActionAndDeal, gameUpdater);
-					distributedController.update(gameUpdater);
-					break;
-					
-				case END:
-					communicator.toAll(gamePlayersKeeper.getMyName(), this::performWinnerEndGame);
-					break;
-			}*/
-			
-//			distributedController.setLocalActionAndPropagate(Action.FOLD, communicator);
+			distributedController.setActionOnSend(ActionKeeperFactory.get(Action.FOLD));
 		}
 	}
-	
-/*	private void performAction(GameService gameService) {
-		try {
-			gameService.receiveAction(gamePlayersKeeper.getMyName(), Action.FOLD);
-		} catch (RemoteException e) {
-			//Game Recovery
-			e.printStackTrace();
-		}
-	}
-	
-	private void performActionAndDeal(GameService gameService, GameUpdater gameUpdater) {
-		try {
-			gameService.receiveActionAndDeal(gamePlayersKeeper.getMyName(), Action.FOLD, gameUpdater);
-		} catch (RemoteException e) {
-			//Game Recovery
-			e.printStackTrace();
-		}
-	}
-	
-	private void performWinnerEndGame(GameService gameService) {
-		try {
-			gameService.receiveWinnerEndGame(gamePlayersKeeper.getMyName(), Action.FOLD);
-		} catch (RemoteException e) {
-			//Game Recovery
-			e.printStackTrace();
-		}
-	}*/
 	
 	@Override
 	public void mousePressed(MouseEvent e) {

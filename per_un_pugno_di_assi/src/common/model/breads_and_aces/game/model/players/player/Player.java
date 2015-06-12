@@ -6,11 +6,10 @@ import java.util.List;
 
 import bread_and_aces.utils.DevPrinter;
 import breads_and_aces.game.core.Card;
-import breads_and_aces.game.core.PositiveInteger;
 import breads_and_aces.game.core.Ranking;
 import breads_and_aces.game.core.Rankings;
-import breads_and_aces.game.exceptions.MaxReachedException;
 import breads_and_aces.game.model.oracle.actions.Action;
+import breads_and_aces.game.model.oracle.actions.ActionKeeper;
 import breads_and_aces.game.model.utils.Pair;
 
 public class Player implements Serializable, Comparable<Player> {
@@ -22,12 +21,13 @@ public class Player implements Serializable, Comparable<Player> {
 	
 	private List<Card> cards = new ArrayList<Card>();
 	private Ranking rank = new Ranking();
-	private PositiveInteger chips = new PositiveInteger();
 	private Action action = Action.NONE;
 	
 	private int score;
 	
 	private boolean hasToken;
+
+	private int bet;
 	
 //	@Inject private Printer printer;
 
@@ -53,16 +53,6 @@ public class Player implements Serializable, Comparable<Player> {
 		cards.add( cards2.getSecond() );
 	}
 
-	public PositiveInteger getChip() {
-		return chips;
-	}
-
-	public void setChip(int chips) {
-		try {
-			this.chips.add(chips);
-		} catch (MaxReachedException e) {}
-	}
-	
 	public void evaluateRanking(List<Card> tablecards) {
 		if (action.equals(Action.FOLD)) {
 			rank.setRankNotDef();
@@ -99,7 +89,20 @@ public class Player implements Serializable, Comparable<Player> {
 	public Action getAction() {
 		return action;
 	}
+	
+	public void initBet() {
+		bet = 0;
+	}
+	
+	public int getBet() {
+		return bet;
+	}
 
+	public void setAction(ActionKeeper actionKeeper) {
+		this.action = actionKeeper.getAction();
+		this.bet += actionKeeper.getValue();
+	}
+	
 	public void setAction(Action action) {
 		this.action = action;
 	}

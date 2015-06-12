@@ -6,7 +6,7 @@ import java.util.Collection;
 
 import bread_and_aces.utils.DevPrinter;
 import breads_and_aces.game.model.controller.DistributedController;
-import breads_and_aces.game.model.oracle.actions.Action;
+import breads_and_aces.game.model.oracle.actions.ActionKeeper;
 import breads_and_aces.game.updater.GameUpdater;
 import breads_and_aces.services.rmi.utils.crashhandler.CrashHandler;
 
@@ -41,18 +41,18 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 	}
 
 	@Override
-	public void receiveAction(String fromPlayer, Action action)/* throws RemoteException*/ {
-		distributedController.setActionOnReceive(fromPlayer, action);
+	public void receiveAction(String fromPlayer, ActionKeeper actionKeeper)/* throws RemoteException*/ {
+		distributedController.setActionOnReceive(fromPlayer, actionKeeper);
 	}
 
 	@Override
-	public void receiveActionAndDeal(String fromPlayer, Action action, GameUpdater gameUpdater) throws RemoteException {
-		distributedController.setActionOnReceive(fromPlayer, action, gameUpdater);
+	public void receiveActionAndDeal(String fromPlayer, ActionKeeper actionKeeper, GameUpdater gameUpdater) throws RemoteException {
+		distributedController.setActionOnReceive(fromPlayer, actionKeeper, gameUpdater);
 	}
 
 	@Override
-	public void receiveWinnerEndGame(String fromPlayer, Action action) throws RemoteException {
-		distributedController.setActionOnReceive(fromPlayer, action);
+	public void receiveWinnerEndGame(String fromPlayer, ActionKeeper actionKeeper) throws RemoteException {
+		distributedController.setActionOnReceive(fromPlayer, actionKeeper);
 	}
 
 	/*

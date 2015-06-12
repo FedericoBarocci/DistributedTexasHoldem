@@ -12,6 +12,7 @@ import org.limewire.inject.LazySingleton;
 
 import breads_and_aces.gui.labels.LabelBet;
 import breads_and_aces.gui.labels.LabelCoins;
+import breads_and_aces.gui.labels.LabelPot;
 import breads_and_aces.gui.view.ViewInitalizer.ViewInitializerInitArgs;
 import breads_and_aces.gui.view.elements.ImageGUI;
 import breads_and_aces.gui.view.elements.TransparentPanelGUI;
@@ -28,17 +29,18 @@ public class ViewInitalizer extends AbstractViewHandler<ViewInitializerInitArgs>
 
 	private final LabelBet lblBet;
 	private final LabelCoins lblCoins;
+	private final JLabel lblPot;
 	
 	private JLabel lblPlayerName = new JLabel("", SwingConstants.CENTER);
 	private JLabel lblScore = new JLabel("", SwingConstants.CENTER);
-	private JLabel lblPot = new JLabel("", SwingConstants.CENTER);
 	private JLabel lblMessage = new JLabel("");
 	
 	@Inject
-	public ViewInitalizer(JFrameGame/*Provider*/ jFrameGame/*Provider*/, LabelBet lblBet, LabelCoins lblCoins) {
+	public ViewInitalizer(JFrameGame/*Provider*/ jFrameGame/*Provider*/, LabelBet lblBet, LabelCoins lblCoins, LabelPot lblPot) {
 		super(jFrameGame/*Provider*/);
 		this.lblBet = lblBet;
 		this.lblCoins = lblCoins;
+		this.lblPot = lblPot;
 	}
 	
 	public void init(ViewInitializerInitArgs initArgs) {
