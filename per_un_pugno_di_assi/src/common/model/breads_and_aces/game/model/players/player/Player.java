@@ -11,7 +11,6 @@ import breads_and_aces.game.core.Ranking;
 import breads_and_aces.game.core.Rankings;
 import breads_and_aces.game.exceptions.MaxReachedException;
 import breads_and_aces.game.model.oracle.actions.Action;
-import breads_and_aces.game.model.oracle.actions.ActionSimple;
 import breads_and_aces.game.model.utils.Pair;
 
 public class Player implements Serializable, Comparable<Player> {
@@ -24,7 +23,7 @@ public class Player implements Serializable, Comparable<Player> {
 	private List<Card> cards = new ArrayList<Card>();
 	private Ranking rank = new Ranking();
 	private PositiveInteger chips = new PositiveInteger();
-	private Action action = ActionSimple.NONE;
+	private Action action = Action.NONE;
 	
 	private int score;
 	
@@ -47,7 +46,7 @@ public class Player implements Serializable, Comparable<Player> {
 	 * Game zone - start
 	 */
 	public void deal(Pair<Card> cards2) {
-		action = ActionSimple.NONE;
+		action = Action.NONE;
 		
 		cards.clear();
 		cards.add( cards2.getFirst() );
@@ -65,7 +64,7 @@ public class Player implements Serializable, Comparable<Player> {
 	}
 	
 	public void evaluateRanking(List<Card> tablecards) {
-		if (action.equals(ActionSimple.FOLD)) {
+		if (action.equals(Action.FOLD)) {
 			rank.setRankNotDef();
 		}
 		else {

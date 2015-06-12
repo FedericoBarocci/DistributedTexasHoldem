@@ -8,8 +8,6 @@ import org.limewire.inject.LazySingleton;
 
 import breads_and_aces.game.core.PotManager;
 import breads_and_aces.game.model.oracle.actions.Action;
-import breads_and_aces.game.model.oracle.actions.ActionSimple;
-import breads_and_aces.game.model.oracle.actions.ActionValue;
 
 @LazySingleton
 public class LabelBet extends JLabel {

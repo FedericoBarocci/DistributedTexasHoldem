@@ -9,7 +9,6 @@ import javax.inject.Inject;
 import org.limewire.inject.LazySingleton;
 
 import breads_and_aces.game.model.oracle.actions.Action;
-import breads_and_aces.game.model.oracle.actions.ActionSimple;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.players.player.Player;
 import breads_and_aces.gui.view.PlayersViewHandler.PlayersViewHandlerInitArgs;
@@ -123,7 +122,7 @@ public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerIn
 
 	public void resetActions(List<Player> players) {
 		players.forEach(p->{
-			playersGui.get(p.getName()).setAction(ActionSimple.NONE);
+			playersGui.get(p.getName()).setAction(Action.NONE);
 		});
 	}
 	

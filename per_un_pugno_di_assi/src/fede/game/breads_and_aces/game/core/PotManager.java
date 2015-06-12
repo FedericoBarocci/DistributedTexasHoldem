@@ -4,7 +4,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import breads_and_aces.game.Game;
-import breads_and_aces.game.model.oracle.actions.*;
+import breads_and_aces.game.model.oracle.actions.Action;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.state.GameState;
 
@@ -53,27 +53,27 @@ public class PotManager {
 	}
 
 	public Action getAction(int value) {
-		Action result = ActionSimple.CHECK;
+		Action result = Action.CHECK;
 
 		// come avvertire il giocatore che deve puntare almeno quanto currentBet...?
 		
 		if (value < currentBet) 
-			result = ActionSimple.NONE;
+			result = Action.NONE;
 		
 		if ((value == currentBet) && (currentBet == 0))
-			result = ActionSimple.CHECK;
+			result = Action.CHECK;
 		
 		if (value > 0) {
-			result.setValue(value);
+//			result.setValue(value);
 
 			if ((value == currentBet)  && (currentBet < game.getCoins()))
-				result = ActionValue.CALL;
+				result = Action.CALL;
 
 			if ((value > currentBet) && (currentBet < game.getCoins())) 
-				result = ActionValue.RAISE;
+				result = Action.RAISE;
 			
 			if ((value == game.getCoins())) 
-				result = ActionSimple.ALLIN;
+				result = Action.ALLIN;
 		}
 		
 		return result;

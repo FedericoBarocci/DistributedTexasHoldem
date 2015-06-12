@@ -6,7 +6,7 @@ import java.awt.event.MouseListener;
 import javax.inject.Inject;
 
 import breads_and_aces.game.model.controller.DistributedController;
-import breads_and_aces.game.model.oracle.actions.ActionSimple;
+import breads_and_aces.game.model.oracle.actions.Action;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.gui.view.elements.ElementGUI;
 import breads_and_aces.gui.view.elements.utils.GuiUtils;
@@ -31,7 +31,7 @@ public class FoldListener implements MouseListener {
 			System.out.println(gamePlayersKeeper.getMyName() + " executing FOLD");
 			
 			/*Communication c = */
-			distributedController.setActionOnSend(ActionSimple.FOLD);
+			distributedController.setActionOnSend(Action.FOLD);
 			
 			/*switch (c) {
 				case ACTION:

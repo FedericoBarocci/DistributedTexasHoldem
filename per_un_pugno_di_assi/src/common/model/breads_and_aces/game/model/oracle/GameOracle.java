@@ -8,8 +8,7 @@ import javax.inject.Singleton;
 
 import breads_and_aces.game.core.Card;
 import breads_and_aces.game.exceptions.DrawException;
-import breads_and_aces.game.model.oracle.actions.ActionSimple;
-import breads_and_aces.game.model.oracle.actions.ActionValue;
+import breads_and_aces.game.model.oracle.actions.Action;
 import breads_and_aces.game.model.oracle.responses.OracleResponse;
 import breads_and_aces.game.model.oracle.responses.OracleResponseFactory;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
@@ -52,7 +51,7 @@ public class GameOracle {
 			
 			actualPlayerId = next.getName();
 		}
-		while (next.getAction().equals(ActionSimple.FOLD));
+		while (next.getAction().equals(Action.FOLD));
 		
 		return next;
 	}
@@ -125,7 +124,7 @@ public class GameOracle {
 		for (int i = 1; i < players.size(); i++) {
 			Player player = players.get(i);
 			
-			if (player.getAction().equals(ActionSimple.FOLD)) {
+			if (player.getAction().equals(Action.FOLD)) {
 				continue;
 			}
 			
@@ -177,23 +176,23 @@ public class GameOracle {
 	}
 	
 	private boolean conditionAllIn(List<Player> players) {
-		return players.stream().allMatch(p->p.getAction().equals(ActionSimple.FOLD) || p.getAction().equals(ActionSimple.ALLIN));
+		return players.stream().allMatch(p->p.getAction().equals(Action.FOLD) || p.getAction().equals(Action.ALLIN));
 	}
 	
 	private boolean conditionSinglePlayer(List<Player> players) {
-		return players.stream().filter(p->!p.getAction().equals(ActionSimple.FOLD)).count() == 1;
+		return players.stream().filter(p->!p.getAction().equals(Action.FOLD)).count() == 1;
 	}
 	
 	private boolean conditionPlayersHaveToSpeek(List<Player> players) {
-		return players.stream().filter(p->p.getAction().equals(ActionSimple.NONE)).count() > 0;
+		return players.stream().filter(p->p.getAction().equals(Action.NONE)).count() > 0;
 	}
 	
 	private boolean conditionAllAgree(List<Player> players) {
-		return players.stream().allMatch(p->p.getAction().equals(ActionSimple.FOLD) || p.getAction().equals(ActionSimple.CHECK));
+		return players.stream().allMatch(p->p.getAction().equals(Action.FOLD) || p.getAction().equals(Action.CHECK));
 	}
 	
 	private boolean conditionCallToMostOneRaise(List<Player> players) {
-		return players.stream().allMatch(p -> p.getAction().equals(ActionSimple.FOLD) || p.getAction().equals(ActionValue.RAISE) || p.getAction().equals(ActionValue.CALL)) 
-				&& players.stream() .filter(p -> p.getAction().equals(ActionValue.RAISE)).count() <= 1;
+		return players.stream().allMatch(p -> p.getAction().equals(Action.FOLD) || p.getAction().equals(Action.RAISE) || p.getAction().equals(Action.CALL)) 
+				&& players.stream() .filter(p -> p.getAction().equals(Action.RAISE)).count() <= 1;
 	}
 }

@@ -8,8 +8,6 @@ import breads_and_aces.game.core.PotManager;
 import breads_and_aces.game.model.controller.Communication.GameHolder;
 import breads_and_aces.game.model.oracle.GameOracle;
 import breads_and_aces.game.model.oracle.actions.Action;
-import breads_and_aces.game.model.oracle.actions.ActionSimple;
-import breads_and_aces.game.model.oracle.actions.ActionValue;
 import breads_and_aces.game.model.oracle.responses.OracleResponse;
 import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import breads_and_aces.game.model.state.GameState;
@@ -91,18 +89,18 @@ public class DistributedController {
 		}
 		
 		//aggiornamento di PotManager nel caso di puntata
-		if(action == ActionValue.CALL) 
-			potManager.setCurrentPot(action.getValue());
-			//potManager.setCurrentPot(ActionValue.CALL.getValue());
-		if(action == ActionValue.RAISE) {
-			potManager.setCurrentPot(action.getValue());
-			potManager.setCurrentBet(action.getValue());
-			//potManager.setCurrentPot(ActionValue.RAISE.getValue());
-		}
-		if(action == ActionSimple.ALLIN) {
-			potManager.setCurrentPot(action.getValue());
-			potManager.setCurrentBet(action.getValue());
-		}
+//		if(action == ActionValue.CALL) 
+//			potManager.setCurrentPot(action.getValue());
+//			//potManager.setCurrentPot(ActionValue.CALL.getValue());
+//		if(action == ActionValue.RAISE) {
+//			potManager.setCurrentPot(action.getValue());
+//			potManager.setCurrentBet(action.getValue());
+//			//potManager.setCurrentPot(ActionValue.RAISE.getValue());
+//		}
+//		if(action == Action.ALLIN) {
+//			potManager.setCurrentPot(action.getValue());
+//			potManager.setCurrentBet(action.getValue());
+//		}
 		
 		gamePlayersKeeper.getPlayer(fromPlayer).setAction(action);
 		viewControllerDelegate.setPlayerAction(fromPlayer, action);
@@ -133,7 +131,7 @@ public class DistributedController {
 
 	public Communication removePlayer(String playerId) {
 		new DevPrinter(new Throwable()).println("HO RICEVUTO UNA NOTIFICA DI CRASH PER " + playerId);
-		Communication communication = setActionAndUpdate(playerId, ActionSimple.FOLD);
+		Communication communication = setActionAndUpdate(playerId, Action.FOLD);
 		gamePlayersKeeper.remove(playerId);
 		viewControllerDelegate.remove(playerId);
 		
