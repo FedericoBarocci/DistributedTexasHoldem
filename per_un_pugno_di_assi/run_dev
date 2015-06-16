@@ -17,8 +17,13 @@ else
 
    if [ $# -eq 0 ]; then # servable
       args="10.0.0.1 $(randomName) true"
-   else # clientable
-      args="10.0.0."$(randomLastIPOctet)" $(randomName) false"
+   elif [ $# -eq 1 ]; then # clientable or help
+      if [ $1 == "-h" ]; then
+         echo "./run_dev without argument runs as servable; if a random char is provided as argument it starts as clientable"
+         exit 0
+      else
+         args="10.0.0."$(randomLastIPOctet)" $(randomName) false"
+      fi
    fi
 
    java -cp ${guice_path}:${guice_enhanced_path}:${jgoodies_path}:bin breads_and_aces.main.Main ${args}

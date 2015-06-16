@@ -4,7 +4,7 @@
 	<classpathentry excluding="breads_and_aces/main/RegistrationGUI_CRASH.java|breads_and_aces/main/start/gui/FocusTraversalOnArray.java" kind="src" path="src/max/main/core"/>
 	<classpathentry excluding="it/unibo/cs/sd/poker/game/core/Player.java|it/unibo/cs/sd/poker/game/core/GameTexasHoldemRunner.java|it/unibo/cs/sd/poker/game/core/GameTexasHoldem.java|it/unibo/cs/sd/poker/game/core/Assert.java|breads_and_aces/game/core/GameTexasHoldemRunner.java|breads_and_aces/game/core/Assert.java|breads_and_aces/game/core/GameTexasHoldem.java|breads_and_aces/game/core/Pot.java|breads_and_aces/game/exceptions/TurnException.java|breads_and_aces/game/core/PlayerNO.java|breads_and_aces/game/core/GameStates_NO.java|breads_and_aces/game/updater/GameUpdaterProvider.java" kind="src" path="src/fede/game"/>
 	<classpathentry kind="src" path="src/max/registration"/>
-	<classpathentry excluding="breads_and_aces/node/inputhandler/shell/InputHandlerShellFactory.java" kind="src" path="src/max/node"/>
+	<classpathentry excluding="breads_and_aces/node/inputhandler/shell/InputHandlerShellFactory.java|bread_and_aces/node/inputhandler/shell/InputHandlerShellFactory.java" kind="src" path="src/max/node"/>
 	<classpathentry excluding="breads_and_aces/services/rmi/utils/communicator/UnicastException.java" kind="src" path="src/max/rmi"/>
 	<classpathentry kind="src" path="src/max/misc"/>
 	<classpathentry excluding="it/unibo/cs/sd/poker/mvc/Model.java|it/unibo/cs/sd/poker/main/Main.java|it/unibo/cs/sd/poker/main/DummyModule.java" kind="src" path="src/fede/main_test"/>
@@ -12,6 +12,7 @@
 	<classpathentry kind="src" path="src/max/main/di"/>
 	<classpathentry excluding="breads_and_aces/main/MainShell.java|breads_and_aces/node/inputhandler/shell/InputHandlerShell.java|breads_and_aces/_di/providers/node/inputhandler/shell/InputHandlerShellProvider.java|breads_and_aces/registration/initializers/servable/_shell/RegistrationInitializerServableShell.java|breads_and_aces/registration/initializers/servable/_shell/RegistrationInitializerServableShellFactory.java|breads_and_aces/_di/providers/registration/initializers/servable/_shell/RegistrationInitializerServableProviderShell.java|breads_and_aces/registration/initializers/clientable/_shell/RegistrationInitializerClientableShell.java|breads_and_aces/registration/initializers/clientable/_shell/RegistrationInitializerClientableShellFactory.java|breads_and_aces/_di/providers/registration/initializers/clientable/shell/RegistrationInitializerClientableShellProvider.java|breads_and_aces/game/bucket/BucketHandler.java" kind="src" path="src/max/dev"/>
 	<classpathentry kind="src" path="src/common/utils"/>
+	<classpathentry excluding="bread_and_aces/game/core/|bread_and_aces/game/model/oracle/actions/|bread_and_aces/gui/view/|bread_and_aces/node/inputhandler/shell/" kind="src" path="src/no"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="libs/guice/aopalliance-1.0.jar"/>
 	<classpathentry kind="lib" path="libs/guice/guice-3.0.jar"/>
