@@ -5,29 +5,23 @@ import java.awt.event.MouseListener;
 
 import javax.inject.Inject;
 
-import bread_and_aces.game.Game;
 import bread_and_aces.game.core.BetManager;
-import bread_and_aces.gui.labels.LabelBet;
-import bread_and_aces.gui.labels.LabelCoins;
 import bread_and_aces.gui.view.ButtonsViewHandler;
+import bread_and_aces.gui.view.LabelHandler;
 import bread_and_aces.gui.view.elements.ElementGUI;
 import bread_and_aces.gui.view.elements.utils.EnumButton;
 import bread_and_aces.gui.view.elements.utils.GuiUtils;
 
 public class BetListener implements MouseListener {
-	private final LabelBet lblBet;
-	private final LabelCoins lblCoins;
-	private final Game game;
 	private final BetManager betManager;
 	private final ButtonsViewHandler buttonsView;
+	private final LabelHandler labelHandler;
 	
 	@Inject
-	public BetListener(LabelBet lblBet, LabelCoins lblcoins, Game game, BetManager betManager, ButtonsViewHandler buttonsView) {
-		this.lblBet = lblBet;
-		this.lblCoins = lblcoins;
-		this.game = game;
+	public BetListener(BetManager betManager, ButtonsViewHandler buttonsView, LabelHandler labelHandler) {
 		this.betManager = betManager;
 		this.buttonsView = buttonsView;
+		this.labelHandler = labelHandler;
 	}
 
 	@Override
@@ -40,16 +34,15 @@ public class BetListener implements MouseListener {
 			switch (EnumButton.valueOf(lbl.getName())) {
 			case UP:
 				value = betManager.bet(10);
-				lblCoins.setValue(lblCoins.getValue() -10);
+				labelHandler.setBetValue(value, -10);
 				break;
 
 			case DOWN:
 				value = betManager.unbet(10);
-				lblCoins.setValue(lblCoins.getValue() +10);
+				labelHandler.setBetValue(value, +10);
 				break;
 			}
 			
-			lblBet.setValue(value);
 			betManager.setBet(value);
 			
 			buttonsView.updateText(betManager.getActionKeeper().getAction());

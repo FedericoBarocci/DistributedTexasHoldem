@@ -14,8 +14,4 @@ public class LabelMessage extends JLabel {
 	public LabelMessage() {
 		super("");
 	}
-//
-//	public void printMessage(String msg) {
-//		this.setText(msg);
-//	}
 }

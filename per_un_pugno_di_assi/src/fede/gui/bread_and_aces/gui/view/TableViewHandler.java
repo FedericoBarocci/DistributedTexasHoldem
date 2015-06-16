@@ -20,8 +20,8 @@ public class TableViewHandler extends AbstractViewHandler<Void> {
 	private int displayedCards = 0;
 
 	@Inject
-	public TableViewHandler(JFrameGame/*Provider*/ jFrameGame/*Provider*/, Table table) {
-		super(jFrameGame/*Provider*/);
+	public TableViewHandler(JFrameGame jFrameGame, Table table) {
+		super(jFrameGame);
 		this.table = table;
 	}
 

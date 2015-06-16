@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 
 import bread_and_aces.game.core.Card;
 import bread_and_aces.game.exceptions.DrawException;
+import bread_and_aces.game.exceptions.SinglePlayerException;
 import bread_and_aces.game.model.oracle.actions.Action;
 import bread_and_aces.game.model.oracle.responses.OracleResponse;
 import bread_and_aces.game.model.oracle.responses.OracleResponseFactory;
@@ -18,7 +19,6 @@ import bread_and_aces.game.model.table.TableState;
 import bread_and_aces.game.model.utils.Pair;
 import bread_and_aces.game.updater.GameUpdater;
 import bread_and_aces.game.updater.PlayerData;
-import bread_and_aces.gui.controllers.exceptions.SinglePlayerException;
 
 @Singleton
 public class GameOracle {

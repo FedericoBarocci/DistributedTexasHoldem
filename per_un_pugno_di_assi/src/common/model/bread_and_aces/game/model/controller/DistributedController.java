@@ -3,6 +3,7 @@ package bread_and_aces.game.model.controller;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import bread_and_aces.game.exceptions.SinglePlayerException;
 import bread_and_aces.game.model.controller.Communication.GameHolder;
 import bread_and_aces.game.model.oracle.GameOracle;
 import bread_and_aces.game.model.oracle.actions.Action;
@@ -12,7 +13,6 @@ import bread_and_aces.game.model.oracle.responses.OracleResponse;
 import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import bread_and_aces.game.model.state.GameState;
 import bread_and_aces.game.updater.GameUpdater;
-import bread_and_aces.gui.controllers.exceptions.SinglePlayerException;
 import bread_and_aces.gui.view.ViewControllerDelegate;
 import bread_and_aces.services.rmi.utils.communicator.Communicator;
 import bread_and_aces.utils.DevPrinter;

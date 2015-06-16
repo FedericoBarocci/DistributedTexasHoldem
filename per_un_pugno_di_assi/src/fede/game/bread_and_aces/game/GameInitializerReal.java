@@ -11,7 +11,6 @@ import bread_and_aces.gui.view.ViewControllerDelegate;
 import bread_and_aces.gui.view.ViewCreator;
 
 @LazySingleton
-//@Singleton
 public class GameInitializerReal implements GameInitializer {
 
 	private final Game game;
@@ -20,10 +19,6 @@ public class GameInitializerReal implements GameInitializer {
 	private final ListenersInitializer listenersInitializer;
 	private final ViewControllerDelegate viewControllerDelegate;
 	private final BetManager betManager;
-
-//	private static final int initialCoins = 200;
-//	private static final int initialGoal = 1000;
-	
 
 	@Inject
 	public GameInitializerReal(Game game, 

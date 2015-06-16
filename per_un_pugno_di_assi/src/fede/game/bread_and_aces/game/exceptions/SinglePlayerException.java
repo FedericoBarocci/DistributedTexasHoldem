@@ -1,4 +1,4 @@
-package bread_and_aces.gui.controllers.exceptions;
+package bread_and_aces.game.exceptions;
 
 public class SinglePlayerException extends Exception {
 

@@ -7,7 +7,6 @@ import javax.inject.Inject;
 
 import bread_and_aces.game.core.BetManager;
 import bread_and_aces.game.model.controller.DistributedController;
-import bread_and_aces.gui.labels.LabelCoins;
 import bread_and_aces.gui.view.elements.ElementGUI;
 import bread_and_aces.gui.view.elements.utils.GuiUtils;
 
@@ -15,25 +14,17 @@ public class OkListener implements MouseListener {
 
 	private final DistributedController distributedController;
 	private final BetManager betManager;
-	private final LabelCoins lblCoins;
-
 
 	@Inject
 	public OkListener(DistributedController distributedController, 
-			BetManager betManager, LabelCoins lblCoins) {
+			BetManager betManager) {
 		this.distributedController = distributedController;
 		this.betManager = betManager;
-		this.lblCoins = lblCoins;
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (distributedController.leader()) {
-			//lblCoins.setMax(lblCoins.getValue());
-			
-			System.out.println("voglio puntare " + betManager.getBet().getValue());
-			System.out.println("il mio max vale " + betManager.getMax());
-			//betManager.setMax(betManager.getMax() - betManager.getBet().getValue());
 			distributedController.setActionOnSend(betManager.getActionKeeper());
 		}
 	}

@@ -116,20 +116,6 @@ public class ViewControllerDelegate {
 		labelHandler.printMessage("Hands up! The winner is " + player);
 	}
 
-	static class InitArgs {
-		List<Player> players;
-		String myName;
-		int goal;
-		int initialCoins;
-
-		public InitArgs(List<Player> players, String myName, int goal, int initialCoins) {
-			this.players = players;
-			this.myName = myName;
-			this.goal = goal;
-			this.initialCoins = initialCoins;
-		}
-	}
-
 	public void remove(String playerId) {
 		playersView.removeElement(playerId);
 	}
@@ -150,5 +136,19 @@ public class ViewControllerDelegate {
 		betManager.setBet(0);
 		
 		buttonsViewHandler.updateText(Action.CHECK);
+	}
+
+	static class InitArgs {
+		List<Player> players;
+		String myName;
+		int goal;
+		int initialCoins;
+
+		public InitArgs(List<Player> players, String myName, int goal, int initialCoins) {
+			this.players = players;
+			this.myName = myName;
+			this.goal = goal;
+			this.initialCoins = initialCoins;
+		}
 	}
 }

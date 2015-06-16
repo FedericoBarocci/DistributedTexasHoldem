@@ -31,8 +31,11 @@ public class OracleResponseNextStep implements OracleResponse {
 	public Communication exec() {
 		viewControllerDelegate.addTableCards(players);
 		viewControllerDelegate.resetViewState(gameState);
-		players.forEach(p->p.initBet());
+		
+		players.forEach(p->p.resetBet());
+		
 		gameState.reset();
+		
 		betManager.setMin(0);
 		betManager.setAction(Action.NONE);
 		

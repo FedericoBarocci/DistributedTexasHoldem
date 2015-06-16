@@ -8,7 +8,6 @@ import bread_and_aces.gui.view.elements.utils.EnumRectangle;
 import bread_and_aces.gui.view.elements.utils.GuiUtils;
 
 @LazySingleton
-//@Singleton
 public class JFrameGame extends JFrameDefault {
 
 	private static final long serialVersionUID = 795031168834302954L;

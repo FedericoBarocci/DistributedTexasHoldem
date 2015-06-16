@@ -23,6 +23,7 @@ public class BetManager {
 	private BoundInteger betValue;
 	private ActionsLogic currentAction;
 	private int tablebet = 0;
+	private int mybet = 0;
 
 	@Inject
 	public BetManager(GamePlayersKeeper gamePlayersKeeper, GameState gameState, Game game) {
@@ -35,6 +36,7 @@ public class BetManager {
 		betValue = new BoundInteger(0, 0, game.getCoins());
 		currentAction = ActionsLogic.NULL;
 		tablebet = 0;
+		mybet = 0;
 	}
 	
 	public int bet(int i) {
@@ -97,7 +99,8 @@ public class BetManager {
 	
 	public void savebet() {
 		tablebet = getSumAllPot();
-		System.out.println("HO SALVATO BET" + tablebet);
+		mybet += betValue.getValue();
+//		System.out.println("HO SALVATO BET" + tablebet);
 	}
 
 	public int getSumAllPot() {
@@ -112,6 +115,10 @@ public class BetManager {
 	
 	public String toString() {
 		return betValue.toString() + " - " + currentAction.toString();
+	}
+	
+	public int getMyBet() {
+		return mybet;
 	}
 
 }

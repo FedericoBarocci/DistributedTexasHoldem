@@ -43,8 +43,15 @@ public class OracleResponseWinner implements OracleResponse {
 		viewControllerDelegate.setRefresh();
 		viewControllerDelegate.showDown(winners);
 		
+		System.out.println("sumall " + betManager.getSumAllPot());
+		
 		gamePlayersKeeper.getPlayers().forEach(p->{
-			int score = p.getScore() - labelHandler.getCoins();
+			System.out.println(p.getName());
+			System.out.println(p.getScore());
+			System.out.println(p.getBet());
+			System.out.println(p.getTotalBet());
+			
+			int score = p.getScore() - p.getTotalBet();//p.getBet();//labelHandler.getCoins();
 			
 			if (winners.contains(p)) {
 				score += Math.floorDiv(betManager.getSumAllPot(), winners.size());

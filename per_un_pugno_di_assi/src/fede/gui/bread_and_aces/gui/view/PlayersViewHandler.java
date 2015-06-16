@@ -26,15 +26,13 @@ public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerIn
 	private final GamePlayersKeeper gamePlayersKeeper;
 	
 	@Inject
-	public PlayersViewHandler(JFrameGame/*Provider*/ jFrameGame/*Provider*/, PlayerGUIHandlerFactory playerGUIHandlerFactory,
+	public PlayersViewHandler(JFrameGame jFrameGame, PlayerGUIHandlerFactory playerGUIHandlerFactory,
 			GamePlayersKeeper gamePlayersKeeper) {
-		super(jFrameGame/*Provider*/);
+		super(jFrameGame);
 		this.playerGUIHandlerFactory = playerGUIHandlerFactory;
 		this.gamePlayersKeeper = gamePlayersKeeper;
 	}
 	
-//	@Override
-//	public void init(List<Player> players, String myName, int goal) {
 	public void init(PlayersViewHandlerInitArgs args) {
 		int size = args.players.size();
 		int span = Math.floorDiv(GuiUtils.playerSpan, size+1);
@@ -47,13 +45,8 @@ public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerIn
 			int y = GuiUtils.playerY;
 			Player player = args.players.get(i);
 			
-			/* *** only for testing *** override param *** */ 
-				//player.setScore(Math.floorDiv(goal, 7) * i);
-			
 			boolean showCards = player.getName().equals(args.myName);	
-			PlayerGUIHandler playerGUIHandler = 
-//					new PlayerGUIHandler(player, x, y, goal, showCards);
-					playerGUIHandlerFactory.create(player, x, y, args.goal, showCards);
+			PlayerGUIHandler playerGUIHandler = playerGUIHandlerFactory.create(player, x, y, args.goal, showCards);
 			playerGUIHandler.init(null);
 			
 			if (player.hasToken()) {
@@ -125,6 +118,11 @@ public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerIn
 			playersGui.get(p.getName()).setAction(Action.NONE);
 		});
 	}
+
+	public void removeElement(String playerId) {
+		playersGui.get(playerId).clearFromGui();
+		playersGui.remove(playerId);
+	}
 	
 	static public class PlayersViewHandlerInitArgs {
 		List<Player> players; 
@@ -136,10 +134,5 @@ public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerIn
 			this.myName = myName;
 			this.goal = goal;
 		}
-	}
-
-	public void removeElement(String playerId) {
-		playersGui.get(playerId).clearFromGui();
-		playersGui.remove(playerId);
 	}
 }

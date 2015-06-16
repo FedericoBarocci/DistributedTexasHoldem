@@ -27,7 +27,6 @@ import bread_and_aces.gui.view.elements.utils.EnumRectangle;
 import bread_and_aces.gui.view.elements.utils.GuiUtils;
 
 @LazySingleton
-//@Singleton
 public class ViewInitalizer extends AbstractViewHandler<ViewInitializerInitArgs> {
 
 	private final LabelBet lblBet;

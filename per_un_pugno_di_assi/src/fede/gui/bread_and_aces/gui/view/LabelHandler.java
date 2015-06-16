@@ -56,6 +56,11 @@ public class LabelHandler {
 		return result;
 	}
 	
+	public void setBetValue(int value, int count) {
+		lblCoins.setValue(lblCoins.getValue() + count);
+		lblBet.setValue(value);
+	}
+	
 	public void setScore(int score) {
 		lblScore.setValue(score);
 	}
