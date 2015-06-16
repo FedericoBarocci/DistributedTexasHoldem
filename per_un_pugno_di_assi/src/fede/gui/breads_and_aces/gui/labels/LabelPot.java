@@ -9,7 +9,7 @@ import org.limewire.inject.LazySingleton;
 @LazySingleton
 public class LabelPot extends JLabel {
 
-	private static final long serialVersionUID = 3680782073061254144L;
+	private static final long serialVersionUID = -5705641205579791329L;
 
 	@Inject
 	public LabelPot() {

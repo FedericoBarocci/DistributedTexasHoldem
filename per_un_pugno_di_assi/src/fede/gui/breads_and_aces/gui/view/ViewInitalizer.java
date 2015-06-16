@@ -12,7 +12,9 @@ import org.limewire.inject.LazySingleton;
 
 import breads_and_aces.gui.labels.LabelBet;
 import breads_and_aces.gui.labels.LabelCoins;
+import breads_and_aces.gui.labels.LabelMessage;
 import breads_and_aces.gui.labels.LabelPot;
+import breads_and_aces.gui.labels.LabelScore;
 import breads_and_aces.gui.view.ViewInitalizer.ViewInitializerInitArgs;
 import breads_and_aces.gui.view.elements.ImageGUI;
 import breads_and_aces.gui.view.elements.TransparentPanelGUI;
@@ -30,17 +32,20 @@ public class ViewInitalizer extends AbstractViewHandler<ViewInitializerInitArgs>
 	private final LabelBet lblBet;
 	private final LabelCoins lblCoins;
 	private final JLabel lblPot;
+	private final LabelScore lblScore;
+	private final LabelMessage lblMessage;
 	
 	private JLabel lblPlayerName = new JLabel("", SwingConstants.CENTER);
-	private JLabel lblScore = new JLabel("", SwingConstants.CENTER);
-	private JLabel lblMessage = new JLabel("");
 	
 	@Inject
-	public ViewInitalizer(JFrameGame/*Provider*/ jFrameGame/*Provider*/, LabelBet lblBet, LabelCoins lblCoins, LabelPot lblPot) {
-		super(jFrameGame/*Provider*/);
+	public ViewInitalizer(JFrameGame jFrameGame, LabelBet lblBet, LabelCoins lblCoins, LabelPot lblPot, LabelScore lblScore, LabelMessage lblMessage) {
+		super(jFrameGame);
+		
 		this.lblBet = lblBet;
 		this.lblCoins = lblCoins;
 		this.lblPot = lblPot;
+		this.lblScore = lblScore;
+		this.lblMessage = lblMessage;
 	}
 	
 	public void init(ViewInitializerInitArgs initArgs) {
@@ -88,10 +93,6 @@ public class ViewInitalizer extends AbstractViewHandler<ViewInitializerInitArgs>
 		
 		repaint();
 		show();
-	}
-	
-	public void printMessage(String msg) {
-		lblMessage.setText(msg);
 	}
 	
 	public static class ViewInitializerInitArgs {

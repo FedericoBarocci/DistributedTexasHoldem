@@ -7,12 +7,12 @@ import javax.swing.SwingConstants;
 import org.limewire.inject.LazySingleton;
 
 @LazySingleton
-public class LabelBet extends JLabel {
+public class LabelScore extends JLabel {
 
-	private static final long serialVersionUID = -4190796864327315720L;
+	private static final long serialVersionUID = 8195941055460814873L;
 
 	@Inject
-	public LabelBet() {
+	public LabelScore() {
 		super("", SwingConstants.CENTER);
 	}
 

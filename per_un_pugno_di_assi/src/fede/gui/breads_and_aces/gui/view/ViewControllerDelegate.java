@@ -7,9 +7,10 @@ import javax.inject.Inject;
 import org.limewire.inject.LazySingleton;
 
 import breads_and_aces.game.core.BetManager;
+import breads_and_aces.game.model.oracle.actions.Action;
 import breads_and_aces.game.model.oracle.actions.ActionKeeper;
 import breads_and_aces.game.model.players.player.Player;
-import breads_and_aces.gui.labels.LabelPot;
+import breads_and_aces.game.model.state.GameState;
 import breads_and_aces.gui.view.PlayersViewHandler.PlayersViewHandlerInitArgs;
 import breads_and_aces.gui.view.ViewInitalizer.ViewInitializerInitArgs;
 
@@ -21,8 +22,8 @@ public class ViewControllerDelegate {
 	private final TableViewHandler tableView;
 	private final PlayersViewHandler playersView;
 	private final ButtonsViewHandler buttonsViewHandler;
-	private final LabelPot lblPot;
 	private final BetManager betManager;
+	private final LabelHandler labelHandler;
 
 	private boolean refresh = false;
 	private int goal;
@@ -30,32 +31,25 @@ public class ViewControllerDelegate {
 	@Inject
 	public ViewControllerDelegate(ViewInitalizer viewInitializer,
 			TableViewHandler tableView, PlayersViewHandler playersView,
-			ButtonsViewHandler buttonsViewHandler, LabelPot lblPot, BetManager betManager) {
+			ButtonsViewHandler buttonsViewHandler, BetManager betManager, LabelHandler labelHandler) {
 		this.viewInitializer = viewInitializer;
 		this.tableView = tableView;
 		this.playersView = playersView;
 		this.buttonsViewHandler = buttonsViewHandler;
-		this.lblPot = lblPot;
 		this.betManager = betManager;
+		this.labelHandler = labelHandler;
 	}
 
-	// public void init(InitArgs args) {
-	// this.goal = args.goal;
-	//
-	// refresh(args.players, args.myName);
-	// viewInitializer.init(args.myName, args.initialCoins);
-	// }
-	public void init(List<Player> players, String myName, int goal,
-			int initialCoins) {
+	public void init(List<Player> players, String myName, int goal, int initialCoins) {
 		this.goal = goal;
 
 		refresh(players, myName);
-		ViewInitializerInitArgs viewInitializerInitArgs = new ViewInitializerInitArgs(
-				myName, initialCoins, goal);
+		ViewInitializerInitArgs viewInitializerInitArgs = new ViewInitializerInitArgs(myName, initialCoins, goal);
 
 		buttonsViewHandler.init(null);
 		viewInitializer.init(viewInitializerInitArgs);
-		viewInitializer.printMessage("Let's start the game!");
+		labelHandler.init();
+		labelHandler.printMessage("Let's start the game!");
 	}
 
 	public void setRefresh() {
@@ -68,9 +62,9 @@ public class ViewControllerDelegate {
 
 	public void refresh(List<Player> players, String myName) {
 		tableView.init(null);
-		// playersView.init(players, myName, goal);
-		PlayersViewHandlerInitArgs initArgs = new PlayersViewHandlerInitArgs(
-				players, myName, goal);
+		
+		PlayersViewHandlerInitArgs initArgs = new PlayersViewHandlerInitArgs(players, myName, goal);
+		
 		playersView.init(initArgs);
 		refresh = false;
 	}
@@ -86,6 +80,7 @@ public class ViewControllerDelegate {
 
 	public void enableButtons(boolean hasToken) {
 		buttonsViewHandler.enableButtons(hasToken);
+		buttonsViewHandler.resetText();
 	}
 
 	public void addTableCards(List<Player> players) {
@@ -105,20 +100,19 @@ public class ViewControllerDelegate {
 		}
 
 		winnersString += " win the hand!";
-		viewInitializer.printMessage(winnersString);
+		
+		labelHandler.printMessage(winnersString);
 		buttonsViewHandler.enableButtons();
 	}
 
 	public void setPlayerAction(String fromPlayer, ActionKeeper action) {
 		playersView.setPlayerAction(fromPlayer, action.getAction());
-		viewInitializer.printMessage(fromPlayer + " perform "
-				+ action.toString() + " action.");
-		lblPot.setValue(betManager.getPot());
+		labelHandler.printMessage(fromPlayer + " perform " + action.toString() + " action.");
 	}
 
 	public void endGame(String player) {
 		playersView.showWinnerId(player);
-		viewInitializer.printMessage("Hands up! The winner is " + player);
+		labelHandler.printMessage("Hands up! The winner is " + player);
 	}
 
 	static class InitArgs {
@@ -127,8 +121,7 @@ public class ViewControllerDelegate {
 		int goal;
 		int initialCoins;
 
-		public InitArgs(List<Player> players, String myName, int goal,
-				int initialCoins) {
+		public InitArgs(List<Player> players, String myName, int goal, int initialCoins) {
 			this.players = players;
 			this.myName = myName;
 			this.goal = goal;
@@ -138,5 +131,23 @@ public class ViewControllerDelegate {
 
 	public void remove(String playerId) {
 		playersView.removeElement(playerId);
+	}
+
+	public void setViewState(GameState gameState, ActionKeeper actionKeeper) {
+		betManager.setBet(gameState.getMinBet());
+		betManager.setMin(gameState.getMinBet());
+		betManager.setAction(actionKeeper.getAction());
+		
+		labelHandler.setValue(betManager.getSumAllPot(), gameState.getMinBet());
+		buttonsViewHandler.updateText(betManager.getActionKeeper().getAction());
+	}
+	
+	public void resetViewState(GameState gameState) {
+		betManager.savebet();
+		betManager.setMax(labelHandler.savebet(gameState.getMinBet()));
+		betManager.setMin(0);
+		betManager.setBet(0);
+		
+		buttonsViewHandler.updateText(Action.CHECK);
 	}
 }

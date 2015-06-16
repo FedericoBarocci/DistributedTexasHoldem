@@ -100,7 +100,7 @@ public class Player implements Serializable, Comparable<Player> {
 
 	public void setAction(ActionKeeper actionKeeper) {
 		this.action = actionKeeper.getAction();
-		this.bet += actionKeeper.getValue();
+		this.bet = actionKeeper.getValue();
 	}
 	
 	public void setAction(Action action) {

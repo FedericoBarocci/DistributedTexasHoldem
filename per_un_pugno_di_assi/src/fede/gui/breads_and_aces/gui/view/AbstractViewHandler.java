@@ -11,11 +11,8 @@ abstract public class AbstractViewHandler<T> implements InitableView<T> {
 	
 	private final JFrameGame frame;
 	
-	public AbstractViewHandler(JFrameGame/*Provider*/ jFrameGame/*Provider*/) {
-//		frame = JFrameGameProvider.INSTANCE.get();
-		frame = 
-//				jFrameGameProvider.get();
-		jFrameGame;
+	public AbstractViewHandler(JFrameGame jFrameGame) {
+		frame = jFrameGame;
 	}
 	
 	protected void addElement(JLabel e) {

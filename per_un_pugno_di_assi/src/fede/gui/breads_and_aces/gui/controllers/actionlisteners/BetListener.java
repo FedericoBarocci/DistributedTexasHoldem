@@ -18,15 +18,15 @@ public class BetListener implements MouseListener {
 	private final LabelBet lblBet;
 	private final LabelCoins lblCoins;
 	private final Game game;
-	private final BetManager potManager;
+	private final BetManager betManager;
 	private final ButtonsViewHandler buttonsView;
 	
 	@Inject
-	public BetListener(LabelBet lblBet, LabelCoins lblcoins, Game game, BetManager potManager, ButtonsViewHandler buttonsView) {
+	public BetListener(LabelBet lblBet, LabelCoins lblcoins, Game game, BetManager betManager, ButtonsViewHandler buttonsView) {
 		this.lblBet = lblBet;
 		this.lblCoins = lblcoins;
 		this.game = game;
-		this.potManager = potManager;
+		this.betManager = betManager;
 		this.buttonsView = buttonsView;
 	}
 
@@ -39,19 +39,20 @@ public class BetListener implements MouseListener {
 
 			switch (EnumButton.valueOf(lbl.getName())) {
 			case UP:
-				value = potManager.bet(10);
+				value = betManager.bet(10);
+				lblCoins.setValue(lblCoins.getValue() -10);
 				break;
 
 			case DOWN:
-				value = potManager.unbet(10);
+				value = betManager.unbet(10);
+				lblCoins.setValue(lblCoins.getValue() +10);
 				break;
 			}
 			
 			lblBet.setValue(value);
-			lblCoins.setText("" + (game.getCoins() - value));
-			potManager.setBet(value);
+			betManager.setBet(value);
 			
-			buttonsView.updateText(potManager.getActionKeeper().getAction());
+			buttonsView.updateText(betManager.getActionKeeper().getAction());
 		}
 	}
 

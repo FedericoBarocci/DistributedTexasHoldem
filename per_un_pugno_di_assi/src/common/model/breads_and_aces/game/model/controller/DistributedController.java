@@ -94,7 +94,11 @@ public class DistributedController {
 		gamePlayersKeeper.getPlayer(successor).receiveToken(fromPlayer);
 		viewControllerDelegate.setViewToken(successor);
 
-		gameState.nextGameState(actionKeeper.getAction());
+		gameState.nextGameState(actionKeeper);
+		System.out.println("actionkeeper: "+actionKeeper.getAction() + " - " + actionKeeper.getValue());
+		System.out.println(gameState.getGameState());
+		
+		viewControllerDelegate.setViewState(gameState, actionKeeper);
 		
 		OracleResponse response = gameOracle.ask();
 		
@@ -107,6 +111,7 @@ public class DistributedController {
 		if (viewControllerDelegate.isSetRefresh()) {
 			viewControllerDelegate.refresh(gamePlayersKeeper.getPlayers(), gamePlayersKeeper.getMyName());
 			viewControllerDelegate.enableButtons(gamePlayersKeeper.getMyPlayer().hasToken());
+			
 			return false;
 		}
 		
