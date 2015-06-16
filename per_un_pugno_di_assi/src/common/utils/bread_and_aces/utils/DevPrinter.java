@@ -2,33 +2,40 @@ package bread_and_aces.utils;
 
 public class DevPrinter {
 
-	private Throwable throwable;
+//	private Throwable throwable;
 
-	public  void println(String msg) {
-		System.err.println( getLine()+" "+msg);
+	public static void println(Throwable throwable, String msg) {
+		System.err.println( getLine(throwable)+" "+msg);
 	}
-	public  void println() {
-		System.err.println( getLine() );
+	public static void println(Throwable throwable) {
+		System.err.println( getLine(throwable) );
 	}
 	
-	public String getLine() {
+	private static String getLine(Throwable throwable) {
 		StackTraceElement stackTraceElement = 
 //				new Throwable().getStackTrace()[0];
 				throwable.getStackTrace()[0];
 		String classNameWithPackage = stackTraceElement.getClassName();
-		String className = classNameWithPackage;
 		String[] arraypackage = classNameWithPackage.split(".");
 		
-		if (arraypackage.length > 0)
-			className = arraypackage[arraypackage.length - 1];
+		if (arraypackage.length > 0) {
+			classNameWithPackage = arraypackage[arraypackage.length - 1];
+		}
 
 		String methodName = stackTraceElement.getMethodName();
 		int lineNumber = stackTraceElement.getLineNumber();
-		String line = className+":"+methodName+":"+lineNumber;
+		String[] splitted = classNameWithPackage.split("\\.");
+		
+		String className = classNameWithPackage;
+		if (splitted.length > 0) {
+			className = splitted[splitted.length -1];
+		}
+		
+		String line = className+"."+methodName+":"+lineNumber;
 		return line;
 	}
 	
-	public DevPrinter(Throwable throwable) {
-		this.throwable = throwable;
-	}
+//	public DevPrinter(Throwable throwable) {
+//		this.throwable = throwable;
+//	}
 }

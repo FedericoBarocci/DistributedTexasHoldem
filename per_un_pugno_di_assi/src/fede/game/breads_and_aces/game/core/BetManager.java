@@ -3,15 +3,16 @@ package breads_and_aces.game.core;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import breads_and_aces.game.Game;
-import breads_and_aces.game.exceptions.MaxReachedException;
-import breads_and_aces.game.exceptions.NegativeIntegerException;
-import breads_and_aces.game.model.oracle.actions.Action;
-import breads_and_aces.game.model.oracle.actions.ActionKeeper;
-import breads_and_aces.game.model.players.keeper.GamePlayersKeeper;
-import breads_and_aces.game.model.players.player.Player;
-import breads_and_aces.game.model.state.ActionsLogic;
-import breads_and_aces.game.model.state.GameState;
+import bread_and_aces.game.Game;
+import bread_and_aces.game.core.BoundInteger;
+import bread_and_aces.game.exceptions.MaxReachedException;
+import bread_and_aces.game.exceptions.NegativeIntegerException;
+import bread_and_aces.game.model.oracle.actions.Action;
+import bread_and_aces.game.model.oracle.actions.ActionKeeper;
+import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
+import bread_and_aces.game.model.players.player.Player;
+import bread_and_aces.game.model.state.ActionsLogic;
+import bread_and_aces.game.model.state.GameState;
 
 @Singleton
 public class BetManager {

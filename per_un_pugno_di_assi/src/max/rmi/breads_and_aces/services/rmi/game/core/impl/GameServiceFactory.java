@@ -1,8 +1,0 @@
-package breads_and_aces.services.rmi.game.core.impl;
-
-import breads_and_aces.registration.initializers.clientable.RegistrationInitializerClientable;
-
-public interface GameServiceFactory {
-	GameServiceAsSessionInitializerClientable createAsClientable(String myplayerId, RegistrationInitializerClientable registrationInitializerClientable);
-	GameServiceAsSessionInitializerServable createAsServable(String myplayerId);
-}
