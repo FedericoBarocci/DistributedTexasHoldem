@@ -7,13 +7,13 @@ import javax.inject.Inject;
 
 import org.limewire.inject.LazySingleton;
 
+import bread_and_aces.game.core.BetManager;
 import bread_and_aces.game.model.oracle.actions.Action;
 import bread_and_aces.game.model.oracle.actions.ActionKeeper;
 import bread_and_aces.game.model.players.player.Player;
 import bread_and_aces.game.model.state.GameState;
 import bread_and_aces.gui.view.PlayersViewHandler.PlayersViewHandlerInitArgs;
 import bread_and_aces.gui.view.ViewInitalizer.ViewInitializerInitArgs;
-import breads_and_aces.game.core.BetManager;
 
 @LazySingleton
 // @Singleton

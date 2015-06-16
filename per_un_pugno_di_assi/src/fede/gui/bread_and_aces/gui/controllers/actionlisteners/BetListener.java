@@ -6,13 +6,13 @@ import java.awt.event.MouseListener;
 import javax.inject.Inject;
 
 import bread_and_aces.game.Game;
+import bread_and_aces.game.core.BetManager;
 import bread_and_aces.gui.labels.LabelBet;
 import bread_and_aces.gui.labels.LabelCoins;
 import bread_and_aces.gui.view.ButtonsViewHandler;
 import bread_and_aces.gui.view.elements.ElementGUI;
 import bread_and_aces.gui.view.elements.utils.EnumButton;
 import bread_and_aces.gui.view.elements.utils.GuiUtils;
-import breads_and_aces.game.core.BetManager;
 
 public class BetListener implements MouseListener {
 	private final LabelBet lblBet;

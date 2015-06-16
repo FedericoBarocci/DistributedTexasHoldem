@@ -4,11 +4,11 @@ import javax.inject.Inject;
 
 import org.limewire.inject.LazySingleton;
 
+import bread_and_aces.game.core.BetManager;
 import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import bread_and_aces.gui.controllers.actionlisteners.init.ListenersInitializer;
 import bread_and_aces.gui.view.ViewControllerDelegate;
 import bread_and_aces.gui.view.ViewCreator;
-import breads_and_aces.game.core.BetManager;
 
 @LazySingleton
 //@Singleton

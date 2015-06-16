@@ -2,12 +2,12 @@ package bread_and_aces.game.model.oracle.responses;
 
 import java.util.List;
 
+import bread_and_aces.game.core.BetManager;
 import bread_and_aces.game.model.controller.Communication;
 import bread_and_aces.game.model.oracle.actions.Action;
 import bread_and_aces.game.model.players.player.Player;
 import bread_and_aces.game.model.state.GameState;
 import bread_and_aces.gui.view.ViewControllerDelegate;
-import breads_and_aces.game.core.BetManager;
 
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;

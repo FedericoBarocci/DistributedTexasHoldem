@@ -1,10 +1,9 @@
-package breads_and_aces.game.core;
+package bread_and_aces.game.core;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import bread_and_aces.game.Game;
-import bread_and_aces.game.core.BoundInteger;
 import bread_and_aces.game.exceptions.MaxReachedException;
 import bread_and_aces.game.exceptions.NegativeIntegerException;
 import bread_and_aces.game.model.oracle.actions.Action;
