@@ -1,8 +1,9 @@
 package bread_and_aces.services.rmi.game.core;
 
+
 import java.rmi.RemoteException;
 
-import bread_and_aces.game.model.oracle.actions.Action;
+import bread_and_aces.game.model.oracle.actions.ActionKeeper;
 import bread_and_aces.services.rmi.game.base.actionable.Actionable;
 import bread_and_aces.services.rmi.game.base.bucketable.Bucketable;
 import bread_and_aces.services.rmi.game.base.dealable.Dealable;
@@ -17,5 +18,5 @@ public interface GameService extends Echo, Bucketable, Updatable, Actionable, De
 //	void receiveCheckAndDeal(String fromPlayer, String toPlayer, GameUpdater gameUpdater) throws RemoteException;
 	
 //	void receiveStartGame(String whoHasToken) throws RemoteException;
-	void receiveWinnerEndGame(String fromPlayer, Action action) throws RemoteException;
+	void receiveWinnerEndGame(String fromPlayer, ActionKeeper actionKeeper) throws RemoteException;
 }

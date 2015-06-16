@@ -3,6 +3,7 @@ package bread_and_aces.gui.view;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import bread_and_aces.game.model.oracle.actions.Action;
 import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import bread_and_aces.gui.view.elements.ElementGUI;
 import bread_and_aces.gui.view.elements.frame.JFrameGame;
@@ -91,8 +92,8 @@ public class ButtonsViewHandler extends AbstractViewHandler<Void> {
 		super.repaint();
 	}
 	
-	public void updateText(String action) {
-		ok.setText(action);
+	public void updateText(Action action) {
+		ok.setText(action.toString());
 	}
 	
 	public ElementGUI getUp() 	{return up;}

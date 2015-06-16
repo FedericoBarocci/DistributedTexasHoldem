@@ -2,7 +2,6 @@ package bread_and_aces.game;
 
 import javax.inject.Singleton;
 
-
 @Singleton
 public class Game {
 	private boolean isStarted = false;

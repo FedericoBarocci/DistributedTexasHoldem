@@ -157,7 +157,7 @@ public class PlayerGUIHandler extends AbstractViewHandler<Void> {
 		return player.getName(); 
 	}
 
-	public void setAction(Action actionValue) {
-		this.action.setText(actionValue.toString());
+	public void setAction(Action action) {
+		this.action.setText(action.toString());
 	}
 }

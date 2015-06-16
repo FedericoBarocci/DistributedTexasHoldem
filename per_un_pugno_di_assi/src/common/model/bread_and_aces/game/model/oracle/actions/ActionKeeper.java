@@ -9,7 +9,7 @@ public class ActionKeeper implements Serializable {
 	private final Action action;
 	private final int value;
 	
-	ActionKeeper(Action action, int value) {
+	public ActionKeeper(Action action, int value) {
 		this.action = action;
 		this.value = value;
 	}
@@ -20,5 +20,16 @@ public class ActionKeeper implements Serializable {
 	
 	public int getValue() {
 		return value;
+	}
+	
+	@Override
+	public String toString() {
+		String result = action.toString();
+		
+		if (value > 0) {
+			result += " " + value;
+		}
+		
+		return result;
 	}
 }

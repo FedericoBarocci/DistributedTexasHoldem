@@ -1,5 +1,6 @@
 package bread_and_aces.gui.view;
 
+
 import java.io.File;
 
 import javax.inject.Inject;
@@ -21,6 +22,7 @@ import bread_and_aces.gui.view.elements.utils.EnumFont;
 import bread_and_aces.gui.view.elements.utils.EnumLine;
 import bread_and_aces.gui.view.elements.utils.EnumRectangle;
 import bread_and_aces.gui.view.elements.utils.GuiUtils;
+import breads_and_aces.gui.labels.LabelPot;
 
 @LazySingleton
 //@Singleton
@@ -28,17 +30,18 @@ public class ViewInitalizer extends AbstractViewHandler<ViewInitializerInitArgs>
 
 	private final LabelBet lblBet;
 	private final LabelCoins lblCoins;
+	private final JLabel lblPot;
 	
 	private JLabel lblPlayerName = new JLabel("", SwingConstants.CENTER);
 	private JLabel lblScore = new JLabel("", SwingConstants.CENTER);
-	private JLabel lblPot = new JLabel("", SwingConstants.CENTER);
 	private JLabel lblMessage = new JLabel("");
 	
 	@Inject
-	public ViewInitalizer(JFrameGame/*Provider*/ jFrameGame/*Provider*/, LabelBet lblBet, LabelCoins lblCoins) {
+	public ViewInitalizer(JFrameGame/*Provider*/ jFrameGame/*Provider*/, LabelBet lblBet, LabelCoins lblCoins, LabelPot lblPot) {
 		super(jFrameGame/*Provider*/);
 		this.lblBet = lblBet;
 		this.lblCoins = lblCoins;
+		this.lblPot = lblPot;
 	}
 	
 	public void init(ViewInitializerInitArgs initArgs) {

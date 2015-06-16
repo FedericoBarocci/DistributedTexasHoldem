@@ -3,10 +3,10 @@ package bread_and_aces.game.model.controller;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import bread_and_aces.game.core.PotManager;
 import bread_and_aces.game.model.controller.Communication.GameHolder;
 import bread_and_aces.game.model.oracle.GameOracle;
 import bread_and_aces.game.model.oracle.actions.Action;
+import bread_and_aces.game.model.oracle.actions.ActionKeeper;
 import bread_and_aces.game.model.oracle.responses.OracleResponse;
 import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import bread_and_aces.game.model.state.GameState;
@@ -15,6 +15,7 @@ import bread_and_aces.gui.controllers.exceptions.SinglePlayerException;
 import bread_and_aces.gui.view.ViewControllerDelegate;
 import bread_and_aces.services.rmi.utils.communicator.Communicator;
 import bread_and_aces.utils.DevPrinter;
+import breads_and_aces.game.model.oracle.actions.ActionKeeperFactory;
 
 @Singleton
 public class DistributedController {
@@ -24,18 +25,16 @@ public class DistributedController {
 	private final GameState gameState;
 	private final GamePlayersKeeper gamePlayersKeeper;
 	private final Communicator communicator;
-	private final PotManager potManager;
 
 	@Inject
 	public DistributedController(ViewControllerDelegate viewControllerDelegate,
 			GameOracle gameOracle, GameState gameState,
-			GamePlayersKeeper gamePlayersKeeper, Communicator communicator, PotManager potManager) {
+			GamePlayersKeeper gamePlayersKeeper, Communicator communicator) {
 		this.viewControllerDelegate = viewControllerDelegate;
 		this.gameOracle = gameOracle;
 		this.gameState = gameState;
 		this.gamePlayersKeeper = gamePlayersKeeper;
 		this.communicator = communicator;
-		this.potManager = potManager;
 	}
 
 	public void handleToken() {
@@ -51,32 +50,32 @@ public class DistributedController {
 		System.out.println("Game can start!");
 	}
 
-	public void setActionOnSend(Action action) {
-		GameHolder gh = setActionAndUpdate(gamePlayersKeeper.getMyName(), action).exec(communicator, gamePlayersKeeper, action);
+	public void setActionOnSend(ActionKeeper actionKeeper) {
+		GameHolder gh = setActionAndUpdate(gamePlayersKeeper.getMyName(), actionKeeper).exec(communicator, gamePlayersKeeper, actionKeeper);
 		// CRASH
 		gh.getCrashedOptional().ifPresent(c->{
 			Communication communication = removePlayer(c);
-			nestedSetActionOnSend(communication, action);
+			nestedSetActionOnSend(communication, actionKeeper);
 		});
 		
 		gh.getGameupdaterOptional().ifPresent(c->{gameOracle.update(c);});
 //			gameOracle.update(c)	
 	}
 	
-	private void nestedSetActionOnSend(Communication communication, Action action) {
-		communication.exec(communicator, gamePlayersKeeper, action);
+	private void nestedSetActionOnSend(Communication communication, ActionKeeper actionKeeper) {
+		communication.exec(communicator, gamePlayersKeeper, actionKeeper);
 	}
 	
-	public void setActionOnReceive(String fromPlayer, Action action) {
-		setActionAndUpdate(fromPlayer, action);
+	public void setActionOnReceive(String fromPlayer, ActionKeeper actionKeeper) {
+		setActionAndUpdate(fromPlayer, actionKeeper);
 	}
 
-	public void setActionOnReceive(String fromPlayer, Action action, GameUpdater gameUpdater) {
-		setActionAndUpdate(fromPlayer, action);
+	public void setActionOnReceive(String fromPlayer, ActionKeeper actionKeeper, GameUpdater gameUpdater) {
+		setActionAndUpdate(fromPlayer, actionKeeper);
 		gameOracle.update(gameUpdater);
 	}
 	
-	private Communication setActionAndUpdate(String fromPlayer, Action action) {
+	private Communication setActionAndUpdate(String fromPlayer, ActionKeeper actionKeeper) {
 		String successor;
 		
 		try {
@@ -89,29 +88,14 @@ public class DistributedController {
 			return Communication.END;
 		}
 		
-		//aggiornamento di PotManager nel caso di puntata
-//		if(action == ActionValue.CALL) 
-//			potManager.setCurrentPot(action.getValue());
-//			//potManager.setCurrentPot(ActionValue.CALL.getValue());
-//		if(action == ActionValue.RAISE) {
-//			potManager.setCurrentPot(action.getValue());
-//			potManager.setCurrentBet(action.getValue());
-//			//potManager.setCurrentPot(ActionValue.RAISE.getValue());
-//		}
-//		if(action == Action.ALLIN) {
-//			potManager.setCurrentPot(action.getValue());
-//			potManager.setCurrentBet(action.getValue());
-//		}
-		
-		gamePlayersKeeper.getPlayer(fromPlayer).setAction(action);
-		viewControllerDelegate.setPlayerAction(fromPlayer, action);
+		gamePlayersKeeper.getPlayer(fromPlayer).setAction(actionKeeper);
+		viewControllerDelegate.setPlayerAction(fromPlayer, actionKeeper);
 		
 		gamePlayersKeeper.getPlayer(fromPlayer).sendToken(successor);
 		gamePlayersKeeper.getPlayer(successor).receiveToken(fromPlayer);
 		viewControllerDelegate.setViewToken(successor);
-		
 
-		gameState.nextGameState(action);
+		gameState.nextGameState(actionKeeper.getAction());
 		
 		OracleResponse response = gameOracle.ask();
 		
@@ -132,7 +116,7 @@ public class DistributedController {
 
 	public Communication removePlayer(String playerId) {
 		DevPrinter.println(new Throwable(),"HO RICEVUTO UNA NOTIFICA DI CRASH PER " + playerId);
-		Communication communication = setActionAndUpdate(playerId, Action.FOLD);
+		Communication communication = setActionAndUpdate(playerId, ActionKeeperFactory.get(Action.FOLD));
 		gamePlayersKeeper.remove(playerId);
 		viewControllerDelegate.remove(playerId);
 		

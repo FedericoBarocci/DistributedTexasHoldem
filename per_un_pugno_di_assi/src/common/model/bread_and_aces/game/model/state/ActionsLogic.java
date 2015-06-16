@@ -1,78 +1,137 @@
 package bread_and_aces.game.model.state;
 
-import java.util.Arrays;
-import java.util.List;
-
 import bread_and_aces.game.model.oracle.actions.Action;
 
 public enum ActionsLogic {
 	NULL {
 		public ActionsLogic nextState(Action action) {
-			/*switch(action) {
-				case ActionSimple.ALLIN: 	return ALLIN;
-				case ActionSimple.CHECK:  	return CHECK;
-				case ActionValue.RAISE: 	return RAISE;
-				default: 					return NULL;
-			}*/
 			return action.getGameState();
 		}
-		
-		public List<ActionsLogic> getEdges() {
-			return Arrays.asList(ALLIN, CHECK, RAISE);
+
+		@Override
+		public ActionsLogic getMaxBetState() {
+			return ALLIN;
+		}
+
+		@Override
+		public ActionsLogic getMinBetState() {
+			return CHECK;
+		}
+
+		@Override
+		public ActionsLogic getBetState() {
+			return RAISE;
+		}
+
+		@Override
+		public Action getAction() {
+			return Action.CHECK;
 		}
 	},
 	CHECK {
 		public ActionsLogic nextState(Action action) {
-			/*switch(action) {
-				case ALLIN: 	return ALLIN;
-				case RAISE: 	return RAISE;
-				default: 		return CHECK;
-			}*/
 			return action.getGameState();
 		}
-		
-		public List<ActionsLogic> getEdges() {
-			return Arrays.asList(ALLIN, CHECK, RAISE);
+
+		@Override
+		public ActionsLogic getMaxBetState() {
+			return ALLIN;
+		}
+
+		@Override
+		public ActionsLogic getMinBetState() {
+			return CHECK;
+		}
+
+		@Override
+		public ActionsLogic getBetState() {
+			return RAISE;
+		}
+
+		@Override
+		public Action getAction() {
+			return Action.CHECK;
 		}
 	},
 	RAISE {
 		public ActionsLogic nextState(Action action) {
-			/*switch(action) {
-				case ALLIN: 	return ALLIN;
-				case CALL:  	return CALL;
-				default: 		return RAISE;
-			}*/
 			return action.getGameState();
 		}
-		
-		public List<ActionsLogic> getEdges() {
-			return Arrays.asList(ALLIN, RAISE, CALL);
+
+		@Override
+		public ActionsLogic getMaxBetState() {
+			return ALLIN;
+		}
+
+		@Override
+		public ActionsLogic getMinBetState() {
+			return CALL;
+		}
+
+		@Override
+		public ActionsLogic getBetState() {
+			return RAISE;
+		}
+
+		@Override
+		public Action getAction() {
+			return Action.RAISE;
 		}
 	},
 	CALL {
 		public ActionsLogic nextState(Action action) {
-			/*switch(action) {
-				case ALLIN: 	return ALLIN;
-				case RAISE: 	return RAISE;
-				default: 		return CALL;
-			}	*/
 			return action.getGameState();
 		}
-		
-		public List<ActionsLogic> getEdges() {
-			return Arrays.asList(ALLIN, RAISE, CALL);
+
+		@Override
+		public ActionsLogic getMaxBetState() {
+			return ALLIN;
+		}
+
+		@Override
+		public ActionsLogic getMinBetState() {
+			return CALL;
+		}
+
+		@Override
+		public ActionsLogic getBetState() {
+			return RAISE;
+		}
+
+		@Override
+		public Action getAction() {
+			return Action.CALL;
 		}
 	},
 	ALLIN {
 		public ActionsLogic nextState(Action action) {
 			return ALLIN;
 		}
-		
-		public List<ActionsLogic> getEdges() {
-			return Arrays.asList(ALLIN);
+
+		@Override
+		public ActionsLogic getMaxBetState() {
+			return ALLIN;
+		}
+
+		@Override
+		public ActionsLogic getMinBetState() {
+			return ALLIN;
+		}
+
+		@Override
+		public ActionsLogic getBetState() {
+			return ALLIN;
+		}
+
+		@Override
+		public Action getAction() {
+			return Action.ALLIN;
 		}
 	};
 	
-	abstract ActionsLogic nextState(Action action);
-	abstract List<ActionsLogic> getEdges();
+	abstract public ActionsLogic nextState(Action action);
+	abstract public ActionsLogic getMaxBetState();
+	abstract public ActionsLogic getMinBetState();
+	abstract public ActionsLogic getBetState();
+	abstract public Action getAction();
 }

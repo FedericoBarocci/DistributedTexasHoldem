@@ -1,7 +1,5 @@
 package bread_and_aces.game.model.state;
 
-import java.util.List;
-
 import javax.inject.Singleton;
 
 import bread_and_aces.game.model.oracle.actions.Action;
@@ -24,10 +22,5 @@ public class GameState {
 	/*for recovery*/
 	public void nextGameState(Action m) {
 		actionlogic = actionlogic.nextState(m);
-	}
-	
-	/* for gui: possible user input */
-	public List<ActionsLogic> getLegalActions() {
-		return actionlogic.getEdges();
 	}
 }
