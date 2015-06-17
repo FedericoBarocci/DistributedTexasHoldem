@@ -17,6 +17,7 @@ import bread_and_aces.node.Node;
 import bread_and_aces.node.NodeFactory;
 import bread_and_aces.registration.initializers.RegistrationInitializer;
 import bread_and_aces.registration.initializers.clientable.RegistrationInitializerClientable;
+import bread_and_aces.registration.initializers.servable.RegistrationInitializerServable;
 import bread_and_aces.registration.model.NodeConnectionInfos;
 import bread_and_aces.services.rmi.game.core.GameService;
 import bread_and_aces.services.rmi.game.core.impl.GameServiceFactory;
@@ -83,14 +84,14 @@ public class NodeInitializer {
 	
 	// as servable
 	private NodeInitializer(String nodeId, String addressToBind,
-			RegistrationInitializer registrationInitializer,
+			RegistrationInitializerServable registrationInitializerServable,
 			GameService gameService, 
 			NodeFactoryFunctor nodeFactoryFunctor,
 			Printer printer) throws RemoteException, IOException,
 			NotBoundException {
 		this(nodeId, addressToBind, gameService, 
 				nodeFactoryFunctor,
-				registrationInitializer, printer);
+				registrationInitializerServable, printer);
 	}
 	
 	// as clientable

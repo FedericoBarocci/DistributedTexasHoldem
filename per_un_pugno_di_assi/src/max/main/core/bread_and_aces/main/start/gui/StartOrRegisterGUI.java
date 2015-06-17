@@ -20,7 +20,7 @@ import javax.swing.SwingConstants;
 import bread_and_aces.gui.view.elements.frame.JFrameDefault;
 import bread_and_aces.gui.view.elements.utils.EnumFont;
 import bread_and_aces.gui.view.elements.utils.GuiUtils;
-import bread_and_aces.main.Main.LoginResult;
+import bread_and_aces.utils.DevPrinter;
 
 public class StartOrRegisterGUI extends JFrameDefault {
 	
@@ -58,7 +58,7 @@ public class StartOrRegisterGUI extends JFrameDefault {
 				if (username.isEmpty()) {
 					// TODO restore in production
 //					JOptionPane.showMessageDialog(null, "You need to insert an unique name", "Warning", JOptionPane.WARNING_MESSAGE);
-					System.out.println("dev");
+					DevPrinter.println( new Throwable(), "dev" );
 				}
 //				else { // TODO restore in production
 					String serverHost = hostTextField.getText();
@@ -174,5 +174,23 @@ public class StartOrRegisterGUI extends JFrameDefault {
 		layout.linkSize(SwingConstants.HORIZONTAL, loginButton, titleLabel);
 		pack();
 		setVisible(true);
+	}
+	
+	public static class LoginResult {
+		public String username;
+		public String serverHost;
+		public String serverPort;
+		public boolean asServable;
+		public int coins;
+		public int goal;
+
+		LoginResult(String serverHost, String serverPort, boolean asServable, String username, int coins, int goal) {
+			this.serverHost = serverHost;
+			this.serverPort = serverPort;
+			this.asServable = asServable;
+			this.username = username;
+			this.coins = coins;
+			this.goal = goal;
+		}
 	}
 }
