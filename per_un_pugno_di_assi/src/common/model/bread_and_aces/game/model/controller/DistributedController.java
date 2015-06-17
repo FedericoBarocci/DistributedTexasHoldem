@@ -3,19 +3,19 @@ package bread_and_aces.game.model.controller;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import bread_and_aces.game.exceptions.SinglePlayerException;
 import bread_and_aces.game.model.controller.Communication.GameHolder;
 import bread_and_aces.game.model.oracle.GameOracle;
 import bread_and_aces.game.model.oracle.actions.Action;
 import bread_and_aces.game.model.oracle.actions.ActionKeeper;
+import bread_and_aces.game.model.oracle.actions.ActionKeeperFactory;
 import bread_and_aces.game.model.oracle.responses.OracleResponse;
 import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import bread_and_aces.game.model.state.GameState;
 import bread_and_aces.game.updater.GameUpdater;
-import bread_and_aces.gui.controllers.exceptions.SinglePlayerException;
 import bread_and_aces.gui.view.ViewControllerDelegate;
 import bread_and_aces.services.rmi.utils.communicator.Communicator;
 import bread_and_aces.utils.DevPrinter;
-import breads_and_aces.game.model.oracle.actions.ActionKeeperFactory;
 
 @Singleton
 public class DistributedController {
@@ -95,7 +95,11 @@ public class DistributedController {
 		gamePlayersKeeper.getPlayer(successor).receiveToken(fromPlayer);
 		viewControllerDelegate.setViewToken(successor);
 
-		gameState.nextGameState(actionKeeper.getAction());
+		gameState.nextGameState(actionKeeper);
+		System.out.println("actionkeeper: "+actionKeeper.getAction() + " - " + actionKeeper.getValue());
+		System.out.println(gameState.getGameState());
+		
+		viewControllerDelegate.setViewState(gameState, actionKeeper);
 		
 		OracleResponse response = gameOracle.ask();
 		
@@ -108,6 +112,7 @@ public class DistributedController {
 		if (viewControllerDelegate.isSetRefresh()) {
 			viewControllerDelegate.refresh(gamePlayersKeeper.getPlayers(), gamePlayersKeeper.getMyName());
 			viewControllerDelegate.enableButtons(gamePlayersKeeper.getMyPlayer().hasToken());
+			
 			return false;
 		}
 		

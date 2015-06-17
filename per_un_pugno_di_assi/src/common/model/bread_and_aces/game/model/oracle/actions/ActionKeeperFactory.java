@@ -1,7 +1,5 @@
-package breads_and_aces.game.model.oracle.actions;
+package bread_and_aces.game.model.oracle.actions;
 
-import bread_and_aces.game.model.oracle.actions.Action;
-import bread_and_aces.game.model.oracle.actions.ActionKeeper;
 
 public class ActionKeeperFactory {
 

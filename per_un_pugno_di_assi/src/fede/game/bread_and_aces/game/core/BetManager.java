@@ -1,4 +1,4 @@
-package breads_and_aces.game.core;
+package bread_and_aces.game.core;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -6,6 +6,7 @@ import javax.inject.Singleton;
 import bread_and_aces.game.Game;
 import bread_and_aces.game.exceptions.MaxReachedException;
 import bread_and_aces.game.exceptions.NegativeIntegerException;
+import bread_and_aces.game.model.oracle.actions.Action;
 import bread_and_aces.game.model.oracle.actions.ActionKeeper;
 import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import bread_and_aces.game.model.players.player.Player;
@@ -21,6 +22,8 @@ public class BetManager {
 	
 	private BoundInteger betValue;
 	private ActionsLogic currentAction;
+	private int tablebet = 0;
+	private int mybet = 0;
 
 	@Inject
 	public BetManager(GamePlayersKeeper gamePlayersKeeper, GameState gameState, Game game) {
@@ -32,6 +35,8 @@ public class BetManager {
 	public void init() {
 		betValue = new BoundInteger(0, 0, game.getCoins());
 		currentAction = ActionsLogic.NULL;
+		tablebet = 0;
+		mybet = 0;
 	}
 	
 	public int bet(int i) {
@@ -64,6 +69,10 @@ public class BetManager {
 		return res;
 	}
 	
+	public void setAction(Action action) {
+		currentAction = action.getGameState().getMinBetState();
+	}
+	
 	public BoundInteger getBet() {
 		return betValue;
 	}
@@ -72,23 +81,44 @@ public class BetManager {
 		betValue.setValue(value);
 	}
 	
-	public void updateBet() {
-		betValue.setMax(betValue.getMax() - betValue.getValue());
-		betValue.setMin(betValue.getValue());
+	public void setMin(int minbet) {
+		betValue.setMin(minbet);
+	}
+	
+	public int getMax() {
+		return betValue.getMax();
+	}
+	
+	public void setMax(int max) {
+		betValue.setMax(max);
 	}
 
 	public ActionKeeper getActionKeeper() {
 		return new ActionKeeper(currentAction.getAction(), betValue.getValue());
 	}
+	
+	public void savebet() {
+		tablebet = getSumAllPot();
+		mybet += betValue.getValue();
+//		System.out.println("HO SALVATO BET" + tablebet);
+	}
 
-	public int getPot() {
-		int sum = 0;
+	public int getSumAllPot() {
+		int sum = tablebet;
 		
 		for (Player p : gamePlayersKeeper.getPlayers()) {
 			sum += p.getBet();
 		}
 		
 		return sum;
+	}
+	
+	public String toString() {
+		return betValue.toString() + " - " + currentAction.toString();
+	}
+	
+	public int getMyBet() {
+		return mybet;
 	}
 
 }

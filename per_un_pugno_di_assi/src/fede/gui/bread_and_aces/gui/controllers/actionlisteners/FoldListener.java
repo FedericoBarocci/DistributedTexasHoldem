@@ -7,10 +7,10 @@ import javax.inject.Inject;
 
 import bread_and_aces.game.model.controller.DistributedController;
 import bread_and_aces.game.model.oracle.actions.Action;
+import bread_and_aces.game.model.oracle.actions.ActionKeeperFactory;
 import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import bread_and_aces.gui.view.elements.ElementGUI;
 import bread_and_aces.gui.view.elements.utils.GuiUtils;
-import breads_and_aces.game.model.oracle.actions.ActionKeeperFactory;
 
 public class FoldListener implements MouseListener {
 	

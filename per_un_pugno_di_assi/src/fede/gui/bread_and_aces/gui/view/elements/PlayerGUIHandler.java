@@ -40,17 +40,16 @@ public class PlayerGUIHandler extends AbstractViewHandler<Void> {
 	private final JPanel scoreLevel = new TransparentPanelGUI();
 
 	@AssistedInject
-	public PlayerGUIHandler(JFrameGame/*Provider */jFrameGame/*Provider*/, 
-			@Assisted Player player, @Assisted(value="x") Integer x, @Assisted(value="y") Integer y, @Assisted(value="goal") Integer goal, @Assisted Boolean showCards) {
-		super(jFrameGame/*Provider*/);
+	public PlayerGUIHandler(JFrameGame jFrameGame, @Assisted Player player,
+			@Assisted(value = "x") Integer x, @Assisted(value = "y") Integer y,
+			@Assisted(value = "goal") Integer goal, @Assisted Boolean showCards) {
+		super(jFrameGame);
 		
 		this.player = player;
 		this.x = x;
 		this.y = y;
 		this.goal = goal;
 		this.showCards = showCards;
-	
-//		init(null);
 	}
 	
 	@Override

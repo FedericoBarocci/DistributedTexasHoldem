@@ -20,8 +20,9 @@ public class ListenersInitializer extends AbstractViewHandler<Void> {
 	private final BetListener betButton;
 
 	@Inject
-	public ListenersInitializer(JFrameGame/*Provider*/ jFrameGame/*Provider*/, ButtonsViewHandler buttonsViewHandler, OkListener okButton, FoldListener foldButton, BetListener betButton) {
-		super(jFrameGame/*Provider*/);
+	public ListenersInitializer(JFrameGame jFrameGame, ButtonsViewHandler buttonsViewHandler, OkListener okButton, FoldListener foldButton, BetListener betButton) {
+		super(jFrameGame);
+		
 		this.buttonsViewHandler = buttonsViewHandler;
 		this.okButton = okButton;
 		this.foldButton = foldButton;

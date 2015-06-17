@@ -5,16 +5,15 @@ import java.awt.event.MouseListener;
 
 import javax.inject.Inject;
 
+import bread_and_aces.game.core.BetManager;
 import bread_and_aces.game.model.controller.DistributedController;
 import bread_and_aces.gui.view.elements.ElementGUI;
 import bread_and_aces.gui.view.elements.utils.GuiUtils;
-import breads_and_aces.game.core.BetManager;
 
 public class OkListener implements MouseListener {
 
 	private final DistributedController distributedController;
 	private final BetManager betManager;
-
 
 	@Inject
 	public OkListener(DistributedController distributedController, 
@@ -27,7 +26,6 @@ public class OkListener implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		if (distributedController.leader()) {
 			distributedController.setActionOnSend(betManager.getActionKeeper());
-			betManager.updateBet();
 		}
 	}
 

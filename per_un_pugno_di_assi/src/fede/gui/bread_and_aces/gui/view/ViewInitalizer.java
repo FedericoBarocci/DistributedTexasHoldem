@@ -13,6 +13,9 @@ import org.limewire.inject.LazySingleton;
 
 import bread_and_aces.gui.labels.LabelBet;
 import bread_and_aces.gui.labels.LabelCoins;
+import bread_and_aces.gui.labels.LabelMessage;
+import bread_and_aces.gui.labels.LabelPot;
+import bread_and_aces.gui.labels.LabelScore;
 import bread_and_aces.gui.view.ViewInitalizer.ViewInitializerInitArgs;
 import bread_and_aces.gui.view.elements.ImageGUI;
 import bread_and_aces.gui.view.elements.TransparentPanelGUI;
@@ -22,26 +25,27 @@ import bread_and_aces.gui.view.elements.utils.EnumFont;
 import bread_and_aces.gui.view.elements.utils.EnumLine;
 import bread_and_aces.gui.view.elements.utils.EnumRectangle;
 import bread_and_aces.gui.view.elements.utils.GuiUtils;
-import breads_and_aces.gui.labels.LabelPot;
 
 @LazySingleton
-//@Singleton
 public class ViewInitalizer extends AbstractViewHandler<ViewInitializerInitArgs> {
 
 	private final LabelBet lblBet;
 	private final LabelCoins lblCoins;
 	private final JLabel lblPot;
+	private final LabelScore lblScore;
+	private final LabelMessage lblMessage;
 	
 	private JLabel lblPlayerName = new JLabel("", SwingConstants.CENTER);
-	private JLabel lblScore = new JLabel("", SwingConstants.CENTER);
-	private JLabel lblMessage = new JLabel("");
 	
 	@Inject
-	public ViewInitalizer(JFrameGame/*Provider*/ jFrameGame/*Provider*/, LabelBet lblBet, LabelCoins lblCoins, LabelPot lblPot) {
-		super(jFrameGame/*Provider*/);
+	public ViewInitalizer(JFrameGame jFrameGame, LabelBet lblBet, LabelCoins lblCoins, LabelPot lblPot, LabelScore lblScore, LabelMessage lblMessage) {
+		super(jFrameGame);
+		
 		this.lblBet = lblBet;
 		this.lblCoins = lblCoins;
 		this.lblPot = lblPot;
+		this.lblScore = lblScore;
+		this.lblMessage = lblMessage;
 	}
 	
 	public void init(ViewInitializerInitArgs initArgs) {
@@ -89,10 +93,6 @@ public class ViewInitalizer extends AbstractViewHandler<ViewInitializerInitArgs>
 		
 		repaint();
 		show();
-	}
-	
-	public void printMessage(String msg) {
-		lblMessage.setText(msg);
 	}
 	
 	public static class ViewInitializerInitArgs {

@@ -5,29 +5,23 @@ import java.awt.event.MouseListener;
 
 import javax.inject.Inject;
 
-import bread_and_aces.game.Game;
-import bread_and_aces.gui.labels.LabelBet;
-import bread_and_aces.gui.labels.LabelCoins;
+import bread_and_aces.game.core.BetManager;
 import bread_and_aces.gui.view.ButtonsViewHandler;
+import bread_and_aces.gui.view.LabelHandler;
 import bread_and_aces.gui.view.elements.ElementGUI;
 import bread_and_aces.gui.view.elements.utils.EnumButton;
 import bread_and_aces.gui.view.elements.utils.GuiUtils;
-import breads_and_aces.game.core.BetManager;
 
 public class BetListener implements MouseListener {
-	private final LabelBet lblBet;
-	private final LabelCoins lblCoins;
-	private final Game game;
-	private final BetManager potManager;
+	private final BetManager betManager;
 	private final ButtonsViewHandler buttonsView;
+	private final LabelHandler labelHandler;
 	
 	@Inject
-	public BetListener(LabelBet lblBet, LabelCoins lblcoins, Game game, BetManager potManager, ButtonsViewHandler buttonsView) {
-		this.lblBet = lblBet;
-		this.lblCoins = lblcoins;
-		this.game = game;
-		this.potManager = potManager;
+	public BetListener(BetManager betManager, ButtonsViewHandler buttonsView, LabelHandler labelHandler) {
+		this.betManager = betManager;
 		this.buttonsView = buttonsView;
+		this.labelHandler = labelHandler;
 	}
 
 	@Override
@@ -39,19 +33,19 @@ public class BetListener implements MouseListener {
 
 			switch (EnumButton.valueOf(lbl.getName())) {
 			case UP:
-				value = potManager.bet(10);
+				value = betManager.bet(10);
+				labelHandler.setBetValue(value, -10);
 				break;
 
 			case DOWN:
-				value = potManager.unbet(10);
+				value = betManager.unbet(10);
+				labelHandler.setBetValue(value, +10);
 				break;
 			}
 			
-			lblBet.setValue(value);
-			lblCoins.setText("" + (game.getCoins() - value));
-			potManager.setBet(value);
+			betManager.setBet(value);
 			
-			buttonsView.updateText(potManager.getActionKeeper().getAction());
+			buttonsView.updateText(betManager.getActionKeeper().getAction());
 		}
 	}
 

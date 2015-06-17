@@ -95,6 +95,22 @@ public class ButtonsViewHandler extends AbstractViewHandler<Void> {
 	public void updateText(Action action) {
 		ok.setText(action.toString());
 	}
+
+	public void updateText(String okstr, String foldstr) {
+		ok.setText(okstr);
+		fold.setText(foldstr);
+		
+		up.changeImage(GuiUtils.INSTANCE.getImageGui("up_off.png"));
+		down.changeImage(GuiUtils.INSTANCE.getImageGui("down_off.png"));
+		
+		up.setEnable(false);
+		down.setEnable(false);
+	}
+	
+	public void resetText() {
+		ok.setText(Action.CHECK.toString());
+		fold.setText(Action.FOLD.toString());
+	}
 	
 	public ElementGUI getUp() 	{return up;}
 	public ElementGUI getDown() {return down;}

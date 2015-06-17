@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 
 import bread_and_aces.game.core.Card;
 import bread_and_aces.game.exceptions.DrawException;
+import bread_and_aces.game.exceptions.SinglePlayerException;
 import bread_and_aces.game.model.oracle.actions.Action;
 import bread_and_aces.game.model.oracle.responses.OracleResponse;
 import bread_and_aces.game.model.oracle.responses.OracleResponseFactory;
@@ -18,7 +19,6 @@ import bread_and_aces.game.model.table.TableState;
 import bread_and_aces.game.model.utils.Pair;
 import bread_and_aces.game.updater.GameUpdater;
 import bread_and_aces.game.updater.PlayerData;
-import bread_and_aces.gui.controllers.exceptions.SinglePlayerException;
 
 @Singleton
 public class GameOracle {
@@ -76,21 +76,23 @@ public class GameOracle {
 		System.out.println("Oracle think all players speaked.");
 		
 		if (conditionAllAgree(players) || conditionCallToMostOneRaise(players)) {
-			System.out.println("Oracle think all players agree OR call.");
-			
-			table.setNextState();
-			
-			if (table.getState().equals(TableState.WINNER)) {
-				System.out.println(" -> Oracle think this is last step. WINNER.");
-				gamePlayersKeeper.resetActions(true);
+			if (conditionEqualBet(players)) {
+				System.out.println("Oracle think all players agree OR call.");
 				
-				return oracleResponseFactory.createOracleResponseWinner(getWinner());
+				table.setNextState();
+				
+				if (table.getState().equals(TableState.WINNER)) {
+					System.out.println(" -> Oracle think this is last step. WINNER.");
+					gamePlayersKeeper.resetActions(true);
+					
+					return oracleResponseFactory.createOracleResponseWinner(getWinner());
+				}
+				
+				System.out.println(" -> Oracle think next step. NEXT_STEP.");
+				gamePlayersKeeper.resetActions(false);
+				
+				return oracleResponseFactory.createOracleResponseNextStep(gamePlayersKeeper.getActivePlayers());
 			}
-			
-			System.out.println(" -> Oracle think next step. NEXT_STEP.");
-			gamePlayersKeeper.resetActions(false);
-			
-			return oracleResponseFactory.createOracleResponseNextStep(gamePlayersKeeper.getActivePlayers());
 		}
 		
 		System.out.println("__Oracle think no changes required. OK.");
@@ -193,6 +195,24 @@ public class GameOracle {
 	
 	private boolean conditionCallToMostOneRaise(List<Player> players) {
 		return players.stream().allMatch(p -> p.getAction().equals(Action.FOLD) || p.getAction().equals(Action.RAISE) || p.getAction().equals(Action.CALL)) 
-				&& players.stream() .filter(p -> p.getAction().equals(Action.RAISE)).count() <= 1;
+				&& players.stream().filter(p -> p.getAction().equals(Action.RAISE)).count() <= 1;
+	}
+	
+	private boolean conditionEqualBet(List<Player> players) {
+		boolean test = true;
+		int value = players.get(0).getBet();
+		
+		for(Player p : players) {
+			if (p.getAction().equals(Action.FOLD)) {
+				continue;
+			}
+			
+			if(p.getBet() != value) {
+				test = false;
+				break;
+			}
+		}
+		
+		return test;
 	}
 }

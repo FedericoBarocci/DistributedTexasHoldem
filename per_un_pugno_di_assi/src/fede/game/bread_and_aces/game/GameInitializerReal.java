@@ -4,14 +4,13 @@ import javax.inject.Inject;
 
 import org.limewire.inject.LazySingleton;
 
+import bread_and_aces.game.core.BetManager;
 import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import bread_and_aces.gui.controllers.actionlisteners.init.ListenersInitializer;
 import bread_and_aces.gui.view.ViewControllerDelegate;
 import bread_and_aces.gui.view.ViewCreator;
-import breads_and_aces.game.core.BetManager;
 
 @LazySingleton
-//@Singleton
 public class GameInitializerReal implements GameInitializer {
 
 	private final Game game;
@@ -20,10 +19,6 @@ public class GameInitializerReal implements GameInitializer {
 	private final ListenersInitializer listenersInitializer;
 	private final ViewControllerDelegate viewControllerDelegate;
 	private final BetManager betManager;
-
-//	private static final int initialCoins = 200;
-//	private static final int initialGoal = 1000;
-	
 
 	@Inject
 	public GameInitializerReal(Game game, 

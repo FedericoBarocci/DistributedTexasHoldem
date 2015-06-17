@@ -1,4 +1,4 @@
-package breads_and_aces.game.core;
+package bread_and_aces.game.core;
 
 import bread_and_aces.game.exceptions.MaxReachedException;
 import bread_and_aces.game.exceptions.NegativeIntegerException;
@@ -18,7 +18,7 @@ public class BoundInteger {
 	public int add(int integer) throws MaxReachedException {
 		int res = value + integer;
 		
-		if (res > max) {
+		if (res >= max) {
 			value = max;
 			throw new MaxReachedException();
 		}
@@ -31,7 +31,7 @@ public class BoundInteger {
 	public int subtract(int integer) throws NegativeIntegerException {
 		int res = value - integer;
 		
-		if (res < min) {
+		if (res <= min) {
 			value = min;
 			throw new NegativeIntegerException();
 		}
@@ -63,5 +63,9 @@ public class BoundInteger {
 
 	public int getValue() {
 		return value;
+	}
+	
+	public String toString() {
+		return "min: " + min + " max: " + max + " value: " + value;
 	}
 }

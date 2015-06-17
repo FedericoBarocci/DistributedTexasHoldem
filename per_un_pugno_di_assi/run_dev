@@ -26,6 +26,6 @@ else
       fi
    fi
 
-   java -cp ${guice_path}:${guice_enhanced_path}:${jgoodies_path}:bin breads_and_aces.main.Main ${args}
+   java -cp ${guice_path}:${guice_enhanced_path}:${jgoodies_path}:bin bread_and_aces.main.Main ${args}
 fi
 

@@ -28,6 +28,7 @@ public class Player implements Serializable, Comparable<Player> {
 	private boolean hasToken;
 
 	private int bet;
+	private int totalBet;
 	
 //	@Inject private Printer printer;
 
@@ -91,16 +92,26 @@ public class Player implements Serializable, Comparable<Player> {
 	}
 	
 	public void initBet() {
+		totalBet = 0;
+		bet = 0;
+	}
+	
+	public void resetBet() {
+		totalBet += bet;
 		bet = 0;
 	}
 	
 	public int getBet() {
 		return bet;
 	}
+	
+	public int getTotalBet() {
+		return totalBet;
+	}
 
 	public void setAction(ActionKeeper actionKeeper) {
 		this.action = actionKeeper.getAction();
-		this.bet += actionKeeper.getValue();
+		this.bet = actionKeeper.getValue();
 	}
 	
 	public void setAction(Action action) {

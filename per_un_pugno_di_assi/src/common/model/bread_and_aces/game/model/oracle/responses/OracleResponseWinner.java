@@ -2,26 +2,40 @@ package bread_and_aces.game.model.oracle.responses;
 
 import java.util.List;
 
+import bread_and_aces.game.core.BetManager;
+import bread_and_aces.game.model.controller.Communication;
+import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
+import bread_and_aces.game.model.players.player.Player;
+import bread_and_aces.game.model.state.GameState;
+import bread_and_aces.gui.view.ButtonsViewHandler;
+import bread_and_aces.gui.view.LabelHandler;
+import bread_and_aces.gui.view.ViewControllerDelegate;
+
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
-
-import bread_and_aces.game.model.controller.Communication;
-import bread_and_aces.game.model.players.player.Player;
-import bread_and_aces.game.model.state.ActionsLogic;
-import bread_and_aces.game.model.state.GameState;
-import bread_and_aces.gui.view.ViewControllerDelegate;
 
 public class OracleResponseWinner implements OracleResponse {
 
 	private final List<Player> winners;
 	private final GameState gameState;
 	private final ViewControllerDelegate viewControllerDelegate;
+	private final BetManager betManager;
+	private final LabelHandler labelHandler;
+	private final GamePlayersKeeper gamePlayersKeeper;
+	private final ButtonsViewHandler buttonsViewHandler;
 
 	@AssistedInject
-	public OracleResponseWinner(ViewControllerDelegate viewControllerDelegate, @Assisted List<Player> winners, GameState gameState) {
+	public OracleResponseWinner(ViewControllerDelegate viewControllerDelegate,
+			@Assisted List<Player> winners, GameState gameState,
+			BetManager betManager, LabelHandler labelHandler,
+			GamePlayersKeeper gamePlayersKeeper, ButtonsViewHandler buttonsViewHandler) {
 		this.viewControllerDelegate = viewControllerDelegate;
 		this.winners = winners;
 		this.gameState = gameState;
+		this.betManager = betManager;
+		this.labelHandler = labelHandler;
+		this.gamePlayersKeeper = gamePlayersKeeper;
+		this.buttonsViewHandler = buttonsViewHandler;
 	}
 
 	@Override
@@ -29,12 +43,38 @@ public class OracleResponseWinner implements OracleResponse {
 		viewControllerDelegate.setRefresh();
 		viewControllerDelegate.showDown(winners);
 		
-		for (Player p : winners) {
-			p.setScore(p.getScore() + 50);
-//			System.out.println("VINCE " + p.getName() + " con " + p.getRanking().toString());
-		}
+		System.out.println("sumall " + betManager.getSumAllPot());
 		
-		gameState.setGameState(ActionsLogic.NULL);
+		gamePlayersKeeper.getPlayers().forEach(p->{
+			System.out.println(p.getName());
+			System.out.println(p.getScore());
+			System.out.println(p.getBet());
+			System.out.println(p.getTotalBet());
+			
+			int score = p.getScore() - p.getTotalBet();//p.getBet();//labelHandler.getCoins();
+			
+			if (winners.contains(p)) {
+				score += Math.floorDiv(betManager.getSumAllPot(), winners.size());
+				System.out.println("VINCE " + p.getName() + " con " + p.getRanking().toString());
+			}
+//			else if (gamePlayersKeeper.getActivePlayers().contains(p)) {
+//				score -= labelHandler.getCoins();
+//			}
+
+			System.out.println("SCORE::" + p.getName() + score);
+
+			p.setScore(score);
+			p.initBet();
+			
+			if (gamePlayersKeeper.getMyPlayer().equals(p)) {
+				labelHandler.setScore(score);
+			}
+		});
+		
+		gameState.reset();
+		betManager.init();
+		labelHandler.init();
+		buttonsViewHandler.updateText("PLAY", "EXIT");
 		
 		return Communication.DEAL;
 	}
