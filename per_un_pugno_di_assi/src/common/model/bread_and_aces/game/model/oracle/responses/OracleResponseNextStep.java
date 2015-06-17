@@ -4,7 +4,6 @@ import java.util.List;
 
 import bread_and_aces.game.core.BetManager;
 import bread_and_aces.game.model.controller.Communication;
-import bread_and_aces.game.model.oracle.actions.Action;
 import bread_and_aces.game.model.players.player.Player;
 import bread_and_aces.game.model.state.GameState;
 import bread_and_aces.gui.view.ViewControllerDelegate;
@@ -30,14 +29,14 @@ public class OracleResponseNextStep implements OracleResponse {
 	@Override
 	public Communication exec() {
 		viewControllerDelegate.addTableCards(players);
-		viewControllerDelegate.resetViewState(gameState);
+		viewControllerDelegate.resetViewState();
 		
-		players.forEach(p->p.resetBet());
+		players.forEach(p->p.collectBet());
 		
 		gameState.reset();
 		
 		betManager.setMin(0);
-		betManager.setAction(Action.NONE);
+		betManager.setAction();
 		
 		return Communication.ACTION;
 	}

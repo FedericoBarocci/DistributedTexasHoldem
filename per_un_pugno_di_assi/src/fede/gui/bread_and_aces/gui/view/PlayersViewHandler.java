@@ -21,7 +21,9 @@ import bread_and_aces.gui.view.elements.utils.GuiUtils;
 //@Singleton
 public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerInitArgs> {
 	
-	private final Map<String, PlayerGUIHandler> playersGui = new LinkedHashMap<>();
+	private final Map<String, PlayerGUIHandler> playersGui = 
+			new LinkedHashMap<>();
+			//new ConcurrentSkipListMap<>();
 	private final PlayerGUIHandlerFactory playerGUIHandlerFactory;
 	private final GamePlayersKeeper gamePlayersKeeper;
 	
@@ -29,11 +31,13 @@ public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerIn
 	public PlayersViewHandler(JFrameGame jFrameGame, PlayerGUIHandlerFactory playerGUIHandlerFactory,
 			GamePlayersKeeper gamePlayersKeeper) {
 		super(jFrameGame);
+		System.out.println("HERE -> PlayersViewHandler 32");
 		this.playerGUIHandlerFactory = playerGUIHandlerFactory;
 		this.gamePlayersKeeper = gamePlayersKeeper;
 	}
 	
-	public void init(PlayersViewHandlerInitArgs args) {
+	public synchronized void init(PlayersViewHandlerInitArgs args) {
+		System.out.println("PlayersViewHandler.init");
 		int size = args.players.size();
 		int span = Math.floorDiv(GuiUtils.playerSpan, size+1);
 		
@@ -64,7 +68,8 @@ public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerIn
 		playersGui.values().forEach(p->p.showCards());
 	}
 	
-	public void setViewToken(String playerName) {
+	public synchronized void setViewToken(String playerName) {
+		System.out.println("PlayersViewHandler.setViewToken");
 		playersGui.values().forEach(p->{
 			p.unsetTokenView();
 			if (p.getId().equals(playerName)) {

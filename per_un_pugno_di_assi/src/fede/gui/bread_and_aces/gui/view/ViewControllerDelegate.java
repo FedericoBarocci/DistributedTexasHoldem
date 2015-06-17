@@ -25,6 +25,7 @@ public class ViewControllerDelegate {
 	private final ButtonsViewHandler buttonsViewHandler;
 	private final BetManager betManager;
 	private final LabelHandler labelHandler;
+	private final GameState gameState;
 
 	private boolean refresh = false;
 	private int goal;
@@ -32,13 +33,15 @@ public class ViewControllerDelegate {
 	@Inject
 	public ViewControllerDelegate(ViewInitalizer viewInitializer,
 			TableViewHandler tableView, PlayersViewHandler playersView,
-			ButtonsViewHandler buttonsViewHandler, BetManager betManager, LabelHandler labelHandler) {
+			ButtonsViewHandler buttonsViewHandler, BetManager betManager, LabelHandler labelHandler,
+			GameState gameState) {
 		this.viewInitializer = viewInitializer;
 		this.tableView = tableView;
 		this.playersView = playersView;
 		this.buttonsViewHandler = buttonsViewHandler;
 		this.betManager = betManager;
 		this.labelHandler = labelHandler;
+		this.gameState = gameState;
 	}
 
 	public void init(List<Player> players, String myName, int goal, int initialCoins) {
@@ -120,18 +123,22 @@ public class ViewControllerDelegate {
 		playersView.removeElement(playerId);
 	}
 
-	public void setViewState(GameState gameState, ActionKeeper actionKeeper) {
+	public void setViewState(ActionKeeper actionKeeper) {
 		betManager.setBet(gameState.getMinBet());
 		betManager.setMin(gameState.getMinBet());
-		betManager.setAction(actionKeeper.getAction());
+		betManager.setAction();
 		
 		labelHandler.setValue(betManager.getSumAllPot(), gameState.getMinBet());
+		
 		buttonsViewHandler.updateText(betManager.getActionKeeper().getAction());
+		//buttonsViewHandler.updateText(gameState.getGameState().getAction());
 	}
 	
-	public void resetViewState(GameState gameState) {
-		betManager.savebet();
-		betManager.setMax(labelHandler.savebet(gameState.getMinBet()));
+	public void resetViewState() {
+//		betManager.savebet();
+		int coins = labelHandler.collectCoins(gameState.getMinBet());
+		
+		betManager.setMax(coins);
 		betManager.setMin(0);
 		betManager.setBet(0);
 		

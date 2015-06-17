@@ -2,6 +2,7 @@ package bread_and_aces.game.model.state;
 
 import javax.inject.Singleton;
 
+import bread_and_aces.game.model.oracle.actions.Action;
 import bread_and_aces.game.model.oracle.actions.ActionKeeper;
 
 @Singleton
@@ -21,10 +22,11 @@ public class GameState {
 	}
 	
 	/*for recovery*/
-	public void nextGameState(ActionKeeper m) {
-		actionlogic = actionlogic.nextState(m.getAction());
-		//preventing fold value (=0)
-		minbet = Math.max(minbet, m.getValue());
+	public void nextGameState(ActionKeeper actionKeeper) {
+		if (! actionKeeper.getAction().equals(Action.FOLD)) {
+			actionlogic = actionlogic.nextState(actionKeeper.getAction());
+			minbet = Math.max(minbet, actionKeeper.getValue());
+		}
 	}
 	
 	public void reset() {
