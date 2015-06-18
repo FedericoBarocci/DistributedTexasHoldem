@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import bread_and_aces.game.model.controller.DistributedControllerLocalDelegate;
 import bread_and_aces.services.rmi.game.core.GameService;
 import bread_and_aces.services.rmi.game.keeper.GameServicesKeeper;
 import bread_and_aces.services.rmi.utils.communicator.Deliverator;
@@ -18,21 +19,35 @@ public class CrashHandler {
 	private final GameServicesKeeper gameServicesKeeper;
 	private final Printer printer;
 	private final Deliverator deliverator;
+	private final DistributedControllerLocalDelegate distributedControllerLocalDelegate;
 	
 	
 	@Inject
-	public CrashHandler(GameServicesKeeper gameServicesKeeper, Deliverator deliverator, Printer printer) {
+	public CrashHandler(GameServicesKeeper gameServicesKeeper, DistributedControllerLocalDelegate distributedControllerLocalDelegate, Deliverator deliverator, Printer printer) {
 		this.gameServicesKeeper = gameServicesKeeper;
+		this.distributedControllerLocalDelegate = distributedControllerLocalDelegate;
 		this.deliverator = deliverator;
 		this.printer = printer;
 	}
+	
+//	public void handleCrash(String crashedPeer) {
+//		handleCrashLocallyRemovingFromLocalGameServiceKeeper(crashedPeer);
+//		handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(meId, crashedPeer);
+//	}
 
 	/**
-	 * use this to handle crash in local data
+	 * use this to handle crash in local instance, removing node/player id from gameserviceKeeper (rmi level) and gameplayerskeeper (business logic level)
 	 * @param crashedDuringSync
 	 */
 	public void handleCrashLocallyRemovingFromLocalGameServiceKeeper(String crashedDuringSync) {
 		removeFromLocalGameServiceKeeper(crashedDuringSync);
+		distributedControllerLocalDelegate.removePlayerLocally(crashedDuringSync);
+	}
+	
+	private void removeFromLocalGameServiceKeeper(String crashedDuringSync) {
+		printer.println(crashedDuringSync+" not responding, removed it.");
+		gameServicesKeeper.removeService(crashedDuringSync);
+		DevPrinter.println(new Throwable(), "removed "+crashedDuringSync+" from GameServiceKeeper");
 	}
 
 	
@@ -66,32 +81,26 @@ public class CrashHandler {
 	
 
 	/**
-	 * use this to handle crash in other remote peers, so they can handle crash (really, inside call to functor {@link #updatePlayersFunctor(GameService, String)}, they use also {@link #removeFromLocalGameServiceKeeper(String)} )
+	 * use this to handle crash in other remote peers, so they can handle crash (really, inside call to functor {@link #updateNodesFunctor(GameService, String)}, they use also {@link #removeFromLocalGameServiceKeeper(String)} )
 	 * @param meId
 	 * @param crashedPeer
 	 */
 	public void handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(String meId, String crashedPeer) {
 			// nodes are unreachable, so handle the crash removing services
-			removeFromLocalGameServiceKeeper(crashedPeer);
+//			removeFromLocalGameServiceKeeper(crashedPeer);
 			
 			// we say to all to update players removing those specified in list
-			List<String> eventuallyCrashedAgain = deliverator.broadcast(meId, this::updatePlayersFunctor,  crashedPeer
-			);
+			List<String> eventuallyCrashedAgain = deliverator.broadcast(meId, this::updateNodesFunctor,  crashedPeer);
 			DevPrinter.println(new Throwable(), ""+eventuallyCrashedAgain);
 	}
-	private void updatePlayersFunctor(GameService gameService, String crashedPeer) {
+	
+	private void updateNodesFunctor(GameService gameService, String crashedPeer) {
 		try {
 			DevPrinter.println(new Throwable());
-			gameService.removeService( crashedPeer );
+			gameService.removeCrashedPeerService( crashedPeer );
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private void removeFromLocalGameServiceKeeper(String crashedDuringSync) {
-		printer.println(crashedDuringSync+" not responding, removed it.");
-		gameServicesKeeper.removeService(crashedDuringSync);
-		DevPrinter.println(new Throwable(), "removed "+crashedDuringSync+" from GameServiceKeeper");
 	}
 
 }

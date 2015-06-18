@@ -39,7 +39,7 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 			@Assisted RegistrationInitializerClientable registrationInitializerClientable,
 			DistributedController distributedController,
 			CrashHandler crashHandler) throws RemoteException {
-		super(distributedController, crashHandler);
+		super(nodeId, distributedController, crashHandler);
 		this.table = table;
 		this.game = game;
 		this.keepersUtilDelegateForClientable = keepersUtilDelegateForClientable;

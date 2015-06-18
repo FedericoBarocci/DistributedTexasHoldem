@@ -9,6 +9,7 @@ import java.util.Set;
 import bread_and_aces.services.rmi.game.core.GameService;
 import bread_and_aces.services.rmi.game.keeper.GameServicesKeeper;
 import bread_and_aces.services.rmi.utils.communicator.Communicator.CommunicatorFunctorNoArg;
+import bread_and_aces.services.rmi.utils.communicator.Communicator.CommunicatorFunctorNoArgWithId;
 import bread_and_aces.services.rmi.utils.communicator.Communicator.CommunicatorFunctorWithArg;
 import bread_and_aces.utils.DevPrinter;
 
@@ -24,12 +25,11 @@ public class Deliverator {
 	}
 
 //	public List<String> broadcast(String meId, CommunicatorFunctorNoArg communicatorFunctor, Communicator communicator) {
-	public void broadcast(String meId, CommunicatorFunctorNoArg communicatorFunctor, Communicator communicator) {
+	public void broadcast(String meId, CommunicatorFunctorNoArg communicatorFunctorNoArg, Communicator communicator) {
 		// this below is always updated each times we arrive here, because, eventually "handleRemovingLocally" remove crashed id
 		Set<String> idsFromGameService = gameServicesKeeper.getServices().keySet();
 		ListIterator<String> idsFromGameServiceListIterator = new ArrayList<>(idsFromGameService).listIterator();
 	
-//		List<String> crashedIds = new ArrayList<>();
 		// we use listiterator because we can not change a collection during its iteration, instead listiterator can do
 		while (idsFromGameServiceListIterator.hasNext()) {
 			String id = idsFromGameServiceListIterator.next();
@@ -37,16 +37,31 @@ public class Deliverator {
 			if (meId.equals(id))
 				continue;
 	
-			communicator.setCurrent(id);
+			communicator.setCurrentInterlocutor(id);
 			
 			Optional<GameService> optService = gameServicesKeeper.getService(id);
 			optService.ifPresent(service -> {
-					communicatorFunctor.exec(service);
+					communicatorFunctorNoArg.exec(service);
 			});
 		}
-//		System.out.println("Crashed during broadcast: " + crashedIds.size());
-//		return crashedIds;
-		
+	}
+	public void broadcast(String meId, CommunicatorFunctorNoArgWithId communicatorFunctorNoArgWithId) {
+		// this below is always updated each times we arrive here, because, eventually "handleRemovingLocally" remove crashed id
+		Set<String> idsFromGameService = gameServicesKeeper.getServices().keySet();
+		ListIterator<String> idsFromGameServiceListIterator = new ArrayList<>(idsFromGameService).listIterator();
+	
+		// we use listiterator because we can not change a collection during its iteration, instead listiterator can do
+		while (idsFromGameServiceListIterator.hasNext()) {
+			String id = idsFromGameServiceListIterator.next();
+			// skipping me
+			if (meId.equals(id))
+				continue;
+	
+			Optional<GameService> optService = gameServicesKeeper.getService(id);
+			optService.ifPresent(service -> {
+					communicatorFunctorNoArgWithId.exec(service, id);
+			});
+		}
 	}
 
 	public <T> List<String> broadcast(String meId, CommunicatorFunctorWithArg<T> communicatorFunctor, T arg) {
@@ -64,11 +79,7 @@ public class Deliverator {
 			
 			Optional<GameService> optService = gameServicesKeeper.getService(id);
 			optService.ifPresent(service->{
-//				try {
 					communicatorFunctor.exec(service, arg);
-//				} catch (RemoteException e) {
-//					crashedIds.add(id);
-//				}
 			});
 		}
 		DevPrinter.println(new Throwable(), "Crashed during broadcast: " + crashedIds.size());

@@ -13,6 +13,7 @@ import bread_and_aces.registration.initializers.servable.registrar.RegistrationR
 import bread_and_aces.registration.model.NodeConnectionInfos;
 import bread_and_aces.services.rmi.game.base._init.PlayersRegistrar;
 import bread_and_aces.services.rmi.game.utils.ServiceUtils;
+import bread_and_aces.utils.DevPrinter;
 
 public abstract class AbstractRegistrationInitializerClientable implements RegistrationInitializerClientable {
 	
@@ -45,7 +46,9 @@ public abstract class AbstractRegistrationInitializerClientable implements Regis
 			PlayersRegistrar remoteService = (PlayersRegistrar) ServiceUtils.lookup(initializingHostAddress, initializingHostPort);
 			RegistrationResult registrationResult = remoteService.registerPlayer(nodeConnectionInfo, playerId);
 			
-			if (registrationResult.isAccepted()) {
+			DevPrinter.println( new Throwable(), "accepted: "+registrationResult.isAccepted() );
+			
+			if ( registrationResult.isAccepted() ) {
 				playersKeeper.setMyName(playerId);
 //				printer.println("initializer confirmed my registration as new player.");
 				onAccepted(registrationResult);

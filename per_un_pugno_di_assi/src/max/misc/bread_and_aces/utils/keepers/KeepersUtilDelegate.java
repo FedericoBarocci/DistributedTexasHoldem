@@ -71,17 +71,19 @@ public class KeepersUtilDelegate implements KeepersUtilDelegateForServable, Keep
 			GameService gameService = ServiceUtils.lookup(
 					nodeConnectionInfos.getAddress(),
 					nodeConnectionInfos.getPort());
+
+         // here we register gameservice in keeper, since binding was fine
 			gameServiceKeeper.addService(playerId, gameService);
 
-			// here we register node and player, because gameservice was fine
+			// here we register node and player, since binding was fine
 			registerPlayer(playerId);
 
 			return new RegistrationResult(true, Cause.OK);
 		} catch (MalformedURLException e) {
-			printer.print(e.getMessage());
+			printer.println(e.getMessage());
 			return new RegistrationResult(false, Cause.ERROR);
 		} catch (RemoteException | NotBoundException e) {
-			printer.print("Player " + playerId+ " not registered: no more responding");
+			printer.println("Player " + playerId+ " not registered: no more responding");
 			return new RegistrationResult(false, Cause.ERROR);
 		}
 	}

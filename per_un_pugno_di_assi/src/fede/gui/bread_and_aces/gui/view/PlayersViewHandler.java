@@ -120,8 +120,11 @@ public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerIn
 	}
 
 	public void removeElement(String playerId) {
-		playersGui.get(playerId).clearFromGui();
-		playersGui.remove(playerId);
+//		DevPrinter.println( new Throwable(), "removing "+playerId );
+		if (playersGui.containsKey(playerId)) {
+			playersGui.get(playerId).clearFromGui();
+			playersGui.remove(playerId);
+		}
 	}
 	
 	static public class PlayersViewHandlerInitArgs {

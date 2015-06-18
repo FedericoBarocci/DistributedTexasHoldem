@@ -102,6 +102,7 @@ public class Main {
 			main.startNode(loginResult, addressToBind);
 
 		} catch (Exception e) {
+			DevPrinter.println( new Throwable(), "main exception");
 			handleException(e);
 		}
 	} // main
@@ -111,27 +112,31 @@ public class Main {
 			DevPrinter.println( new Throwable(), "dev" );
 			loginResult.username = args[1];
 			loginResult.asServable = Boolean.parseBoolean(args[2]);
-			System.out.println(loginResult.username+" "+loginResult.asServable);
+			System.out.println(loginResult.username+" "+ ( loginResult.asServable? "as servable": "as clientable") );
 		}
 	}
 	
-	private static void handleException(Exception e) {
-		e.printStackTrace();
-		if (e.getCause()!=null) { 
-			e.printStackTrace();
-		} else {
+	public static void handleException(Exception e) {
+
+//		if (e.getCause()!=null) {
+//			System.out.println("no cause:");
+//			e.printStackTrace();
+//		} else {
 			try {
 				Field field = e.getClass().getDeclaredField("messages");
 				field.setAccessible(true);
 				@SuppressWarnings("unchecked")
 				Set<Message> messages = (Set<Message>) field.get(e);
 				messages.forEach(m->{
-					System.err.println(m);
+					System.err.println("Exception: "+m);
 				});
+//				e.printStackTrace();
 			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e1) {
 				e1.printStackTrace();
+				
+				e.printStackTrace();
 			}
-		}
+//		}
 	} // handleException
 	
 }

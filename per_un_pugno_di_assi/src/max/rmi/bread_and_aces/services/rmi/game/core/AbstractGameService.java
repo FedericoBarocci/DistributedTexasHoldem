@@ -2,7 +2,6 @@ package bread_and_aces.services.rmi.game.core;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Collection;
 
 import bread_and_aces.game.model.controller.DistributedController;
 import bread_and_aces.game.model.oracle.actions.ActionKeeper;
@@ -19,15 +18,22 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 
 	private final CrashHandler crashHandler;
 
-	public AbstractGameService(
+	protected final String nodeId;
+
+	public AbstractGameService(String nodeId,
 			DistributedController distributedController,
 			CrashHandler crashHandler) throws RemoteException {
 		super();
 		
-//		this.nodeId = nodeId;
+		this.nodeId = nodeId;
 //		this.playersKeeper = playersKeeper;
 		this.distributedController = distributedController;
 		this.crashHandler = crashHandler;
+	}
+	
+	@Override
+	public String getId() {
+		return nodeId;
 	}
 
 	@Override
@@ -70,18 +76,18 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 	 * gameView.setViewToken(playersKeeper.getPlayer(id).getName()); }
 	 */
 	
-	@Override
+	/*@Override
 	public void removeService(Collection<String> crashedPeers) throws RemoteException {
 		DevPrinter.println(new Throwable());
 		crashedPeers.forEach(c->{
 			crashHandler.handleCrashLocallyRemovingFromLocalGameServiceKeeper(c);
 			distributedController.removePlayer(c);
 		});
-	}
+	}*/
 	@Override
-	public void removeService(String crashedPeer) throws RemoteException {
+	public void removeCrashedPeerService(String crashedPeer) throws RemoteException {
 		DevPrinter.println(new Throwable());
 		crashHandler.handleCrashLocallyRemovingFromLocalGameServiceKeeper(crashedPeer);
-		distributedController.removePlayer(crashedPeer);
+//		distributedController.removePlayer(crashedPeer);
 	}
 }

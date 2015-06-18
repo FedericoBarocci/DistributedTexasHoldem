@@ -29,7 +29,7 @@ public class GameServiceAsSessionInitializerServable extends
 			DistributedController distributedController,
 			CrashHandler crashHandler,
 			GameRegistrarProvider gameRegistrarProvider) throws RemoteException {
-		super(/*nodeId, playersKeeper,*/ distributedController, crashHandler);
+		super(nodeId, /*playersKeeper,*/ distributedController, crashHandler);
 		this.gameRegistrarProvider = gameRegistrarProvider;
 	}
 

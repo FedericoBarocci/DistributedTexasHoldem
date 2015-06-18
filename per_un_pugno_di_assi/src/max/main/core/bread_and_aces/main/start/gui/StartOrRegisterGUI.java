@@ -20,7 +20,6 @@ import javax.swing.SwingConstants;
 import bread_and_aces.gui.view.elements.frame.JFrameDefault;
 import bread_and_aces.gui.view.elements.utils.EnumFont;
 import bread_and_aces.gui.view.elements.utils.GuiUtils;
-import bread_and_aces.utils.DevPrinter;
 
 public class StartOrRegisterGUI extends JFrameDefault {
 	
@@ -55,11 +54,10 @@ public class StartOrRegisterGUI extends JFrameDefault {
 			public void actionPerformed(ActionEvent e) {
 				String username = usernameField.getText();
 				
-				if (username.isEmpty()) {
-					// TODO restore in production
-//					JOptionPane.showMessageDialog(null, "You need to insert an unique name", "Warning", JOptionPane.WARNING_MESSAGE);
-					DevPrinter.println( new Throwable(), "dev" );
-				}
+//				if (username.isEmpty()) {
+//					// TODO restore in production
+////					JOptionPane.showMessageDialog(null, "You need to insert an unique name", "Warning", JOptionPane.WARNING_MESSAGE);
+//				}
 //				else { // TODO restore in production
 					String serverHost = hostTextField.getText();
 					String serverPort = portTextField.getText();

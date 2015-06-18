@@ -13,16 +13,16 @@ public class GameServicesKeeper {
 
 	private final Map<String, GameService> servicesMap = new LinkedHashMap<>();
 
-	public void addService(String playerId, GameService gameService) {
-		servicesMap.put(playerId, gameService);
+	public void addService(String nodeId, GameService gameService) {
+		servicesMap.put(nodeId, gameService);
 	}
 	
 	public Optional<GameService> getService(String playerId) {
 		return Optional.ofNullable(servicesMap.get(playerId));
 	}
 	
-	public void removeService(String playerId) {
-		servicesMap.remove(playerId);
+	public void removeService(String nodeId) {
+		servicesMap.remove(nodeId);
 	}
 	
 	public Map<String, GameService> getServices() {

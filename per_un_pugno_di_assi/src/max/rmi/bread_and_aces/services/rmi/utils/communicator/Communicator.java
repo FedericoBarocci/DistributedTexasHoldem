@@ -36,18 +36,16 @@ public class Communicator {
 //	}
 //	public List<String> toAll(String meId, CommunicatorFunctorNoArg communicatorFunctor) {
 	public void toAll(String meId, CommunicatorFunctorNoArg communicatorFunctor) {
-//		System.out.println("toAll:41");
 		DevPrinter.println(new Throwable());
-		// TODO remove
-//		List<String> eventuallyCrashedPeers =Collections.emptyList(); 
-		
-				deliverator.broadcast(meId, communicatorFunctor, this);
-		// TODO change 
-//		return crashHandler.handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(meId, eventuallyCrashedPeers);
+		deliverator.broadcast(meId, communicatorFunctor, this);
+	}
+	public void toAll(String meId, CommunicatorFunctorNoArgWithId CommunicatorFunctorNoArgWithId) {
+		DevPrinter.println(new Throwable());
+		deliverator.broadcast(meId, CommunicatorFunctorNoArgWithId);
 	}
 //	public <T> List<String> toAll(String meId, CommunicatorFunctorWithArg<T> communicatorFunctor, T arg) {
 	public <T> void toAll(String meId, CommunicatorFunctorWithArg<T> communicatorFunctor, T arg) {
-		System.out.println("toAll:46");
+//		System.out.println("toAll:46");
 //		List<String> eventuallyCrashedPeers = 
 				deliverator.broadcast(meId, communicatorFunctor, arg);
 //		return crashHandler.handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(meId, eventuallyCrashedPeers);
@@ -104,18 +102,24 @@ public class Communicator {
 	
 	
 	@FunctionalInterface
-	public interface CommunicatorFunctorWithArg<T> {
-		void exec(GameService gameService, T arg) /*throws RemoteException*/;
-	}
-	@FunctionalInterface
 	public interface CommunicatorFunctorNoArg {
 		void exec(GameService gameService) /*throws RemoteException*/;
 	}
-	public void setCurrent(String current) {
+	@FunctionalInterface
+	public interface CommunicatorFunctorNoArgWithId {
+		void exec(GameService gameService, String nodeId) /*throws RemoteException*/;
+	}
+	@FunctionalInterface
+	public interface CommunicatorFunctorWithArg<T> {
+		void exec(GameService gameService, T arg) /*throws RemoteException*/;
+	}
+	
+	
+	public void setCurrentInterlocutor(String current) {
 		this.current = current;
 		DevPrinter.println(new Throwable(), "current is: "+current);
 	}
-	public String getCurrent() {
+	public String getCurrentInterlocutor() {
 		return current;
 	}
 }

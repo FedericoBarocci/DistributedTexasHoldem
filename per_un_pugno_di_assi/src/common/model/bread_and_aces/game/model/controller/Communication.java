@@ -23,7 +23,7 @@ public enum Communication {
 						gameService.receiveAction(gamePlayersKeeper.getMyName(), actionKeeper);
 					} catch (RemoteException e) {
 						//Game Recovery
-						currentCrashedRef.set(communicator.getCurrent());
+						currentCrashedRef.set(communicator.getCurrentInterlocutor());
 						communicator.handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(gamePlayersKeeper.getMyName(), currentCrashedRef.get());
 					}
 				}
@@ -45,7 +45,7 @@ public enum Communication {
 					try {
 						gameService.receiveActionAndDeal(gamePlayersKeeper.getMyName(), actionKeeper, gameUpdater);
 					} catch (RemoteException e) {
-						currentCrashedRef.set(communicator.getCurrent());
+						currentCrashedRef.set(communicator.getCurrentInterlocutor());
 						communicator.handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(gamePlayersKeeper.getMyName(), currentCrashedRef.get());
 					}
 				}
@@ -67,7 +67,7 @@ public enum Communication {
 					try {
 						gameService.receiveWinnerEndGame(gamePlayersKeeper.getMyName(), actionKeeper);
 					} catch (RemoteException e) {
-						currentCrashedRef.set(communicator.getCurrent());
+						currentCrashedRef.set(communicator.getCurrentInterlocutor());
 						communicator.handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(gamePlayersKeeper.getMyName(), currentCrashedRef.get());
 					}
 				}
