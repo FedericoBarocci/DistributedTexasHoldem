@@ -96,7 +96,7 @@ public class Player implements Serializable, Comparable<Player> {
 		bet = 0;
 	}
 	
-	public void resetBet() {
+	public void collectBet() {
 		totalBet += bet;
 		bet = 0;
 	}
@@ -111,27 +111,16 @@ public class Player implements Serializable, Comparable<Player> {
 
 	public void setAction(ActionKeeper actionKeeper) {
 		this.action = actionKeeper.getAction();
-		this.bet = actionKeeper.getValue();
+		
+		if (actionKeeper.getValue() > 0) {
+			this.bet = actionKeeper.getValue();
+		}
 	}
 	
 	public void setAction(Action action) {
 		this.action = action;
 	}
 	
-	
-	/*public Boolean bet(Integer num) {
-		if (num <= getChip()) {
-			setChip(getChip() - num);
-			return true;
-		}
-		return false;
-	}*/
-
-	/*public Integer allin() {
-		Integer tot = getChip();
-		setChip(0);
-		return tot;
-	}*/
 	/*
 	 * Game zone - end
 	 */

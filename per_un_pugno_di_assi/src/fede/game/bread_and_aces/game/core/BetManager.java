@@ -6,8 +6,8 @@ import javax.inject.Singleton;
 import bread_and_aces.game.Game;
 import bread_and_aces.game.exceptions.MaxReachedException;
 import bread_and_aces.game.exceptions.NegativeIntegerException;
-import bread_and_aces.game.model.oracle.actions.Action;
 import bread_and_aces.game.model.oracle.actions.ActionKeeper;
+import bread_and_aces.game.model.oracle.actions.ActionKeeperFactory;
 import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import bread_and_aces.game.model.players.player.Player;
 import bread_and_aces.game.model.state.ActionsLogic;
@@ -22,8 +22,8 @@ public class BetManager {
 	
 	private BoundInteger betValue;
 	private ActionsLogic currentAction;
-	private int tablebet = 0;
-	private int mybet = 0;
+//	private int tablebet = 0;
+//	private int mybet = 0;
 
 	@Inject
 	public BetManager(GamePlayersKeeper gamePlayersKeeper, GameState gameState, Game game) {
@@ -35,8 +35,8 @@ public class BetManager {
 	public void init() {
 		betValue = new BoundInteger(0, 0, game.getCoins());
 		currentAction = ActionsLogic.NULL;
-		tablebet = 0;
-		mybet = 0;
+//		tablebet = 0;
+//		mybet = 0;
 	}
 	
 	public int bet(int i) {
@@ -69,12 +69,9 @@ public class BetManager {
 		return res;
 	}
 	
-	public void setAction(Action action) {
-		currentAction = action.getGameState().getMinBetState();
-	}
-	
-	public BoundInteger getBet() {
-		return betValue;
+	public void setAction() {
+		//currentAction = action.getGameState().getMinBetState();
+		currentAction = gameState.getGameState().getMinBetState();
 	}
 	
 	public void setBet(int value) {
@@ -85,29 +82,26 @@ public class BetManager {
 		betValue.setMin(minbet);
 	}
 	
-	public int getMax() {
-		return betValue.getMax();
-	}
-	
 	public void setMax(int max) {
 		betValue.setMax(max);
 	}
 
 	public ActionKeeper getActionKeeper() {
-		return new ActionKeeper(currentAction.getAction(), betValue.getValue());
+		return ActionKeeperFactory.get(currentAction.getAction(), betValue.getValue());
+		//return new ActionKeeper(currentAction.getAction(), betValue.getValue());
 	}
 	
-	public void savebet() {
-		tablebet = getSumAllPot();
-		mybet += betValue.getValue();
-//		System.out.println("HO SALVATO BET" + tablebet);
-	}
+//	public void savebet() {
+//		tablebet = getSumAllPot();
+//		mybet += betValue.getValue();
+////		System.out.println("HO SALVATO BET" + tablebet);
+//	}
 
 	public int getSumAllPot() {
-		int sum = tablebet;
+		int sum = 0;//tablebet;
 		
 		for (Player p : gamePlayersKeeper.getPlayers()) {
-			sum += p.getBet();
+			sum += p.getBet() + p.getTotalBet();
 		}
 		
 		return sum;
@@ -117,8 +111,8 @@ public class BetManager {
 		return betValue.toString() + " - " + currentAction.toString();
 	}
 	
-	public int getMyBet() {
-		return mybet;
-	}
+//	public int getMyBet() {
+//		return mybet;
+//	}
 
 }

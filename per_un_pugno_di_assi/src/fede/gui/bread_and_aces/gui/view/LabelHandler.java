@@ -47,8 +47,8 @@ public class LabelHandler {
 		lblCoins.setValue(lblCoins.getMax() - minbet);
 	}
 
-	public int savebet(int minBet) {
-		int result = lblCoins.getMax() - minBet;
+	public int collectCoins(int coins) {
+		int result = lblCoins.getMax() - coins;
 		
 		lblCoins.setMax(result);
 		lblBet.setValue(0);

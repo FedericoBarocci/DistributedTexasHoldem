@@ -126,7 +126,8 @@ public class DistributedController implements DistributedControllerRemote/*, Dis
 //		gameState.nextGameState(actionKeeper);
 //		System.out.println("actionkeeper: "+actionKeeper.getAction() + " - " + actionKeeper.getValue());
 //		System.out.println(gameState.getGameState());
-//		viewControllerDelegate.setViewState(gameState, actionKeeper);
+//		
+//		viewControllerDelegate.setViewState(actionKeeper);
 		distributedControllerLocalDelegate.handleLocalState(actionKeeper, gameState);
 		
 		OracleResponse response = gameOracle.ask();

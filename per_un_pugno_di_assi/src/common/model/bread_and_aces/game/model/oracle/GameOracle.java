@@ -63,7 +63,7 @@ public class GameOracle {
 			System.out.println("Oracle think allin for all players or single player. WINNER.");
 			table.setState(TableState.WINNER);
 			
-			return oracleResponseFactory.createOracleResponseWinner(getWinner());
+			return oracleResponseFactory.createOracleResponseWinner(getWinners());
 		}
 		
 		System.out.println("Oracle think no immediate player win.");
@@ -83,9 +83,11 @@ public class GameOracle {
 				
 				if (table.getState().equals(TableState.WINNER)) {
 					System.out.println(" -> Oracle think this is last step. WINNER.");
+					
+					List <Player> winners = this.getWinners();
 					gamePlayersKeeper.resetActions(true);
 					
-					return oracleResponseFactory.createOracleResponseWinner(getWinner());
+					return oracleResponseFactory.createOracleResponseWinner(winners);
 				}
 				
 				System.out.println(" -> Oracle think next step. NEXT_STEP.");
@@ -95,6 +97,7 @@ public class GameOracle {
 			}
 		}
 		
+		players.forEach(p->System.out.println(p.getName()+" "+p.getAction()));
 		System.out.println("__Oracle think no changes required. OK.");
 		
 		return oracleResponseFactory.createOracleResponseOk();
@@ -111,24 +114,26 @@ public class GameOracle {
 		}
 	}
 	
-	private List<Player> getWinner() {
-		List<Player> players = gamePlayersKeeper.getPlayers();
+	private List<Player> getWinners() {
+		List<Player> activePlayers = gamePlayersKeeper.getActivePlayers();
 		List<Player> winnerList = new ArrayList<Player>();
 		
-		for (Player p : players) {
+		for (Player p : activePlayers) {
 			p.evaluateRanking(table.getAllCards());
 		}
 		
-		Player winner = players.get(0);
+		System.out.println("ACTIVE PLAYERS " + activePlayers.size());
+		
+		Player winner = activePlayers.get(0);
 		Integer winnerRank = winner.getRankingInt();
 		winnerList.add(winner);
 		
-		for (int i = 1; i < players.size(); i++) {
-			Player player = players.get(i);
+		for (int i = 1; i < activePlayers.size(); i++) {
+			Player player = activePlayers.get(i);
 			
-			if (player.getAction().equals(Action.FOLD)) {
-				continue;
-			}
+//			if (player.getAction().equals(Action.FOLD)) {
+//				continue;
+//			}
 			
 			Integer playerRank = player.getRankingInt();
 			
