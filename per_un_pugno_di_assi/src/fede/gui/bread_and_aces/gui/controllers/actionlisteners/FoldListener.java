@@ -25,7 +25,7 @@ public class FoldListener implements MouseListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (distributedController.leader()) {
+		if (distributedController.leader(true)) {
 			System.out.println(gamePlayersKeeper.getMyName() + " executing FOLD");
 			
 			distributedController.setActionOnSend(ActionKeeperFactory.get(Action.FOLD));

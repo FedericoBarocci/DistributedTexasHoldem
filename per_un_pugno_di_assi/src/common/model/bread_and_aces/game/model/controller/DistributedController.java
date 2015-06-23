@@ -137,7 +137,7 @@ public class DistributedController implements DistributedControllerRemote/*, Dis
 		return response.exec();
 	}
 
-	public boolean leader() {
+	public boolean leader(boolean leaveGame) {
 //		if (viewControllerDelegate.isSetRefresh()) {
 //			viewControllerDelegate.refresh(gamePlayersKeeper.getPlayers(), gamePlayersKeeper.getMyName());
 //			viewControllerDelegate.enableButtons(gamePlayersKeeper.getMyPlayer().hasToken());
@@ -146,7 +146,20 @@ public class DistributedController implements DistributedControllerRemote/*, Dis
 //		}
 //		
 //		return gamePlayersKeeper.getMyPlayer().hasToken();
-		return distributedControllerLocalDelegate.leader();
+		//return distributedControllerLocalDelegate.leader();
+		if (viewControllerDelegate.isSetRefresh()) {
+			if (leaveGame) {
+				//TODO Notify other players of current player exit (remove from playerkeeper)
+				System.exit(0);
+			}
+			
+			viewControllerDelegate.refresh(gamePlayersKeeper.getPlayers(), gamePlayersKeeper.getMyName());
+			viewControllerDelegate.enableButtons(gamePlayersKeeper.getMyPlayer().hasToken());
+			
+			return false;
+		}
+		
+		return gamePlayersKeeper.getMyPlayer().hasToken();
 	}
 
 	/**

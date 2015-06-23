@@ -103,7 +103,7 @@ public class ViewControllerDelegate {
 			winnersString += ", " + winners.get(i).getName();
 		}
 
-		winnersString += " win the hand!";
+		winnersString += " win the hand with " + winners.get(0).getRanking().toString();
 		
 		labelHandler.printMessage(winnersString);
 		buttonsViewHandler.enableButtons();

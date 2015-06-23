@@ -24,7 +24,7 @@ public class OkListener implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (distributedController.leader()) {
+		if (distributedController.leader(false)) {
 			distributedController.setActionOnSend(betManager.getActionKeeper());
 		}
 	}

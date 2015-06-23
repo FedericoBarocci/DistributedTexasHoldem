@@ -45,16 +45,20 @@ public class DistributedControllerLocalDelegate implements DistributedController
 		viewControllerDelegate.setViewToken(successor);
 	}
 	
-	boolean leader() {
-		if (viewControllerDelegate.isSetRefresh()) {
-			viewControllerDelegate.refresh(gamePlayersKeeper.getPlayers(), gamePlayersKeeper.getMyName());
-			viewControllerDelegate.enableButtons(gamePlayersKeeper.getMyPlayer().hasToken());
-			
-			return false;
-		}
-		
-		return gamePlayersKeeper.getMyPlayer().hasToken();
-	}
+//	boolean leader(boolean exit) {
+//		if (viewControllerDelegate.isSetRefresh()) {
+//			if (exit) {
+//				System.exit(0);
+//			}
+//			
+//			viewControllerDelegate.refresh(gamePlayersKeeper.getPlayers(), gamePlayersKeeper.getMyName());
+//			viewControllerDelegate.enableButtons(gamePlayersKeeper.getMyPlayer().hasToken());
+//			
+//			return false;
+//		}
+//		
+//		return gamePlayersKeeper.getMyPlayer().hasToken();
+//	}
 	
 	@Override
 	public void removePlayerLocally(String playerId) {

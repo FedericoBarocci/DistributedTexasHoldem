@@ -2,6 +2,7 @@ package bread_and_aces.game.model.oracle.responses;
 
 import java.util.List;
 
+import bread_and_aces.game.Game;
 import bread_and_aces.game.core.BetManager;
 import bread_and_aces.game.model.controller.Communication;
 import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
@@ -23,12 +24,14 @@ public class OracleResponseWinner implements OracleResponse {
 	private final LabelHandler labelHandler;
 	private final GamePlayersKeeper gamePlayersKeeper;
 	private final ButtonsViewHandler buttonsViewHandler;
+	private final Game game;
 
 	@AssistedInject
 	public OracleResponseWinner(ViewControllerDelegate viewControllerDelegate,
 			@Assisted List<Player> winners, GameState gameState,
 			BetManager betManager, LabelHandler labelHandler,
-			GamePlayersKeeper gamePlayersKeeper, ButtonsViewHandler buttonsViewHandler) {
+			GamePlayersKeeper gamePlayersKeeper, ButtonsViewHandler buttonsViewHandler,
+			Game game) {
 		this.viewControllerDelegate = viewControllerDelegate;
 		this.winners = winners;
 		this.gameState = gameState;
@@ -36,16 +39,19 @@ public class OracleResponseWinner implements OracleResponse {
 		this.labelHandler = labelHandler;
 		this.gamePlayersKeeper = gamePlayersKeeper;
 		this.buttonsViewHandler = buttonsViewHandler;
+		this.game = game;
 	}
 
 	@Override
 	public Communication exec() {
+		Communication result = Communication.DEAL;
+		
 		viewControllerDelegate.setRefresh();
 		viewControllerDelegate.showDown(winners);
 		
 		gamePlayersKeeper.getPlayers().forEach(p->p.collectBet());
 		
-		gamePlayersKeeper.getPlayers().forEach(p->{
+		for (Player p : gamePlayersKeeper.getPlayers()) {
 			int score = p.getScore() - p.getTotalBet();
 			
 			if (winners.contains(p)) {
@@ -54,13 +60,22 @@ public class OracleResponseWinner implements OracleResponse {
 			}
 
 //			System.out.println("SCORE::" + p.getName() + score);
-
+			
+			if (score < 0) {
+				score = 0;
+			}
+			else if (score >= game.getGoal()) {
+				score = game.getGoal();
+				result = Communication.END;
+				viewControllerDelegate.endGame(p.getName());
+			}
+			
 			p.setScore(score);
 			
 			if (gamePlayersKeeper.getMyPlayer().equals(p)) {
 				labelHandler.setScore(score);
 			}
-		});
+		}
 		
 		gamePlayersKeeper.getPlayers().forEach(p->p.initBet());
 		
@@ -69,7 +84,7 @@ public class OracleResponseWinner implements OracleResponse {
 		labelHandler.init();
 		buttonsViewHandler.updateText("PLAY", "EXIT");
 		
-		return Communication.DEAL;
+		return result;
 	}
 	
 	@Override
