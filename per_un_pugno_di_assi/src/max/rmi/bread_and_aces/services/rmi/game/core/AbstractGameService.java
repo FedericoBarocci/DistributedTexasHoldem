@@ -2,6 +2,10 @@ package bread_and_aces.services.rmi.game.core;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import bread_and_aces.game.model.controller.DistributedController;
 import bread_and_aces.game.model.oracle.actions.ActionKeeper;
@@ -49,11 +53,28 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 	@Override
 	public void receiveAction(String fromPlayer, ActionKeeper actionKeeper)/* throws RemoteException*/ {
 		distributedController.setActionOnReceive(fromPlayer, actionKeeper);
+		handleLeaderCrash();
 	}
 
 	@Override
 	public void receiveActionAndDeal(String fromPlayer, ActionKeeper actionKeeper, GameUpdater gameUpdater) throws RemoteException {
 		distributedController.setActionOnReceive(fromPlayer, actionKeeper, gameUpdater);
+		handleLeaderCrash();
+	}
+	
+	private void handleLeaderCrash() {
+		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+		
+		Runnable r = new Runnable() {
+			@Override
+			public void run() {
+//				distributedController.
+			}
+		};
+
+		final ScheduledFuture<?> beeperHandle = scheduler.scheduleAtFixedRate(r, 30, 30, TimeUnit.SECONDS);
+//		beeperHandle.
+//		scheduler.
 	}
 
 	@Override
