@@ -5,13 +5,12 @@ import java.rmi.RemoteException;
 
 import bread_and_aces.game.model.oracle.actions.ActionKeeper;
 import bread_and_aces.services.rmi.game.base.actionable.Actionable;
-import bread_and_aces.services.rmi.game.base.bucketable.Bucketable;
 import bread_and_aces.services.rmi.game.base.dealable.Dealable;
 import bread_and_aces.services.rmi.game.base.echo.Echo;
 import bread_and_aces.services.rmi.game.base.nodeable.Nodeable;
 import bread_and_aces.services.rmi.game.base.updatable.Updatable;
 
-public interface GameService extends Echo, Bucketable, Updatable, Actionable, Dealable, Nodeable {
+public interface GameService extends Echo, /*Bucketable,*/ Updatable, Actionable, Dealable, Nodeable {
 	public static final String SERVICE_NAME = "DistributedHoldemGameService";
 	
 //	void receiveCheck(String fromPlayer, String toPlayer) throws RemoteException;

@@ -41,10 +41,10 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 		System.out.println(playerId + " says : " + string);
 	}
 
-	@Override
-	public void receiveBucket() throws RemoteException {
-		distributedController.handleToken();
-	}
+//	@Override
+//	public void receiveBucket() throws RemoteException {
+//		distributedController.handleToken();
+//	}
 
 	@Override
 	public void receiveAction(String fromPlayer, ActionKeeper actionKeeper)/* throws RemoteException*/ {

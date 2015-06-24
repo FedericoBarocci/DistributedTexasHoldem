@@ -141,11 +141,11 @@ public class Player implements Serializable, Comparable<Player> {
 		println(name + " token received from "+receivedFrom);
 	}
 	
-	public void sendToken() {
-		hasToken = false;
-		
-		println(name + " token passed");
-	}
+//	public void sendToken() {
+//		hasToken = false;
+//		
+//		println(name + " token passed");
+//	}
 	
 	public void sendToken(String passedTo) {
 		hasToken = false;
