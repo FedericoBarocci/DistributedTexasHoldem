@@ -60,6 +60,8 @@ public class DistributedControllerLocalDelegate implements DistributedController
 //		return gamePlayersKeeper.getMyPlayer().hasToken();
 //	}
 	
+	
+	
 	@Override
 	public void removePlayerLocally(String playerId) {
 		gamePlayersKeeper.remove(playerId);

@@ -25,9 +25,8 @@ public class DistributedController implements DistributedControllerRemote/*, Dis
 	private final GameState gameState;
 	private final GamePlayersKeeper gamePlayersKeeper;
 	private final Communicator communicator;
-	
 	private final DistributedControllerLocalDelegate distributedControllerLocalDelegate;
-
+	
 	@Inject
 	public DistributedController(
 			ViewControllerDelegate viewControllerDelegate,
@@ -47,12 +46,12 @@ public class DistributedController implements DistributedControllerRemote/*, Dis
 	/**
 	 * local
 	 */
-//	@Override
-	public void handleToken() {
-//		System.out.println("Ho ricevuto il token-bucket da remoto");
-//		gamePlayersKeeper.getPlayer(gamePlayersKeeper.getMyName()).receiveToken();
-		distributedControllerLocalDelegate.handleToken();
-	}
+////	@Override
+//	public void handleToken() {
+////		System.out.println("Ho ricevuto il token-bucket da remoto");
+////		gamePlayersKeeper.getPlayer(gamePlayersKeeper.getMyName()).receiveToken();
+//		distributedControllerLocalDelegate.handleToken();
+//	}
 
 	/**
 	 * local
@@ -63,6 +62,7 @@ public class DistributedController implements DistributedControllerRemote/*, Dis
 //		viewControllerDelegate.setViewToken(whoHasToken);
 //		System.out.println("Game can start!");
 		distributedControllerLocalDelegate.receiveStartGame(whoHasToken);
+		gamePlayersKeeper.setLeaderId(whoHasToken);
 	}
 
 	/**
@@ -77,9 +77,12 @@ public class DistributedController implements DistributedControllerRemote/*, Dis
 			nestedSetActionOnSend(communication, actionKeeper);
 		});
 		
-		gh.getGameupdaterOptional().ifPresent(c->{gameOracle.update(c);});
+		gh.getGameupdaterOptional().ifPresent(c->{
+			gameOracle.update(c);
+		});
 //			gameOracle.update(c)	
 	}
+	
 	private void nestedSetActionOnSend(Communication communication, ActionKeeper actionKeeper) {
 		communication.exec(communicator, gamePlayersKeeper, actionKeeper);
 	}
@@ -107,6 +110,7 @@ public class DistributedController implements DistributedControllerRemote/*, Dis
 		try {
 			successor = gameOracle.getSuccessor(fromPlayer).getName();
 			System.out.println("Oracle tell successor: " + successor);
+			gamePlayersKeeper.setLeaderId(successor);
 		} 
 		catch (SinglePlayerException e) {
 			viewControllerDelegate.endGame(fromPlayer);
@@ -121,7 +125,7 @@ public class DistributedController implements DistributedControllerRemote/*, Dis
 //		gamePlayersKeeper.getPlayer(fromPlayer).sendToken(successor);
 //		gamePlayersKeeper.getPlayer(successor).receiveToken(fromPlayer);
 //		viewControllerDelegate.setViewToken(successor);
-		distributedControllerLocalDelegate.	handleLocalToken(fromPlayer, successor);
+		distributedControllerLocalDelegate.handleLocalToken(fromPlayer, successor);
 
 //		gameState.nextGameState(actionKeeper);
 //		System.out.println("actionkeeper: "+actionKeeper.getAction() + " - " + actionKeeper.getValue());
@@ -160,6 +164,10 @@ public class DistributedController implements DistributedControllerRemote/*, Dis
 		}
 		
 		return gamePlayersKeeper.getMyPlayer().hasToken();
+	}
+	
+	public String getLeader() {
+		return gamePlayersKeeper.getLeaderId();
 	}
 
 	/**

@@ -28,6 +28,7 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 	private final NavigableMap<PlayerRegistrationId, Player> playersMap = new TreeMap<PlayerRegistrationId, Player>();
 	
 	private String me;
+	private String leader;
 
 	/*
 	@Override
@@ -176,5 +177,15 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 		});
 		
 		return activePlayers;
+	}
+
+	@Override
+	public String getLeaderId() {
+		return leader;
+	}
+
+	@Override
+	public void setLeaderId(String leader) {
+		this.leader = leader;
 	}
 }
