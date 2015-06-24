@@ -6,14 +6,14 @@ import java.util.ListIterator;
 import java.util.Optional;
 import java.util.Set;
 
+import com.google.inject.Inject;
+
 import bread_and_aces.services.rmi.game.core.GameService;
 import bread_and_aces.services.rmi.game.keeper.GameServicesKeeper;
 import bread_and_aces.services.rmi.utils.communicator.Communicator.CommunicatorFunctorNoArg;
 import bread_and_aces.services.rmi.utils.communicator.Communicator.CommunicatorFunctorNoArgWithId;
 import bread_and_aces.services.rmi.utils.communicator.Communicator.CommunicatorFunctorWithArg;
 import bread_and_aces.utils.DevPrinter;
-
-import com.google.inject.Inject;
 
 public class Deliverator {
 	
@@ -82,7 +82,7 @@ public class Deliverator {
 					communicatorFunctor.exec(service, arg);
 			});
 		}
-		DevPrinter.println(new Throwable(), "Crashed during broadcast: " + crashedIds.size());
+		DevPrinter.println(/*new Throwable(),*/ "Crashed during broadcast: " + crashedIds.size());
 		return crashedIds;
 	}
 	

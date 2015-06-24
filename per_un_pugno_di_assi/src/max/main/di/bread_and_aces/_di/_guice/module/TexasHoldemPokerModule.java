@@ -12,6 +12,8 @@ import bread_and_aces._di.providers.registration.initializers.servable.Registrat
 import bread_and_aces._di.providers.registration.initializers.servable._gui.RegistrationInitializerServableProviderGUI;
 import bread_and_aces.game.GameInitializer;
 import bread_and_aces.game.GameInitializerReal;
+import bread_and_aces.game.model.controller.DistributedController;
+import bread_and_aces.game.model.controller.DistributedControllerForRemoteHandling;
 import bread_and_aces.game.model.oracle.responses.OracleResponseFactory;
 import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import bread_and_aces.game.model.players.keeper.PlayersKeeperImpl;
@@ -29,8 +31,8 @@ import bread_and_aces.services.rmi.game.core.impl.GameServiceFactory;
 import bread_and_aces.utils.keepers.KeepersUtilDelegate;
 import bread_and_aces.utils.keepers.KeepersUtilDelegateForClientable;
 import bread_and_aces.utils.keepers.KeepersUtilDelegateForServable;
-import bread_and_aces.utils.printer.Printer;
 import bread_and_aces.utils.printer.ConsolePrinter.ConsolePrinterReal;
+import bread_and_aces.utils.printer.Printer;
 
 public class TexasHoldemPokerModule extends 
 LimeWireInjectModule {
@@ -96,6 +98,9 @@ LimeWireInjectModule {
 		install(new FactoryModuleBuilder().build(PlayerGUIHandlerFactory.class));
 		
 		install(new FactoryModuleBuilder().build(OracleResponseFactory.class));
+		
+		
+		bind(DistributedControllerForRemoteHandling.class).to(DistributedController.class);
 	}
 
 }

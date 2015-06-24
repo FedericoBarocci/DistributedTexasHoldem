@@ -49,7 +49,7 @@ public class KeepersUtilDelegate implements KeepersUtilDelegateForServable, Keep
 	}
 
 	@Override
-	public void registerPlayer(String playerId) {
+	public void registerClientablePlayer(String playerId) {
 		long now = System.currentTimeMillis();
 
 		PlayerRegistrationId playerRegistrationId = new PlayerRegistrationId(playerId, now);
@@ -58,9 +58,10 @@ public class KeepersUtilDelegate implements KeepersUtilDelegateForServable, Keep
 		playersKeeper.addPlayer(playerRegistrationId, player);
 	}
 
+	
 	@Override
-	public void registerPlayer(String playerId, boolean isMe) {
-		registerPlayer(playerId);
+	public void registerServablePlayer(String playerId) {
+		registerClientablePlayer(playerId);
 		playersKeeper.setMyName(playerId);
 	}
 
@@ -76,7 +77,7 @@ public class KeepersUtilDelegate implements KeepersUtilDelegateForServable, Keep
 			gameServiceKeeper.addService(playerId, gameService);
 
 			// here we register node and player, since binding was fine
-			registerPlayer(playerId);
+			registerClientablePlayer(playerId);
 
 			return new RegistrationResult(true, Cause.OK);
 		} catch (MalformedURLException e) {

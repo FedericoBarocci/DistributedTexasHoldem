@@ -102,14 +102,14 @@ public class Main {
 			main.startNode(loginResult, addressToBind);
 
 		} catch (Exception e) {
-			DevPrinter.println( new Throwable(), "main exception");
+			DevPrinter.println( /*new Throwable(),*/ "main exception");
 			handleException(e);
 		}
 	} // main
 	
 	private static void handleLoginResultDev(String[] args, LoginResult loginResult) {
 		if (args.length>2) {
-			DevPrinter.println( new Throwable(), "dev" );
+			DevPrinter.println(/* new Throwable(), */"dev" );
 			loginResult.username = args[1];
 			loginResult.asServable = Boolean.parseBoolean(args[2]);
 			System.out.println(loginResult.username+" "+ ( loginResult.asServable? "as servable": "as clientable") );

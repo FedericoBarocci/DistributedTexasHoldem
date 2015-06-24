@@ -4,17 +4,24 @@ public class DevPrinter {
 
 //	private Throwable throwable;
 
-	public static void println(Throwable throwable, String msg) {
-		System.err.println( getLine(throwable)+" "+msg);
+	public static void println(/*Throwable throwable,*/ String msg) {
+		System.err.println( getLine(new Throwable())+" "+msg);
 	}
-	public static void println(Throwable throwable) {
-		System.err.println( getLine(throwable) );
+	public static void println(/*Throwable throwable*/) {
+		System.err.println( getLine(new Throwable()) );
+	}
+	public static void print(/*Throwable throwable,*/ String msg) {
+		System.err.print( getLine(new Throwable())+" "+msg);
+	}
+	public static void print(/*Throwable throwable*/) {
+		System.err.print( getLine(new Throwable()) );
 	}
 	
 	private static String getLine(Throwable throwable) {
 		StackTraceElement stackTraceElement = 
 //				new Throwable().getStackTrace()[0];
-				throwable.getStackTrace()[0];
+//				throwable.getStackTrace()[0];
+				Thread.currentThread().getStackTrace()[3];
 		String classNameWithPackage = stackTraceElement.getClassName();
 		String[] arraypackage = classNameWithPackage.split(".");
 		

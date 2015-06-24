@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import bread_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
 import bread_and_aces.game.model.players.player.Player;
@@ -14,6 +15,7 @@ import bread_and_aces.registration.initializers.servable.registrar.RegistrationR
 import bread_and_aces.registration.initializers.servable.registrar.RegistrationResult.Cause;
 import bread_and_aces.registration.model.NodeConnectionInfos;
 
+@Singleton
 public class GameRegistrarStarted implements GameRegistrar {
 
 	private final RegistrarPlayersKeeper registrarPlayersKeeper;

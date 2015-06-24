@@ -9,7 +9,7 @@ import com.google.inject.assistedinject.AssistedInject;
 
 import bread_and_aces.game.Game;
 import bread_and_aces.game.core.Card;
-import bread_and_aces.game.model.controller.DistributedController;
+import bread_and_aces.game.model.controller.DistributedControllerForRemoteHandling;
 import bread_and_aces.game.model.players.player.Player;
 import bread_and_aces.game.model.players.player.PlayerRegistrationId;
 import bread_and_aces.game.model.table.Table;
@@ -17,6 +17,7 @@ import bread_and_aces.registration.initializers.clientable.RegistrationInitializ
 import bread_and_aces.registration.model.NodeConnectionInfos;
 import bread_and_aces.services.rmi.game.core.AbstractGameService;
 import bread_and_aces.services.rmi.game.core.GameServiceClientable;
+import bread_and_aces.services.rmi.game.core.Pinger;
 import bread_and_aces.services.rmi.utils.crashhandler.CrashHandler;
 import bread_and_aces.utils.keepers.KeepersUtilDelegateForClientable;
 
@@ -28,8 +29,8 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 	private final RegistrationInitializerClientable registrationInitializerClientable;
 	private final Game game;
 	private final Table table;
-	private final DistributedController distributedController;
-	
+//	private final DistributedController distributedController;
+
 	@AssistedInject
 	public GameServiceAsSessionInitializerClientable(
 			@Assisted String nodeId,
@@ -37,14 +38,15 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 			Game game,
 			KeepersUtilDelegateForClientable keepersUtilDelegateForClientable,
 			@Assisted RegistrationInitializerClientable registrationInitializerClientable,
-			DistributedController distributedController,
+			DistributedControllerForRemoteHandling distributedControllerForRemoteHandling,
+			Pinger pinger,
 			CrashHandler crashHandler) throws RemoteException {
-		super(nodeId, distributedController, crashHandler);
+		super(nodeId, distributedControllerForRemoteHandling, pinger, crashHandler);
 		this.table = table;
 		this.game = game;
 		this.keepersUtilDelegateForClientable = keepersUtilDelegateForClientable;
 		this.registrationInitializerClientable = registrationInitializerClientable;
-		this.distributedController = distributedController;
+//		this.distributedController = distributedControllerForRemoteHandling;
 	}
 
 	@Override
@@ -72,6 +74,7 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 	
 	@Override
 	public void receiveStartGame(String whoHasToken) {
-		distributedController.receiveStartGame(whoHasToken);
+		distributedControllerForRemoteHandling.receiveStartGame(whoHasToken);
+		pinger.ping();
 	}
 }

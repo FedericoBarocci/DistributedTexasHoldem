@@ -13,4 +13,5 @@ public interface RegistrarPlayersKeeper extends PlayersKeeper {
 	void setMyName(String playerId);
 	
 	public Player getNext(String playerId);
+	void setMyselfAsLeader();
 }

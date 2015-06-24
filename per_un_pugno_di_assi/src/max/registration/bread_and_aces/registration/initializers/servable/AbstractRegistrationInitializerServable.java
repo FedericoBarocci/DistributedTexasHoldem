@@ -14,6 +14,7 @@ import bread_and_aces.services.rmi.game.base._init.PlayersSynchronizar;
 import bread_and_aces.services.rmi.game.base.dealable.Dealer;
 import bread_and_aces.services.rmi.game.core.GameService;
 import bread_and_aces.services.rmi.game.core.GameServiceClientable;
+import bread_and_aces.services.rmi.game.core.Pinger;
 import bread_and_aces.services.rmi.utils.communicator.Communicator;
 import bread_and_aces.services.rmi.utils.crashhandler.CrashHandler;
 import bread_and_aces.utils.DevPrinter;
@@ -30,6 +31,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 	private final Game game;
 	private final Printer printer;
 	private final CrashHandler crashHandler;
+	private final Pinger pinger;
 	
 	public AbstractRegistrationInitializerServable(String nodeId, 
 			GameRegistrarProvider gameRegistrarProvider,
@@ -37,6 +39,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 			Communicator communicator,
 			Table table,
 			Game game,
+			Pinger pinger,
 			CrashHandler crashHandler,
 			Printer printer
 			) {
@@ -46,6 +49,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		this.communicator = communicator;
 		this.table = table;
 		this.game = game;
+		this.pinger = pinger;
 		this.crashHandler = crashHandler;
 		this.printer = printer;
 		((PlayersObservable)registrarPlayersKeeper).addObserver( new NewPlayersObserverAsServable( nodeId) );
@@ -67,6 +71,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		giveCards();
 		updateAllNodesForPartecipants();
 		startGame();
+		startPinger();
 	}
 
 	private void registerMyPlayer(NodeConnectionInfos thisNodeConnectionInfo, String playerId) {
@@ -84,7 +89,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 	}
 	
 	protected void updateAllNodesForPartecipants() {
-		DevPrinter.println(new Throwable());
+		DevPrinter.println(/*new Throwable()*/);
 		communicator.toAll(myId, this::updatePartecipantsOnClientFunctor);
 	}
 	private void updatePartecipantsOnClientFunctor(GameService clientableGameServiceExternalInjected, String nodeId) {
@@ -100,15 +105,15 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 			);
 		} catch (RemoteException e) {
 			// CRASH: it could happen servable sends infos to crashed clientable(s) 
-			DevPrinter.println(new Throwable(), "remote exception");
+			DevPrinter.println(/*new Throwable(),*/ "remote exception");
 //			try {
 //				String nodeId = clientableGameServiceExternalInjected.getId();
-//				System.out.println(nodeId);
+//				DevPrinter.println(nodeId);
 				crashHandler.handleCrashLocallyRemovingFromLocalGameServiceKeeper( nodeId );
 //			} catch(RemoteException e1) {
 ////				e.printStackTrace();
 ////				Main.handleException(e1);
-//				System.out.println( e1 );
+//				DevPrinter.println( e1 );
 //			}
 //			e.printStackTrace();
 
@@ -123,8 +128,9 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		game.setStarted();
 //		passBucket();
 		printer.println("Inizio io perché comando io!");
-		registrarPlayersKeeper.getMyPlayer().receiveToken();
-		DevPrinter.println(new Throwable(), "just before to sayToAllStartGame");
+		registrarPlayersKeeper.setMyselfAsLeader();
+//		.receiveToken();
+//		DevPrinter.println(/*new Throwable(),*/ "just before to sayToAllStartGame");
 		communicator.toAll(myId, this::sayToAllStartGame);
 	}
 	
@@ -136,16 +142,19 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 	}	
 	private void passBucket(GameService gameServiceExternalInjected) throws RemoteException {
 		gameServiceExternalInjected.receiveBucket();
-		System.out.println("Ho passato bucket");
+		DevPrinter.println("Ho passato bucket");
 	}*/
 	
 	private void sayToAllStartGame(GameService gameServiceExternalInjected) {
 		try {
 			((GameServiceClientable) gameServiceExternalInjected).receiveStartGame(myId);
 		} catch (RemoteException e) {
-			System.out.println("sayToAllStartGame exception");
-			// TODO Auto-generated catch block
+			DevPrinter.println("sayToAllStartGame exception");
 			e.printStackTrace();
 		}
+	}
+	
+	private void startPinger() {
+		pinger.ping();		
 	}
 }

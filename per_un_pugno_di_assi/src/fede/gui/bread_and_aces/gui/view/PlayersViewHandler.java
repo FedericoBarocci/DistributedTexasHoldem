@@ -16,6 +16,7 @@ import bread_and_aces.gui.view.elements.PlayerGUIHandler;
 import bread_and_aces.gui.view.elements.PlayerGUIHandlerFactory;
 import bread_and_aces.gui.view.elements.frame.JFrameGame;
 import bread_and_aces.gui.view.elements.utils.GuiUtils;
+import bread_and_aces.utils.DevPrinter;
 
 @LazySingleton
 //@Singleton
@@ -31,13 +32,13 @@ public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerIn
 	public PlayersViewHandler(JFrameGame jFrameGame, PlayerGUIHandlerFactory playerGUIHandlerFactory,
 			GamePlayersKeeper gamePlayersKeeper) {
 		super(jFrameGame);
-		System.out.println("HERE -> PlayersViewHandler 32");
+		DevPrinter.println("HERE -> PlayersViewHandler 32");
 		this.playerGUIHandlerFactory = playerGUIHandlerFactory;
 		this.gamePlayersKeeper = gamePlayersKeeper;
 	}
 	
 	public synchronized void init(PlayersViewHandlerInitArgs args) {
-		System.out.println("PlayersViewHandler.init");
+		DevPrinter.println("PlayersViewHandler.init");
 		int size = args.players.size();
 		int span = Math.floorDiv(GuiUtils.playerSpan, size+1);
 		
@@ -69,7 +70,7 @@ public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerIn
 	}
 	
 	public synchronized void setViewToken(String playerName) {
-		System.out.println("PlayersViewHandler.setViewToken");
+		DevPrinter.println("PlayersViewHandler.setViewToken");
 		playersGui.values().forEach(p->{
 			p.unsetTokenView();
 			if (p.getId().equals(playerName)) {

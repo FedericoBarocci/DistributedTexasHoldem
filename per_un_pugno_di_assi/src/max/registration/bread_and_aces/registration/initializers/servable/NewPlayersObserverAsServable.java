@@ -1,5 +1,6 @@
 package bread_and_aces.registration.initializers.servable;
 
+import bread_and_aces.utils.DevPrinter;
 import bread_and_aces.utils.observatory.Observable;
 import bread_and_aces.utils.observatory.Observer;
 
@@ -14,6 +15,6 @@ public class NewPlayersObserverAsServable implements Observer<String> {
 	@Override
 	public void update(Observable<String> o, String playerId) {
 		if (!playerId.equals(myNodeId))
-			System.out.println("Registered new player: "+playerId);
+			DevPrinter.println("Registered new player: "+playerId);
 	}
 }

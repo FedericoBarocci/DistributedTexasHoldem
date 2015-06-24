@@ -47,7 +47,7 @@ public class CrashHandler {
 	private void removeFromLocalGameServiceKeeper(String crashedDuringSync) {
 		printer.println(crashedDuringSync+" not responding, removed it.");
 		gameServicesKeeper.removeService(crashedDuringSync);
-		DevPrinter.println(new Throwable(), "removed "+crashedDuringSync+" from GameServiceKeeper");
+		DevPrinter.println(/*new Throwable(),*/ "removed "+crashedDuringSync+" from GameServiceKeeper");
 	}
 
 	
@@ -91,12 +91,12 @@ public class CrashHandler {
 			
 			// we say to all to update players removing those specified in list
 			List<String> eventuallyCrashedAgain = deliverator.broadcast(meId, this::updateNodesFunctor,  crashedPeer);
-			DevPrinter.println(new Throwable(), ""+eventuallyCrashedAgain);
+			DevPrinter.println(/*new Throwable(), */""+eventuallyCrashedAgain);
 	}
 	
 	private void updateNodesFunctor(GameService gameService, String crashedPeer) {
 		try {
-			DevPrinter.println(new Throwable());
+			DevPrinter.println(/*new Throwable()*/);
 			gameService.removeCrashedPeerService( crashedPeer );
 		} catch (RemoteException e) {
 			e.printStackTrace();

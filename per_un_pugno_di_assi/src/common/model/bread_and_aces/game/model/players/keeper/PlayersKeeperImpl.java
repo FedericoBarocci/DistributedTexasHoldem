@@ -1,6 +1,7 @@
 package bread_and_aces.game.model.players.keeper;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import javax.inject.Singleton;
 import bread_and_aces.game.model.oracle.actions.Action;
 import bread_and_aces.game.model.players.player.Player;
 import bread_and_aces.game.model.players.player.PlayerRegistrationId;
+import bread_and_aces.utils.DevPrinter;
 import bread_and_aces.utils.observatory.ObservableDelegate;
 import bread_and_aces.utils.observatory.Observer;
 
@@ -54,7 +56,7 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 	@Override
 	public void addPlayer(PlayerRegistrationId playerRegistrationId, Player player) {
 		playersMap.put(playerRegistrationId, player);
-		notifyObservers(player.getName());
+		notifyObservers( player.getName() );
 	}
 	
 	@Override
@@ -69,12 +71,27 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 	 */
 	@Override
 	public Player getNext(String playerId) {
-		Optional<PlayerRegistrationId> key = findKey(playerId);
-		PlayerRegistrationId playerRegistrationId = key.get();
-		return Optional
-				.ofNullable( playersMap.tailMap(playerRegistrationId, false).firstEntry() )
-				.orElse( playersMap.firstEntry() )
-				.getValue();
+DevPrinter.println("searching next of "+playerId);
+		Optional<PlayerRegistrationId> optionalPlayerRegistrationId = findKey(playerId);
+//		try {
+//DevPrinter.println("playerRegistrationId: "+optionalPlayerRegistrationId.get().getId() );
+//		} catch (Exception e) {
+//			DevPrinter.println("argh!");
+//		}
+	
+		PlayerRegistrationId playerRegistrationId = optionalPlayerRegistrationId.orElse( playersMap.firstKey() );
+
+//		PlayerRegistrationId playerRegistrationId = optionalPlayerRegistrationId.get();
+DevPrinter.println("playerRegistrationId: "+playerRegistrationId.getId());
+		Player value = 
+//				Optional
+//				.ofNullable( playersMap.tailMap(playerRegistrationId, false).firstEntry().getValue() )
+//				.orElse( playersMap.firstEntry().getValue() )
+//				.getValue()
+				playersMap.get(playerRegistrationId);
+				;
+		DevPrinter.println("next: "+value.getName());
+		return value;
 	}
 	
 	@Override
@@ -93,7 +110,11 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 	
 	@Override
 	public void remove(String playerId) {
-		findKey(playerId).ifPresent(pri->{playersMap.remove(pri);});
+		findKey(playerId).ifPresent(pri->{
+			DevPrinter.print("removing "+pri.getId()+": ");
+			playersMap.remove(pri);
+			DevPrinter.println("ok");
+		});
 	}
 
 	@Override
@@ -103,7 +124,7 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 
 	@Override
 	public Player getMyPlayer() {
-		return getPlayer(getMyName());
+		return getPlayer( getMyName() );
 	}
 	
 	@Override
@@ -121,8 +142,13 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 	 */
 	@Override
 	public List<Player> getPlayers() {
+		// why this ?!
 		final LinkedList<Player> linkedList = new LinkedList<Player>();
-		linkedList.addAll(playersMap.values());
+		Collection<Player> players = playersMap.values();
+		DevPrinter.print("returning actual players: ");
+		linkedList.addAll( players  );
+		players.stream().forEach(p-> System.out.print(p.getName()+" ") );
+		DevPrinter.println();
 		return linkedList;
 	}
 	
@@ -163,7 +189,7 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 
 	@Override
 	public Player getFirst() {
-		return new LinkedList<Player>(playersMap.values()).get(0);
+		return new LinkedList<Player>( playersMap.values() ).get(0);
 	}
 
 	@Override
@@ -187,5 +213,13 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 	@Override
 	public void setLeaderId(String leader) {
 		this.leader = leader;
+	}
+
+	@Override
+	public void setMyselfAsLeader() {
+		Player myPlayer = getMyPlayer();
+		myPlayer.receiveToken();
+		
+		setLeaderId( myPlayer.getName() );
 	}
 }

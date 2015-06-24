@@ -36,11 +36,11 @@ public class Communicator {
 //	}
 //	public List<String> toAll(String meId, CommunicatorFunctorNoArg communicatorFunctor) {
 	public void toAll(String meId, CommunicatorFunctorNoArg communicatorFunctor) {
-		DevPrinter.println(new Throwable());
+		DevPrinter.println(/*new Throwable()*/);
 		deliverator.broadcast(meId, communicatorFunctor, this);
 	}
 	public void toAll(String meId, CommunicatorFunctorNoArgWithId CommunicatorFunctorNoArgWithId) {
-		DevPrinter.println(new Throwable());
+		DevPrinter.println(/*new Throwable()*/);
 		deliverator.broadcast(meId, CommunicatorFunctorNoArgWithId);
 	}
 //	public <T> List<String> toAll(String meId, CommunicatorFunctorWithArg<T> communicatorFunctor, T arg) {
@@ -117,7 +117,7 @@ public class Communicator {
 	
 	public void setCurrentInterlocutor(String current) {
 		this.current = current;
-		DevPrinter.println(new Throwable(), "current is: "+current);
+		DevPrinter.println(/*new Throwable(),*/ "current is: "+current);
 	}
 	public String getCurrentInterlocutor() {
 		return current;

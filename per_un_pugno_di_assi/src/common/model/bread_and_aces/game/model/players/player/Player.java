@@ -221,6 +221,6 @@ public class Player implements Serializable, Comparable<Player> {
 //		if (printer!=null)
 //			printer.println(msg);
 		
-		DevPrinter.println(new Throwable(), msg);
+		DevPrinter.println(/*new Throwable(),*/ msg);
 	}
 }

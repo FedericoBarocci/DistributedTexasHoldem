@@ -2,6 +2,9 @@ package bread_and_aces.game.model.oracle.responses;
 
 import java.util.List;
 
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
+
 import bread_and_aces.game.Game;
 import bread_and_aces.game.core.BetManager;
 import bread_and_aces.game.model.controller.Communication;
@@ -11,9 +14,7 @@ import bread_and_aces.game.model.state.GameState;
 import bread_and_aces.gui.view.ButtonsViewHandler;
 import bread_and_aces.gui.view.LabelHandler;
 import bread_and_aces.gui.view.ViewControllerDelegate;
-
-import com.google.inject.assistedinject.Assisted;
-import com.google.inject.assistedinject.AssistedInject;
+import bread_and_aces.utils.DevPrinter;
 
 public class OracleResponseWinner implements OracleResponse {
 
@@ -56,10 +57,10 @@ public class OracleResponseWinner implements OracleResponse {
 			
 			if (winners.contains(p)) {
 				score += Math.floorDiv(betManager.getSumAllPot(), winners.size());
-				System.out.println("VINCE " + p.getName() + " con " + p.getRanking().toString());
+				DevPrinter.println("VINCE " + p.getName() + " con " + p.getRanking().toString());
 			}
 
-//			System.out.println("SCORE::" + p.getName() + score);
+//			DevPrinter.println("SCORE::" + p.getName() + score);
 			
 			if (score < 0) {
 				score = 0;

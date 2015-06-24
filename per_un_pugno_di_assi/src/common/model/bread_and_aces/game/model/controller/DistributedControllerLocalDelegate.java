@@ -8,6 +8,7 @@ import bread_and_aces.game.model.oracle.actions.ActionKeeper;
 import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import bread_and_aces.game.model.state.GameState;
 import bread_and_aces.gui.view.ViewControllerDelegate;
+import bread_and_aces.utils.DevPrinter;
 
 //@Singleton
 @LazySingleton
@@ -24,7 +25,7 @@ public class DistributedControllerLocalDelegate implements DistributedController
 	
 //	@Override
 	void handleToken() {
-		System.out.println("Ho ricevuto il token-bucket da remoto");
+		DevPrinter.println("Ho ricevuto il token-bucket da remoto");
 		gamePlayersKeeper.getPlayer(gamePlayersKeeper.getMyName()).receiveToken();
 	}
 	
@@ -32,10 +33,11 @@ public class DistributedControllerLocalDelegate implements DistributedController
 	void receiveStartGame(String whoHasToken) {
 		gamePlayersKeeper.getPlayer(whoHasToken).receiveToken();
 		viewControllerDelegate.setViewToken(whoHasToken);
-		System.out.println("Game can start!");
+		DevPrinter.println("Game can start!");
 	}
 	
 	void setLocalAction(String fromPlayer, ActionKeeper actionKeeper) {
+		// TODO if fromPlayer is leader and crashs, all hangs !
 		gamePlayersKeeper.getPlayer(fromPlayer).setAction(actionKeeper);
 		viewControllerDelegate.setPlayerAction(fromPlayer, actionKeeper);
 	}
@@ -70,8 +72,8 @@ public class DistributedControllerLocalDelegate implements DistributedController
 
 	void handleLocalState(ActionKeeper actionKeeper, GameState gameState) {
 		gameState.nextGameState(actionKeeper);
-		System.out.println("actionkeeper: "+actionKeeper.getAction() + " - " + actionKeeper.getValue());
-		System.out.println(gameState.getGameState());
+		DevPrinter.println("actionkeeper: "+actionKeeper.getAction() + " - " + actionKeeper.getValue());
+		DevPrinter.println(""+gameState.getGameState());
 		viewControllerDelegate.setViewState(actionKeeper);
 	}
 }

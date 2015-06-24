@@ -29,7 +29,7 @@ public enum Communication {
 				}
 			}
 			
-			DevPrinter.println(new Throwable());
+			DevPrinter.println(/*new Throwable()*/);
 			communicator.toAll(gamePlayersKeeper.getMyName(), new ActionClass()::performAction);
 			
 			return new GameHolder(Optional.ofNullable(currentCrashedRef.get()));

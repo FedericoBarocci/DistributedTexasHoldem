@@ -46,7 +46,7 @@ public abstract class AbstractRegistrationInitializerClientable implements Regis
 			PlayersRegistrar remoteService = (PlayersRegistrar) ServiceUtils.lookup(initializingHostAddress, initializingHostPort);
 			RegistrationResult registrationResult = remoteService.registerPlayer(nodeConnectionInfo, playerId);
 			
-			DevPrinter.println( new Throwable(), "accepted: "+registrationResult.isAccepted() );
+			DevPrinter.println("accepted: "+registrationResult.isAccepted() );
 			
 			if ( registrationResult.isAccepted() ) {
 				playersKeeper.setMyName(playerId);

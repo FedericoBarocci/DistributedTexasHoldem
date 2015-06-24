@@ -5,7 +5,16 @@ import bread_and_aces.registration.model.NodeConnectionInfos;
 
 public interface KeepersUtilDelegateForServable {
 	boolean contains(String playerId);
-	void registerPlayer(String playerId);
-	void registerPlayer(String playerId, boolean isMe);
+	/**
+	 * register clients
+	 * @param playerId
+	 */
+	void registerClientablePlayer(String playerId);
+	/**
+	 * register servable itself
+	 * @param playerId
+	 * @param isMe
+	 */
+	void registerServablePlayer(String playerId);
 	RegistrationResult registerClientableNodePlayerGameService(NodeConnectionInfos nodeConnectionInfos, String playerId);
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import bread_and_aces.game.model.players.player.Player;
 import bread_and_aces.game.model.players.player.PlayerRegistrationId;
@@ -15,6 +16,7 @@ import bread_and_aces.registration.initializers.servable.registrar.RegistrationR
 import bread_and_aces.registration.model.NodeConnectionInfos;
 import bread_and_aces.utils.keepers.KeepersUtilDelegateForServable;
 
+@Singleton
 public class GameRegistrarInit implements GameRegistrar {
 
 	private final KeepersUtilDelegateForServable keepersUtilsForServable;
@@ -30,7 +32,7 @@ public class GameRegistrarInit implements GameRegistrar {
 		if (nodesConnectionInfos.size() == 0) { 
 			// if size is zero, we are adding servable node
 			nodesConnectionInfos.add(nodeConnectionInfos);
-			keepersUtilsForServable.registerPlayer(playerId, true);
+			keepersUtilsForServable.registerServablePlayer(playerId);
 			// dummy return
 			return new RegistrationResult(true, Cause.OK);
 		} 

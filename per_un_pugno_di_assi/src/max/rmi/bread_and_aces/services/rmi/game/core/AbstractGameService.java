@@ -2,36 +2,31 @@ package bread_and_aces.services.rmi.game.core;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
-import bread_and_aces.game.model.controller.DistributedController;
+import bread_and_aces.game.model.controller.DistributedControllerForRemoteHandling;
 import bread_and_aces.game.model.oracle.actions.ActionKeeper;
 import bread_and_aces.game.updater.GameUpdater;
 import bread_and_aces.services.rmi.utils.crashhandler.CrashHandler;
 import bread_and_aces.utils.DevPrinter;
 
-public abstract class AbstractGameService extends UnicastRemoteObject implements
-		GameService {
+public abstract class AbstractGameService extends UnicastRemoteObject implements GameService {
 
 	private static final long serialVersionUID = 7999272435762156455L;
 
-	private final DistributedController distributedController;
-
+	
 	private final CrashHandler crashHandler;
-
-	protected final String nodeId;
-
+	private final String nodeId;
+	protected final DistributedControllerForRemoteHandling distributedControllerForRemoteHandling;
+	protected final Pinger pinger;
+	
 	public AbstractGameService(String nodeId,
-			DistributedController distributedController,
+			DistributedControllerForRemoteHandling distributedControllerForRemoteHandling,
+			Pinger pinger,
 			CrashHandler crashHandler) throws RemoteException {
 		super();
-		
 		this.nodeId = nodeId;
-//		this.playersKeeper = playersKeeper;
-		this.distributedController = distributedController;
+		this.distributedControllerForRemoteHandling = distributedControllerForRemoteHandling;
+		this.pinger = pinger;
 		this.crashHandler = crashHandler;
 	}
 	
@@ -42,51 +37,46 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 
 	@Override
 	public void echo(String playerId, String string) throws RemoteException {
-		System.out.println(playerId + " says : " + string);
+		DevPrinter.println(playerId + " says : " + string);
 	}
-
-//	@Override
-//	public void receiveBucket() throws RemoteException {
-//		distributedController.handleToken();
-//	}
+	
+	/**
+	 * do nothing. if it is dead, knocking client will throw a RMI RemoteException
+	 */
+	@Override
+	public void isAlive() throws RemoteException {}
 
 	@Override
-	public void receiveAction(String fromPlayer, ActionKeeper actionKeeper)/* throws RemoteException*/ {
-		distributedController.setActionOnReceive(fromPlayer, actionKeeper);
-		handleLeaderCrash();
+	public void receiveAction(String fromPlayer, ActionKeeper actionKeeper) {
+		distributedControllerForRemoteHandling.setActionOnReceive(fromPlayer, actionKeeper);
+		pinger.ping();
 	}
 
 	@Override
 	public void receiveActionAndDeal(String fromPlayer, ActionKeeper actionKeeper, GameUpdater gameUpdater) throws RemoteException {
-		distributedController.setActionOnReceive(fromPlayer, actionKeeper, gameUpdater);
-		handleLeaderCrash();
+		distributedControllerForRemoteHandling.setActionOnReceive(fromPlayer, actionKeeper, gameUpdater);
+		pinger.ping();
 	}
 	
-	private void handleLeaderCrash() {
-		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-		
-		Runnable r = new Runnable() {
-			@Override
-			public void run() {
-//				distributedController.
-			}
-		};
-
-		final ScheduledFuture<?> beeperHandle = scheduler.scheduleAtFixedRate(r, 30, 30, TimeUnit.SECONDS);
-//		beeperHandle.
-//		scheduler.
-	}
+	/*@Override
+	public void ping() {
+		if (beeperHandle!=null) {
+			beeperHandle.cancel(true);
+		}
+				
+		beeperHandle = scheduler.scheduleAtFixedRate(checkLeaderIsAlive, TIMEOUT, TIMEOUT , TimeUnit.SECONDS);
+	}*/
 
 	@Override
 	public void receiveWinnerEndGame(String fromPlayer, ActionKeeper actionKeeper) throws RemoteException {
-		distributedController.setActionOnReceive(fromPlayer, actionKeeper);
+		distributedControllerForRemoteHandling.setActionOnReceive(fromPlayer, actionKeeper);
 	}
 
 	/*
 	 * @Override public void receiveCheck(String fromPlayer, String toPlayer) {
 	 * try { controllerLogic.check(fromPlayer, toPlayer); } catch
 	 * (DealEventException e) {
-	 * System.out.println("receiveCheck should not be here"); } }
+	 * DevPrinter.println("receiveCheck should not be here"); } }
 	 */
 
 	/*
@@ -107,7 +97,7 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 	}*/
 	@Override
 	public void removeCrashedPeerService(String crashedPeer) throws RemoteException {
-		DevPrinter.println(new Throwable());
+		DevPrinter.println( /*new Throwable()*/ );
 		crashHandler.handleCrashLocallyRemovingFromLocalGameServiceKeeper(crashedPeer);
 //		distributedController.removePlayer(crashedPeer);
 	}

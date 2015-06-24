@@ -17,6 +17,8 @@
  ******************************************************************************/
 package bread_and_aces.utils.misc;
 
+import bread_and_aces.utils.DevPrinter;
+
 public class MemoryUtil {
 	
 	private static final long MEGABYTE = 1024L * 1024L;
@@ -34,7 +36,7 @@ public class MemoryUtil {
 		long memory = runtime.totalMemory() - runtime.freeMemory();
 //System.out.println("Used memory is bytes: " + memory);
 		float bytesToMegabytes = bytesToMegabytes(memory);
-System.out.println("Memory released is: " + bytesToMegabytes+"Mb");
+DevPrinter.println("Memory released is: " + bytesToMegabytes+"Mb");
 		return bytesToMegabytes;
 	}
 

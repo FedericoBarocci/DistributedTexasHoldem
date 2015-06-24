@@ -18,7 +18,7 @@ import bread_and_aces.services.rmi.utils.communicator.Communicator;
 import bread_and_aces.utils.DevPrinter;
 
 @Singleton
-public class DistributedController implements DistributedControllerRemote/*, DistributedControllerLocal*/ {
+public class DistributedController implements DistributedControllerForRemoteHandling/*, DistributedControllerLocal*/ {
 
 	private final ViewControllerDelegate viewControllerDelegate;
 	private final GameOracle gameOracle;
@@ -48,19 +48,19 @@ public class DistributedController implements DistributedControllerRemote/*, Dis
 	 */
 ////	@Override
 //	public void handleToken() {
-////		System.out.println("Ho ricevuto il token-bucket da remoto");
+////		DevPrinter.println("Ho ricevuto il token-bucket da remoto");
 ////		gamePlayersKeeper.getPlayer(gamePlayersKeeper.getMyName()).receiveToken();
 //		distributedControllerLocalDelegate.handleToken();
 //	}
 
 	/**
-	 * local
+	 * remote
 	 */
-//	@Override
+	@Override
 	public void receiveStartGame(String whoHasToken) {
 //		gamePlayersKeeper.getPlayer(whoHasToken).receiveToken();
 //		viewControllerDelegate.setViewToken(whoHasToken);
-//		System.out.println("Game can start!");
+//		DevPrinter.println("Game can start!");
 		distributedControllerLocalDelegate.receiveStartGame(whoHasToken);
 		gamePlayersKeeper.setLeaderId(whoHasToken);
 	}
@@ -105,38 +105,43 @@ public class DistributedController implements DistributedControllerRemote/*, Dis
 	}
 	
 	private Communication setActionAndUpdate(String fromPlayer, ActionKeeper actionKeeper) {
+		
+		DevPrinter.println();
 		String successor;
 		
 		try {
+			DevPrinter.println();
 			successor = gameOracle.getSuccessor(fromPlayer).getName();
-			System.out.println("Oracle tell successor: " + successor);
+			DevPrinter.println("Oracle tells successor: " + successor);
 			gamePlayersKeeper.setLeaderId(successor);
 		} 
 		catch (SinglePlayerException e) {
 			viewControllerDelegate.endGame(fromPlayer);
-			System.out.println("Oracle tell NOT successor. END.");
+			DevPrinter.println("Oracle tells NOT successor. END.");
 			return Communication.END;
 		}
 		
 //		gamePlayersKeeper.getPlayer(fromPlayer).setAction(actionKeeper);
 //		viewControllerDelegate.setPlayerAction(fromPlayer, actionKeeper);
 		distributedControllerLocalDelegate.setLocalAction(fromPlayer, actionKeeper);
+		DevPrinter.println();
 		
 //		gamePlayersKeeper.getPlayer(fromPlayer).sendToken(successor);
 //		gamePlayersKeeper.getPlayer(successor).receiveToken(fromPlayer);
 //		viewControllerDelegate.setViewToken(successor);
+		// TODO guarda qui dentro
 		distributedControllerLocalDelegate.handleLocalToken(fromPlayer, successor);
+		DevPrinter.println();
 
 //		gameState.nextGameState(actionKeeper);
-//		System.out.println("actionkeeper: "+actionKeeper.getAction() + " - " + actionKeeper.getValue());
-//		System.out.println(gameState.getGameState());
-//		
+//		DevPrinter.println("actionkeeper: "+actionKeeper.getAction() + " - " + actionKeeper.getValue());
+//		DevPrinter.println(gameState.getGameState());
 //		viewControllerDelegate.setViewState(actionKeeper);
 		distributedControllerLocalDelegate.handleLocalState(actionKeeper, gameState);
 		
 		OracleResponse response = gameOracle.ask();
 		
-		System.out.println("Oracle tell: " + response);
+		DevPrinter.println("Oracle tell: " + response);
 		
 		return response.exec();
 	}
@@ -175,8 +180,10 @@ public class DistributedController implements DistributedControllerRemote/*, Dis
 	 */
 	@Override
 	public Communication removePlayer(String playerId) {
-		DevPrinter.println(new Throwable(),"HO RICEVUTO UNA NOTIFICA DI CRASH PER " + playerId);
-		Communication communication = setActionAndUpdate(playerId, ActionKeeperFactory.get(Action.FOLD));
+		DevPrinter.println(/*new Throwable(),*/"HO RICEVUTO UNA NOTIFICA DI CRASH PER " + playerId);
+		
+		// TODO FORSE VANNO INVERTITI ?
+		Communication communication = setActionAndUpdate( playerId, ActionKeeperFactory.get(Action.FOLD) );
 //		gamePlayersKeeper.remove(playerId);
 //		viewControllerDelegate.remove(playerId);
 		distributedControllerLocalDelegate.removePlayerLocally(playerId);

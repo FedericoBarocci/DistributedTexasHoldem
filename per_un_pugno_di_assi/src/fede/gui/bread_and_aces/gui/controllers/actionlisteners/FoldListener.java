@@ -11,6 +11,7 @@ import bread_and_aces.game.model.oracle.actions.ActionKeeperFactory;
 import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import bread_and_aces.gui.view.elements.ElementGUI;
 import bread_and_aces.gui.view.elements.utils.GuiUtils;
+import bread_and_aces.utils.DevPrinter;
 
 public class FoldListener implements MouseListener {
 	
@@ -26,7 +27,7 @@ public class FoldListener implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (distributedController.leader(true)) {
-			System.out.println(gamePlayersKeeper.getMyName() + " executing FOLD");
+			DevPrinter.println(gamePlayersKeeper.getMyName() + " executing FOLD");
 			
 			distributedController.setActionOnSend(ActionKeeperFactory.get(Action.FOLD));
 		}

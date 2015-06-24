@@ -16,7 +16,6 @@ aurora
 barbara
 beatrice
 benedetta
-benigno
 camilla
 carmela
 caterina
