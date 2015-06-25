@@ -44,55 +44,81 @@ public class DistributedController implements DistributedControllerForRemoteHand
 	}
 
 	/**
+	 * remote
+	 */
+	@Override
+	public void receiveStartGame(String whoHasToken) {
+		gamePlayersKeeper.getPlayer(whoHasToken).receiveToken();
+		viewControllerDelegate.setViewToken(whoHasToken);
+		DevPrinter.println("Game can start!");
+		gamePlayersKeeper.setLeaderId(whoHasToken);
+	}
+
+	/**
 	 * local
 	 */
-////	@Override
-//	public void handleToken() {
-////		DevPrinter.println("Ho ricevuto il token-bucket da remoto");
-////		gamePlayersKeeper.getPlayer(gamePlayersKeeper.getMyName()).receiveToken();
-//		distributedControllerLocalDelegate.handleToken();
+//	@Override
+	public void setActionOnSend(ActionKeeper actionKeeper) {
+		GameHolder gh = setActionAndUpdate(gamePlayersKeeper.getMyName(), actionKeeper).exec(communicator, gamePlayersKeeper, actionKeeper);
+		
+		// CRASH
+		gh.getCrashedOptional().ifPresent(c->{
+			//FORALL
+			System.out.println("CRASHED OPTIONAL PRESENT");
+			
+			distributedControllerLocalDelegate.removePlayerLocally(c);
+			setActionOnSend(actionKeeper);
+			
+			
+			//Communication communication = setActionAndUpdate(c, ActionKeeperFactory.build(Action.FOLD));
+			
+			//TODO this.nestedSetActionOnSend(communication, actionKeeper);
+		});
+		
+//		gh.getCrashedOptional().ifPresent(c->{
+//			//FORALL
+//			setActionOnSendCrashed(c);
+//		});
+//		
+//		gh.getCrashedOptional().ifPresent(c->{
+//			setActionOnSend(actionKeeper);
+//		});
+		
+		
+//		gh.getGameupdaterOptional().ifPresent(c->{
+//			gameOracle.update(c);
+//		});
+	}
+	
+//	private void setActionOnSendCrashed(String crashedId) {
+//		ActionKeeper actionKeeper = ActionKeeperFactory.build(Action.FOLD);
+//		GameHolder gh = setActionAndUpdate(crashedId, actionKeeper).exec(communicator, gamePlayersKeeper, actionKeeper);
+//		
+//		gh.getCrashedOptional().ifPresent(c->{
+//			System.out.println("CRASHED OPTIONAL PRESENT");
+//			
+//			//Communication communication = this.removePlayer(c);
+//			distributedControllerLocalDelegate.removePlayerLocally(c);
+//			//Communication communication = setActionAndUpdate(c, ActionKeeperFactory.build(Action.FOLD));
+//			
+//			//TODO this.nestedSetActionOnSend(communication, actionKeeper);
+//		});
+//		
+//		gh.getCrashedOptional().ifPresent(c->{
+//			setActionOnSendCrashed(c);
+//		});
+//	}
+	
+//	private void nestedSetActionOnSend(Communication communication, ActionKeeper actionKeeper) {
+//		communication.exec(communicator, gamePlayersKeeper, actionKeeper);
 //	}
 
 	/**
 	 * remote
 	 */
 	@Override
-	public void receiveStartGame(String whoHasToken) {
-//		gamePlayersKeeper.getPlayer(whoHasToken).receiveToken();
-//		viewControllerDelegate.setViewToken(whoHasToken);
-//		DevPrinter.println("Game can start!");
-		distributedControllerLocalDelegate.receiveStartGame(whoHasToken);
-		gamePlayersKeeper.setLeaderId(whoHasToken);
-	}
-
-	/**
-	 * remote
-	 */
-	@Override
-	public void setActionOnSend(ActionKeeper actionKeeper) {
-		GameHolder gh = setActionAndUpdate(gamePlayersKeeper.getMyName(), actionKeeper).exec(communicator, gamePlayersKeeper, actionKeeper);
-		// CRASH
-		gh.getCrashedOptional().ifPresent(c->{
-			Communication communication = removePlayer(c);
-			nestedSetActionOnSend(communication, actionKeeper);
-		});
-		
-		gh.getGameupdaterOptional().ifPresent(c->{
-			gameOracle.update(c);
-		});
-//			gameOracle.update(c)	
-	}
-	
-	private void nestedSetActionOnSend(Communication communication, ActionKeeper actionKeeper) {
-		communication.exec(communicator, gamePlayersKeeper, actionKeeper);
-	}
-
-	/**
-	 * remote
-	 */
-	@Override
 	public void setActionOnReceive(String fromPlayer, ActionKeeper actionKeeper) {
-		setActionAndUpdate(fromPlayer, actionKeeper);
+		this.setActionAndUpdate(fromPlayer, actionKeeper);
 	}
 
 	/**
@@ -100,17 +126,14 @@ public class DistributedController implements DistributedControllerForRemoteHand
 	 */
 	@Override
 	public void setActionOnReceive(String fromPlayer, ActionKeeper actionKeeper, GameUpdater gameUpdater) {
-		setActionAndUpdate(fromPlayer, actionKeeper);
+		this.setActionAndUpdate(fromPlayer, actionKeeper);
 		gameOracle.update(gameUpdater);
 	}
 	
-	private Communication setActionAndUpdate(String fromPlayer, ActionKeeper actionKeeper) {
-		
-		DevPrinter.println();
+	public Communication setActionAndUpdate(String fromPlayer, ActionKeeper actionKeeper) {
 		String successor;
 		
 		try {
-			DevPrinter.println();
 			successor = gameOracle.getSuccessor(fromPlayer).getName();
 			DevPrinter.println("Oracle tells successor: " + successor);
 			gamePlayersKeeper.setLeaderId(successor);
@@ -121,23 +144,17 @@ public class DistributedController implements DistributedControllerForRemoteHand
 			return Communication.END;
 		}
 		
-//		gamePlayersKeeper.getPlayer(fromPlayer).setAction(actionKeeper);
-//		viewControllerDelegate.setPlayerAction(fromPlayer, actionKeeper);
-		distributedControllerLocalDelegate.setLocalAction(fromPlayer, actionKeeper);
-		DevPrinter.println();
+		gamePlayersKeeper.getPlayer(fromPlayer).setAction(actionKeeper);
+		viewControllerDelegate.setPlayerAction(fromPlayer, actionKeeper);
 		
-//		gamePlayersKeeper.getPlayer(fromPlayer).sendToken(successor);
-//		gamePlayersKeeper.getPlayer(successor).receiveToken(fromPlayer);
-//		viewControllerDelegate.setViewToken(successor);
-		// TODO guarda qui dentro
-		distributedControllerLocalDelegate.handleLocalToken(fromPlayer, successor);
-		DevPrinter.println();
+		gamePlayersKeeper.getPlayer(fromPlayer).sendToken(successor);
+		gamePlayersKeeper.getPlayer(successor).receiveToken(fromPlayer);
+		viewControllerDelegate.setViewToken(successor);
 
-//		gameState.nextGameState(actionKeeper);
-//		DevPrinter.println("actionkeeper: "+actionKeeper.getAction() + " - " + actionKeeper.getValue());
-//		DevPrinter.println(gameState.getGameState());
-//		viewControllerDelegate.setViewState(actionKeeper);
-		distributedControllerLocalDelegate.handleLocalState(actionKeeper, gameState);
+		gameState.nextGameState(actionKeeper);
+		DevPrinter.println("actionkeeper: "+actionKeeper.getAction() + " - " + actionKeeper.getValue());
+		DevPrinter.println(""+gameState.getGameState());
+		viewControllerDelegate.setViewState(actionKeeper);
 		
 		OracleResponse response = gameOracle.ask();
 		
@@ -147,15 +164,6 @@ public class DistributedController implements DistributedControllerForRemoteHand
 	}
 
 	public boolean leader(boolean leaveGame) {
-//		if (viewControllerDelegate.isSetRefresh()) {
-//			viewControllerDelegate.refresh(gamePlayersKeeper.getPlayers(), gamePlayersKeeper.getMyName());
-//			viewControllerDelegate.enableButtons(gamePlayersKeeper.getMyPlayer().hasToken());
-//			
-//			return false;
-//		}
-//		
-//		return gamePlayersKeeper.getMyPlayer().hasToken();
-		//return distributedControllerLocalDelegate.leader();
 		if (viewControllerDelegate.isSetRefresh()) {
 			if (leaveGame) {
 				//TODO Notify other players of current player exit (remove from playerkeeper)
@@ -174,7 +182,7 @@ public class DistributedController implements DistributedControllerForRemoteHand
 	public String getLeader() {
 		return gamePlayersKeeper.getLeaderId();
 	}
-
+	
 	/**
 	 * local
 	 */
@@ -182,8 +190,7 @@ public class DistributedController implements DistributedControllerForRemoteHand
 	public Communication removePlayer(String playerId) {
 		DevPrinter.println(/*new Throwable(),*/"HO RICEVUTO UNA NOTIFICA DI CRASH PER " + playerId);
 		
-		// TODO FORSE VANNO INVERTITI ?
-		Communication communication = setActionAndUpdate( playerId, ActionKeeperFactory.get(Action.FOLD) );
+		Communication communication = setActionAndUpdate( playerId, ActionKeeperFactory.build(Action.FOLD) );
 //		gamePlayersKeeper.remove(playerId);
 //		viewControllerDelegate.remove(playerId);
 		distributedControllerLocalDelegate.removePlayerLocally(playerId);

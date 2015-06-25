@@ -12,6 +12,8 @@ import javax.inject.Inject;
 import org.limewire.inject.LazySingleton;
 
 import bread_and_aces.game.model.controller.DistributedController;
+import bread_and_aces.game.model.oracle.actions.Action;
+import bread_and_aces.game.model.oracle.actions.ActionKeeperFactory;
 import bread_and_aces.services.rmi.game.keeper.GameServicesKeeper;
 import bread_and_aces.services.rmi.utils.crashhandler.CrashHandler;
 import bread_and_aces.utils.DevPrinter;
@@ -55,8 +57,9 @@ public class Pinger {
 						System.out.println("ok");
 					} catch (RemoteException e) {
 						DevPrinter.println("leader "+leader+" crashed: removing.. ");
+						distributedController.setActionAndUpdate(leader, ActionKeeperFactory.build(Action.FOLD));
 						crashHandler.handleCrashLocallyRemovingFromLocalGameServiceKeeper(leader);
-						distributedController.removePlayer(leader);
+//						distributedController.removePlayer(leader);
 						DevPrinter.println("leader "+leader+" crashed removed");
 					}
 				});

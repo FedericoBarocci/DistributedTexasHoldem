@@ -43,11 +43,8 @@ public class GameOracle {
 			throw new SinglePlayerException();
 		}
 		
-DevPrinter.println();
-		
 		do {
 			next = gamePlayersKeeper.getNext(actualPlayerId);
-DevPrinter.println("next is: "+next.getName());
 			
 			if (next.getName().equals(playerId)) { 
 				throw new SinglePlayerException();

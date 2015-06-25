@@ -7,7 +7,7 @@ public interface DistributedControllerForRemoteHandling {
 	
 	void receiveStartGame(String whoHasToken);
 	Communication removePlayer(String playerId);
-	void setActionOnSend(ActionKeeper actionKeeper);
+//	void setActionOnSend(ActionKeeper actionKeeper);
 	void setActionOnReceive(String fromPlayer, ActionKeeper actionKeeper);
 	void setActionOnReceive(String fromPlayer, ActionKeeper actionKeeper, GameUpdater gameUpdater);
 }

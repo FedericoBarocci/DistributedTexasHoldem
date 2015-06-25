@@ -3,7 +3,7 @@ package bread_and_aces.game.model.oracle.actions;
 
 public class ActionKeeperFactory {
 
-	public static ActionKeeper get(Action action) {
+	public static ActionKeeper build(Action action) {
 		return new ActionKeeper(action, 0);
 	}
 	

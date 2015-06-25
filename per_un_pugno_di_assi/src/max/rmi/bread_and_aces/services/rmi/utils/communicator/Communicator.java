@@ -1,5 +1,7 @@
 package bread_and_aces.services.rmi.utils.communicator;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import bread_and_aces.services.rmi.game.core.GameService;
@@ -50,8 +52,8 @@ public class Communicator {
 				deliverator.broadcast(meId, communicatorFunctor, arg);
 //		return crashHandler.handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(meId, eventuallyCrashedPeers);
 	}
-	public void handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(String meId, String crashedPeer) {
-		crashHandler.handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(meId, crashedPeer);
+	public List<String> handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(String meId, String crashedPeer) {
+		return crashHandler.handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(meId, crashedPeer);
 	}
 	
 	// pass token zone, never used
@@ -100,25 +102,26 @@ public class Communicator {
 		}
 	}*/
 	
-	
 	@FunctionalInterface
 	public interface CommunicatorFunctorNoArg {
 		void exec(GameService gameService) /*throws RemoteException*/;
 	}
+	
 	@FunctionalInterface
 	public interface CommunicatorFunctorNoArgWithId {
 		void exec(GameService gameService, String nodeId) /*throws RemoteException*/;
 	}
+	
 	@FunctionalInterface
 	public interface CommunicatorFunctorWithArg<T> {
 		void exec(GameService gameService, T arg) /*throws RemoteException*/;
 	}
 	
-	
 	public void setCurrentInterlocutor(String current) {
 		this.current = current;
 		DevPrinter.println(/*new Throwable(),*/ "current is: "+current);
 	}
+	
 	public String getCurrentInterlocutor() {
 		return current;
 	}

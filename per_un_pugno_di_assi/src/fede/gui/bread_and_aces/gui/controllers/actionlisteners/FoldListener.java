@@ -29,7 +29,7 @@ public class FoldListener implements MouseListener {
 		if (distributedController.leader(true)) {
 			DevPrinter.println(gamePlayersKeeper.getMyName() + " executing FOLD");
 			
-			distributedController.setActionOnSend(ActionKeeperFactory.get(Action.FOLD));
+			distributedController.setActionOnSend(ActionKeeperFactory.build(Action.FOLD));
 		}
 	}
 	

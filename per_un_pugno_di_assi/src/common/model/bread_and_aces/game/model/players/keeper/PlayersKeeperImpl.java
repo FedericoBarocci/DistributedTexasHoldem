@@ -71,7 +71,16 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 	 */
 	@Override
 	public Player getNext(String playerId) {
-DevPrinter.println("searching next of "+playerId);
+		Optional<PlayerRegistrationId> key = findKey(playerId);
+
+		PlayerRegistrationId playerRegistrationId = key.get();
+
+		return Optional
+				.ofNullable(playersMap.tailMap(playerRegistrationId, false).firstEntry())
+				.orElse(playersMap.firstEntry())
+				.getValue();
+		/*
+		DevPrinter.println("searching next of "+playerId);
 		Optional<PlayerRegistrationId> optionalPlayerRegistrationId = findKey(playerId);
 //		try {
 //DevPrinter.println("playerRegistrationId: "+optionalPlayerRegistrationId.get().getId() );
@@ -91,7 +100,7 @@ DevPrinter.println("playerRegistrationId: "+playerRegistrationId.getId());
 				playersMap.get(playerRegistrationId);
 				;
 		DevPrinter.println("next: "+value.getName());
-		return value;
+		return value;*/
 	}
 	
 	@Override
@@ -110,6 +119,8 @@ DevPrinter.println("playerRegistrationId: "+playerRegistrationId.getId());
 	
 	@Override
 	public void remove(String playerId) {
+		System.out.println("VOGLIO RIMUOVERE " + playerId);
+		
 		findKey(playerId).ifPresent(pri->{
 			DevPrinter.print("removing "+pri.getId()+": ");
 			playersMap.remove(pri);

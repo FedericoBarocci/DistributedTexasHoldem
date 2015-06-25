@@ -85,21 +85,28 @@ public class CrashHandler {
 	 * @param meId
 	 * @param crashedPeer
 	 */
-	public void handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(String meId, String crashedPeer) {
+	public List<String> handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(String meId, String crashedPeer) {
 			// nodes are unreachable, so handle the crash removing services
 //			removeFromLocalGameServiceKeeper(crashedPeer);
 			
 			// we say to all to update players removing those specified in list
-			List<String> eventuallyCrashedAgain = deliverator.broadcast(meId, this::updateNodesFunctor,  crashedPeer);
-			DevPrinter.println(/*new Throwable(), */""+eventuallyCrashedAgain);
+		DevPrinter.println(" "+meId + " -- " + crashedPeer);
+		List<String> eventuallyCrashedAgain = deliverator.broadcast(meId, this::updateNodesFunctor,  crashedPeer);
+		DevPrinter.println(/*new Throwable(), */""+eventuallyCrashedAgain);
+		
+		eventuallyCrashedAgain.add(crashedPeer);
+			
+		return eventuallyCrashedAgain;
 	}
 	
 	private void updateNodesFunctor(GameService gameService, String crashedPeer) {
 		try {
-			DevPrinter.println(/*new Throwable()*/);
+			DevPrinter.println("acting on gameservice of "+gameService.getId());
 			gameService.removeCrashedPeerService( crashedPeer );
 		} catch (RemoteException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			DevPrinter.println(":: " + crashedPeer);
+			gameServicesKeeper.removeService(crashedPeer);
 		}
 	}
 

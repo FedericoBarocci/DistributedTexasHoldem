@@ -23,16 +23,22 @@ public enum Communication {
 						gameService.receiveAction(gamePlayersKeeper.getMyName(), actionKeeper);
 					} catch (RemoteException e) {
 						//Game Recovery
+						System.out.println("--HERE--");
 						currentCrashedRef.set(communicator.getCurrentInterlocutor());
-						communicator.handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(gamePlayersKeeper.getMyName(), currentCrashedRef.get());
+						
+						//TODO return List
+						/*crashed = */communicator.handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(gamePlayersKeeper.getMyName(), currentCrashedRef.get());
 					}
 				}
 			}
 			
 			DevPrinter.println(/*new Throwable()*/);
 			communicator.toAll(gamePlayersKeeper.getMyName(), new ActionClass()::performAction);
-			
-			return new GameHolder(Optional.ofNullable(currentCrashedRef.get()));
+			String result = currentCrashedRef.get();
+			DevPrinter.println(result);
+			currentCrashedRef.set(null);
+			DevPrinter.println(result);
+			return new GameHolder(Optional.ofNullable(result));
 			
 //			return Optional.ofNullable(null);
 		}
