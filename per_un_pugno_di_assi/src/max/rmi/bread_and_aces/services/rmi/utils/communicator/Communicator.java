@@ -52,7 +52,7 @@ public class Communicator {
 				deliverator.broadcast(meId, communicatorFunctor, arg);
 //		return crashHandler.handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(meId, eventuallyCrashedPeers);
 	}
-	public List<String> handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(String meId, String crashedPeer) {
+	public List<String> broadcastRemoveServiceKeeper(String meId, String crashedPeer) {
 		return crashHandler.handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(meId, crashedPeer);
 	}
 	

@@ -1,8 +1,9 @@
 package bread_and_aces.game.model.controller;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 import bread_and_aces.game.core.Deck;
 import bread_and_aces.game.model.oracle.actions.ActionKeeper;
@@ -22,24 +23,24 @@ public enum Communication {
 					try {
 						gameService.receiveAction(gamePlayersKeeper.getMyName(), actionKeeper);
 					} catch (RemoteException e) {
-						//Game Recovery
-						System.out.println("--HERE--");
-						currentCrashedRef.set(communicator.getCurrentInterlocutor());
-						
-						//TODO return List
-						/*crashed = */communicator.handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(gamePlayersKeeper.getMyName(), currentCrashedRef.get());
+//						currentCrashedRef.set(communicator.getCurrentInterlocutor());
+						crashed.addAll(communicator.broadcastRemoveServiceKeeper(gamePlayersKeeper.getMyName(), communicator.getCurrentInterlocutor()));
 					}
 				}
 			}
 			
 			DevPrinter.println(/*new Throwable()*/);
-			communicator.toAll(gamePlayersKeeper.getMyName(), new ActionClass()::performAction);
-			String result = currentCrashedRef.get();
-			DevPrinter.println(result);
-			currentCrashedRef.set(null);
-			DevPrinter.println(result);
-			return new GameHolder(Optional.ofNullable(result));
 			
+			crashed.clear();
+			communicator.toAll(gamePlayersKeeper.getMyName(), new ActionClass()::performAction);
+
+			return new GameHolder(crashed);
+			
+//			String result = currentCrashedRef.get();
+//			DevPrinter.println(result);
+//			currentCrashedRef.set(null);
+//			DevPrinter.println(result);
+			//return new GameHolder(Optional.ofNullable(result));
 //			return Optional.ofNullable(null);
 		}
 	},
@@ -51,16 +52,19 @@ public enum Communication {
 					try {
 						gameService.receiveActionAndDeal(gamePlayersKeeper.getMyName(), actionKeeper, gameUpdater);
 					} catch (RemoteException e) {
-						currentCrashedRef.set(communicator.getCurrentInterlocutor());
-						communicator.handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(gamePlayersKeeper.getMyName(), currentCrashedRef.get());
+						//currentCrashedRef.set(communicator.getCurrentInterlocutor());
+						crashed.addAll(communicator.broadcastRemoveServiceKeeper(gamePlayersKeeper.getMyName(), communicator.getCurrentInterlocutor()));
 					}
 				}
 			}
 			
+			crashed.clear();
 			GameUpdater gameUpdater = new GameUpdater( gamePlayersKeeper.getPlayers(), new Deck() );
 			communicator.toAll(gamePlayersKeeper.getMyName(), new ActionClass()::performActionAndDeal, gameUpdater);
 			
-			return new GameHolder(Optional.ofNullable(currentCrashedRef.get()), Optional.of(gameUpdater));
+			return new GameHolder(crashed, Optional.of(gameUpdater));
+			
+			//return new GameHolder(Optional.ofNullable(currentCrashedRef.get()), Optional.of(gameUpdater));
 			
 //			return Optional.ofNullable(gameUpdater);
 		}
@@ -73,44 +77,52 @@ public enum Communication {
 					try {
 						gameService.receiveWinnerEndGame(gamePlayersKeeper.getMyName(), actionKeeper);
 					} catch (RemoteException e) {
-						currentCrashedRef.set(communicator.getCurrentInterlocutor());
-						communicator.handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(gamePlayersKeeper.getMyName(), currentCrashedRef.get());
+//						currentCrashedRef.set(communicator.getCurrentInterlocutor());
+						crashed.addAll(communicator.broadcastRemoveServiceKeeper(gamePlayersKeeper.getMyName(), communicator.getCurrentInterlocutor()));
 					}
 				}
 			}
 			
+			crashed.clear();
 			communicator.toAll(gamePlayersKeeper.getMyName(), new ActionClass()::performWinnerEndGame);
 			
-			return new GameHolder(Optional.ofNullable(currentCrashedRef.get()));
+			return new GameHolder(crashed);
+			
+			//return new GameHolder(Optional.ofNullable(currentCrashedRef.get()));
 //			return Optional.ofNullable(null);
 		}
 	};
 	
 
-	private static AtomicReference<String> currentCrashedRef = new AtomicReference<String>(null);
+	//private static AtomicReference<String> currentCrashedRef = new AtomicReference<String>(null);
+	private static List<String> crashed = new ArrayList<String>();
 	
 	abstract public GameHolder exec(Communicator communicator, GamePlayersKeeper gamePlayersKeeper, ActionKeeper actionKeeper);
 	
 	public static class GameHolder {
-		private final Optional<String> crashedOptional;
+		private final List<String> crashedPeers;
 		private final Optional<GameUpdater> gameupdaterOptional;
 		
-		public GameHolder(Optional<String> crashedOptional) {
-			this.crashedOptional = crashedOptional;
+		public GameHolder(List<String> crashedOptional) {
+			this.crashedPeers = crashedOptional;
 			this.gameupdaterOptional = Optional.ofNullable(null);
 		}
 		
-		public GameHolder(Optional<String> crashedOptional, Optional<GameUpdater> gameupdaterOptional) {
-			this.crashedOptional = crashedOptional;
+		public GameHolder(List<String> crashedOptional, Optional<GameUpdater> gameupdaterOptional) {
+			this.crashedPeers = crashedOptional;
 			this.gameupdaterOptional = gameupdaterOptional;
 		}
 
-		public Optional<String> getCrashedOptional() {
-			return crashedOptional;
+		public List<String> getCrashedPeers() {
+			return crashedPeers;
 		}
 		
 		public Optional<GameUpdater> getGameupdaterOptional() {
 			return gameupdaterOptional;
+		}
+
+		public boolean hasCrashed() {
+			return crashedPeers.size() > 0;
 		}
 	}
 }

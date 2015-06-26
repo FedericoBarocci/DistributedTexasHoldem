@@ -32,14 +32,13 @@ public class DistributedController implements DistributedControllerForRemoteHand
 			ViewControllerDelegate viewControllerDelegate,
 			GameOracle gameOracle, 
 			GameState gameState,
-			GamePlayersKeeper gamePlayersKeeper, Communicator communicator
-			, DistributedControllerLocalDelegate distributedControllerDelegate) {
+			GamePlayersKeeper gamePlayersKeeper, Communicator communicator,
+			DistributedControllerLocalDelegate distributedControllerDelegate) {
 		this.viewControllerDelegate = viewControllerDelegate;
 		this.gameOracle = gameOracle;
 		this.gameState = gameState;
 		this.gamePlayersKeeper = gamePlayersKeeper;
 		this.communicator = communicator;
-		
 		this.distributedControllerLocalDelegate = distributedControllerDelegate;
 	}
 
@@ -61,33 +60,18 @@ public class DistributedController implements DistributedControllerForRemoteHand
 	public void setActionOnSend(ActionKeeper actionKeeper) {
 		GameHolder gh = setActionAndUpdate(gamePlayersKeeper.getMyName(), actionKeeper).exec(communicator, gamePlayersKeeper, actionKeeper);
 		
-		// CRASH
-		gh.getCrashedOptional().ifPresent(c->{
-			//FORALL
-			System.out.println("CRASHED OPTIONAL PRESENT");
-			
-			distributedControllerLocalDelegate.removePlayerLocally(c);
-			setActionOnSend(actionKeeper);
-			
-			
-			//Communication communication = setActionAndUpdate(c, ActionKeeperFactory.build(Action.FOLD));
-			
-			//TODO this.nestedSetActionOnSend(communication, actionKeeper);
+		gh.getGameupdaterOptional().ifPresent(g->{
+			gameOracle.update(g);
 		});
 		
-//		gh.getCrashedOptional().ifPresent(c->{
-//			//FORALL
-//			setActionOnSendCrashed(c);
-//		});
-//		
-//		gh.getCrashedOptional().ifPresent(c->{
-//			setActionOnSend(actionKeeper);
-//		});
-		
-		
-//		gh.getGameupdaterOptional().ifPresent(c->{
-//			gameOracle.update(c);
-//		});
+		// CRASH
+		if (gh.hasCrashed()) {
+			gh.getCrashedPeers().forEach(c->{
+				distributedControllerLocalDelegate.removePlayerLocally(c);
+			}); 
+			
+			setActionOnSend(actionKeeper);
+		}
 	}
 	
 //	private void setActionOnSendCrashed(String crashedId) {
