@@ -1,5 +1,7 @@
 package bread_and_aces.game.model.controller;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.limewire.inject.LazySingleton;
@@ -24,5 +26,11 @@ public class DistributedControllerLocalDelegate implements DistributedController
 	public void removePlayerLocally(String playerId) {
 		gamePlayersKeeper.remove(playerId);
 		viewControllerDelegate.remove(playerId);
+	}
+	
+	@Override
+	public void removePlayerLocally(List<String> playerIds) {
+		// TODO Auto-generated method stub
+		
 	}
 }

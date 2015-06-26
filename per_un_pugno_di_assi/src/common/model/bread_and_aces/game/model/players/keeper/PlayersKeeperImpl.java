@@ -119,8 +119,6 @@ DevPrinter.println("playerRegistrationId: "+playerRegistrationId.getId());
 	
 	@Override
 	public void remove(String playerId) {
-		System.out.println("VOGLIO RIMUOVERE " + playerId);
-		
 		findKey(playerId).ifPresent(pri->{
 			DevPrinter.print("removing "+pri.getId()+": ");
 			playersMap.remove(pri);
