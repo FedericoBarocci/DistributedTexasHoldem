@@ -109,7 +109,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 //			try {
 //				String nodeId = clientableGameServiceExternalInjected.getId();
 //				DevPrinter.println(nodeId);
-				crashHandler.handleCrashLocallyRemovingFromLocalGameServiceKeeper( nodeId );
+				crashHandler.removeLocallyFromEverywhere( nodeId );
 //			} catch(RemoteException e1) {
 ////				e.printStackTrace();
 ////				Main.handleException(e1);

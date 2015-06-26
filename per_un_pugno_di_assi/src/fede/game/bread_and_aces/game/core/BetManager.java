@@ -70,7 +70,6 @@ public class BetManager {
 	}
 	
 	public void setAction() {
-		//currentAction = action.getGameState().getMinBetState();
 		currentAction = gameState.getGameState().getMinBetState();
 	}
 	
@@ -87,7 +86,7 @@ public class BetManager {
 	}
 
 	public ActionKeeper getActionKeeper() {
-		return ActionKeeperFactory.get(currentAction.getAction(), betValue.getValue());
+		return ActionKeeperFactory.build(currentAction.getAction(), betValue.getValue());
 		//return new ActionKeeper(currentAction.getAction(), betValue.getValue());
 	}
 	

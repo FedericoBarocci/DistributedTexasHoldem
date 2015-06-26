@@ -12,11 +12,6 @@ public class GameState {
 	private int minbet = 0;
 	
 	/*for recovery*/
-	public void setGameState(ActionsLogic actionlogic) {
-		this.actionlogic = actionlogic;
-	}
-	
-	/*for recovery*/
 	public ActionsLogic getGameState() {
 		return actionlogic;
 	}

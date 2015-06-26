@@ -13,4 +13,9 @@ public class OracleResponseOk implements OracleResponse {
 	public String toString() {
 		return "Ok";
 	}
+
+	@Override
+	public void finaly() {
+		return;
+	}
 }

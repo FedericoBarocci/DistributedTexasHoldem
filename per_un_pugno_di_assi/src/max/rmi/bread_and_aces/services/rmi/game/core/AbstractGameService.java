@@ -98,7 +98,7 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 	@Override
 	public void removeCrashedPeerService(String crashedPeer) throws RemoteException {
 		DevPrinter.println( /*new Throwable()*/ );
-		crashHandler.handleCrashLocallyRemovingFromLocalGameServiceKeeper(crashedPeer);
+		crashHandler.removeLocallyFromEverywhere(crashedPeer);
 //		distributedController.removePlayer(crashedPeer);
 	}
 }

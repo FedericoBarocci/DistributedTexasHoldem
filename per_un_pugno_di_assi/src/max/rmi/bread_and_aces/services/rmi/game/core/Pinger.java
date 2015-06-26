@@ -52,13 +52,12 @@ public class Pinger {
 				Optional<GameService> optionalService = gameServicesKeeper.getService(leader);
 				optionalService.ifPresent(s->{
 					try {
-						DevPrinter.print(/*new Throwable(),*/ "pinging "+leader+": ");
+//						DevPrinter.print(/*new Throwable(),*/ "pinging "+leader+": ");
 						s.isAlive();
-						System.out.println("ok");
 					} catch (RemoteException e) {
 						DevPrinter.println("leader "+leader+" crashed: removing.. ");
 						distributedController.setActionAndUpdate(leader, ActionKeeperFactory.build(Action.FOLD));
-						crashHandler.handleCrashLocallyRemovingFromLocalGameServiceKeeper(leader);
+						crashHandler.removeLocallyFromEverywhere(leader);
 //						distributedController.removePlayer(leader);
 						DevPrinter.println("leader "+leader+" crashed removed");
 					}

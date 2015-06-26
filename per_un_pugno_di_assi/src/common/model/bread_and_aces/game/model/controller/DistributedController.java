@@ -10,6 +10,7 @@ import bread_and_aces.game.model.oracle.actions.Action;
 import bread_and_aces.game.model.oracle.actions.ActionKeeper;
 import bread_and_aces.game.model.oracle.actions.ActionKeeperFactory;
 import bread_and_aces.game.model.oracle.responses.OracleResponse;
+import bread_and_aces.game.model.oracle.responses.OracleResponseFactory;
 import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import bread_and_aces.game.model.state.GameState;
 import bread_and_aces.game.updater.GameUpdater;
@@ -26,6 +27,9 @@ public class DistributedController implements DistributedControllerForRemoteHand
 	private final GamePlayersKeeper gamePlayersKeeper;
 	private final Communicator communicator;
 	private final DistributedControllerLocalDelegate distributedControllerLocalDelegate;
+	private final OracleResponseFactory oracleResponseFactory;
+	
+//	private String lastPlayerId = "";
 	
 	@Inject
 	public DistributedController(
@@ -33,13 +37,15 @@ public class DistributedController implements DistributedControllerForRemoteHand
 			GameOracle gameOracle, 
 			GameState gameState,
 			GamePlayersKeeper gamePlayersKeeper, Communicator communicator,
-			DistributedControllerLocalDelegate distributedControllerDelegate) {
+			DistributedControllerLocalDelegate distributedControllerDelegate,
+			OracleResponseFactory oracleResponseFactory) {
 		this.viewControllerDelegate = viewControllerDelegate;
 		this.gameOracle = gameOracle;
 		this.gameState = gameState;
 		this.gamePlayersKeeper = gamePlayersKeeper;
 		this.communicator = communicator;
 		this.distributedControllerLocalDelegate = distributedControllerDelegate;
+		this.oracleResponseFactory = oracleResponseFactory;
 	}
 
 	/**
@@ -58,7 +64,13 @@ public class DistributedController implements DistributedControllerForRemoteHand
 	 */
 //	@Override
 	public void setActionOnSend(ActionKeeper actionKeeper) {
-		GameHolder gh = setActionAndUpdate(gamePlayersKeeper.getMyName(), actionKeeper).exec(communicator, gamePlayersKeeper, actionKeeper);
+		OracleResponse oracleResponse = setActionAndUpdate(gamePlayersKeeper.getMyName(), actionKeeper);
+		Communication communication = oracleResponse.exec();
+		GameHolder gh = communication.exec(communicator, gamePlayersKeeper, actionKeeper);
+		
+		if(!gh.hasCrashed()) {
+			oracleResponse.finaly();
+		}
 		
 		gh.getGameupdaterOptional().ifPresent(g->{
 			gameOracle.update(g);
@@ -102,7 +114,7 @@ public class DistributedController implements DistributedControllerForRemoteHand
 	 */
 	@Override
 	public void setActionOnReceive(String fromPlayer, ActionKeeper actionKeeper) {
-		this.setActionAndUpdate(fromPlayer, actionKeeper);
+		this.setActionAndUpdate(fromPlayer, actionKeeper).finaly();
 	}
 
 	/**
@@ -110,11 +122,11 @@ public class DistributedController implements DistributedControllerForRemoteHand
 	 */
 	@Override
 	public void setActionOnReceive(String fromPlayer, ActionKeeper actionKeeper, GameUpdater gameUpdater) {
-		this.setActionAndUpdate(fromPlayer, actionKeeper);
+		this.setActionAndUpdate(fromPlayer, actionKeeper).finaly();
 		gameOracle.update(gameUpdater);
 	}
 	
-	public Communication setActionAndUpdate(String fromPlayer, ActionKeeper actionKeeper) {
+	public OracleResponse setActionAndUpdate(String fromPlayer, ActionKeeper actionKeeper) {
 		String successor;
 		
 		try {
@@ -125,7 +137,8 @@ public class DistributedController implements DistributedControllerForRemoteHand
 		catch (SinglePlayerException e) {
 			viewControllerDelegate.endGame(fromPlayer);
 			DevPrinter.println("Oracle tells NOT successor. END.");
-			return Communication.END;
+			//return Communication.END;
+			return oracleResponseFactory.createOracleResponseEnd(fromPlayer);
 		}
 		
 		gamePlayersKeeper.getPlayer(fromPlayer).setAction(actionKeeper);
@@ -138,22 +151,27 @@ public class DistributedController implements DistributedControllerForRemoteHand
 		gameState.nextGameState(actionKeeper);
 		DevPrinter.println("actionkeeper: "+actionKeeper.getAction() + " - " + actionKeeper.getValue());
 		DevPrinter.println(""+gameState.getGameState());
-		viewControllerDelegate.setViewState(actionKeeper);
+		
+//		if(! lastPlayerId.equals(fromPlayer)) {
+			viewControllerDelegate.setViewState(actionKeeper);
+//			lastPlayerId = fromPlayer;
+//		}
 		
 		OracleResponse response = gameOracle.ask();
 		
 		DevPrinter.println("Oracle tell: " + response);
 		
-		return response.exec();
+		return response;
 	}
 
 	public boolean leader(boolean leaveGame) {
 		if (viewControllerDelegate.isSetRefresh()) {
 			if (leaveGame) {
-				//TODO Notify other players of current player exit (remove from playerkeeper)
+				//TODO Notify other players of current player exit (remove from playerkeeper, graceful exit)
 				System.exit(0);
 			}
 			
+			//TODO check this
 			viewControllerDelegate.refresh(gamePlayersKeeper.getPlayers(), gamePlayersKeeper.getMyName());
 			viewControllerDelegate.enableButtons(gamePlayersKeeper.getMyPlayer().hasToken());
 			
@@ -169,16 +187,17 @@ public class DistributedController implements DistributedControllerForRemoteHand
 	
 	/**
 	 * local
+	 * @return 
 	 */
 	@Override
-	public Communication removePlayer(String playerId) {
+	public void removePlayer(String playerId) {
 		DevPrinter.println(/*new Throwable(),*/"HO RICEVUTO UNA NOTIFICA DI CRASH PER " + playerId);
 		
-		Communication communication = setActionAndUpdate( playerId, ActionKeeperFactory.build(Action.FOLD) );
+		/*Communication communication = */setActionAndUpdate( playerId, ActionKeeperFactory.build(Action.FOLD) ).finaly();
 //		gamePlayersKeeper.remove(playerId);
 //		viewControllerDelegate.remove(playerId);
 		distributedControllerLocalDelegate.removePlayerLocally(playerId);
 		
-		return communication;
+		//return communication;
 	}
 }

@@ -7,7 +7,7 @@ public class ActionKeeperFactory {
 		return new ActionKeeper(action, 0);
 	}
 	
-	public static ActionKeeper get(Action action, int value) {
+	public static ActionKeeper build(Action action, int value) {
 		return new ActionKeeper(action, value);
 	}
 }

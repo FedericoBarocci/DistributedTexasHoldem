@@ -29,6 +29,10 @@ public class Table {
 		state = state.next();
 	}
 	
+	public TableState getNextState() {
+		return state.next();
+	}
+	
 	public TableState getState() {
 		return state;
 	}

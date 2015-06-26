@@ -59,10 +59,12 @@ public class GameOracle {
 	
 	public OracleResponse ask() {
 		List<Player> players = gamePlayersKeeper.getPlayers();
+		
+		players.forEach(c->{DevPrinter.println(c.getName() + " - " + c.getAction());});
 
 		if (conditionAllIn(players) || conditionSinglePlayer(players)) {
 			DevPrinter.println("Oracle think allin for all players or single player. WINNER.");
-			table.setState(TableState.WINNER);
+//			table.setState(TableState.WINNER);
 			
 			return oracleResponseFactory.createOracleResponseWinner(getWinners());
 		}
@@ -80,19 +82,19 @@ public class GameOracle {
 			if (conditionEqualBet(players)) {
 				DevPrinter.println("Oracle think all players agree OR call.");
 				
-				table.setNextState();
+				//table.setNextState();
 				
-				if (table.getState().equals(TableState.WINNER)) {
+				if (table.getNextState().equals(TableState.WINNER)) {
 					DevPrinter.println(" -> Oracle think this is last step. WINNER.");
 					
 					List <Player> winners = this.getWinners();
-					gamePlayersKeeper.resetActions(true);
+//					gamePlayersKeeper.resetActions(true);
 					
 					return oracleResponseFactory.createOracleResponseWinner(winners);
 				}
 				
 				DevPrinter.println(" -> Oracle think next step. NEXT_STEP.");
-				gamePlayersKeeper.resetActions(false);
+//				gamePlayersKeeper.resetActions(false);
 				
 				return oracleResponseFactory.createOracleResponseNextStep(gamePlayersKeeper.getActivePlayers());
 			}

@@ -39,7 +39,7 @@ public class CrashHandler {
 	 * use this to handle crash in local instance, removing node/player id from gameserviceKeeper (rmi level) and gameplayerskeeper (business logic level)
 	 * @param crashedDuringSync
 	 */
-	public void handleCrashLocallyRemovingFromLocalGameServiceKeeper(String crashedDuringSync) {
+	public void removeLocallyFromEverywhere(String crashedDuringSync) {
 		removeFromLocalGameServiceKeeper(crashedDuringSync);
 		distributedControllerLocalDelegate.removePlayerLocally(crashedDuringSync);
 	}

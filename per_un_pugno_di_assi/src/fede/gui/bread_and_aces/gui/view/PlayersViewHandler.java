@@ -130,6 +130,8 @@ public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerIn
 		if (playersGui.containsKey(playerId)) {
 			playersGui.get(playerId).clearFromGui();
 			playersGui.remove(playerId);
+			
+			super.repaint();
 		}
 	}
 	

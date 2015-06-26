@@ -6,7 +6,7 @@ import bread_and_aces.game.updater.GameUpdater;
 public interface DistributedControllerForRemoteHandling {
 	
 	void receiveStartGame(String whoHasToken);
-	Communication removePlayer(String playerId);
+	void removePlayer(String playerId);
 //	void setActionOnSend(ActionKeeper actionKeeper);
 	void setActionOnReceive(String fromPlayer, ActionKeeper actionKeeper);
 	void setActionOnReceive(String fromPlayer, ActionKeeper actionKeeper, GameUpdater gameUpdater);

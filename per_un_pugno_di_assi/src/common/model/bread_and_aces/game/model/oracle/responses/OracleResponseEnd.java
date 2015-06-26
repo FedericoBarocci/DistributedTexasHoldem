@@ -19,12 +19,16 @@ public class OracleResponseEnd implements OracleResponse {
 
 	@Override
 	public Communication exec() {
-		viewControllerDelegate.endGame(fromPlayer);
 		return Communication.END;
 	}
 	
 	@Override
 	public String toString() {
 		return "End";
+	}
+
+	@Override
+	public void finaly() {
+		viewControllerDelegate.endGame(fromPlayer);
 	}
 }
