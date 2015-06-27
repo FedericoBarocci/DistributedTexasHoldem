@@ -46,7 +46,7 @@ public class StartOrRegisterGUI extends JFrameDefault {
 	
 	private static final int gap = 20;
 	
-	public StartOrRegisterGUI(CountDownLatch latch, AtomicReference<LoginResult> loginResultAtomicReference) {
+	public StartOrRegisterGUI(CountDownLatch latch, AtomicReference<RegistrationData> registrationDataAtomicReference) {
 		init();
 		createLayout();
 		
@@ -70,8 +70,8 @@ public class StartOrRegisterGUI extends JFrameDefault {
 					usernameField.setEnabled(false);
 					servableCheckBox.setEnabled(false);
 					
-					LoginResult loginResult = new LoginResult(serverHost, serverPort, asServable, username, coins, goal);
-					loginResultAtomicReference.set(loginResult);
+					RegistrationData registrationData = new RegistrationData(serverHost, serverPort, asServable, username, coins, goal);
+					registrationDataAtomicReference.set(registrationData);
 	
 					latch.countDown();
 //				} // TODO restore in production
@@ -174,7 +174,7 @@ public class StartOrRegisterGUI extends JFrameDefault {
 		setVisible(true);
 	}
 	
-	public static class LoginResult {
+	public static class RegistrationData {
 		public String username;
 		public String serverHost;
 		public String serverPort;
@@ -182,7 +182,7 @@ public class StartOrRegisterGUI extends JFrameDefault {
 		public int coins;
 		public int goal;
 
-		LoginResult(String serverHost, String serverPort, boolean asServable, String username, int coins, int goal) {
+		RegistrationData(String serverHost, String serverPort, boolean asServable, String username, int coins, int goal) {
 			this.serverHost = serverHost;
 			this.serverPort = serverPort;
 			this.asServable = asServable;

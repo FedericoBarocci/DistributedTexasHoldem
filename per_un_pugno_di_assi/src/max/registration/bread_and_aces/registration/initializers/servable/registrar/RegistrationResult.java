@@ -46,7 +46,7 @@ public class RegistrationResult implements Serializable {
 		
 		abstract public String toString();
 		
-		private static final String c1 = "Existing";
+		private static final String c1 = "Existing user with same name";
 		private static final String c2 = "Error";
 		private static final String c3 = "Ok";
 		private static final String c4 = "Game started";

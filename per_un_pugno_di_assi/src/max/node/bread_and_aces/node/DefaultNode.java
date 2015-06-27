@@ -17,10 +17,6 @@ public class DefaultNode implements Node {
 		this.inputHandler = inputHandlerProvider.init(/*thisNodeId*/).get();
 	}
 	
-//	public String getId() {
-//		return nodeId;
-//	}
-	
 	public void start(int initialGoal, int initialCoins) {
 		inputHandler.exec(initialGoal, initialCoins);
 	}

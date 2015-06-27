@@ -12,7 +12,7 @@ import com.google.inject.spi.Message;
 
 import bread_and_aces._di._guice.module.TexasHoldemPokerModule;
 import bread_and_aces.main.start.gui.StartOrRegisterGUI;
-import bread_and_aces.main.start.gui.StartOrRegisterGUI.LoginResult;
+import bread_and_aces.main.start.gui.StartOrRegisterGUI.RegistrationData;
 import bread_and_aces.node.Node;
 import bread_and_aces.node.initializer.NodeInitializer;
 import bread_and_aces.node.initializer.NodeInitializerFactory;
@@ -25,13 +25,13 @@ public class Main {
 	
 //	private NodeInitializer nodeInitializer;
 	
-	public LoginResult startGUI() {
+	public RegistrationData startGUI() {
 		CountDownLatch registrationLatch = new CountDownLatch(1);
-		AtomicReference<LoginResult> loginResultAtomicReference = new AtomicReference<>();
+		AtomicReference<RegistrationData> registrationDataAtomicReference = new AtomicReference<>();
 		AtomicReference<StartOrRegisterGUI> startOrRegistrarReference = new AtomicReference<>();
 		
 		EventQueue.invokeLater( ()->{ 
-			StartOrRegisterGUI rg = new StartOrRegisterGUI(registrationLatch, loginResultAtomicReference);
+			StartOrRegisterGUI rg = new StartOrRegisterGUI(registrationLatch, registrationDataAtomicReference);
 			startOrRegistrarReference.set(rg);
 		});
 		
@@ -44,37 +44,38 @@ public class Main {
 		startOrRegisterGUI.dispose();
 		startOrRegisterGUI = null;
 		
-		return loginResultAtomicReference.get();
+		RegistrationData registrationData = registrationDataAtomicReference.get();
+		
+		return registrationData;
 	}
 	
 	private void initInjector() throws Exception {
 		injector = Guice.createInjector(new TexasHoldemPokerModule());
 	}
 	
-	private void startNode(LoginResult loginResult, String addressToBind) {
+	private void startNode(RegistrationData registrationData, String addressToBind) {
 //		injector = Guice.createInjector(new TexasHoldemPokerModule());
 		
 		NodeInitializerFactory nodeInitializerFactory = injector.getInstance(NodeInitializerFactory.class);
 		NodeInitializer nodeInitializer = null;
 
-		String myId = loginResult.username;
-		if (loginResult.asServable) {
+		String myId = registrationData.username;
+		if (registrationData.asServable) {
 			nodeInitializer = nodeInitializerFactory.createAsServable(myId, addressToBind);
 		} 
 		else {
-			String initializingHostAddress = loginResult.serverHost;
+			String initializingHostAddress = registrationData.serverHost;
 			nodeInitializer = nodeInitializerFactory.createAsClientableWithInitializerPort(myId,
-							addressToBind, initializingHostAddress,
-							Integer.parseInt(loginResult.serverPort) );
+							addressToBind, initializingHostAddress, Integer.parseInt(registrationData.serverPort) );
 		}
 		
 		Node node = nodeInitializer.get();
-		int coins = loginResult.coins;
-		int goal = loginResult.goal;
+		int coins = registrationData.coins;
+		int goal = registrationData.goal;
 		
 		nodeInitializerFactory = null;
 		nodeInitializer = null;
-		loginResult = null;
+		registrationData = null;
 		
 		MemoryUtil.runGarbageCollector();
 		
@@ -92,7 +93,7 @@ public class Main {
 		String addressToBind = args[0];
 		
 		Main main = new Main();
-		LoginResult loginResult = main.startGUI();
+		RegistrationData loginResult = main.startGUI();
 		// TODO only for test during development - it works only with: ./run HOST_IP playerName [0|1,true|false] 
 		handleLoginResultDev(args, loginResult);
 		
@@ -100,14 +101,13 @@ public class Main {
 			main.initInjector();
 			
 			main.startNode(loginResult, addressToBind);
-
 		} catch (Exception e) {
 			DevPrinter.println( /*new Throwable(),*/ "main exception");
 			handleException(e);
 		}
 	} // main
 	
-	private static void handleLoginResultDev(String[] args, LoginResult loginResult) {
+	private static void handleLoginResultDev(String[] args, RegistrationData loginResult) {
 		if (args.length>2) {
 			DevPrinter.println(/* new Throwable(), */"dev" );
 			loginResult.username = args[1];

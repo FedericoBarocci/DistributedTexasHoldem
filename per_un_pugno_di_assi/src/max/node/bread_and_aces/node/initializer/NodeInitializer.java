@@ -82,7 +82,7 @@ public class NodeInitializer {
 				printer);
 	}
 	
-	// as servable
+	// as servable, internal
 	private NodeInitializer(String nodeId, String addressToBind,
 			RegistrationInitializerServable registrationInitializerServable,
 			GameService gameService, 
@@ -94,7 +94,7 @@ public class NodeInitializer {
 				registrationInitializerServable, printer);
 	}
 	
-	// as clientable
+	// as clientable, internal
 	private NodeInitializer(
 			String nodeId,
 			String addressToBind,
@@ -111,7 +111,7 @@ public class NodeInitializer {
 	}
 	
 	
-	
+	// internal, joined
 	private NodeInitializer(String nodeId, String addressToBind,
 			GameService gameService, 
 			NodeFactoryFunctor nodeFactoryFunctor,
@@ -132,7 +132,7 @@ public class NodeInitializer {
 	
 	@FunctionalInterface
 	private interface NodeFactoryFunctor {
-		// TODO remove this parameter
+		// TODO remove this parameter ?
 		Node exec(String dummyNodeId);
 	}
 	

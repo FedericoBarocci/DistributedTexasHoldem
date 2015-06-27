@@ -40,7 +40,7 @@ public class GameInitializerReal implements GameInitializer {
 		game.setCoins(initialCoins);
 		betManager.init();
 		
-		gamePlayersKeeper.getPlayers().forEach(p -> p.setScore( initialCoins ));
+		gamePlayersKeeper.getPlayers().forEach( p -> p.setScore( initialCoins ) );
 		
 		viewCreator.init(null);
 		listenersInitializer.init(null);
