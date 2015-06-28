@@ -2,16 +2,26 @@ package bread_and_aces.registration.initializers.servable.registrar;
 
 import java.io.Serializable;
 
+import bread_and_aces.utils.DevPrinter;
+
 public class RegistrationResult implements Serializable {
 
 	private static final long serialVersionUID = -8844580012053989866L;
 	
 	private final boolean accepted;
 	private final Cause cause;
+
+	private String playerId;
 	
 	public RegistrationResult(boolean accepted, Cause cause) {
 		this.accepted = accepted;
 		this.cause = cause;
+	}
+	public RegistrationResult(boolean accepted, Cause cause, String playerId) {
+		this.accepted = accepted;
+		this.cause = cause;
+		this.playerId = playerId;
+		DevPrinter.println(playerId);
 	}
 
 	public final boolean isAccepted() {
@@ -20,6 +30,10 @@ public class RegistrationResult implements Serializable {
 
 	public final Cause getCause() {
 		return cause;
+	}
+	
+	public String getPlayerId() {
+		return playerId;
 	}
 	
 	public enum Cause {
@@ -51,4 +65,6 @@ public class RegistrationResult implements Serializable {
 		private static final String c3 = "Ok";
 		private static final String c4 = "Game started";
 	}
+
+	
 }

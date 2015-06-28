@@ -1,20 +1,28 @@
 package bread_and_aces.utils;
 
+import bread_and_aces.main.Main;
+
 public class DevPrinter {
 
 //	private Throwable throwable;
+//	private static Level logLevel = Level.FINEST;
 
 	public static void println(/*Throwable throwable,*/ String msg) {
-		System.err.println( getLine(new Throwable())+" "+msg);
+//		System.err.println( getLine(new Throwable())+" "+msg);
+//		Main.logger.finer( getLine(new Throwable())+" "+msg );
+		Main.logger.info( getLine(new Throwable())+" "+msg );
 	}
 	public static void println(/*Throwable throwable*/) {
-		System.err.println( getLine(new Throwable()) );
+//		System.err.println( getLine(new Throwable()) );
+		Main.logger.info( getLine(new Throwable()) );
 	}
 	public static void print(/*Throwable throwable,*/ String msg) {
-		System.err.print( getLine(new Throwable())+" "+msg);
+//		System.err.print( getLine(new Throwable())+" "+msg);
+		Main.logger.info( getLine(new Throwable()) +msg );
 	}
 	public static void print(/*Throwable throwable*/) {
-		System.err.print( getLine(new Throwable()) );
+//		System.err.print( getLine(new Throwable()) );
+		Main.logger.info( getLine(new Throwable()) );
 	}
 	
 	private static String getLine(Throwable throwable) {

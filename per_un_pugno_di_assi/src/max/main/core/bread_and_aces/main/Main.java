@@ -1,10 +1,14 @@
 package bread_and_aces.main;
 
 import java.awt.EventQueue;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -21,11 +25,17 @@ import bread_and_aces.utils.misc.MemoryUtil;
 
 public class Main {
 	
+	public static String myPath;
+
+	public static Logger logger;
+
+	private static FileHandler fh;
+	
 	private Injector injector;
 	
 //	private NodeInitializer nodeInitializer;
 	
-	public RegistrationData startGUI() {
+	public RegistrationData startRegistrationGUI() {
 		CountDownLatch registrationLatch = new CountDownLatch(1);
 		AtomicReference<RegistrationData> registrationDataAtomicReference = new AtomicReference<>();
 		AtomicReference<StartOrRegisterGUI> startOrRegistrarReference = new AtomicReference<>();
@@ -89,11 +99,30 @@ public class Main {
 					+args[0]+ "local address to bind on\n\n" );
 			System.exit(1);
 		}
+		
+		logger = Logger.getLogger("logger");
+		 try {  
 
+	        // This block configure the logger with handler and formatter  
+	        fh = new FileHandler("trace.log");  
+	        logger.addHandler(fh);
+	        SimpleFormatter formatter = new SimpleFormatter();  
+	        fh.setFormatter(formatter);  
+		 } catch(SecurityException|IOException e) {
+			 e.printStackTrace();
+		 }
+		 
 		String addressToBind = args[0];
 		
 		Main main = new Main();
-		RegistrationData loginResult = main.startGUI();
+		
+		myPath = main.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin", "");
+
+		RegistrationData loginResult;
+//		do {
+			DevPrinter.println("try to register");
+			loginResult = main.startRegistrationGUI();
+//		} while( (loginResult.asServable == false) && clientWouldTryAgain); 
 		// TODO only for test during development - it works only with: ./run HOST_IP playerName [0|1,true|false] 
 		handleLoginResultDev(args, loginResult);
 		

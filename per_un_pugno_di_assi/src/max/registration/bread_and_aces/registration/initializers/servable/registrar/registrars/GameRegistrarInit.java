@@ -14,6 +14,7 @@ import bread_and_aces.registration.initializers.servable.registrar.GameRegistrar
 import bread_and_aces.registration.initializers.servable.registrar.RegistrationResult;
 import bread_and_aces.registration.initializers.servable.registrar.RegistrationResult.Cause;
 import bread_and_aces.registration.model.NodeConnectionInfos;
+import bread_and_aces.utils.DevPrinter;
 import bread_and_aces.utils.keepers.KeepersUtilDelegateForServable;
 
 @Singleton
@@ -40,7 +41,8 @@ public class GameRegistrarInit implements GameRegistrar {
 			// here we add client nodes
 			// if existing...
 			if (keepersUtilsForServable.contains(playerId)) {
-				return new RegistrationResult(false, Cause.EXISTING);
+				DevPrinter.print("sorry, existing "+playerId);
+				return new RegistrationResult(false, Cause.EXISTING, playerId);
 			}
 			
 			// if not existing...
