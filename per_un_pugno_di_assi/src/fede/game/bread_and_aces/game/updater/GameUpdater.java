@@ -20,7 +20,7 @@ public class GameUpdater implements Serializable {
 			tableCards.add(deck.pop());
 		
 		for(Player p : players) {
-			this.playersData.add(new PlayerData(p.getName(), deck.pop(), deck.pop(), p.getScore()));
+			this.playersData.add(new PlayerData(p.getName(), deck.pop(), deck.pop()/*, p.getScore()*/));
 		}
 	}
 	

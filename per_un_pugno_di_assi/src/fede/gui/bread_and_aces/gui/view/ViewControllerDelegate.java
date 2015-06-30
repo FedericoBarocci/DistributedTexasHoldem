@@ -113,6 +113,22 @@ public class ViewControllerDelegate {
 		playersView.setPlayerAction(fromPlayer, action.getAction());
 		labelHandler.printMessage(fromPlayer + " perform " + action.toString() + " action.");
 	}
+	
+	public void endGamePlayers(List<Player> winners) {
+		tableView.addTableCards();
+		playersView.showPlayersCards();
+		playersView.showWinners(winners);
+
+		String winnersString = "Hands up! " + winners.get(0).getName();
+
+		for (int i = 1; i < winners.size(); i++) {
+			winnersString += ", " + winners.get(i).getName();
+		}
+
+		winnersString += " win the game with " + winners.get(0).getRanking().toString();
+		
+		labelHandler.printMessage(winnersString);
+	}
 
 	public void endGame(String player) {
 		playersView.showWinnerId(player);

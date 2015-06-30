@@ -24,8 +24,8 @@ public class DevPrinter {
 		Main.logger.info( getLine(new Throwable()) +msg );
 	}
 	public static void print(/*Throwable throwable*/) {
-//		System.err.print( getLine(new Throwable()) );
-		Main.logger.info( getLine(new Throwable()) );
+		System.err.print( getLine(new Throwable()) );
+//		Main.logger.info( getLine(new Throwable()) );
 	}
 	
 	private static String getLine(Throwable throwable) {

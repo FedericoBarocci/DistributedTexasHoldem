@@ -113,7 +113,7 @@ public class GameOracle {
 		for(PlayerData pd : gameUpdater.getPlayers()) {
 			Player p = gamePlayersKeeper.getPlayer(pd.getName());
 			p.deal(new Pair<>(pd.getCard1(), pd.getCard2()));
-			p.setScore(pd.getScore());
+			//p.setScore(pd.getScore());
 		}
 	}
 	
