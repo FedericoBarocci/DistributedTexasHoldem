@@ -19,7 +19,6 @@ import bread_and_aces.services.rmi.game.core.Pinger;
 import bread_and_aces.services.rmi.utils.communicator.Communicator;
 import bread_and_aces.services.rmi.utils.crashhandler.CrashHandler;
 import bread_and_aces.utils.DevPrinter;
-import bread_and_aces.utils.printer.Printer;
 
 public abstract class AbstractRegistrationInitializerServable implements RegistrationInitializerServable {
 	
@@ -30,7 +29,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 	
 	private final RegistrarPlayersKeeper registrarPlayersKeeper;
 	private final Game game;
-	private final Printer printer;
+//	private final Printer printer;
 	private final CrashHandler crashHandler;
 	private final Pinger pinger;
 	
@@ -41,8 +40,8 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 			Table table,
 			Game game,
 			Pinger pinger,
-			CrashHandler crashHandler,
-			Printer printer
+			CrashHandler crashHandler
+//			,Printer printer
 			) {
 		this.myId = nodeId;
 		this.gameRegistrarProvider = gameRegistrarProvider;
@@ -52,7 +51,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		this.game = game;
 		this.pinger = pinger;
 		this.crashHandler = crashHandler;
-		this.printer = printer;
+//		this.printer = printer;
 		((PlayersObservable)registrarPlayersKeeper).addObserver( new NewPlayersObserverAsServable( nodeId) );
 	}
 
@@ -128,10 +127,10 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 	}
 	
 	private void startGame() {
-		printer.println("Game can start!");
+		DevPrinter.println("Game can start!");
 		game.setStarted();
 //		passBucket();
-		printer.println("Inizio io perché comando io!");
+		DevPrinter.println("Inizio io perché comando io!");
 		registrarPlayersKeeper.setMyselfAsLeader();
 //		.receiveToken();
 //		DevPrinter.println(/*new Throwable(),*/ "just before to sayToAllStartGame");

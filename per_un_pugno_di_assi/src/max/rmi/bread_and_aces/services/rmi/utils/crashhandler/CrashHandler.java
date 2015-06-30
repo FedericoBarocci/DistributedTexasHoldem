@@ -11,23 +11,22 @@ import bread_and_aces.services.rmi.game.core.GameService;
 import bread_and_aces.services.rmi.game.keeper.GameServicesKeeper;
 import bread_and_aces.services.rmi.utils.communicator.Deliverator;
 import bread_and_aces.utils.DevPrinter;
-import bread_and_aces.utils.printer.Printer;
 
 @Singleton
 public class CrashHandler {
 
 	private final GameServicesKeeper gameServicesKeeper;
-	private final Printer printer;
+//	private final Printer printer;
 	private final Deliverator deliverator;
 	private final DistributedControllerLocalDelegate distributedControllerLocalDelegate;
 	
 	
 	@Inject
-	public CrashHandler(GameServicesKeeper gameServicesKeeper, DistributedControllerLocalDelegate distributedControllerLocalDelegate, Deliverator deliverator, Printer printer) {
+	public CrashHandler(GameServicesKeeper gameServicesKeeper, DistributedControllerLocalDelegate distributedControllerLocalDelegate, Deliverator deliverator/*, Printer printer*/) {
 		this.gameServicesKeeper = gameServicesKeeper;
 		this.distributedControllerLocalDelegate = distributedControllerLocalDelegate;
 		this.deliverator = deliverator;
-		this.printer = printer;
+//		this.printer = printer;
 	}
 	
 //	public void handleCrash(String crashedPeer) {
@@ -45,7 +44,7 @@ public class CrashHandler {
 	}
 	
 	private void removeFromLocalGameServiceKeeper(String crashedDuringSync) {
-		printer.println(crashedDuringSync+" not responding, removed it.");
+		DevPrinter.println(crashedDuringSync+" not responding, removed it.");
 		gameServicesKeeper.removeService(crashedDuringSync);
 		DevPrinter.println(/*new Throwable(),*/ "removed "+crashedDuringSync+" from GameServiceKeeper");
 	}

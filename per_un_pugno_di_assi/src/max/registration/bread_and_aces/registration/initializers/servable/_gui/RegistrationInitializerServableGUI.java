@@ -15,7 +15,6 @@ import bread_and_aces.services.rmi.game.core.Pinger;
 import bread_and_aces.services.rmi.game.keeper.GameServicesKeeper;
 import bread_and_aces.services.rmi.utils.communicator.Communicator;
 import bread_and_aces.services.rmi.utils.crashhandler.CrashHandler;
-import bread_and_aces.utils.printer.Printer;
 
 public class RegistrationInitializerServableGUI extends
 		AbstractRegistrationInitializerServable {
@@ -28,11 +27,11 @@ public class RegistrationInitializerServableGUI extends
 			GameServicesKeeper gameServicesRegistry,
 			RegistrarPlayersKeeper registrarPlayersKeeper, 
 			Communicator communicator,
-			Table table, Game game, Pinger pinger, CrashHandler crashHandler, Printer printer,
+			Table table, Game game, Pinger pinger, CrashHandler crashHandler/*, Printer printer*/,
 			AccepterPlayersGUIFactory accepterPlayersGUIFactory) {
 		super(nodeId, gameRegistrarProvider,
 				registrarPlayersKeeper,
-				communicator, table, game, pinger, crashHandler, printer);
+				communicator, table, game, pinger, crashHandler/*, printer*/);
 		this.accepterPlayersGUIFactory = accepterPlayersGUIFactory;
 	}
 

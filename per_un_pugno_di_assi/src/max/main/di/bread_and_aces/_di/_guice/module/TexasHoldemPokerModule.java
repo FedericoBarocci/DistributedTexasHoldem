@@ -31,8 +31,6 @@ import bread_and_aces.services.rmi.game.core.impl.GameServiceFactory;
 import bread_and_aces.utils.keepers.KeepersUtilDelegate;
 import bread_and_aces.utils.keepers.KeepersUtilDelegateForClientable;
 import bread_and_aces.utils.keepers.KeepersUtilDelegateForServable;
-import bread_and_aces.utils.printer.ConsolePrinter.ConsolePrinterReal;
-import bread_and_aces.utils.printer.Printer;
 
 public class TexasHoldemPokerModule extends 
 LimeWireInjectModule {
@@ -43,7 +41,7 @@ LimeWireInjectModule {
 		// from Limewire inject, in order to have LazySingleton
 		super.configure();
 		
-		bind(Printer.class).to(ConsolePrinterReal.class);
+//		bind(Printer.class).to(ConsolePrinterReal.class);
 		
 		bind(RegistrarPlayersKeeper.class).to(PlayersKeeperImpl.class);
 		bind(GamePlayersKeeper.class).to(PlayersKeeperImpl.class);

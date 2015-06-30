@@ -8,7 +8,6 @@ import bread_and_aces.registration.initializers.servable.registrar.GameRegistrar
 import bread_and_aces.registration.initializers.servable.registrar.registrars.GameRegistrarInit;
 import bread_and_aces.registration.initializers.servable.registrar.registrars.GameRegistrarStarted;
 import bread_and_aces.utils.misc.MemoryUtil;
-import bread_and_aces.utils.printer.Printer;
 
 @Singleton
 public class GameRegistrarProvider implements Provider<GameRegistrar> {
@@ -19,7 +18,7 @@ public class GameRegistrarProvider implements Provider<GameRegistrar> {
 	private GameRegistrar instance;
 
 	@Inject
-	public GameRegistrarProvider(GameRegistrarInit gameRegistrarInit, GameRegistrarStarted gameStarted, Printer printer) {
+	public GameRegistrarProvider(GameRegistrarInit gameRegistrarInit, GameRegistrarStarted gameStarted/*, Printer printer*/) {
 		this.instance = gameRegistrarInit;
 		this.gameRegistrarStarted = gameStarted;
 //		this.printer = printer;
