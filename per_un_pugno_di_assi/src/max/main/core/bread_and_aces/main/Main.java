@@ -35,6 +35,9 @@ public class Main {
 	public static Logger logger;
 
 	public static boolean isDevMode;
+
+	// TODO fix: far scrivere in un file l'eseguibile run_lab_QUALCOSA già da dentro lo script bash.. poi java leggerà in quel file per sapere chi è che deve ri-lanciare
+	public static String run_cmd = "./run_lab_ws";
 	
 	private Injector injector;
 	
@@ -76,11 +79,14 @@ public class Main {
 
 		String myId = registrationData.username;
 		if (registrationData.asServable) {
-			nodeInitializer = nodeInitializerFactory.createAsServable(myId, addressToBind);
+			nodeInitializer = nodeInitializerFactory.createAsServable(
+					myId, 
+					addressToBind);
 		} 
 		else {
 			String initializingHostAddress = registrationData.serverHost;
-			nodeInitializer = nodeInitializerFactory.createAsClientableWithInitializerPort(myId,
+			nodeInitializer = nodeInitializerFactory.createAsClientableWithInitializerPort(
+					myId,
 							addressToBind, initializingHostAddress, Integer.parseInt(registrationData.serverPort) );
 		}
 		

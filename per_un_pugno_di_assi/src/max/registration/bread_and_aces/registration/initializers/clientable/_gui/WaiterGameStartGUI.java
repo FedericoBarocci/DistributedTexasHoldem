@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import bread_and_aces.gui.view.elements.frame.JFrameDefault;
+import bread_and_aces.main.Main;
 import bread_and_aces.registration.initializers.servable.registrar.RegistrationResult;
 
 public class WaiterGameStartGUI {
@@ -34,7 +35,7 @@ public class WaiterGameStartGUI {
 		buttonTryAgain.addActionListener(a->{
 //			Main.clientWouldTryAgain = true;
 			try {
-				Runtime.getRuntime().exec("./run_dev a");
+				Runtime.getRuntime().exec(Main.run_cmd);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

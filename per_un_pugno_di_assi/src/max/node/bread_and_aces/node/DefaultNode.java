@@ -1,7 +1,6 @@
 package bread_and_aces.node;
 
-import com.google.inject.assistedinject.Assisted;
-import com.google.inject.assistedinject.AssistedInject;
+import javax.inject.Inject;
 
 import bread_and_aces._di.providers.node.inputhandler.InputHandlerProvider;
 import bread_and_aces.node.inputhandler.InputHandler;
@@ -11,8 +10,11 @@ public class DefaultNode implements Node {
 //	private final String nodeId;
 	private final InputHandler inputHandler;
 
-	@AssistedInject
-	public DefaultNode(@Assisted(value="nodeFactoryIdAsServable") String dummyId, InputHandlerProvider inputHandlerProvider) {
+//	@AssistedInject
+	@Inject
+	public DefaultNode(
+//			@Assisted(value="nodeFactoryIdAsServable") String dummyId, 
+			InputHandlerProvider inputHandlerProvider) {
 //		this.nodeId = thisNodeId;
 		this.inputHandler = inputHandlerProvider.init(/*thisNodeId*/).get();
 	}

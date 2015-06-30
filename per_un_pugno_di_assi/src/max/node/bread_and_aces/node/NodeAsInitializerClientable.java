@@ -1,7 +1,6 @@
 package bread_and_aces.node;
 
-import com.google.inject.assistedinject.Assisted;
-import com.google.inject.assistedinject.AssistedInject;
+import javax.inject.Inject;
 
 import bread_and_aces._di.providers.node.inputhandler.InputHandlerProvider;
 import bread_and_aces.game.Game;
@@ -11,12 +10,12 @@ public class NodeAsInitializerClientable extends DefaultNode {
 
 	private Game game;
 
-	@AssistedInject
-//	@Inject
+//	@AssistedInject
+	@Inject
 	public NodeAsInitializerClientable(
-			@Assisted(value="nodeFactoryIdAsClientable") String dummyId,
+//			@Assisted(value="nodeFactoryIdAsClientable") String dummyId,
 			InputHandlerProvider inputHandlerProvider, Game game) {
-		super(dummyId, inputHandlerProvider);
+		super(/*dummyId,*/ inputHandlerProvider);
 		this.game = game;
 	}
 	

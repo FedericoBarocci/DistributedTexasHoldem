@@ -9,14 +9,16 @@ public interface NodeInitializerFactory {
 			@Assisted(value="addressToBindAsServable") String addressToBind 
 			);
 
-	NodeInitializer createAsClientableWithInitializerPort(@Assisted(value="nodeIdAsConnectableWithPort") String me, 
+	NodeInitializer createAsClientableWithInitializerPort(
+			@Assisted(value="nodeIdAsConnectableWithPort") String me, 
 			@Assisted(value="addressToBindAsConnectableWithPort") String addressToBind,
 			@Assisted(value="initializerHostAddressWithPort") String initializerHostAddress,
 			@Assisted(value="initializerHostPortWithPort") int initializerHostPort 
 			);
 	
-	NodeInitializer createAsClientable(@Assisted(value="nodeIdAsConnectableWithoutPort") String me, 
+	/*NodeInitializer createAsClientable(
+			@Assisted(value="nodeIdAsConnectableWithoutPort") String me, 
 			@Assisted(value="addressToBindAsConnectableWithoutPort") String addressToBind,
 			@Assisted(value="initializerHostAddressWithoutPort") String initializerHostAddress
-			);
+			);*/
 }

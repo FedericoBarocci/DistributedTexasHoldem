@@ -83,10 +83,15 @@ public class KeepersUtilDelegate implements KeepersUtilDelegateForServable, Keep
 			return new RegistrationResult(RegistrationStatus.OK);
 		} catch (MalformedURLException e) {
 			DevPrinter.println(e.getMessage());
-			return new RegistrationResult(RegistrationStatus.ERROR);
+			RegistrationResult registrationResult = new RegistrationResult(RegistrationStatus.ERROR);
+			registrationResult.setErrorMessage(e.getMessage());
+			return registrationResult;
 		} catch (RemoteException | NotBoundException e) {
-			DevPrinter.println("Player " + playerId+ " not registered: no more responding");
-			return new RegistrationResult(RegistrationStatus.ERROR);
+			String msg = "Player " + playerId+ " not registered: no more responding";
+			DevPrinter.println(msg);
+			RegistrationResult registrationResult = new RegistrationResult(RegistrationStatus.ERROR);
+			registrationResult.setErrorMessage(msg);
+			return registrationResult;
 		}
 	}
 	/*

@@ -12,6 +12,8 @@ public class RegistrationResult implements Serializable {
 	private final RegistrationStatus registrationStatus;
 
 	private String playerId;
+
+	private String msg;
 	
 	public RegistrationResult(RegistrationStatus cause) {
 //		this.accepted = accepted;
@@ -23,6 +25,10 @@ public class RegistrationResult implements Serializable {
 		this.playerId = playerId;
 		DevPrinter.println(playerId);
 	}
+	/*public RegistrationResult(RegistrationStatus status, String msg) {
+		this.registrationStatus = status;
+		this.msg = msg;
+	}*/
 
 	public final boolean isAccepted() {
 		return registrationStatus.equals(RegistrationStatus.OK) ? true : false;
@@ -64,6 +70,14 @@ public class RegistrationResult implements Serializable {
 		private static final String MESSAGE_ERROR = "Error";
 		private static final String MESSAGE_OK = "Ok";
 		private static final String MESSAGE_GAME_STARTED = "Game started";
+	}
+
+	public void setErrorMessage(String msg) {
+		this.msg = msg;		
+	}
+	
+	public String getErrorMsg() {
+		return msg;
 	}
 
 	
