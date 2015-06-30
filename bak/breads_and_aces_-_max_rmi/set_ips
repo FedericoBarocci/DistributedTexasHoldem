@@ -1,5 +1,0 @@
-#!/bin/bash
-
-for i in `seq 1 4`; do
-   ip addr add 10.0.0.$i/24 dev eth0
-done
