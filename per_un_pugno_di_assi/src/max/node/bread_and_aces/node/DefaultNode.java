@@ -12,7 +12,7 @@ public class DefaultNode implements Node {
 	private final InputHandler inputHandler;
 
 	@AssistedInject
-	public DefaultNode(@Assisted(value="nodeFactoryIdAsServable") String thisNodeId, InputHandlerProvider inputHandlerProvider) {
+	public DefaultNode(@Assisted(value="nodeFactoryIdAsServable") String dummyId, InputHandlerProvider inputHandlerProvider) {
 //		this.nodeId = thisNodeId;
 		this.inputHandler = inputHandlerProvider.init(/*thisNodeId*/).get();
 	}

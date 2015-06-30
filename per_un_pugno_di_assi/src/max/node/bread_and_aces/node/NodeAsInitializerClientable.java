@@ -12,10 +12,11 @@ public class NodeAsInitializerClientable extends DefaultNode {
 	private Game game;
 
 	@AssistedInject
+//	@Inject
 	public NodeAsInitializerClientable(
-			@Assisted(value="nodeFactoryIdAsClientable") String thisNodeId,
+			@Assisted(value="nodeFactoryIdAsClientable") String dummyId,
 			InputHandlerProvider inputHandlerProvider, Game game) {
-		super(thisNodeId, inputHandlerProvider);
+		super(dummyId, inputHandlerProvider);
 		this.game = game;
 	}
 	

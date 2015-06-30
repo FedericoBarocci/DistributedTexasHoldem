@@ -6,6 +6,10 @@ import bread_and_aces.game.model.players.player.Player;
 import bread_and_aces.game.model.players.player.PlayerRegistrationId;
 
 public interface RegistrarPlayersKeeper extends PlayersKeeper {
+	/**
+	 * @param playerRegistrationId
+	 * @param player
+	 */
 	void addPlayer(PlayerRegistrationId playerRegistrationId, Player player);
 	void addPlayers(Map<PlayerRegistrationId, Player> players);
 

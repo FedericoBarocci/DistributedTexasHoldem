@@ -14,27 +14,27 @@ import bread_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
 import bread_and_aces.game.model.players.player.Player;
 import bread_and_aces.game.model.players.player.PlayerRegistrationId;
 import bread_and_aces.registration.initializers.servable.registrar.RegistrationResult;
-import bread_and_aces.registration.initializers.servable.registrar.RegistrationResult.Cause;
+import bread_and_aces.registration.initializers.servable.registrar.RegistrationResult.RegistrationStatus;
 import bread_and_aces.registration.model.NodeConnectionInfos;
 import bread_and_aces.services.rmi.game.core.GameService;
 import bread_and_aces.services.rmi.game.keeper.GameServicesKeeper;
 import bread_and_aces.services.rmi.game.utils.ServiceUtils;
-import bread_and_aces.utils.printer.Printer;
+import bread_and_aces.utils.DevPrinter;
 
 @Singleton
 public class KeepersUtilDelegate implements KeepersUtilDelegateForServable, KeepersUtilDelegateForClientable {
 
 	private final RegistrarPlayersKeeper playersKeeper;
 	private final GameServicesKeeper gameServiceKeeper;
-	private final Printer printer;
+//	private final Printer printer;
 
 	@Inject
 	public KeepersUtilDelegate(RegistrarPlayersKeeper playersKeeper,
-			GameServicesKeeper gameServiceKeeper,
-			Printer printer) {
+			GameServicesKeeper gameServiceKeeper
+			/*,Printer printer*/) {
 		this.playersKeeper = playersKeeper;
 		this.gameServiceKeeper = gameServiceKeeper;
-		this.printer = printer;
+//		this.printer = printer;
 	}
 
 	/*
@@ -49,7 +49,7 @@ public class KeepersUtilDelegate implements KeepersUtilDelegateForServable, Keep
 	}
 
 	@Override
-	public void registerClientablePlayer(String playerId) {
+	public void registerPlayer(String playerId) {
 		long now = System.currentTimeMillis();
 
 		PlayerRegistrationId playerRegistrationId = new PlayerRegistrationId(playerId, now);
@@ -60,32 +60,32 @@ public class KeepersUtilDelegate implements KeepersUtilDelegateForServable, Keep
 
 	
 	@Override
-	public void registerServablePlayer(String playerId) {
-		registerClientablePlayer(playerId);
+	public void registerServable(String playerId) {
+		registerPlayer(playerId);
 		playersKeeper.setMyName(playerId);
 	}
 
 	@Override
-	public RegistrationResult registerClientableNodePlayerGameService(
+	public RegistrationResult registerClientable(
 			NodeConnectionInfos nodeConnectionInfos, String playerId) {
 		try {
 			GameService gameService = ServiceUtils.lookup(
 					nodeConnectionInfos.getAddress(),
-					nodeConnectionInfos.getPort());
+					nodeConnectionInfos.getPort() );
 
          // here we register gameservice in keeper, since binding was fine
 			gameServiceKeeper.addService(playerId, gameService);
 
 			// here we register node and player, since binding was fine
-			registerClientablePlayer(playerId);
+			registerPlayer(playerId);
 
-			return new RegistrationResult(true, Cause.OK);
+			return new RegistrationResult(RegistrationStatus.OK);
 		} catch (MalformedURLException e) {
-			printer.println(e.getMessage());
-			return new RegistrationResult(false, Cause.ERROR);
+			DevPrinter.println(e.getMessage());
+			return new RegistrationResult(RegistrationStatus.ERROR);
 		} catch (RemoteException | NotBoundException e) {
-			printer.println("Player " + playerId+ " not registered: no more responding");
-			return new RegistrationResult(false, Cause.ERROR);
+			DevPrinter.println("Player " + playerId+ " not registered: no more responding");
+			return new RegistrationResult(RegistrationStatus.ERROR);
 		}
 	}
 	/*

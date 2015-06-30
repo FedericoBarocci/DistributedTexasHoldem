@@ -2,13 +2,18 @@ package bread_and_aces.main;
 
 import java.awt.EventQueue;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
+import java.util.logging.Formatter;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -29,7 +34,7 @@ public class Main {
 
 	public static Logger logger;
 
-	private static FileHandler fh;
+	public static boolean isDevMode;
 	
 	private Injector injector;
 	
@@ -96,61 +101,72 @@ public class Main {
 	public static void main(String[] args) {
 		if (args.length<1) {
 			System.out.println("minimum 1 arguments: \n\n"
-					+args[0]+ "local address to bind on\n\n" );
+					+args[0]+ "local_address_to_bind_on\n\n" );
 			System.exit(1);
 		}
 		
 		logger = Logger.getLogger("logger");
+		logger.setUseParentHandlers(false);
 		 try {  
-
 	        // This block configure the logger with handler and formatter  
-	        fh = new FileHandler("trace.log");  
+	        FileHandler fh = new FileHandler("trace.log");
+	        fh.setFormatter(new LogFormatter());
 	        logger.addHandler(fh);
-	        SimpleFormatter formatter = new SimpleFormatter();  
-	        fh.setFormatter(formatter);  
+	        
+	        ConsoleHandler ch = new ConsoleHandler();
+	        ch.setFormatter(new LogFormatter());
+	        logger.addHandler(ch);
+	        
 		 } catch(SecurityException|IOException e) {
 			 e.printStackTrace();
 		 }
 		 
 		String addressToBind = args[0];
+		if (args.length>1) {
+			isDevMode = (args[1].equalsIgnoreCase("DEV")) ? true : false;
+		}
 		
 		Main main = new Main();
 		
 		myPath = main.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin", "");
 
 		RegistrationData loginResult;
-//		do {
-			DevPrinter.println("try to register");
-			loginResult = main.startRegistrationGUI();
-//		} while( (loginResult.asServable == false) && clientWouldTryAgain); 
-		// TODO only for test during development - it works only with: ./run HOST_IP playerName [0|1,true|false] 
-		handleLoginResultDev(args, loginResult);
+		loginResult = main.startRegistrationGUI();
+		// TODO only for test during development - it works only with: ./run host_ip DEV player_name [s]
+		if (isDevMode) {
+			handleLoginResultInDevMode(args, loginResult);
+		}
 		
 		try {
 			main.initInjector();
 			
 			main.startNode(loginResult, addressToBind);
 		} catch (Exception e) {
-			DevPrinter.println( /*new Throwable(),*/ "main exception");
+			DevPrinter.println( "main exception");
 			handleException(e);
 		}
 	} // main
 	
-	private static void handleLoginResultDev(String[] args, RegistrationData loginResult) {
-		if (args.length>2) {
-			DevPrinter.println(/* new Throwable(), */"dev" );
-			loginResult.username = args[1];
-			loginResult.asServable = Boolean.parseBoolean(args[2]);
-			System.out.println(loginResult.username+" "+ ( loginResult.asServable? "as servable": "as clientable") );
+	private static void handleLoginResultInDevMode(String[] args, RegistrationData registrationData) {
+		DevPrinter.println("DevMode: "+isDevMode);
+		if (args.length<2) {
+			System.out.println("ERROR:");
+			System.out.println("DevMode: "+args[0]+" DEV HOST_IP playerName <s>");
+			System.out.println("s is optional, and you have to add if you want start host as servable");
+			System.exit(0);
+		} else {
+			registrationData.username = args[2];
+			if (args.length>3 ) {
+				registrationData.asServable = (args[3].equals("s")) ? true: false;
+				DevPrinter.println(registrationData.username+" "+ ( registrationData.asServable? "as servable": "as clientable") );
+			}
+			if (!registrationData.asServable) {
+				DevPrinter.println("try to register "+registrationData.username);
+			}
 		}
 	}
 	
 	public static void handleException(Exception e) {
-
-//		if (e.getCause()!=null) {
-//			System.out.println("no cause:");
-//			e.printStackTrace();
-//		} else {
 			try {
 				Field field = e.getClass().getDeclaredField("messages");
 				field.setAccessible(true);
@@ -159,13 +175,40 @@ public class Main {
 				messages.forEach(m->{
 					System.err.println("Exception: "+m);
 				});
-//				e.printStackTrace();
 			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e1) {
 				e1.printStackTrace();
 				
 				e.printStackTrace();
 			}
-//		}
 	} // handleException
 	
+	static class LogFormatter extends Formatter {
+
+	    static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
+	    @Override
+	    public String format(LogRecord record) {
+	        StringBuilder sb = new StringBuilder();
+	        record.setSourceClassName("");
+	        sb.append(new Date(record.getMillis()))
+	            .append(" - ")
+	            .append(formatMessage(record))
+	            .append(LINE_SEPARATOR)
+	            ;
+
+	        if (record.getThrown() != null) {
+	            try {
+	                StringWriter sw = new StringWriter();
+	                PrintWriter pw = new PrintWriter(sw);
+	                record.getThrown().printStackTrace(pw);
+	                pw.close();
+	                sb.append(sw.toString());
+	            } catch (Exception ex) {
+	                // ignore
+	            }
+	        }
+
+	        return sb.toString();
+	    }
+	}
 }

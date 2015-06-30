@@ -12,7 +12,7 @@ import bread_and_aces.game.model.players.player.Player;
 import bread_and_aces.game.model.players.player.PlayerRegistrationId;
 import bread_and_aces.registration.initializers.servable.registrar.GameRegistrar;
 import bread_and_aces.registration.initializers.servable.registrar.RegistrationResult;
-import bread_and_aces.registration.initializers.servable.registrar.RegistrationResult.Cause;
+import bread_and_aces.registration.initializers.servable.registrar.RegistrationResult.RegistrationStatus;
 import bread_and_aces.registration.model.NodeConnectionInfos;
 
 @Singleton
@@ -29,7 +29,7 @@ public class GameRegistrarStarted implements GameRegistrar {
 
 	@Override
 	public RegistrationResult registerPlayer(NodeConnectionInfos nodeConnectionInfos, String playerId) {
-		return new RegistrationResult(false, Cause.GAME_STARTED);
+		return new RegistrationResult(RegistrationStatus.GAME_STARTED);
 	}
 	
 	@Override

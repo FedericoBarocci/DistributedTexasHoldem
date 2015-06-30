@@ -8,6 +8,7 @@ import javax.swing.table.DefaultTableModel;
 
 import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import bread_and_aces.game.model.players.keeper.PlayersObservable;
+import bread_and_aces.game.model.players.player.Player;
 import bread_and_aces.utils.observatory.Observable;
 import bread_and_aces.utils.observatory.Observer;
 
@@ -30,8 +31,9 @@ class AccepterPlayerTableModel extends DefaultTableModel {
 		NewPlayerObserverDelegateForTableUpdate newPlayerObserverDelegateForTableUpdate = new NewPlayerObserverDelegateForTableUpdate();
 		((PlayersObservable)this.playersKeeper).addObserver(newPlayerObserverDelegateForTableUpdate);
 		
-		if (!playersKeeper.getPlayers().isEmpty()) {
-			newPlayerObserverDelegateForTableUpdate.update(null, playersKeeper.getPlayers().get(0).getName());
+		List<Player> players = playersKeeper.getPlayers();
+		if (!players.isEmpty()) {
+			newPlayerObserverDelegateForTableUpdate.update(null, players.get(0).getName());
 		}
 	}
 	

@@ -34,8 +34,7 @@ public class GameServiceAsSessionInitializerServable extends
 
 	@Override
 	public RegistrationResult registerPlayer(
-			NodeConnectionInfos nodeConnectionInfos, String playerId)
-			throws RemoteException {
+			NodeConnectionInfos nodeConnectionInfos, String playerId) throws RemoteException {
 		GameRegistrar gameRegistrar = gameRegistrarProvider.get();
 		return gameRegistrar.registerPlayer(nodeConnectionInfos, playerId);
 	}

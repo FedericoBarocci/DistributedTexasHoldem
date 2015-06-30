@@ -1,11 +1,17 @@
 #!/bin/bash
 
+if [ "${1}" == "-h" ]; then
+    echo "./run_dev with 's' argument runs as servable; with no-argument it starts as clientable"
+    exit 0
+fi
+
 function randomName() {
-echo $(shuf -n1 nomi.txt)
+   echo $(shuf -n1 nomi.txt)
 }
 function randomLastIPOctet() {
    echo $((RANDOM%8+2))
 }
+
 
 if [ -z "$(ip addr show  dev eth0 | grep 10.0.0 2>/dev/null)" ]; then
   echo "missing address!" 
@@ -15,15 +21,10 @@ else
    guice_path="libs/guice/guice-3.0.jar:libs/guice/aopalliance-1.0.jar:libs/guice/javax.inject.jar:libs/guice/guice-assistedinject-3.0.jar";
    guice_enhanced_path="libs/guice_enhanced/guice_enhanced.jar"
 
-   if [ $# -eq 0 ]; then # servable
-      args="10.0.0.1 $(randomName) true"
-   elif [ $# -eq 1 ]; then # clientable or help
-      if [ $1 == "-h" ]; then
-         echo "./run_dev without argument runs as servable; if a random char is provided as argument it starts as clientable"
-         exit 0
-      else
-         args="10.0.0."$(randomLastIPOctet)" $(randomName) false"
-      fi
+   if [ "${1}" == "s" ]; then # servable
+      args="10.0.0.1 DEV $(randomName) s"
+   else # clientable or help
+      args="10.0.0."$(randomLastIPOctet)" DEV $(randomName)"      
    fi
 
    java -cp ${guice_path}:${guice_enhanced_path}:${jgoodies_path}:bin bread_and_aces.main.Main ${args}

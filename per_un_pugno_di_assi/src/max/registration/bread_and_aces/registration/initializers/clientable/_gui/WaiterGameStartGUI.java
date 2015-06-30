@@ -72,7 +72,7 @@ public class WaiterGameStartGUI {
 
 	public void onRejected(RegistrationResult registrationResult) {
 		labelState.setText(labelStateTextRejected);
-		labelMessage.setText(registrationResult.getCause().toString()+" '"+registrationResult.getPlayerId()+"'");
+		labelMessage.setText(registrationResult.getRegistrationStatus().toString()+" '"+registrationResult.getPlayerId()+"'");
 		buttonTryAgain.setVisible(true);
 		buttonExit.setVisible(true);
 		

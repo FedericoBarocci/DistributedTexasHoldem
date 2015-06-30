@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Optional;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import javax.inject.Singleton;
@@ -53,10 +54,15 @@ public class PlayersKeeperImpl implements GamePlayersKeeper, RegistrarPlayersKee
 	}
 	*/
 	
+	/**
+	 * 
+	 */
 	@Override
 	public void addPlayer(PlayerRegistrationId playerRegistrationId, Player player) {
-		playersMap.put(playerRegistrationId, player);
+//		Player put = 
+				playersMap.put(playerRegistrationId, player);
 		notifyObservers( player.getName() );
+//		return Optional.ofNullable(put);
 	}
 	
 	@Override
@@ -154,10 +160,13 @@ DevPrinter.println("playerRegistrationId: "+playerRegistrationId.getId());
 		// why this ?!
 		final LinkedList<Player> linkedList = new LinkedList<Player>();
 		Collection<Player> players = playersMap.values();
-		DevPrinter.print("returning actual players: ");
+		
+		AtomicReference<String> arMsg = new AtomicReference<>("");
+		arMsg.set( arMsg.get()+ "returning actual players: ");
 		linkedList.addAll( players  );
-		players.stream().forEach(p-> System.out.print(p.getName()+" ") );
-		DevPrinter.println();
+		players.stream().forEach(p-> arMsg.set( arMsg.get()+p.getName()+" ") );
+		DevPrinter.println( arMsg.get() );
+//		DevPrinter.println();
 		return linkedList;
 	}
 	

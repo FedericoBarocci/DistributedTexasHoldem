@@ -12,7 +12,7 @@ import bread_and_aces.game.model.players.player.Player;
 import bread_and_aces.game.model.players.player.PlayerRegistrationId;
 import bread_and_aces.registration.initializers.servable.registrar.GameRegistrar;
 import bread_and_aces.registration.initializers.servable.registrar.RegistrationResult;
-import bread_and_aces.registration.initializers.servable.registrar.RegistrationResult.Cause;
+import bread_and_aces.registration.initializers.servable.registrar.RegistrationResult.RegistrationStatus;
 import bread_and_aces.registration.model.NodeConnectionInfos;
 import bread_and_aces.utils.DevPrinter;
 import bread_and_aces.utils.keepers.KeepersUtilDelegateForServable;
@@ -21,7 +21,7 @@ import bread_and_aces.utils.keepers.KeepersUtilDelegateForServable;
 public class GameRegistrarInit implements GameRegistrar {
 
 	private final KeepersUtilDelegateForServable keepersUtilsForServable;
-	private final List<NodeConnectionInfos> nodesConnectionInfos = new ArrayList<>();
+	private final List<NodeConnectionInfos> nodesConnectionInfos = new ArrayList<>(0);
 	
 	@Inject
 	public GameRegistrarInit(KeepersUtilDelegateForServable keepersUtilsForServable) {
@@ -30,23 +30,24 @@ public class GameRegistrarInit implements GameRegistrar {
 
 	@Override
 	public RegistrationResult registerPlayer(NodeConnectionInfos nodeConnectionInfos, String playerId) {
-		if (nodesConnectionInfos.size() == 0) { 
+		if (nodesConnectionInfos.size() == 0) {
 			// if size is zero, we are adding servable node
 			nodesConnectionInfos.add(nodeConnectionInfos);
-			keepersUtilsForServable.registerServablePlayer(playerId);
+			keepersUtilsForServable.registerServable(playerId);
+			DevPrinter.println("registered servable "+playerId);
 			// dummy return
-			return new RegistrationResult(true, Cause.OK);
+			return new RegistrationResult(RegistrationStatus.OK);
 		} 
 		else { 
 			// here we add client nodes
 			// if existing...
 			if (keepersUtilsForServable.contains(playerId)) {
 				DevPrinter.print("sorry, existing "+playerId);
-				return new RegistrationResult(false, Cause.EXISTING, playerId);
+				return new RegistrationResult(RegistrationStatus.EXISTING, playerId);
 			}
 			
 			// if not existing...
-			RegistrationResult registerResult = keepersUtilsForServable.registerClientableNodePlayerGameService(nodeConnectionInfos, playerId);
+			RegistrationResult registerResult = keepersUtilsForServable.registerClientable(nodeConnectionInfos, playerId);
 			
 			if (registerResult.isAccepted())
 				nodesConnectionInfos.add(nodeConnectionInfos);

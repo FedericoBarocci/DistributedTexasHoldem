@@ -4,17 +4,31 @@ import bread_and_aces.registration.initializers.servable.registrar.RegistrationR
 import bread_and_aces.registration.model.NodeConnectionInfos;
 
 public interface KeepersUtilDelegateForServable {
+	
+	/**
+	 * @param playerId
+	 * @return
+	 */
 	boolean contains(String playerId);
+	
 	/**
 	 * register clients
 	 * @param playerId
 	 */
-	void registerClientablePlayer(String playerId);
+	void registerPlayer(String playerId);
+	
 	/**
 	 * register servable itself
 	 * @param playerId
 	 * @param isMe
 	 */
-	void registerServablePlayer(String playerId);
-	RegistrationResult registerClientableNodePlayerGameService(NodeConnectionInfos nodeConnectionInfos, String playerId);
+	void registerServable(String playerId);
+	
+	/**
+	 * 
+	 * @param nodeConnectionInfos
+	 * @param playerId
+	 * @return
+	 */
+	RegistrationResult registerClientable(NodeConnectionInfos nodeConnectionInfos, String playerId);
 }

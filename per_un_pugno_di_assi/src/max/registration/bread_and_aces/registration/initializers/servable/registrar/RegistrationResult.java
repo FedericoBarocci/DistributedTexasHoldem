@@ -8,62 +8,62 @@ public class RegistrationResult implements Serializable {
 
 	private static final long serialVersionUID = -8844580012053989866L;
 	
-	private final boolean accepted;
-	private final Cause cause;
+//	private final boolean accepted;
+	private final RegistrationStatus registrationStatus;
 
 	private String playerId;
 	
-	public RegistrationResult(boolean accepted, Cause cause) {
-		this.accepted = accepted;
-		this.cause = cause;
+	public RegistrationResult(RegistrationStatus cause) {
+//		this.accepted = accepted;
+		this.registrationStatus = cause;
 	}
-	public RegistrationResult(boolean accepted, Cause cause, String playerId) {
-		this.accepted = accepted;
-		this.cause = cause;
+	public RegistrationResult(RegistrationStatus status, String playerId) {
+//		this.accepted = accepted;
+		this.registrationStatus = status;
 		this.playerId = playerId;
 		DevPrinter.println(playerId);
 	}
 
 	public final boolean isAccepted() {
-		return accepted;
+		return registrationStatus.equals(RegistrationStatus.OK) ? true : false;
 	}
 
-	public final Cause getCause() {
-		return cause;
+	public final RegistrationStatus getRegistrationStatus() {
+		return registrationStatus;
 	}
 	
 	public String getPlayerId() {
 		return playerId;
 	}
 	
-	public enum Cause {
+	public enum RegistrationStatus {
 		EXISTING {
 			public String toString() {
-				return c1;
+				return MESSAGE_EXISTING;
 			}
 		},
 		ERROR {
 			public String toString() {
-				return c2;
+				return MESSAGE_ERROR;
 			}
 		}, 
 		OK {
 			public String toString() {
-				return c3;
+				return MESSAGE_OK;
 			}
 		}, 
 		GAME_STARTED {
 			public String toString() {
-				return c4;
+				return MESSAGE_GAME_STARTED;
 			}
 		};
 		
 		abstract public String toString();
 		
-		private static final String c1 = "Existing user with same name";
-		private static final String c2 = "Error";
-		private static final String c3 = "Ok";
-		private static final String c4 = "Game started";
+		private static final String MESSAGE_EXISTING = "Existing user with same name";
+		private static final String MESSAGE_ERROR = "Error";
+		private static final String MESSAGE_OK = "Ok";
+		private static final String MESSAGE_GAME_STARTED = "Game started";
 	}
 
 	

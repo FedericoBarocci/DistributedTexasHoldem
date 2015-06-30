@@ -41,7 +41,7 @@ public class RegistrationInitializerServableGUI extends
 		CountDownLatch startLatch = new CountDownLatch(1);
 		
 		EventQueue.invokeLater(() -> {
-			accepterPlayersGUIFactory.create(startLatch)/*.setVisible(true)*/;
+			accepterPlayersGUIFactory.create(startLatch);
 		});
 		
 		try {

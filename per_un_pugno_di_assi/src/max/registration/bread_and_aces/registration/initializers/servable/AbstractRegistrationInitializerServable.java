@@ -9,6 +9,7 @@ import bread_and_aces.game.model.players.keeper.PlayersObservable;
 import bread_and_aces.game.model.players.keeper.RegistrarPlayersKeeper;
 import bread_and_aces.game.model.table.Table;
 import bread_and_aces.registration.initializers.servable.registrar.GameRegistrar;
+import bread_and_aces.registration.initializers.servable.registrar.RegistrationResult;
 import bread_and_aces.registration.model.NodeConnectionInfos;
 import bread_and_aces.services.rmi.game.base._init.PlayersSynchronizar;
 import bread_and_aces.services.rmi.game.base.dealable.Dealer;
@@ -57,7 +58,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 
 	@Override
 	public void initialize(NodeConnectionInfos thisNodeConnectionInfo, String playerId) {
-		printer.println("Acting as initializer: waiting for players");
+		DevPrinter.println("Acting as initializer: waiting for players");
 
 		registerMyPlayer(thisNodeConnectionInfo, playerId);
 //		((PlayersObservable)playersKeeper).addObserver( new NewPlayersObserverAsServable( playerId) );
@@ -76,9 +77,12 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 
 	private void registerMyPlayer(NodeConnectionInfos thisNodeConnectionInfo, String playerId) {
 		// add itself
-		printer.print("Adding myself as player: ");
-		gameRegistrarProvider.get().registerPlayer(thisNodeConnectionInfo, playerId);
-		printer.println("ok");
+		String msg = "Adding myself as player: ";
+//		printer.print("Adding myself as player: ");
+		RegistrationResult registrationResult = gameRegistrarProvider.get().registerPlayer(thisNodeConnectionInfo, playerId);
+		msg+=registrationResult.isAccepted();
+		DevPrinter.println(msg);
+//		printer.println("ok");
 	}
 	protected abstract void waitForRegistrationsClosingWhileAcceptPlayersThenStartGame();
 	private void closeRegistrations() {

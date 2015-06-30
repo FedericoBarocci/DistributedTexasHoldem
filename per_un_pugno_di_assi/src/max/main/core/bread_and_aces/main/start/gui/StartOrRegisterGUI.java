@@ -13,6 +13,7 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -20,6 +21,7 @@ import javax.swing.SwingConstants;
 import bread_and_aces.gui.view.elements.frame.JFrameDefault;
 import bread_and_aces.gui.view.elements.utils.EnumFont;
 import bread_and_aces.gui.view.elements.utils.GuiUtils;
+import bread_and_aces.main.Main;
 
 public class StartOrRegisterGUI extends JFrameDefault {
 	
@@ -54,11 +56,9 @@ public class StartOrRegisterGUI extends JFrameDefault {
 			public void actionPerformed(ActionEvent e) {
 				String username = usernameField.getText();
 				
-//				if (username.isEmpty()) {
-//					// TODO restore in production
-////					JOptionPane.showMessageDialog(null, "You need to insert an unique name", "Warning", JOptionPane.WARNING_MESSAGE);
-//				}
-//				else { // TODO restore in production
+				if ( (Main.isDevMode == false) && username.isEmpty() ) {
+					JOptionPane.showMessageDialog(null, "You need to insert an unique name", "Warning", JOptionPane.WARNING_MESSAGE);
+				} else {
 					String serverHost = hostTextField.getText();
 					String serverPort = portTextField.getText();
 					boolean asServable = servableCheckBox.isSelected();
@@ -74,7 +74,7 @@ public class StartOrRegisterGUI extends JFrameDefault {
 					registrationDataAtomicReference.set(registrationData);
 	
 					latch.countDown();
-//				} // TODO restore in production
+				}
 			}
 		});
 		
