@@ -3,6 +3,7 @@ package bread_and_aces.game.model.controller;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import bread_and_aces.game.Game;
 import bread_and_aces.game.exceptions.SinglePlayerException;
 import bread_and_aces.game.model.controller.Communication.GameHolder;
 import bread_and_aces.game.model.oracle.GameOracle;
@@ -28,6 +29,7 @@ public class DistributedController implements DistributedControllerForRemoteHand
 	private final Communicator communicator;
 	private final DistributedControllerLocalDelegate distributedControllerLocalDelegate;
 	private final OracleResponseFactory oracleResponseFactory;
+	private final Game game;
 	
 //	private String lastPlayerId = "";
 	
@@ -38,7 +40,7 @@ public class DistributedController implements DistributedControllerForRemoteHand
 			GameState gameState,
 			GamePlayersKeeper gamePlayersKeeper, Communicator communicator,
 			DistributedControllerLocalDelegate distributedControllerDelegate,
-			OracleResponseFactory oracleResponseFactory) {
+			OracleResponseFactory oracleResponseFactory, Game game) {
 		this.viewControllerDelegate = viewControllerDelegate;
 		this.gameOracle = gameOracle;
 		this.gameState = gameState;
@@ -46,6 +48,7 @@ public class DistributedController implements DistributedControllerForRemoteHand
 		this.communicator = communicator;
 		this.distributedControllerLocalDelegate = distributedControllerDelegate;
 		this.oracleResponseFactory = oracleResponseFactory;
+		this.game = game;
 	}
 
 	/**
@@ -165,19 +168,23 @@ public class DistributedController implements DistributedControllerForRemoteHand
 	}
 
 	public boolean leader(boolean leaveGame) {
-		if (viewControllerDelegate.isSetRefresh()) {
-			if (leaveGame) {
-				//TODO Notify other players of current player exit (remove from playerkeeper, graceful exit)
-				System.exit(0);
+		if (game.isStarted()) {
+			if (viewControllerDelegate.isSetRefresh()) {
+				if (leaveGame) {
+					//TODO Notify other players of current player exit (remove from playerkeeper, graceful exit)
+					System.exit(0);
+				}
+	
+				viewControllerDelegate.refresh(gamePlayersKeeper.getPlayers(), gamePlayersKeeper.getMyName());
+				viewControllerDelegate.enableButtons(gamePlayersKeeper.getMyPlayer().hasToken());
+				
+				return false;
 			}
-
-			viewControllerDelegate.refresh(gamePlayersKeeper.getPlayers(), gamePlayersKeeper.getMyName());
-			viewControllerDelegate.enableButtons(gamePlayersKeeper.getMyPlayer().hasToken());
 			
-			return false;
+			return gamePlayersKeeper.getMyPlayer().hasToken();
 		}
 		
-		return gamePlayersKeeper.getMyPlayer().hasToken();
+		return false;
 	}
 	
 	public String getLeader() {

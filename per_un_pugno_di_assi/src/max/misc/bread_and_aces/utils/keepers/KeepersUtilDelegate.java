@@ -42,9 +42,10 @@ public class KeepersUtilDelegate implements KeepersUtilDelegateForServable, Keep
 	 */
 	@Override
 	public boolean contains(String playerId) {
-		if (playersKeeper.contains(playerId)
-				&& gameServiceKeeper.contains(playerId))
+		if (playersKeeper.contains(playerId)) { // && gameServiceKeeper.contains(playerId)) {
 			return true;
+		}
+		
 		return false;
 	}
 

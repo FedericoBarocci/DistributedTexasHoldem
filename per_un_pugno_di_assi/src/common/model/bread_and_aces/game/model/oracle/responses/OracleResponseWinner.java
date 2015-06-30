@@ -1,5 +1,6 @@
 package bread_and_aces.game.model.oracle.responses;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import bread_and_aces.game.Game;
@@ -20,6 +21,8 @@ import com.google.inject.assistedinject.AssistedInject;
 
 public class OracleResponseWinner implements OracleResponse {
 
+	private static final int fixedWinnerBonus = 50;
+	
 	private final List<Player> winners;
 	private final GameState gameState;
 	private final ViewControllerDelegate viewControllerDelegate;
@@ -55,9 +58,11 @@ public class OracleResponseWinner implements OracleResponse {
 			int score = p.getScore() - p.getTotalBet() - p.getBet();
 			
 			if (winners.contains(p)) {
-				score += Math.floorDiv(betManager.getSumAllPot(), winners.size());
+				score += Math.floorDiv(betManager.getSumAllPot(), winners.size()) + fixedWinnerBonus;
 			}
 
+			DevPrinter.println("SCORE::" + p.getName() + " new score " + score);
+			
 			if (score >= game.getGoal()) {
 				result = Communication.END;
 			}
@@ -73,6 +78,9 @@ public class OracleResponseWinner implements OracleResponse {
 
 	@Override
 	public void finaly() {
+		List<Player> winnersEndGame = new ArrayList<Player>();
+		boolean endgame = false;
+		
 		table.setState(TableState.WINNER);
 		viewControllerDelegate.setRefresh();
 		gamePlayersKeeper.getPlayers().forEach(p->p.collectBet());
@@ -81,18 +89,24 @@ public class OracleResponseWinner implements OracleResponse {
 			int score = p.getScore() - p.getTotalBet();
 			
 			if (winners.contains(p)) {
-				score += Math.floorDiv(betManager.getSumAllPot(), winners.size());
+				score += Math.floorDiv(betManager.getSumAllPot(), winners.size()) + fixedWinnerBonus;
 				DevPrinter.println("VINCE " + p.getName() + " con " + p.getRanking().toString());
 			}
 
-			DevPrinter.println("SCORE::" + p.getName() + " new score " + score);
+			DevPrinter.println("SCORE::" + p.getName() + " new score " + score + " / " + game.getGoal());
 			
 			if (score < 0) {
 				score = 0;
 			}
 			else if (score >= game.getGoal()) {
+				DevPrinter.println("endGame::" + p.getName() + " new score " + score);
+				
+				endgame = true;
 				score = game.getGoal();
-				viewControllerDelegate.endGame(p.getName());
+				winnersEndGame.add(p);
+				game.stop();
+				
+				//viewControllerDelegate.endGame(p.getName());
 			}
 			
 			p.setScore(score);
@@ -102,14 +116,21 @@ public class OracleResponseWinner implements OracleResponse {
 			}
 		}
 		
-		viewControllerDelegate.showDown(winners);
-		
-		gamePlayersKeeper.getPlayers().forEach(p->p.initBet());
-		gamePlayersKeeper.resetActions(true);
-		
-		gameState.reset();
-		betManager.init();
-		labelHandler.init();
-		buttonsViewHandler.updateText("PLAY", "EXIT");
+		if (endgame) {
+			viewControllerDelegate.endGamePlayers(winnersEndGame);
+			buttonsViewHandler.enableButtons(false);
+			labelHandler.init();
+		}
+		else {
+			viewControllerDelegate.showDown(winners);
+			
+			gamePlayersKeeper.getPlayers().forEach(p->p.initBet());
+			gamePlayersKeeper.resetActions(true);
+			
+			gameState.reset();
+			betManager.init();
+			labelHandler.init();
+			buttonsViewHandler.updateText("PLAY", "EXIT");
+		}
 	}
 }

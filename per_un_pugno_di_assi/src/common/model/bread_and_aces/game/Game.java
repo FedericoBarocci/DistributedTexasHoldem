@@ -31,4 +31,8 @@ public class Game {
 	public int getCoins() {
 		return coins;
 	}
+
+	public void stop() {
+		isStarted = false;
+	}
 }

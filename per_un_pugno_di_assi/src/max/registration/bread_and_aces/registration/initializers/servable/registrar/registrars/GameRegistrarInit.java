@@ -30,10 +30,13 @@ public class GameRegistrarInit implements GameRegistrar {
 
 	@Override
 	public RegistrationResult registerPlayer(NodeConnectionInfos nodeConnectionInfos, String playerId) {
+		DevPrinter.println("Going to register: " + playerId);
+		
 		if (nodesConnectionInfos.size() == 0) { 
 			// if size is zero, we are adding servable node
 			nodesConnectionInfos.add(nodeConnectionInfos);
 			keepersUtilsForServable.registerServablePlayer(playerId);
+			
 			// dummy return
 			return new RegistrationResult(true, Cause.OK);
 		} 
