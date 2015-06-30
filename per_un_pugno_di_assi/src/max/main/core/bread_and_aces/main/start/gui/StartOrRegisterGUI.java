@@ -32,7 +32,7 @@ public class StartOrRegisterGUI extends JFrameDefault {
 	private final JLabel titleLabel = new JLabel("Poker Distributed Hold'em Registration");
 	private final JLabel nameLabel = new JLabel("Your name");
 	private final JLabel portLabel = new JLabel("Port");
-	private final JLabel hostLabel = new JLabel("Host");
+	private final JLabel hostLabel = new JLabel("Registrar Host");
 	private final JLabel coinsLabel = new JLabel("Coins");
 	private final JLabel goalLabel = new JLabel("Goal");
 	
