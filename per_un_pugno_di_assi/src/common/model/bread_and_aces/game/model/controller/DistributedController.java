@@ -139,6 +139,7 @@ public class DistributedController implements DistributedControllerForRemoteHand
 		} 
 		catch (SinglePlayerException e) {
 			viewControllerDelegate.endGame(fromPlayer);
+			viewControllerDelegate.enableButtons(false);
 			DevPrinter.println("Oracle tells NOT successor. END.");
 			//return Communication.END;
 			return oracleResponseFactory.createOracleResponseEnd(fromPlayer);
