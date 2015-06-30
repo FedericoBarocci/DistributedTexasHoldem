@@ -170,8 +170,7 @@ public class DistributedController implements DistributedControllerForRemoteHand
 				//TODO Notify other players of current player exit (remove from playerkeeper, graceful exit)
 				System.exit(0);
 			}
-			
-			//TODO check this
+
 			viewControllerDelegate.refresh(gamePlayersKeeper.getPlayers(), gamePlayersKeeper.getMyName());
 			viewControllerDelegate.enableButtons(gamePlayersKeeper.getMyPlayer().hasToken());
 			
