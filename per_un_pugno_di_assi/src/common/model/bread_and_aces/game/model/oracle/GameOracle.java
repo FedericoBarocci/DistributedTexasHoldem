@@ -60,7 +60,7 @@ public class GameOracle {
 	public OracleResponse ask() {
 		List<Player> players = gamePlayersKeeper.getPlayers();
 		
-		players.forEach(c->{DevPrinter.println(c.getName() + " - " + c.getAction());});
+		players.forEach(c->{DevPrinter.println(c.getName() + " - " + c.getAction() + " " + c.getBet());});
 
 		if (conditionAllIn(players) || conditionSinglePlayer(players)) {
 			DevPrinter.println("Oracle think allin for all players or single player. WINNER.");
@@ -117,7 +117,7 @@ public class GameOracle {
 		}
 	}
 	
-	private List<Player> getWinners() {
+	public List<Player> getWinners() {
 		List<Player> activePlayers = gamePlayersKeeper.getActivePlayers();
 		List<Player> winnerList = new ArrayList<Player>();
 		
@@ -207,20 +207,23 @@ public class GameOracle {
 	}
 	
 	private boolean conditionEqualBet(List<Player> players) {
-		boolean test = true;
-		int value = players.get(0).getBet();
+		boolean result = true;
+		int value = 0;	//players.get(0).getBet();
 		
 		for(Player p : players) {
 			if (p.getAction().equals(Action.FOLD)) {
 				continue;
 			}
 			
-			if(p.getBet() != value) {
-				test = false;
+			if (value == 0) {
+				value = p.getBet();
+			}
+			else if(p.getBet() != value) {
+				result = false;
 				break;
 			}
 		}
 		
-		return test;
+		return result;
 	}
 }

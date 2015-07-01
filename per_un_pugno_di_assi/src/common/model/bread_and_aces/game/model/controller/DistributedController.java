@@ -117,6 +117,10 @@ public class DistributedController implements DistributedControllerForRemoteHand
 	 */
 	@Override
 	public void setActionOnReceive(String fromPlayer, ActionKeeper actionKeeper) {
+		if (viewControllerDelegate.isSetRefresh()) {
+			viewControllerDelegate.refresh(gamePlayersKeeper.getPlayers(), gamePlayersKeeper.getMyName());
+		}
+		
 		this.setActionAndUpdate(fromPlayer, actionKeeper).finaly();
 	}
 
@@ -125,6 +129,10 @@ public class DistributedController implements DistributedControllerForRemoteHand
 	 */
 	@Override
 	public void setActionOnReceive(String fromPlayer, ActionKeeper actionKeeper, GameUpdater gameUpdater) {
+		if (viewControllerDelegate.isSetRefresh()) {
+			viewControllerDelegate.refresh(gamePlayersKeeper.getPlayers(), gamePlayersKeeper.getMyName());
+		}
+		
 		this.setActionAndUpdate(fromPlayer, actionKeeper).finaly();
 		gameOracle.update(gameUpdater);
 	}
@@ -142,7 +150,7 @@ public class DistributedController implements DistributedControllerForRemoteHand
 			viewControllerDelegate.enableButtons(false);
 			DevPrinter.println("Oracle tells NOT successor. END.");
 			//return Communication.END;
-			return oracleResponseFactory.createOracleResponseEnd(fromPlayer);
+			return oracleResponseFactory.createOracleResponseWinner(gameOracle.getWinners());
 		}
 		
 		gamePlayersKeeper.getPlayer(fromPlayer).setAction(actionKeeper);

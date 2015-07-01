@@ -54,6 +54,10 @@ public class OracleResponseWinner implements OracleResponse {
 	public Communication exec() {
 		Communication result = Communication.DEAL;
 		
+		if (gamePlayersKeeper.getPlayers().size() == 1) {
+			return Communication.END;
+		}
+		
 		for (Player p : gamePlayersKeeper.getPlayers()) {
 			int score = p.getScore() - p.getTotalBet() - p.getBet();
 			
@@ -79,11 +83,19 @@ public class OracleResponseWinner implements OracleResponse {
 	@Override
 	public void finaly() {
 		List<Player> winnersEndGame = new ArrayList<Player>();
-		boolean endgame = false;
+		boolean endgame = gamePlayersKeeper.getPlayers().size() == 1;
 		
 		table.setState(TableState.WINNER);
 		viewControllerDelegate.setRefresh();
 		gamePlayersKeeper.getPlayers().forEach(p->p.collectBet());
+		
+		if (endgame) {
+			viewControllerDelegate.endGame(gamePlayersKeeper.getPlayers().get(0).getName());
+			viewControllerDelegate.enableButtons(false);
+			labelHandler.init();
+			
+			return;
+		}
 		
 		for (Player p : gamePlayersKeeper.getPlayers()) {
 			int score = p.getScore() - p.getTotalBet();

@@ -37,6 +37,7 @@ public class TableViewHandler extends AbstractViewHandler<Void> {
 		}
 		
 		displayedCards = 0;
+		this.repaint();
 	}
 
 	public void addTableCards() {
