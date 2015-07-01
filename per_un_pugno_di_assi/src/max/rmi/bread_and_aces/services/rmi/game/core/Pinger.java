@@ -20,12 +20,13 @@ import bread_and_aces.utils.DevPrinter;
 
 @LazySingleton
 public class Pinger {
+
+	private static final long TIMEOUT = 5;
 	
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	private final GameServicesKeeper gameServicesKeeper;
 	private final CrashHandler crashHandler;
 	private final DistributedController distributedController;
-	private static final long TIMEOUT = 5;
 
 	private ScheduledFuture<?> beeperHandle;
 
@@ -50,15 +51,14 @@ public class Pinger {
 			public void run() {
 				String leader = distributedController.getLeader();
 				Optional<GameService> optionalService = gameServicesKeeper.getService(leader);
+				
 				optionalService.ifPresent(s->{
 					try {
-//						DevPrinter.print(/*new Throwable(),*/ "pinging "+leader+": ");
 						s.isAlive();
 					} catch (RemoteException e) {
 						DevPrinter.println("leader "+leader+" crashed: removing.. ");
 						distributedController.setActionAndUpdate(leader, ActionKeeperFactory.build(Action.FOLD));
 						crashHandler.removeLocallyFromEverywhere(leader);
-//						distributedController.removePlayer(leader);
 						DevPrinter.println("leader "+leader+" crashed removed");
 					}
 				});

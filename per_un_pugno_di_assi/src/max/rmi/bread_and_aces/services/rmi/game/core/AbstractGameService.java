@@ -58,47 +58,14 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 		pinger.ping();
 	}
 	
-	/*@Override
-	public void ping() {
-		if (beeperHandle!=null) {
-			beeperHandle.cancel(true);
-		}
-				
-		beeperHandle = scheduler.scheduleAtFixedRate(checkLeaderIsAlive, TIMEOUT, TIMEOUT , TimeUnit.SECONDS);
-	}*/
-
 	@Override
 	public void receiveWinnerEndGame(String fromPlayer, ActionKeeper actionKeeper) throws RemoteException {
 		distributedControllerForRemoteHandling.setActionOnReceive(fromPlayer, actionKeeper);
 	}
 
-	/*
-	 * @Override public void receiveCheck(String fromPlayer, String toPlayer) {
-	 * try { controllerLogic.check(fromPlayer, toPlayer); } catch
-	 * (DealEventException e) {
-	 * DevPrinter.println("receiveCheck should not be here"); } }
-	 */
-
-	/*
-	 * @Override public void sayIHaveToken(String from, String id) {
-	 * playersKeeper.getPlayer(id).receiveBucket(from);
-	 * 
-	 * GameView gameView = gameViewInitializer.get();
-	 * gameView.setViewToken(playersKeeper.getPlayer(id).getName()); }
-	 */
-	
-	/*@Override
-	public void removeService(Collection<String> crashedPeers) throws RemoteException {
-		DevPrinter.println(new Throwable());
-		crashedPeers.forEach(c->{
-			crashHandler.handleCrashLocallyRemovingFromLocalGameServiceKeeper(c);
-			distributedController.removePlayer(c);
-		});
-	}*/
 	@Override
 	public void removeCrashedPeerService(String crashedPeer) throws RemoteException {
-		DevPrinter.println( /*new Throwable()*/ );
+		DevPrinter.println();
 		crashHandler.removeLocallyFromEverywhere(crashedPeer);
-//		distributedController.removePlayer(crashedPeer);
 	}
 }

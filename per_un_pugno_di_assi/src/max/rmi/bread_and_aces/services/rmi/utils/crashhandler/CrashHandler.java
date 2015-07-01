@@ -1,6 +1,7 @@
 package bread_and_aces.services.rmi.utils.crashhandler;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -93,7 +94,7 @@ public class CrashHandler {
 		List<String> eventuallyCrashedAgain = deliverator.broadcast(meId, this::updateNodesFunctor,  crashedPeer);
 		DevPrinter.println(/*new Throwable(), */""+eventuallyCrashedAgain);
 		
-		eventuallyCrashedAgain.add(crashedPeer);
+		//eventuallyCrashedAgain.add(crashedPeer);
 			
 		return eventuallyCrashedAgain;
 	}
@@ -106,6 +107,19 @@ public class CrashHandler {
 			//e.printStackTrace();
 			DevPrinter.println(":: " + crashedPeer);
 			gameServicesKeeper.removeService(crashedPeer);
+		}
+	}
+	
+	public void recursiveBroadcastRemoveCrashed(String meId, List<String> crashedList) {
+		List<String> crashedAgain = new ArrayList<String>();
+		
+		crashedList.forEach(crashedPeer->{
+			//crashedAgain.addAll(broadcastRemoveServiceKeeper(meId, crashedPeer));
+			crashedAgain.addAll(handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(meId, crashedPeer));
+		});
+		
+		if (crashedAgain.size() > 0) {
+			recursiveBroadcastRemoveCrashed(meId, crashedAgain);
 		}
 	}
 

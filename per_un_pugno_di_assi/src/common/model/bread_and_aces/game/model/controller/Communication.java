@@ -23,25 +23,18 @@ public enum Communication {
 					try {
 						gameService.receiveAction(gamePlayersKeeper.getMyName(), actionKeeper);
 					} catch (RemoteException e) {
-//						currentCrashedRef.set(communicator.getCurrentInterlocutor());
-						crashed.addAll(communicator.broadcastRemoveServiceKeeper(gamePlayersKeeper.getMyName(), communicator.getCurrentInterlocutor()));
+						crashed.add(communicator.getCurrentInterlocutor());
 					}
 				}
 			}
 			
-			DevPrinter.println(/*new Throwable()*/);
+			DevPrinter.println();
 			
 			crashed.clear();
 			communicator.toAll(gamePlayersKeeper.getMyName(), new ActionClass()::performAction);
+//			crashHandler.recursiveBroadcastRemoveCrashed(gamePlayersKeeper.getMyName(), crashed);
 
 			return new GameHolder(crashed);
-			
-//			String result = currentCrashedRef.get();
-//			DevPrinter.println(result);
-//			currentCrashedRef.set(null);
-//			DevPrinter.println(result);
-			//return new GameHolder(Optional.ofNullable(result));
-//			return Optional.ofNullable(null);
 		}
 	},
 	DEAL {
@@ -52,8 +45,7 @@ public enum Communication {
 					try {
 						gameService.receiveActionAndDeal(gamePlayersKeeper.getMyName(), actionKeeper, gameUpdater);
 					} catch (RemoteException e) {
-						//currentCrashedRef.set(communicator.getCurrentInterlocutor());
-						crashed.addAll(communicator.broadcastRemoveServiceKeeper(gamePlayersKeeper.getMyName(), communicator.getCurrentInterlocutor()));
+						crashed.add(communicator.getCurrentInterlocutor());
 					}
 				}
 			}
@@ -61,12 +53,9 @@ public enum Communication {
 			crashed.clear();
 			GameUpdater gameUpdater = new GameUpdater( gamePlayersKeeper.getPlayers(), new Deck() );
 			communicator.toAll(gamePlayersKeeper.getMyName(), new ActionClass()::performActionAndDeal, gameUpdater);
-			
+//			communicator.recursiveBroadcastRemoveCrashed(gamePlayersKeeper.getMyName(), crashed);
+
 			return new GameHolder(crashed, Optional.of(gameUpdater));
-			
-			//return new GameHolder(Optional.ofNullable(currentCrashedRef.get()), Optional.of(gameUpdater));
-			
-//			return Optional.ofNullable(gameUpdater);
 		}
 	},
 	END {
@@ -77,24 +66,20 @@ public enum Communication {
 					try {
 						gameService.receiveWinnerEndGame(gamePlayersKeeper.getMyName(), actionKeeper);
 					} catch (RemoteException e) {
-//						currentCrashedRef.set(communicator.getCurrentInterlocutor());
-						crashed.addAll(communicator.broadcastRemoveServiceKeeper(gamePlayersKeeper.getMyName(), communicator.getCurrentInterlocutor()));
+						crashed.add(communicator.getCurrentInterlocutor());
 					}
 				}
 			}
 			
 			crashed.clear();
 			communicator.toAll(gamePlayersKeeper.getMyName(), new ActionClass()::performWinnerEndGame);
-			
+//			communicator.recursiveBroadcastRemoveCrashed(gamePlayersKeeper.getMyName(), crashed);
+
 			return new GameHolder(crashed);
-			
-			//return new GameHolder(Optional.ofNullable(currentCrashedRef.get()));
-//			return Optional.ofNullable(null);
 		}
 	};
 	
 
-	//private static AtomicReference<String> currentCrashedRef = new AtomicReference<String>(null);
 	private static List<String> crashed = new ArrayList<String>();
 	
 	abstract public GameHolder exec(Communicator communicator, GamePlayersKeeper gamePlayersKeeper, ActionKeeper actionKeeper);

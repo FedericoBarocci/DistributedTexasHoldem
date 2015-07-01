@@ -17,6 +17,7 @@ import bread_and_aces.game.model.state.GameState;
 import bread_and_aces.game.updater.GameUpdater;
 import bread_and_aces.gui.view.ViewControllerDelegate;
 import bread_and_aces.services.rmi.utils.communicator.Communicator;
+import bread_and_aces.services.rmi.utils.crashhandler.CrashHandler;
 import bread_and_aces.utils.DevPrinter;
 
 @Singleton
@@ -30,6 +31,7 @@ public class DistributedController implements DistributedControllerForRemoteHand
 	private final DistributedControllerLocalDelegate distributedControllerLocalDelegate;
 	private final OracleResponseFactory oracleResponseFactory;
 	private final Game game;
+	private final CrashHandler crashHandler;
 	
 //	private String lastPlayerId = "";
 	
@@ -40,7 +42,7 @@ public class DistributedController implements DistributedControllerForRemoteHand
 			GameState gameState,
 			GamePlayersKeeper gamePlayersKeeper, Communicator communicator,
 			DistributedControllerLocalDelegate distributedControllerDelegate,
-			OracleResponseFactory oracleResponseFactory, Game game) {
+			OracleResponseFactory oracleResponseFactory, Game game, CrashHandler crashHandler) {
 		this.viewControllerDelegate = viewControllerDelegate;
 		this.gameOracle = gameOracle;
 		this.gameState = gameState;
@@ -49,6 +51,7 @@ public class DistributedController implements DistributedControllerForRemoteHand
 		this.distributedControllerLocalDelegate = distributedControllerDelegate;
 		this.oracleResponseFactory = oracleResponseFactory;
 		this.game = game;
+		this.crashHandler = crashHandler;
 	}
 
 	/**
@@ -81,6 +84,8 @@ public class DistributedController implements DistributedControllerForRemoteHand
 		
 		// CRASH
 		if (gh.hasCrashed()) {
+			crashHandler.recursiveBroadcastRemoveCrashed(gamePlayersKeeper.getMyName(), gh.getCrashedPeers());
+			
 			gh.getCrashedPeers().forEach(c->{
 				distributedControllerLocalDelegate.removePlayerLocally(c);
 			}); 
@@ -146,8 +151,10 @@ public class DistributedController implements DistributedControllerForRemoteHand
 			gamePlayersKeeper.setLeaderId(successor);
 		} 
 		catch (SinglePlayerException e) {
+			gamePlayersKeeper.getPlayer(fromPlayer).receiveToken();
 			viewControllerDelegate.endGame(fromPlayer);
 			viewControllerDelegate.enableButtons(false);
+			
 			DevPrinter.println("Oracle tells NOT successor. END.");
 			//return Communication.END;
 			return oracleResponseFactory.createOracleResponseWinner(gameOracle.getWinners());

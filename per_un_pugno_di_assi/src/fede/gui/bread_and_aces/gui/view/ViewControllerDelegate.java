@@ -66,6 +66,7 @@ public class ViewControllerDelegate {
 
 	public void refresh(List<Player> players, String myName) {
 		tableView.init(null);
+		buttonsViewHandler.resetText();
 		
 		PlayersViewHandlerInitArgs initArgs = new PlayersViewHandlerInitArgs(players, myName, goal);
 		
@@ -125,7 +126,7 @@ public class ViewControllerDelegate {
 			winnersString += ", " + winners.get(i).getName();
 		}
 
-		winnersString += " win the game with " + winners.get(0).getRanking().toString();
+		winnersString += " wins the game with " + winners.get(0).getRanking().toString();
 		
 		labelHandler.printMessage(winnersString);
 	}
