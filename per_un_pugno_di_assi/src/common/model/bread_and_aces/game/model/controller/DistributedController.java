@@ -94,29 +94,6 @@ public class DistributedController implements DistributedControllerForRemoteHand
 		}
 	}
 	
-//	private void setActionOnSendCrashed(String crashedId) {
-//		ActionKeeper actionKeeper = ActionKeeperFactory.build(Action.FOLD);
-//		GameHolder gh = setActionAndUpdate(crashedId, actionKeeper).exec(communicator, gamePlayersKeeper, actionKeeper);
-//		
-//		gh.getCrashedOptional().ifPresent(c->{
-//			System.out.println("CRASHED OPTIONAL PRESENT");
-//			
-//			//Communication communication = this.removePlayer(c);
-//			distributedControllerLocalDelegate.removePlayerLocally(c);
-//			//Communication communication = setActionAndUpdate(c, ActionKeeperFactory.build(Action.FOLD));
-//			
-//			//TODO this.nestedSetActionOnSend(communication, actionKeeper);
-//		});
-//		
-//		gh.getCrashedOptional().ifPresent(c->{
-//			setActionOnSendCrashed(c);
-//		});
-//	}
-	
-//	private void nestedSetActionOnSend(Communication communication, ActionKeeper actionKeeper) {
-//		communication.exec(communicator, gamePlayersKeeper, actionKeeper);
-//	}
-
 	/**
 	 * remote
 	 */
@@ -171,10 +148,7 @@ public class DistributedController implements DistributedControllerForRemoteHand
 		DevPrinter.println("actionkeeper: "+actionKeeper.getAction() + " - " + actionKeeper.getValue());
 		DevPrinter.println(""+gameState.getGameState());
 		
-//		if(! lastPlayerId.equals(fromPlayer)) {
-			viewControllerDelegate.setViewState(actionKeeper);
-//			lastPlayerId = fromPlayer;
-//		}
+		viewControllerDelegate.setViewState(actionKeeper);
 		
 		OracleResponse response = gameOracle.ask();
 		
@@ -213,13 +187,9 @@ public class DistributedController implements DistributedControllerForRemoteHand
 	 */
 	@Override
 	public void removePlayer(String playerId) {
-		DevPrinter.println(/*new Throwable(),*/"HO RICEVUTO UNA NOTIFICA DI CRASH PER " + playerId);
+		DevPrinter.println("HO RICEVUTO UNA NOTIFICA DI CRASH PER " + playerId);
 		
-		/*Communication communication = */setActionAndUpdate( playerId, ActionKeeperFactory.build(Action.FOLD) ).finaly();
-//		gamePlayersKeeper.remove(playerId);
-//		viewControllerDelegate.remove(playerId);
+		setActionAndUpdate( playerId, ActionKeeperFactory.build(Action.FOLD) ).finaly();
 		distributedControllerLocalDelegate.removePlayerLocally(playerId);
-		
-		//return communication;
 	}
 }

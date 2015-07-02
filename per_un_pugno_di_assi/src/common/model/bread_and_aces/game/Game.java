@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 @Singleton
 public class Game {
+	
 	private boolean isStarted = false;
 	private int goal = 0;
 	private int coins = 0;
