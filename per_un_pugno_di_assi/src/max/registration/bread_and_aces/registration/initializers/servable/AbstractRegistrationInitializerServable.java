@@ -128,7 +128,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 	
 	private void startGame() {
 		DevPrinter.println("Game can start!");
-		game.setStarted();
+		game.start();
 //		passBucket();
 		DevPrinter.println("Inizio io perché comando io!");
 		registrarPlayersKeeper.setMyselfAsLeader();

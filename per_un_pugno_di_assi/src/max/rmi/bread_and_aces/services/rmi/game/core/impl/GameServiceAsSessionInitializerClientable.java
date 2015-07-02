@@ -67,7 +67,7 @@ public class GameServiceAsSessionInitializerClientable extends AbstractGameServi
 		// TODO too bad here, but it works
 		game.setCoins(initialCoins);
 		game.setGoal(initialGoal);
-		game.setStarted();
+		game.start();
 		
 		registrationInitializerClientable.goFurther();
 	}

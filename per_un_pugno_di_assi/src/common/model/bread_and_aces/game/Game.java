@@ -9,14 +9,18 @@ public class Game {
 	private int goal = 0;
 	private int coins = 0;
 	
-	public boolean isStarted() {
-		return isStarted;
-	}
-
-	public void setStarted() {
+	public void start() {
 		isStarted = true;
 	}
 
+	public void stop() {
+		isStarted = false;
+	}
+
+	public boolean isStarted() {
+		return isStarted;
+	}
+	
 	public void setGoal(int initialGoal) {
 		this.goal = initialGoal;
 	}
@@ -31,9 +35,5 @@ public class Game {
 	
 	public int getCoins() {
 		return coins;
-	}
-
-	public void stop() {
-		isStarted = false;
 	}
 }

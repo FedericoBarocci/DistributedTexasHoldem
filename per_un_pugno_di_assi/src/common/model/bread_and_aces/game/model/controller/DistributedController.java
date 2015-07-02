@@ -63,6 +63,7 @@ public class DistributedController implements DistributedControllerForRemoteHand
 		viewControllerDelegate.setViewToken(whoHasToken);
 		DevPrinter.println("Game can start!");
 		gamePlayersKeeper.setLeaderId(whoHasToken);
+		game.start();
 	}
 
 	/**
@@ -129,7 +130,7 @@ public class DistributedController implements DistributedControllerForRemoteHand
 		} 
 		catch (SinglePlayerException e) {
 			gamePlayersKeeper.getPlayer(fromPlayer).receiveToken();
-			viewControllerDelegate.endGame(fromPlayer);
+			//viewControllerDelegate.endGame(fromPlayer);
 			viewControllerDelegate.enableButtons(false);
 			
 			DevPrinter.println("Oracle tells NOT successor. END.");
@@ -172,6 +173,9 @@ public class DistributedController implements DistributedControllerForRemoteHand
 			}
 			
 			return gamePlayersKeeper.getMyPlayer().hasToken();
+		}
+		else {
+			DevPrinter.println("game stop");
 		}
 		
 		return false;
