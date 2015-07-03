@@ -40,9 +40,14 @@ public class Deliverator {
 			communicator.setCurrentInterlocutor(id);
 			
 			Optional<GameService> optService = gameServicesKeeper.getService(id);
+			
+			DevPrinter.println();
+			
 			optService.ifPresent(service -> {
 					communicatorFunctorNoArg.exec(service);
 			});
+			
+			DevPrinter.println();
 		}
 	}
 	public void broadcast(String meId, CommunicatorFunctorNoArgWithId communicatorFunctorNoArgWithId) {

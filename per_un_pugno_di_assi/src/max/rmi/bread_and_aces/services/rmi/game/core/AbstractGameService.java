@@ -4,7 +4,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 import bread_and_aces.game.model.controller.DistributedControllerForRemoteHandling;
-import bread_and_aces.game.model.oracle.actions.ActionKeeper;
+import bread_and_aces.game.model.oracle.actions.Message;
 import bread_and_aces.game.updater.GameUpdater;
 import bread_and_aces.services.rmi.utils.crashhandler.CrashHandler;
 import bread_and_aces.utils.DevPrinter;
@@ -47,20 +47,46 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 	public void isAlive() throws RemoteException {}
 
 	@Override
-	public void receiveAction(String fromPlayer, ActionKeeper actionKeeper) {
-		distributedControllerForRemoteHandling.setActionOnReceive(fromPlayer, actionKeeper);
+	public void receiveAction(String fromPlayer, Message message) {
+		DevPrinter.println();
+		
+		if (message.hasCrashed()) {
+			distributedControllerForRemoteHandling.setActionOnReceive(message.getCrashed(), message);
+			crashHandler.removeLocallyFromEverywhere(message.getCrashed());
+		}
+		else {
+			distributedControllerForRemoteHandling.setActionOnReceive(fromPlayer, message);
+		}
+		
 		pinger.ping();
 	}
 
 	@Override
-	public void receiveActionAndDeal(String fromPlayer, ActionKeeper actionKeeper, GameUpdater gameUpdater) throws RemoteException {
-		distributedControllerForRemoteHandling.setActionOnReceive(fromPlayer, actionKeeper, gameUpdater);
+	public void receiveActionAndDeal(String fromPlayer, Message message, GameUpdater gameUpdater) throws RemoteException {
+		DevPrinter.println();
+		
+		if (message.hasCrashed()) {
+			distributedControllerForRemoteHandling.setActionOnReceive(message.getCrashed(), message, gameUpdater);
+			crashHandler.removeLocallyFromEverywhere(message.getCrashed());
+		}
+		else {
+			distributedControllerForRemoteHandling.setActionOnReceive(fromPlayer, message, gameUpdater);
+		}
+		
 		pinger.ping();
 	}
 	
 	@Override
-	public void receiveWinnerEndGame(String fromPlayer, ActionKeeper actionKeeper) throws RemoteException {
-		distributedControllerForRemoteHandling.setActionOnReceive(fromPlayer, actionKeeper);
+	public void receiveWinnerEndGame(String fromPlayer, Message message) throws RemoteException {
+		DevPrinter.println();
+		
+		if (message.hasCrashed()) {
+			distributedControllerForRemoteHandling.setActionOnReceive(message.getCrashed(), message);
+			crashHandler.removeLocallyFromEverywhere(message.getCrashed());
+		}
+		else {
+			distributedControllerForRemoteHandling.setActionOnReceive(fromPlayer, message);
+		}
 	}
 
 	@Override

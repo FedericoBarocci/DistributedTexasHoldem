@@ -61,6 +61,10 @@ public class GameOracle {
 		List<Player> players = gamePlayersKeeper.getPlayers();
 		
 		players.forEach(c->{DevPrinter.println(c.getName() + " - " + c.getAction() + " " + c.getBet());});
+		
+		if (conditionAllFold(players)) {
+			return oracleResponseFactory.createOracleResponseWinner(getWinners());
+		}
 
 		if (conditionAllIn(players) || conditionSinglePlayer(players)) {
 			DevPrinter.println("Oracle think allin for all players or single player. WINNER.");
@@ -204,6 +208,11 @@ public class GameOracle {
 	private boolean conditionCallToMostOneRaise(List<Player> players) {
 		return players.stream().allMatch(p -> p.getAction().equals(Action.FOLD) || p.getAction().equals(Action.RAISE) || p.getAction().equals(Action.CALL)) 
 				&& players.stream().filter(p -> p.getAction().equals(Action.RAISE)).count() <= 1;
+	}
+	
+
+	private boolean conditionAllFold(List<Player> players) {
+		return players.stream().allMatch(p -> p.getAction().equals(Action.FOLD));
 	}
 	
 	private boolean conditionEqualBet(List<Player> players) {

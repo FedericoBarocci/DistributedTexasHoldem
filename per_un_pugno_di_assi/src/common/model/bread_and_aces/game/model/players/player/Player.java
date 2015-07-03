@@ -8,7 +8,7 @@ import bread_and_aces.game.core.Card;
 import bread_and_aces.game.core.Ranking;
 import bread_and_aces.game.core.Rankings;
 import bread_and_aces.game.model.oracle.actions.Action;
-import bread_and_aces.game.model.oracle.actions.ActionKeeper;
+import bread_and_aces.game.model.oracle.actions.Message;
 import bread_and_aces.game.model.utils.Pair;
 import bread_and_aces.utils.DevPrinter;
 
@@ -109,11 +109,11 @@ public class Player implements Serializable, Comparable<Player> {
 		return totalBet;
 	}
 
-	public void setAction(ActionKeeper actionKeeper) {
-		this.action = actionKeeper.getAction();
+	public void setAction(Message message) {
+		this.action = message.getAction();
 		
-		if (actionKeeper.getValue() > 0) {
-			this.bet = actionKeeper.getValue();
+		if (message.getValue() > 0) {
+			this.bet = message.getValue();
 		}
 	}
 	

@@ -10,7 +10,7 @@ import org.limewire.inject.LazySingleton;
 import bread_and_aces.game.Game;
 import bread_and_aces.game.core.BetManager;
 import bread_and_aces.game.model.oracle.actions.Action;
-import bread_and_aces.game.model.oracle.actions.ActionKeeper;
+import bread_and_aces.game.model.oracle.actions.Message;
 import bread_and_aces.game.model.players.player.Player;
 import bread_and_aces.game.model.state.GameState;
 import bread_and_aces.gui.view.PlayersViewHandler.PlayersViewHandlerInitArgs;
@@ -112,9 +112,9 @@ public class ViewControllerDelegate {
 		buttonsViewHandler.enableButtons();
 	}
 
-	public void setPlayerAction(String fromPlayer, ActionKeeper action) {
-		playersView.setPlayerAction(fromPlayer, action.getAction());
-		labelHandler.printMessage(fromPlayer + " perform " + action.toString() + " action.");
+	public void setPlayerAction(String fromPlayer, Message message) {
+		playersView.setPlayerAction(fromPlayer, message.getAction());
+		labelHandler.printMessage(fromPlayer + " perform " + message.toString() + " action.");
 	}
 	
 	public void endGamePlayers(List<Player> winners) {
@@ -144,7 +144,7 @@ public class ViewControllerDelegate {
 		playersView.removeElement(playerId);
 	}
 
-	public void setViewState(ActionKeeper actionKeeper) {
+	public void setViewState(Message message) {
 		betManager.setBet(gameState.getMinBet());
 		betManager.setMin(gameState.getMinBet());
 		betManager.setAction();

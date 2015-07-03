@@ -1,6 +1,7 @@
 package bread_and_aces.game.model.oracle.actions;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 public class ActionKeeper implements Serializable {
 
@@ -31,5 +32,10 @@ public class ActionKeeper implements Serializable {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public Optional<String> getCrashed() {
+		return Optional.ofNullable(null);
 	}
 }
