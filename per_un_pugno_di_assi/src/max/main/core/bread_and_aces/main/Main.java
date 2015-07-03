@@ -118,8 +118,9 @@ public class Main {
 		boolean isDevMode = false;
 		RegistrationData registrationDataForDevMode = null;
 		if (args.length > 1) {
-//			String arg1 = args[1];
-			isDevMode = (args[1].equalsIgnoreCase(DEV_MODE)) ? true : false;
+			String arg1 = args[1];
+			DevPrinter.println("arg1: "+arg1);
+			isDevMode = (arg1.equalsIgnoreCase(DEV_MODE)) ? true : false;
 			if (isDevMode)
 				registrationDataForDevMode = handleArgsForDevMode(args);
 		}

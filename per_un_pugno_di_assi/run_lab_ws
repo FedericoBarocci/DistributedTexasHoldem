@@ -3,6 +3,7 @@
 echo $0 > run_to_exec
 
 export JAVA_HOME=/usr/lib/jvm/jdk-8-oracle-x64/
+#export JAVA_HOME=/usr/lib/jvm/java-8-oracle/
 
 #if [ -z "$(ip addr show  dev eth0 | grep 10.0.0 2>/dev/null)" ]; then
 addr=$(ip addr show dev eth0 | grep -w inet | awk '{print $2}' | sed 's/\/24//g')
