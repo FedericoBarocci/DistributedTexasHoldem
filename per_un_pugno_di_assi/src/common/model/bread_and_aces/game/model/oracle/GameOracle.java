@@ -63,6 +63,7 @@ public class GameOracle {
 		players.forEach(c->{DevPrinter.println(c.getName() + " - " + c.getAction() + " " + c.getBet());});
 		
 		if (conditionAllFold(players)) {
+			DevPrinter.println("Oracle think all players FOLD!!");
 			return oracleResponseFactory.createOracleResponseWinner(getWinners());
 		}
 
@@ -130,6 +131,10 @@ public class GameOracle {
 		}
 		
 		DevPrinter.println("ACTIVE PLAYERS " + activePlayers.size());
+		
+		if (activePlayers.isEmpty()) {
+			return activePlayers;
+		}
 		
 		Player winner = activePlayers.get(0);
 		Integer winnerRank = winner.getRankingInt();

@@ -33,17 +33,6 @@ public class Message implements Serializable {
 	public int getValue() {
 		return value;
 	}
-	
-	@Override
-	public String toString() {
-		String result = action.toString();
-		
-		if (value > 0) {
-			result += " " + value;
-		}
-		
-		return result;
-	}
 
 	public String getCrashed() {
 		return player;
@@ -51,5 +40,20 @@ public class Message implements Serializable {
 	
 	public boolean hasCrashed() {
 		return crashed;
+	}
+	
+	@Override
+	public String toString() {
+		if (crashed) {
+			return "crashed";
+		}
+		
+		String result = action.toString();
+		
+		if (value > 0) {
+			result += " " + value;
+		}
+		
+		return result;
 	}
 }

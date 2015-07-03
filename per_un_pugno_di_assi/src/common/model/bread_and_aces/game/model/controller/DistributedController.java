@@ -104,7 +104,14 @@ public class DistributedController implements DistributedControllerForRemoteHand
 			viewControllerDelegate.refresh(gamePlayersKeeper.getPlayers(), gamePlayersKeeper.getMyName());
 		}
 		
-		this.setActionAndUpdate(fromPlayer, message).finaly();
+		if (message.hasCrashed()) {
+			OracleResponse oracleResponse = setActionAndUpdate(message.getCrashed(), message);
+			crashHandler.removeLocallyFromEverywhere(message.getCrashed());
+			oracleResponse.finaly();
+		}
+		else {
+			setActionAndUpdate(fromPlayer, message).finaly();
+		}
 	}
 
 	/**
@@ -116,31 +123,23 @@ public class DistributedController implements DistributedControllerForRemoteHand
 			viewControllerDelegate.refresh(gamePlayersKeeper.getPlayers(), gamePlayersKeeper.getMyName());
 		}
 		
-		this.setActionAndUpdate(fromPlayer, message).finaly();
-		gameOracle.update(gameUpdater);
-	}
-	
-	public String setNextLeader() {
-		String leader = getLeader();
-		String successor;
-		
-		gamePlayersKeeper.getPlayer(leader).setAction(Action.FOLD);
-		
-		try {
-			successor = gameOracle.getSuccessor(leader).getName();
-			DevPrinter.println("Oracle tells successor: " + successor);
-			gamePlayersKeeper.setLeaderId(successor);
-		} 
-		catch (SinglePlayerException e) {
-			successor = gamePlayersKeeper.getNext(leader).getName();
-			gamePlayersKeeper.setLeaderId(successor);
+		if (message.hasCrashed()) {
+			OracleResponse oracleResponse = setActionAndUpdate(message.getCrashed(), message);
+			crashHandler.removeLocallyFromEverywhere(message.getCrashed());
+			oracleResponse.finaly();
+		}
+		else {
+			setActionAndUpdate(fromPlayer, message).finaly();
 		}
 		
-		return successor;
+		gameOracle.update(gameUpdater);
 	}
 	
 	public OracleResponse setActionAndUpdate(String fromPlayer, Message message) {
 		String successor;
+		
+		gamePlayersKeeper.getPlayer(fromPlayer).setAction(message);
+		viewControllerDelegate.setPlayerAction(fromPlayer, message);
 		
 		try {
 			successor = gameOracle.getSuccessor(fromPlayer).getName();
@@ -157,9 +156,6 @@ public class DistributedController implements DistributedControllerForRemoteHand
 			//return Communication.END;
 			return oracleResponseFactory.createOracleResponseWinner(gameOracle.getWinners());
 		}
-		
-		gamePlayersKeeper.getPlayer(fromPlayer).setAction(message);
-		viewControllerDelegate.setPlayerAction(fromPlayer, message);
 		
 		gamePlayersKeeper.getPlayer(fromPlayer).sendToken(successor);
 		gamePlayersKeeper.getPlayer(successor).receiveToken(fromPlayer);
@@ -207,6 +203,8 @@ public class DistributedController implements DistributedControllerForRemoteHand
 	
 	/**
 	 * local
+	 * NOT USED
+	 * 
 	 * @return 
 	 */
 	@Override
@@ -216,7 +214,33 @@ public class DistributedController implements DistributedControllerForRemoteHand
 //		setActionAndUpdate( playerId, MessageFactory.build(Action.FOLD) ).finaly();
 		distributedControllerLocalDelegate.removePlayerLocally(playerId);
 	}
-
+	
+	public String setNextLeader() {
+		String leader = getLeader();
+		String successor;
+		
+		gamePlayersKeeper.getPlayer(leader).setAction(Action.FOLD);
+		viewControllerDelegate.setPlayerAction(leader, MessageFactory.build(Action.FOLD));
+		
+		try {
+			successor = gameOracle.getSuccessor(leader).getName();
+			DevPrinter.println("Oracle tells successor: " + successor);
+			gamePlayersKeeper.setLeaderId(successor);
+		} 
+		catch (SinglePlayerException e) {
+			successor = gamePlayersKeeper.getNext(leader).getName();
+			gamePlayersKeeper.setLeaderId(successor);
+		}
+		
+		DevPrinter.println("Successor: " + successor);
+		
+		gamePlayersKeeper.getPlayer(leader).sendToken(successor);
+		gamePlayersKeeper.getPlayer(successor).receiveToken(leader);
+		viewControllerDelegate.setViewToken(successor);
+		
+		return successor;
+	}
+	
 	public void removeAndUpdate(String crashedLeader) {
 		OracleResponse oracleResponse = setActionAndUpdate(crashedLeader, MessageFactory.build(Action.FOLD));
 		

@@ -99,14 +99,21 @@ public class ViewControllerDelegate {
 		tableView.addTableCards();
 		playersView.showPlayersCards();
 		playersView.showWinners(winners);
-
-		String winnersString = winners.get(0).getName();
-
-		for (int i = 1; i < winners.size(); i++) {
-			winnersString += ", " + winners.get(i).getName();
+		
+		String winnersString;
+		
+		if (winners.isEmpty()) {
+			winnersString = "Nobody win the hand";
 		}
-
-		winnersString += " win the hand with " + winners.get(0).getRanking().toString();
+		else {
+			winnersString = winners.get(0).getName();
+	
+			for (int i = 1; i < winners.size(); i++) {
+				winnersString += ", " + winners.get(i).getName();
+			}
+	
+			winnersString += " win the hand with " + winners.get(0).getRanking().toString();
+		}
 		
 		labelHandler.printMessage(winnersString);
 		buttonsViewHandler.enableButtons();

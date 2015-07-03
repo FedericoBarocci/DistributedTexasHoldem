@@ -50,14 +50,7 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 	public void receiveAction(String fromPlayer, Message message) {
 		DevPrinter.println();
 		
-		if (message.hasCrashed()) {
-			distributedControllerForRemoteHandling.setActionOnReceive(message.getCrashed(), message);
-			crashHandler.removeLocallyFromEverywhere(message.getCrashed());
-		}
-		else {
-			distributedControllerForRemoteHandling.setActionOnReceive(fromPlayer, message);
-		}
-		
+		distributedControllerForRemoteHandling.setActionOnReceive(fromPlayer, message);
 		pinger.ping();
 	}
 
@@ -65,14 +58,7 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 	public void receiveActionAndDeal(String fromPlayer, Message message, GameUpdater gameUpdater) throws RemoteException {
 		DevPrinter.println();
 		
-		if (message.hasCrashed()) {
-			distributedControllerForRemoteHandling.setActionOnReceive(message.getCrashed(), message, gameUpdater);
-			crashHandler.removeLocallyFromEverywhere(message.getCrashed());
-		}
-		else {
-			distributedControllerForRemoteHandling.setActionOnReceive(fromPlayer, message, gameUpdater);
-		}
-		
+		distributedControllerForRemoteHandling.setActionOnReceive(fromPlayer, message, gameUpdater);
 		pinger.ping();
 	}
 	
@@ -80,13 +66,7 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 	public void receiveWinnerEndGame(String fromPlayer, Message message) throws RemoteException {
 		DevPrinter.println();
 		
-		if (message.hasCrashed()) {
-			distributedControllerForRemoteHandling.setActionOnReceive(message.getCrashed(), message);
-			crashHandler.removeLocallyFromEverywhere(message.getCrashed());
-		}
-		else {
-			distributedControllerForRemoteHandling.setActionOnReceive(fromPlayer, message);
-		}
+		distributedControllerForRemoteHandling.setActionOnReceive(fromPlayer, message);
 	}
 
 	@Override
