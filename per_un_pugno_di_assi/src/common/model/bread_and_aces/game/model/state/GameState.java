@@ -3,7 +3,7 @@ package bread_and_aces.game.model.state;
 import javax.inject.Singleton;
 
 import bread_and_aces.game.model.oracle.actions.Action;
-import bread_and_aces.game.model.oracle.actions.ActionKeeper;
+import bread_and_aces.game.model.oracle.actions.Message;
 
 @Singleton
 public class GameState {
@@ -17,10 +17,10 @@ public class GameState {
 	}
 	
 	/*for recovery*/
-	public void nextGameState(ActionKeeper actionKeeper) {
-		if (! actionKeeper.getAction().equals(Action.FOLD)) {
-			actionlogic = actionlogic.nextState(actionKeeper.getAction());
-			minbet = Math.max(minbet, actionKeeper.getValue());
+	public void nextGameState(Message message) {
+		if (! message.getAction().equals(Action.FOLD)) {
+			actionlogic = actionlogic.nextState(message.getAction());
+			minbet = Math.max(minbet, message.getValue());
 		}
 	}
 	

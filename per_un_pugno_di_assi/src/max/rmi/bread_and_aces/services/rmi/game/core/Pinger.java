@@ -12,8 +12,7 @@ import javax.inject.Inject;
 import org.limewire.inject.LazySingleton;
 
 import bread_and_aces.game.model.controller.DistributedController;
-import bread_and_aces.game.model.oracle.actions.Action;
-import bread_and_aces.game.model.oracle.actions.ActionKeeperFactory;
+import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import bread_and_aces.services.rmi.game.keeper.GameServicesKeeper;
 import bread_and_aces.services.rmi.utils.crashhandler.CrashHandler;
 import bread_and_aces.utils.DevPrinter;
@@ -27,14 +26,17 @@ public class Pinger {
 	private final GameServicesKeeper gameServicesKeeper;
 	private final CrashHandler crashHandler;
 	private final DistributedController distributedController;
+	private final GamePlayersKeeper gamePlayersKeeper;
 
 	private ScheduledFuture<?> beeperHandle;
 
+
 	@Inject
-	public Pinger(DistributedController distributedController, GameServicesKeeper gameServicesKeeper, CrashHandler crashHandler) {
+	public Pinger(DistributedController distributedController, GameServicesKeeper gameServicesKeeper, CrashHandler crashHandler, GamePlayersKeeper gamePlayersKeeper) {
 		this.distributedController = distributedController;
 		this.gameServicesKeeper = gameServicesKeeper;
 		this.crashHandler = crashHandler;
+		this.gamePlayersKeeper = gamePlayersKeeper;
 	}
 	
 	public void ping() {
@@ -57,8 +59,18 @@ public class Pinger {
 						s.isAlive();
 					} catch (RemoteException e) {
 						DevPrinter.println("leader "+leader+" crashed: removing.. ");
-						distributedController.setActionAndUpdate(leader, ActionKeeperFactory.build(Action.FOLD));
-						crashHandler.removeLocallyFromEverywhere(leader);
+						
+						if (distributedController.setNextLeader().equals(gamePlayersKeeper.getMyName())) {
+							distributedController.removeAndUpdate(leader);
+							//ping();
+						}
+						else {
+							crashHandler.removeLocallyFromEverywhere(leader);
+						}
+						
+						//distributedController.setActionAndUpdate(leader, ActionKeeperFactory.build(Action.FOLD)).finaly();
+						//crashHandler.removeLocallyFromEverywhere(leader);
+						
 						DevPrinter.println("leader "+leader+" crashed removed");
 					}
 				});

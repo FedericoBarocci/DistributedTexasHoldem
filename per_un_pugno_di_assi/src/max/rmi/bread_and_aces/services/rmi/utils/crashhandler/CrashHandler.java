@@ -110,6 +110,16 @@ public class CrashHandler {
 		}
 	}
 	
+	public void recursiveBroadcastRemoveCrashed(String meId, String crashed) {
+		List<String> crashedAgain = new ArrayList<String>();
+
+		crashedAgain.addAll(handleCrashRemotelySayingToOtherNodesToRemoveFromTheirGameServiceKeeper(meId, crashed));
+		
+		if (crashedAgain.size() > 0) {
+			recursiveBroadcastRemoveCrashed(meId, crashedAgain);
+		}
+	}
+	
 	public void recursiveBroadcastRemoveCrashed(String meId, List<String> crashedList) {
 		List<String> crashedAgain = new ArrayList<String>();
 		

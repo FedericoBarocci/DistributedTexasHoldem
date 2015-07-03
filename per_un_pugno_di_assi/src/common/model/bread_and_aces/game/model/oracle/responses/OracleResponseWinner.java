@@ -116,7 +116,7 @@ public class OracleResponseWinner implements OracleResponse {
 				endgame = true;
 				score = game.getGoal();
 				winnersEndGame.add(p);
-				game.stop();
+//				game.stop();
 				
 				//viewControllerDelegate.endGame(p.getName());
 			}

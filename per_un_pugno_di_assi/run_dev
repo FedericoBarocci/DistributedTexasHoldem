@@ -10,7 +10,7 @@ echo $0 > run_to_exec
 rm -f trace*
 
 function randomName() {
-   echo $(shuf -n1 nomi.txt)
+   echo $(shuf -n1 nomi_all.txt)
 }
 function randomLastIPOctet() {
    echo $((RANDOM%8+2))

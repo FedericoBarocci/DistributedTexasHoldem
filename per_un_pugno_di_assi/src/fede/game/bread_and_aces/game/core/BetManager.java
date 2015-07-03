@@ -6,8 +6,8 @@ import javax.inject.Singleton;
 import bread_and_aces.game.Game;
 import bread_and_aces.game.exceptions.MaxReachedException;
 import bread_and_aces.game.exceptions.NegativeIntegerException;
-import bread_and_aces.game.model.oracle.actions.ActionKeeper;
-import bread_and_aces.game.model.oracle.actions.ActionKeeperFactory;
+import bread_and_aces.game.model.oracle.actions.Message;
+import bread_and_aces.game.model.oracle.actions.MessageFactory;
 import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import bread_and_aces.game.model.players.player.Player;
 import bread_and_aces.game.model.state.ActionsLogic;
@@ -85,8 +85,8 @@ public class BetManager {
 		betValue.setMax(max);
 	}
 
-	public ActionKeeper getActionKeeper() {
-		return ActionKeeperFactory.build(currentAction.getAction(), betValue.getValue());
+	public Message getActionKeeper() {
+		return MessageFactory.build(currentAction.getAction(), betValue.getValue());
 		//return new ActionKeeper(currentAction.getAction(), betValue.getValue());
 	}
 	
