@@ -74,12 +74,12 @@ public class GameRegistrarInit implements GameRegistrar {
 	 * do not invoke
 	 * @return dummy player
 	 */
-	@Override
+	/*@Override
 	@Deprecated
 	public Player getFirst() {
 		// too bad, but this is never invoked
-		return new Player("dummy player", 0/*, printer*/);
-	}
+		return new Player("dummy player", 0, printer);
+	}*/
 
 //	@Override
 //	public void removeCrashedPlayerOnRegistrationPhase(String playerId) {}

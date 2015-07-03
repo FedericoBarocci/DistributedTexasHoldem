@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo $0 > run_to_exec
+
 #if [ -z "$(ip addr show  dev eth0 | grep 10.0.0 2>/dev/null)" ]; then
 addr=$(ip addr show dev eth0 | grep -w inet | awk '{print $2}' | sed 's/\/21//g')
 port=$1
@@ -10,6 +12,8 @@ else
    jgoodies_path="libs/jgoodies/jgoodies-common-1.4.0.jar:libs/jgoodies/jgoodies-forms-1.8.0.jar"
    guice_path="libs/guice/guice-3.0.jar:libs/guice/aopalliance-1.0.jar:libs/guice/javax.inject.jar:libs/guice/guice-assistedinject-3.0.jar";
    guice_enhanced_path="libs/guice_enhanced/guice_enhanced.jar"
-   java -cp ${guice_path}:${guice_enhanced_path}:${jgoodies_path}:bin bread_and_aces.main.Main ${addr} $port
+   rm -f trace*.log
+   java -cp ${guice_path}:${guice_enhanced_path}:${jgoodies_path}:bin bread_and_aces.main.Main ${addr} $port &
+   tail -f trace*.log
 fi
 

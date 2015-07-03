@@ -37,10 +37,10 @@ public class GameRegistrarStarted implements GameRegistrar {
 		return registeredNodesConnectionInfos;
 	}
 	
-	@Override
+	/*@Override
 	public Player getFirst() {
 		return registrarPlayersKeeper.getFirst();
-	}
+	}*/
 
 	public void passNodesInfos(List<NodeConnectionInfos> registeredNodesConnectionInfos) {
 		this.registeredNodesConnectionInfos.addAll(registeredNodesConnectionInfos);

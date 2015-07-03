@@ -21,7 +21,6 @@ import javax.swing.SwingConstants;
 import bread_and_aces.gui.view.elements.frame.JFrameDefault;
 import bread_and_aces.gui.view.elements.utils.EnumFont;
 import bread_and_aces.gui.view.elements.utils.GuiUtils;
-import bread_and_aces.main.Main;
 
 public class StartOrRegisterGUI extends JFrameDefault {
 	
@@ -48,7 +47,7 @@ public class StartOrRegisterGUI extends JFrameDefault {
 	
 	private static final int gap = 20;
 	
-	public StartOrRegisterGUI(CountDownLatch latch, AtomicReference<RegistrationData> registrationDataAtomicReference) {
+	public StartOrRegisterGUI(CountDownLatch latch, AtomicReference<RegistrationData> registrationDataAtomicReference, boolean isDevMode) {
 		init();
 		createLayout();
 		
@@ -56,7 +55,7 @@ public class StartOrRegisterGUI extends JFrameDefault {
 			public void actionPerformed(ActionEvent e) {
 				String username = usernameField.getText();
 				
-				if ( (Main.isDevMode == false) && username.isEmpty() ) {
+				if ( (isDevMode == false) && username.isEmpty() ) {
 					JOptionPane.showMessageDialog(null, "You need to insert an unique name", "Warning", JOptionPane.WARNING_MESSAGE);
 				} else {
 					String serverHost = hostTextField.getText();
@@ -181,6 +180,8 @@ public class StartOrRegisterGUI extends JFrameDefault {
 		public boolean asServable;
 		public int coins;
 		public int goal;
+		
+		public RegistrationData() {}
 
 		RegistrationData(String serverHost, String serverPort, boolean asServable, String username, int coins, int goal) {
 			this.serverHost = serverHost;
@@ -189,6 +190,14 @@ public class StartOrRegisterGUI extends JFrameDefault {
 			this.username = username;
 			this.coins = coins;
 			this.goal = goal;
+		}
+		
+		@Override
+		public String toString() {
+			if (asServable)
+				return username+" as servable with "+coins+" coins and "+goal+" goal";
+			else
+				return username+" as clientable to "+serverHost+":"+serverPort;
 		}
 	}
 }

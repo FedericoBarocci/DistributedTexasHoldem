@@ -1,0 +1,3 @@
+#!/bin/bash
+
+kill -9 $(ps axuw | grep java | grep bread_ | awk '{print $2}')

@@ -20,7 +20,7 @@ public class ObservableDelegate<T> implements Observable<T> {
 
 	@Override
 	public void notifyObservers(T data) {
-		observers.stream().forEach(o -> o.update(this, data));
+		observers.stream().forEach(o -> o.update(/*this,*/ data));
 	}
 
 	@Override

@@ -1,15 +1,17 @@
 package bread_and_aces.main;
 
 import java.awt.EventQueue;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
@@ -30,26 +32,17 @@ import bread_and_aces.utils.misc.MemoryUtil;
 
 public class Main {
 	
-	public static String myPath;
-
 	public static Logger logger;
 
-	public static boolean isDevMode;
-
-	// TODO fix: far scrivere in un file l'eseguibile run_lab_QUALCOSA già da dentro lo script bash.. poi java leggerà in quel file per sapere chi è che deve ri-lanciare
-	public static String run_cmd = "./run_lab_ws";
+	public static String run_cmd;
 	
-	private Injector injector;
-	
-//	private NodeInitializer nodeInitializer;
-	
-	public RegistrationData startRegistrationGUI() {
+	public RegistrationData startRegistrationGUI(boolean isDevMode) {
 		CountDownLatch registrationLatch = new CountDownLatch(1);
 		AtomicReference<RegistrationData> registrationDataAtomicReference = new AtomicReference<>();
 		AtomicReference<StartOrRegisterGUI> startOrRegistrarReference = new AtomicReference<>();
 		
 		EventQueue.invokeLater( ()->{ 
-			StartOrRegisterGUI rg = new StartOrRegisterGUI(registrationLatch, registrationDataAtomicReference);
+			StartOrRegisterGUI rg = new StartOrRegisterGUI(registrationLatch, registrationDataAtomicReference, isDevMode);
 			startOrRegistrarReference.set(rg);
 		});
 		
@@ -67,27 +60,21 @@ public class Main {
 		return registrationData;
 	}
 	
-	private void initInjector() throws Exception {
-		injector = Guice.createInjector(new TexasHoldemPokerModule());
-	}
-	
-	private void startNode(RegistrationData registrationData, String addressToBind) {
-//		injector = Guice.createInjector(new TexasHoldemPokerModule());
+	private void start(RegistrationData registrationData, String addressToBind) {
+		DevPrinter.println("registrationData: "+registrationData);
+		
+		Injector injector = Guice.createInjector(new TexasHoldemPokerModule());
 		
 		NodeInitializerFactory nodeInitializerFactory = injector.getInstance(NodeInitializerFactory.class);
 		NodeInitializer nodeInitializer = null;
 
 		String myId = registrationData.username;
 		if (registrationData.asServable) {
-			nodeInitializer = nodeInitializerFactory.createAsServable(
-					myId, 
-					addressToBind);
+			nodeInitializer = nodeInitializerFactory.createAsServable(myId, addressToBind);
 		} 
 		else {
 			String initializingHostAddress = registrationData.serverHost;
-			nodeInitializer = nodeInitializerFactory.createAsClientableWithInitializerPort(
-					myId,
-							addressToBind, initializingHostAddress, Integer.parseInt(registrationData.serverPort) );
+			nodeInitializer = nodeInitializerFactory.createAsClientableWithInitializerPort(myId, addressToBind, initializingHostAddress, Integer.parseInt(registrationData.serverPort));
 		}
 		
 		Node node = nodeInitializer.get();
@@ -111,50 +98,110 @@ public class Main {
 			System.exit(1);
 		}
 		
+		Scanner scanner;
+		try {
+			scanner = new Scanner(new File("run_to_exec"));
+			run_cmd = scanner.nextLine();
+			scanner.close();
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+			System.exit(1);
+		}
+
+		String addressToBind = args[0];
+		
 		logger = Logger.getLogger("logger");
 		logger.setUseParentHandlers(false);
-		 try {  
-	        // This block configure the logger with handler and formatter  
-	        FileHandler fh = new FileHandler("trace.log");
-	        fh.setFormatter(new LogFormatter());
-	        logger.addHandler(fh);
-	        
-	        ConsoleHandler ch = new ConsoleHandler();
-	        ch.setFormatter(new LogFormatter());
-	        logger.addHandler(ch);
+		
+		boolean isDevMode = false;
+		if (args.length > 1) {
+			isDevMode = (args[1].equalsIgnoreCase("DEV")) ? true : false;
+		}
+		RegistrationData registrationDataForDevMode = handleArgsForDevMode(args);
+
+		
+		
+		try {
+			String suffix = "";
+			if (isDevMode)
+				suffix="_"+registrationDataForDevMode.username;
+			FileHandler fileHandler = new FileHandler("trace" + suffix + ".log");
+			fileHandler.setFormatter(new LogFormatter());
+			logger.addHandler(fileHandler);
+	     
+//	        ConsoleHandler ch = new ConsoleHandler();
+//	        ch.setFormatter(new LogFormatter());
+//	        logger.addHandler(ch);
 	        
 		 } catch(SecurityException|IOException e) {
 			 e.printStackTrace();
 		 }
-		 
-		String addressToBind = args[0];
-		if (args.length>1) {
-			isDevMode = (args[1].equalsIgnoreCase("DEV")) ? true : false;
-		}
 		
 		Main main = new Main();
-		
-		myPath = main.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin", "");
 
-		RegistrationData loginResult;
-		loginResult = main.startRegistrationGUI();
+		RegistrationData registrationData = main.startRegistrationGUI(isDevMode);
 		// TODO only for test during development - it works only with: ./run host_ip DEV player_name [s]
-		if (isDevMode) {
-			handleLoginResultInDevMode(args, loginResult);
-		}
+//		if (isDevMode) {
+//			DevPrinter.println("DevMode: "+isDevMode);
+//			handleRegistrationDataInDevMode(registrationDataForDevMode, registrationData);
+			/*try {
+				logger.addHandler( new FileHandler("trace_"+registrationData.username+".log"));
+				logger.removeHandler(fileHandler);
+				// TODO complete this
+			} catch (SecurityException | IOException e) {
+				e.printStackTrace();
+			}*/
+//		}
+		
 		
 		try {
-			main.initInjector();
-			
-			main.startNode(loginResult, addressToBind);
+			if (isDevMode) {
+//				DevPrinter.println(registrationDataForDevMode);
+				main.start(registrationDataForDevMode, addressToBind);
+			} else {
+//				DevPrinter.println(registrationData);
+				main.start(registrationData, addressToBind);
+			}
 		} catch (Exception e) {
 			DevPrinter.println( "main exception");
 			handleException(e);
 		}
 	} // main
 	
-	private static void handleLoginResultInDevMode(String[] args, RegistrationData registrationData) {
-		DevPrinter.println("DevMode: "+isDevMode);
+	private static RegistrationData handleArgsForDevMode(String[] args) {
+		RegistrationData registrationData = null;
+		if (args.length<2) {
+			System.out.println("ERROR:");
+			System.out.println("DevMode: "+args[0]+" DEV HOST_IP playerName <s>");
+			System.out.println("s is optional, and you have to add if you want start host as servable");
+			System.exit(0);
+		} else {
+			registrationData = new RegistrationData();
+			registrationData.username = args[2];
+			if (args.length>3 ) {
+				registrationData.asServable = (args[3].equals("s")) ? true: false;
+				DevPrinter.println(registrationData.username+" "+ ( registrationData.asServable? "as servable": "as clientable") );
+			}
+			if (!registrationData.asServable) {
+				DevPrinter.println("try to register "+registrationData.username);
+				registrationData.serverHost = "10.0.0.1";
+				registrationData.serverPort = "33333";
+			} 
+//			else {
+				registrationData.coins = 200;
+				registrationData.goal = 1000;
+//			}
+		}
+		return registrationData;
+	}
+	
+	/*private static void handleRegistrationDataInDevMode(RegistrationData registrationDataForDevMode, RegistrationData registrationData) {
+		registrationData.username = registrationDataForDevMode.username;
+		registrationData.serverHost = registrationDataForDevMode.serverHost;
+		registrationData.serverPort = registrationDataForDevMode.serverPort;
+		registrationData.username = registrationDataForDevMode.username;
+		registrationData.username = registrationDataForDevMode.username;
+		
 		if (args.length<2) {
 			System.out.println("ERROR:");
 			System.out.println("DevMode: "+args[0]+" DEV HOST_IP playerName <s>");
@@ -170,7 +217,7 @@ public class Main {
 				DevPrinter.println("try to register "+registrationData.username);
 			}
 		}
-	}
+	}*/
 	
 	public static void handleException(Exception e) {
 			try {

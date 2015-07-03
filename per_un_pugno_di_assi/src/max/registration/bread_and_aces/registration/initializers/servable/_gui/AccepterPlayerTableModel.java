@@ -9,7 +9,6 @@ import javax.swing.table.DefaultTableModel;
 import bread_and_aces.game.model.players.keeper.GamePlayersKeeper;
 import bread_and_aces.game.model.players.keeper.PlayersObservable;
 import bread_and_aces.game.model.players.player.Player;
-import bread_and_aces.utils.observatory.Observable;
 import bread_and_aces.utils.observatory.Observer;
 
 class AccepterPlayerTableModel extends DefaultTableModel {
@@ -21,10 +20,10 @@ class AccepterPlayerTableModel extends DefaultTableModel {
 
 	@Inject
 	public AccepterPlayerTableModel(GamePlayersKeeper playersKeeper) {
-		Object[] columns = new Object[3];
+		Object[] columns = new Object[2];
 		columns[0] = "Position";
 		columns[1] = "Name";
-		columns[2] = "IP";
+//		columns[2] = "IP";
 		
 		setColumnIdentifiers(columns);
 		this.playersKeeper = playersKeeper;
@@ -33,16 +32,18 @@ class AccepterPlayerTableModel extends DefaultTableModel {
 		
 		List<Player> players = playersKeeper.getPlayers();
 		if (!players.isEmpty()) {
-			newPlayerObserverDelegateForTableUpdate.update(null, players.get(0).getName());
+			newPlayerObserverDelegateForTableUpdate.update(/*null,*/ players.get(0).getName());
 		}
 	}
 	
 	private class NewPlayerObserverDelegateForTableUpdate implements Observer<String> {
 		@Override
-		public void update(Observable<String> playersKeeper, String playerId) {
+		public void update(/*Observable<String> playersKeeperObservable,*/ String playerId) {
 			int nn = n.size()+1;
 			n.add(nn);
-			Object[] r = new Object[] {nn, playerId, playerId + "'s ip"};
+//			String id = playerData.getId();
+//			String ip = playerData.getIp();
+			Object[] r = new Object[] {nn, playerId/*, ""*/};
 			addRow(r);
 		}
 	}
