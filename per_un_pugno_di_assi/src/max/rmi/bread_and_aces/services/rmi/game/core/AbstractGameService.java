@@ -48,7 +48,7 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 
 	@Override
 	public void receiveAction(String fromPlayer, Message message) {
-		DevPrinter.println();
+		DevPrinter.println(fromPlayer + " " + message + " " + message.getCrashed());
 		
 		distributedControllerForRemoteHandling.setActionOnReceive(fromPlayer, message);
 		pinger.ping();
@@ -56,7 +56,7 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 
 	@Override
 	public void receiveActionAndDeal(String fromPlayer, Message message, GameUpdater gameUpdater) throws RemoteException {
-		DevPrinter.println();
+		DevPrinter.println(fromPlayer + " " + message + " " + message.getCrashed());
 		
 		distributedControllerForRemoteHandling.setActionOnReceive(fromPlayer, message, gameUpdater);
 		pinger.ping();
@@ -64,7 +64,7 @@ public abstract class AbstractGameService extends UnicastRemoteObject implements
 	
 	@Override
 	public void receiveWinnerEndGame(String fromPlayer, Message message) throws RemoteException {
-		DevPrinter.println();
+		DevPrinter.println(fromPlayer + " " + message + " " + message.getCrashed());
 		
 		distributedControllerForRemoteHandling.setActionOnReceive(fromPlayer, message);
 	}

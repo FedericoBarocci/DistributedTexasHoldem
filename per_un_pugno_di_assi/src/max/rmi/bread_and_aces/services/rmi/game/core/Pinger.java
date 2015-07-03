@@ -62,6 +62,7 @@ public class Pinger {
 						
 						if (distributedController.setNextLeader().equals(gamePlayersKeeper.getMyName())) {
 							distributedController.removeAndUpdate(leader);
+							//ping();
 						}
 						else {
 							crashHandler.removeLocallyFromEverywhere(leader);

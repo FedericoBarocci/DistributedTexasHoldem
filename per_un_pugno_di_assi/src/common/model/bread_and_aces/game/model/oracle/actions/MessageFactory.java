@@ -11,7 +11,7 @@ public class MessageFactory {
 		return new Message(action, value);
 	}
 	
-	public static Message build(String player) {
+	public static Message buildForCrash(String player) {
 		return new Message(Action.FOLD, 0, player);
 	}
 }

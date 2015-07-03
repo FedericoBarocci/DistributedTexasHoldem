@@ -44,7 +44,8 @@ public class Deliverator {
 			DevPrinter.println();
 			
 			optService.ifPresent(service -> {
-					communicatorFunctorNoArg.exec(service);
+				DevPrinter.println();
+				communicatorFunctorNoArg.exec(service);
 			});
 			
 			DevPrinter.println();

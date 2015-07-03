@@ -7,10 +7,12 @@ public class Message implements Serializable {
 
 	private static final long serialVersionUID = -210328786584017591L;
 	
-	private final Action action;
-	private final int value;
-	private final String player;
-	private final boolean crashed;
+	private Action action;
+	private int value;
+	private String player;
+	private boolean crashed;
+	
+	public Message() {	}
 	
 	public Message(Action action, int value, String player) {
 		this.action = action;

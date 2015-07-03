@@ -21,6 +21,8 @@ public enum Communication {
 			class ActionClass {
 				private void performAction(GameService gameService) {
 					try {
+						DevPrinter.println(gamePlayersKeeper.getMyName() + " " + message + " " + message.getCrashed());
+						DevPrinter.println(gameService.getId());
 						gameService.receiveAction(gamePlayersKeeper.getMyName(), message);
 					} catch (RemoteException e) {
 						DevPrinter.println(" exception " + communicator.getCurrentInterlocutor());
