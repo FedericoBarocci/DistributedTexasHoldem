@@ -32,6 +32,8 @@ import bread_and_aces.utils.misc.MemoryUtil;
 
 public class Main {
 	
+	private final static String DEV_MODE = "DEV";
+	
 	public static Logger logger;
 
 	public static String run_cmd;
@@ -114,10 +116,13 @@ public class Main {
 		logger.setUseParentHandlers(false);
 		
 		boolean isDevMode = false;
+		RegistrationData registrationDataForDevMode = null;
 		if (args.length > 1) {
-			isDevMode = (args[1].equalsIgnoreCase("DEV")) ? true : false;
+//			String arg1 = args[1];
+			isDevMode = (args[1].equalsIgnoreCase(DEV_MODE)) ? true : false;
+			if (isDevMode)
+				registrationDataForDevMode = handleArgsForDevMode(args);
 		}
-		RegistrationData registrationDataForDevMode = handleArgsForDevMode(args);
 
 		
 		

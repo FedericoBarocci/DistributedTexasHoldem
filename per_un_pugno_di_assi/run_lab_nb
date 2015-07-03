@@ -14,6 +14,7 @@ else
    guice_enhanced_path="libs/guice_enhanced/guice_enhanced.jar"
    rm -f trace*.log
    java -cp ${guice_path}:${guice_enhanced_path}:${jgoodies_path}:bin bread_and_aces.main.Main ${addr} $port &
+   sleep 1
    tail -f trace*.log
 fi
 
