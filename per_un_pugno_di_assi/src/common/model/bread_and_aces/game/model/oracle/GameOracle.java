@@ -215,7 +215,6 @@ public class GameOracle {
 				&& players.stream().filter(p -> p.getAction().equals(Action.RAISE)).count() <= 1;
 	}
 	
-
 	private boolean conditionAllFold(List<Player> players) {
 		return players.stream().allMatch(p -> p.getAction().equals(Action.FOLD));
 	}
