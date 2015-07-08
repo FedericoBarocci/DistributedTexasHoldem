@@ -1,5 +1,9 @@
 #!/bin/bash
 
+cd ..
+
+NOMI_FILE="dev/nomi_all.txt"
+
 if [ "${1}" == "-h" ]; then
     echo "./run_dev with 's' argument runs as servable; with no-argument it starts as clientable"
     exit 0
@@ -10,7 +14,7 @@ echo $0 > run_to_exec
 rm -f trace*
 
 function randomName() {
-   echo $(shuf -n1 nomi_all.txt)
+   echo $(shuf -n1 $NOMI_FILE)
 }
 function randomLastIPOctet() {
    echo $((RANDOM%8+2))
