@@ -6,6 +6,8 @@ import java.util.ListIterator;
 import java.util.Optional;
 import java.util.Set;
 
+import org.limewire.inject.LazySingleton;
+
 import com.google.inject.Inject;
 
 import bread_and_aces.services.rmi.game.core.GameService;
@@ -15,6 +17,7 @@ import bread_and_aces.services.rmi.utils.communicator.Communicator.CommunicatorF
 import bread_and_aces.services.rmi.utils.communicator.Communicator.CommunicatorFunctorWithArg;
 import bread_and_aces.utils.DevPrinter;
 
+@LazySingleton
 public class Deliverator {
 	
 	private final GameServicesKeeper gameServicesKeeper;

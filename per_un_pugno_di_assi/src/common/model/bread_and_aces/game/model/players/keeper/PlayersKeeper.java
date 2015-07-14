@@ -4,12 +4,12 @@ import java.util.List;
 
 import bread_and_aces.game.model.players.player.Player;
 
-public interface PlayersKeeper {
+public interface PlayersKeeper extends NextablePlayersKeeper, FirstPlayersKeeper {
 	Player getPlayer(String playerId);
 	List<Player> getPlayers();
 	boolean contains(String playerId);
 	void remove(String targetplayerId);
-	Player getFirst();
+//	Player getFirst();
 	
 	String getMyName();
 	void setMyName(String me);

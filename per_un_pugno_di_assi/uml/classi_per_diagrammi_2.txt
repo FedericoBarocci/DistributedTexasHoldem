@@ -1,0 +1,25 @@
+--- Classi controller:
+Tutto il ramo src/common/model/*
+/per un pugno di assi/src/max/rmi/bread_and_aces/services/rmi/game/core/AbstractGameService.java
+/per un pugno di assi/src/max/rmi/bread_and_aces/services/rmi/game/core/Pinger.java
+/per un pugno di assi/src/max/rmi/bread_and_aces/services/rmi/game/keeper/GameServicesKeeper.java
+/per un pugno di assi/src/max/rmi/bread_and_aces/services/rmi/utils/communicator/Communicator.java
+/per un pugno di assi/src/max/rmi/bread_and_aces/services/rmi/utils/communicator/Deliverator.java
+/per un pugno di assi/src/max/rmi/bread_and_aces/services/rmi/utils/crashhandler/CrashedHolder.java
+/per un pugno di assi/src/max/rmi/bread_and_aces/services/rmi/utils/crashhandler/CrashHandler.java
+
+--- Classi view:
+/per un pugno di assi/src/fede/gui/bread_and_aces/gui/controllers/actionlisteners/BetListener.java
+/per un pugno di assi/src/fede/gui/bread_and_aces/gui/controllers/actionlisteners/FoldListener.java
+/per un pugno di assi/src/fede/gui/bread_and_aces/gui/controllers/actionlisteners/InfoListener.java
+/per un pugno di assi/src/fede/gui/bread_and_aces/gui/controllers/actionlisteners/OkListener.java
+/per un pugno di assi/src/fede/gui/bread_and_aces/gui/controllers/actionlisteners/init/ListenersInitializer.java
+/per un pugno di assi/src/fede/gui/bread_and_aces/gui/view/AbstractViewHandler.java
+/per un pugno di assi/src/fede/gui/bread_and_aces/gui/view/ButtonsViewHandler.java
+/per un pugno di assi/src/fede/gui/bread_and_aces/gui/view/InitableView.java
+/per un pugno di assi/src/fede/gui/bread_and_aces/gui/view/LabelHandler.java
+/per un pugno di assi/src/fede/gui/bread_and_aces/gui/view/PlayersViewHandler.java
+/per un pugno di assi/src/fede/gui/bread_and_aces/gui/view/TableViewHandler.java
+/per un pugno di assi/src/fede/gui/bread_and_aces/gui/view/ViewControllerDelegate.java
+/per un pugno di assi/src/fede/gui/bread_and_aces/gui/view/ViewCreator.java
+/per un pugno di assi/src/fede/gui/bread_and_aces/gui/view/ViewInitalizer.java

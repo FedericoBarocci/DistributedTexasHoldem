@@ -16,6 +16,6 @@ public interface RegistrarPlayersKeeper extends PlayersKeeper {
 	Map<PlayerRegistrationId, Player> getRegisteredPlayers();
 	void setMyName(String playerId);
 	
-	public Player getNext(String playerId);
+//	public Player getNext(String playerId);
 	void setMyselfAsLeader();
 }
