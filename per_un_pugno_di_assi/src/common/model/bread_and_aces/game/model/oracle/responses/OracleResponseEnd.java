@@ -28,7 +28,7 @@ public class OracleResponseEnd implements OracleResponse {
 	}
 
 	@Override
-	public void finaly() {
+	public void complete() {
 		viewControllerDelegate.endGame(fromPlayer);
 	}
 }

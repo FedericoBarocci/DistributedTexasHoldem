@@ -81,7 +81,7 @@ public class OracleResponseWinner implements OracleResponse {
 	}
 
 	@Override
-	public void finaly() {
+	public void complete() {
 		List<Player> winnersEndGame = new ArrayList<Player>();
 		boolean endgame = gamePlayersKeeper.getPlayers().size() == 1;
 		

@@ -15,7 +15,7 @@ public class OracleResponseOk implements OracleResponse {
 	}
 
 	@Override
-	public void finaly() {
+	public void complete() {
 		return;
 	}
 }

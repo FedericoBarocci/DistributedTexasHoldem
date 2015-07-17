@@ -45,7 +45,7 @@ public class BetListener implements MouseListener {
 			
 			betManager.setBet(value);
 			
-			buttonsView.updateText(betManager.getActionKeeper().getAction());
+			buttonsView.updateText(betManager.getMessage().getAction());
 		}
 	}
 

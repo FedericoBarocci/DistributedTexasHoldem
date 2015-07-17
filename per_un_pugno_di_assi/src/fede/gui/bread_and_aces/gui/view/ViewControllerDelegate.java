@@ -158,7 +158,7 @@ public class ViewControllerDelegate {
 		
 		labelHandler.setValue(betManager.getSumAllPot(), gameState.getMinBet());
 		
-		buttonsViewHandler.updateText(betManager.getActionKeeper().getAction());
+		buttonsViewHandler.updateText(betManager.getMessage().getAction());
 	}
 	
 	public void resetViewState() {
