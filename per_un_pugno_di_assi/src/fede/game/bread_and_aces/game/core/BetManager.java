@@ -85,7 +85,7 @@ public class BetManager {
 		betValue.setMax(max);
 	}
 
-	public Message getActionKeeper() {
+	public Message getMessage() {
 		return MessageFactory.build(currentAction.getAction(), betValue.getValue());
 		//return new ActionKeeper(currentAction.getAction(), betValue.getValue());
 	}

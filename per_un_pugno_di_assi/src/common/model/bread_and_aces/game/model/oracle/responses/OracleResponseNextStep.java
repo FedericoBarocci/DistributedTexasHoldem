@@ -47,7 +47,7 @@ public class OracleResponseNextStep implements OracleResponse {
 	}
 
 	@Override
-	public void finaly() {
+	public void complete() {
 		table.setNextState();
 		gamePlayersKeeper.resetActions(false);
 

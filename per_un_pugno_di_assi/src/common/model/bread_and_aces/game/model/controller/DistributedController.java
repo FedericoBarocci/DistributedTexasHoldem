@@ -76,7 +76,7 @@ public class DistributedController implements DistributedControllerForRemoteHand
 		GameHolder gh = communication.exec(communicator, gamePlayersKeeper, message);
 		
 		if(!gh.hasCrashed()) {
-			oracleResponse.finaly();
+			oracleResponse.complete();
 		}
 		
 		gh.getGameupdaterOptional().ifPresent(g->{
@@ -108,14 +108,14 @@ public class DistributedController implements DistributedControllerForRemoteHand
 			if(gamePlayersKeeper.contains(message.getCrashed())) {
 				OracleResponse oracleResponse = setActionAndUpdate(message.getCrashed(), message);
 				crashHandler.removeLocallyFromEverywhere(message.getCrashed());
-				oracleResponse.finaly();
+				oracleResponse.complete();
 			}
 			else {
-				gameOracle.ask().finaly();
+				gameOracle.ask().complete();
 			}
 		}
 		else {
-			setActionAndUpdate(fromPlayer, message).finaly();
+			setActionAndUpdate(fromPlayer, message).complete();
 		}
 	}
 
@@ -132,14 +132,14 @@ public class DistributedController implements DistributedControllerForRemoteHand
 			if(gamePlayersKeeper.contains(message.getCrashed())) {
 				OracleResponse oracleResponse = setActionAndUpdate(message.getCrashed(), message);
 				crashHandler.removeLocallyFromEverywhere(message.getCrashed());
-				oracleResponse.finaly();
+				oracleResponse.complete();
 			}
 			else {
-				gameOracle.ask().finaly();
+				gameOracle.ask().complete();
 			}
 		}
 		else {
-			setActionAndUpdate(fromPlayer, message).finaly();
+			setActionAndUpdate(fromPlayer, message).complete();
 		}
 		
 		gameOracle.update(gameUpdater);
@@ -268,7 +268,7 @@ public class DistributedController implements DistributedControllerForRemoteHand
 			DevPrinter.println();
 			
 			if(!gh.hasCrashed()) {
-				oracleResponse.finaly();
+				oracleResponse.complete();
 			}
 			
 			gh.getGameupdaterOptional().ifPresent(g->{
