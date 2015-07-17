@@ -19,4 +19,5 @@ cp -a $copy_string ${TARGET}
 
 ssh $REMOTE_HOST "rm -fr /public/$REMOTE_DIR/*"
 
-scp -r ${TARGET} $REMOTE_HOST:/public/$REMOTE_DIR/
+#scp -r ${TARGET} $REMOTE_HOST:/public/$REMOTE_DIR/
+tar cpf - ${TARGET} | ssh $REMOTE_HOST "tar xpf - -C /public/$REMOTE_DIR"

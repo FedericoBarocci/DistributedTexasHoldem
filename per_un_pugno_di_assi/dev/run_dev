@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ..
+
 
 NOMI_FILE="dev/nomi_all.txt"
 
@@ -9,9 +9,9 @@ if [ "${1}" == "-h" ]; then
     exit 0
 fi
 
-echo $0 > run_to_exec
+echo $0 > tmp/run_to_exec
 
-rm -f trace*
+rm -f tmp/trace*
 
 function randomName() {
    echo $(shuf -n1 $NOMI_FILE)
@@ -37,7 +37,7 @@ else
       args="10.0.0."$(randomLastIPOctet)" DEV ${name}"
    fi
 
-   trace_file=trace_${name}.log
+   trace_file="tmp/trace_${name}.log"
    touch $trace_file
    java -cp ${guice_path}:${guice_enhanced_path}:${jgoodies_path}:bin bread_and_aces.main.Main ${args} &
    echo "reading $trace_file"
