@@ -1,0 +1,22 @@
+#!/bin/bash
+
+[ $# -lt 2 ] && echo "Usage: $(basename $0) remote_host [your_remote_dir in /public]" && exit 1
+
+REMOTE_HOST=$1
+REMOTE_DIR=$2
+
+SRC="per_un_pugno_di_assi"
+to_copy="bin elements libs license.txt about.txt run_lab_ws tmp"
+TARGET="per_un_pugno_di_assi_-_texas_hold_em_poker"
+
+[ -d ${TARGET} ] && (rm -fr ${TARGET} && mkdir ${TARGET}) || mkdir ${TARGET}
+
+copy_string=""
+for i in $to_copy; do
+   copy_string=${copy_string}" $SRC/$i "
+done
+cp -a $copy_string ${TARGET}
+
+ssh $REMOTE_HOST "rm -fr /public/$REMOTE_DIR/*"
+
+scp -r ${TARGET} $REMOTE_HOST:/public/$REMOTE_DIR/
