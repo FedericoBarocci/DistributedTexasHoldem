@@ -37,7 +37,9 @@ public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerIn
 		this.gamePlayersKeeper = gamePlayersKeeper;
 	}
 	
-	public synchronized void init(PlayersViewHandlerInitArgs args) {
+	// old working
+//	public synchronized void init(PlayersViewHandlerInitArgs args) {
+	public void init(PlayersViewHandlerInitArgs args) {
 		DevPrinter.println("PlayersViewHandler.init");
 		int size = args.players.size();
 		int span = Math.floorDiv(GuiUtils.playerSpan, size+1);
@@ -69,7 +71,9 @@ public class PlayersViewHandler extends AbstractViewHandler<PlayersViewHandlerIn
 		playersGui.values().forEach(p->p.showCards());
 	}
 	
-	public synchronized void setViewToken(String playerName) {
+	// old working
+//	public synchronized void setViewToken(String playerName) { 
+	public void setViewToken(String playerName) {
 		DevPrinter.println("PlayersViewHandler.setViewToken");
 		playersGui.values().forEach(p->{
 			p.unsetTokenView();

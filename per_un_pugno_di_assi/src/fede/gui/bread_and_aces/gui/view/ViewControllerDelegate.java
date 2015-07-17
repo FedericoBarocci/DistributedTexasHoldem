@@ -66,7 +66,9 @@ public class ViewControllerDelegate {
 		return refresh;
 	}
 
-	public void refresh(List<Player> players, String myName) {
+	// old working
+//	public void synchronized refresh(List<Player> players, String myName) {
+	public synchronized void refresh(List<Player> players, String myName) {
 		tableView.init(null);
 		buttonsViewHandler.resetText();
 		
@@ -76,7 +78,9 @@ public class ViewControllerDelegate {
 		refresh = false;
 	}
 
-	public void setViewToken(String playerName) {
+	// old working
+//	public void setViewToken(String playerName) {
+	public synchronized void setViewToken(String playerName) {
 		if (isSetRefresh()) {
 			return;
 		}
