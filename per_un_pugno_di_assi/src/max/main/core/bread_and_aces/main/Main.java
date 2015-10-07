@@ -3,7 +3,6 @@ package bread_and_aces.main;
 import java.awt.EventQueue;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
@@ -12,14 +11,10 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.FileHandler;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.spi.Message;
 
 import bread_and_aces._di._guice.module.TexasHoldemPokerModule;
 import bread_and_aces.main.start.gui.StartOrRegisterGUI;
@@ -29,6 +24,10 @@ import bread_and_aces.node.initializer.NodeInitializer;
 import bread_and_aces.node.initializer.NodeInitializerFactory;
 import bread_and_aces.utils.DevPrinter;
 import bread_and_aces.utils.misc.MemoryUtil;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.spi.Message;
 
 public class Main {
 	
@@ -128,18 +127,18 @@ public class Main {
 		
 		
 		try {
-			String suffix = "";
-			if (isDevMode)
-				suffix="_"+registrationDataForDevMode.username;
-			FileHandler fileHandler = new FileHandler("trace" + suffix + ".log");
-			fileHandler.setFormatter(new LogFormatter());
-			logger.addHandler(fileHandler);
+//			String suffix = "";
+//			if (isDevMode)
+//				suffix="_"+registrationDataForDevMode.username;
+//			FileHandler fileHandler = new FileHandler("trace" + suffix + ".log");
+//			fileHandler.setFormatter(new LogFormatter());
+//			logger.addHandler(fileHandler);
 	     
-//	        ConsoleHandler ch = new ConsoleHandler();
-//	        ch.setFormatter(new LogFormatter());
-//	        logger.addHandler(ch);
+	        ConsoleHandler ch = new ConsoleHandler();
+	        ch.setFormatter(new LogFormatter());
+	        logger.addHandler(ch);
 	        
-		 } catch(SecurityException|IOException e) {
+		 } catch(SecurityException e) {
 			 e.printStackTrace();
 		 }
 		
