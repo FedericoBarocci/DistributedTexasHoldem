@@ -130,7 +130,9 @@ public class Main {
 //			String suffix = "";
 //			if (isDevMode)
 //				suffix="_"+registrationDataForDevMode.username;
-//			FileHandler fileHandler = new FileHandler("trace" + suffix + ".log");
+//			File file = new File("tmp");
+//			file.mkdir();
+//			FileHandler fileHandler = new FileHandler("tmp"+File.separatorChar+"trace" + suffix + ".log");
 //			fileHandler.setFormatter(new LogFormatter());
 //			logger.addHandler(fileHandler);
 	     
