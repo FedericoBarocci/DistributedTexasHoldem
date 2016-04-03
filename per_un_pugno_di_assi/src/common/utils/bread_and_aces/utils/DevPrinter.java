@@ -1,6 +1,5 @@
 package bread_and_aces.utils;
 
-import bread_and_aces.main.Main;
 
 public class DevPrinter {
 
@@ -8,20 +7,20 @@ public class DevPrinter {
 		println(""+o);
 	}
 	public static void println(String msg) {
-//		System.err.println( getLine(new Throwable())+" "+msg);
-		Main.logger.info( getLine(new Throwable())+" "+msg );
+		System.err.println( getLine(new Throwable())+" "+msg);
+//		Main.logger.info( getLine(new Throwable())+" "+msg );
 	}
 	public static void println() {
-//		System.err.println( getLine(new Throwable()) );
-		Main.logger.info( getLine(new Throwable()) );
+		System.err.println( getLine(new Throwable()) );
+//		Main.logger.info( getLine(new Throwable()) );
 	}
 	
 	public static void print(Object o) {
 		print(""+o);
 	}
 	public static void print(String msg) {
-//		System.err.print( getLine(new Throwable())+" "+msg);
-		Main.logger.info( getLine(new Throwable()) +msg );
+		System.err.print( getLine(new Throwable())+" "+msg);
+//		Main.logger.info( getLine(new Throwable()) +msg );
 	}
 	public static void print(/*Throwable throwable*/) {
 		System.err.print( getLine(new Throwable()) );
