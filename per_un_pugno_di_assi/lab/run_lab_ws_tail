@@ -1,0 +1,22 @@
+#!/bin/bash
+
+echo $0 > run_to_exec
+
+export JAVA_HOME=/usr/lib/jvm/jdk-8-oracle-x64/
+#export JAVA_HOME=/usr/lib/jvm/java-8-oracle/
+
+#if [ -z "$(ip addr show  dev eth0 | grep 10.0.0 2>/dev/null)" ]; then
+addr=$(ip addr show dev eth0 | grep -w inet | awk '{print $2}' | sed 's/\/24//g')
+if [ -z "${addr}" ]; then
+  echo "missing address!" 
+  exit 1
+else
+   jgoodies_path="libs/jgoodies/jgoodies-common-1.4.0.jar:libs/jgoodies/jgoodies-forms-1.8.0.jar"
+   guice_path="libs/guice/guice-3.0.jar:libs/guice/aopalliance-1.0.jar:libs/guice/javax.inject.jar:libs/guice/guice-assistedinject-3.0.jar";
+   guice_enhanced_path="libs/guice_enhanced/guice_enhanced.jar"
+   rm -f tmp/trace*.log
+   $JAVA_HOME/bin/java -cp ${guice_path}:${guice_enhanced_path}:${jgoodies_path}:bin bread_and_aces.main.Main ${addr} &
+   sleep 1
+   tail -f tmp/trace*.log
+fi
+
