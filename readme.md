@@ -14,10 +14,10 @@ Optimized service mechanisms (using parallelism and lambda/functional paradigm f
 To run in dev mode in same host (with multiple address on same nic):  
 	`sudo ./set_ips;  ./dev/run_dev s; ./dev/run_dev c`
 
-	1. "sudo ./set_ips;": set the virtual ips on eth0 - you could change as you prefer
-	2. "./dev/run_dev s": run the server/master for subscriptions - here you have to click "register", leaving the fields as empty
-	3. "./dev/run_dev c": run the i-nth client/slave - idem as above
-	4. finally, click "close registrations and start game" on master/server gui to start the game
+1. "sudo ./set_ips;": set the virtual ips on eth0 - you could change as you prefer
+2. "./dev/run_dev s": run the server/master for subscriptions - here you have to click "register", leaving the fields as empty
+3. "./dev/run_dev c": run the i-nth client/slave - idem as above
+4. finally, click "close registrations and start game" on master/server gui to start the game
 
 In "lab" directory there is a similar start script: "run_lab_ws" - it does not provides fake username nor virtual ips, so you could inspire to this script for a real distributed (=different hosts) session: obviously, you have to fill fields on gui ;D  
 
