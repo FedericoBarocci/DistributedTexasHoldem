@@ -12,10 +12,8 @@ Behind the scenes, the application uses a token ring implementation for peers tu
 Optimized service mechanisms (using parallelism and lambda/functional paradigm from Java8) help the "oracle" to handle crash happening and recovering - network communications are based on classic Java RMI, of course.
 
 To run in demo mode in same host (with multiple address on same nic):
-
-	`sudo demo/set_ips`
-	
-	`demo/run IP`
+`sudo demo/set_ips`
+`demo/run IP`
 	
 which IP is one of the ip address added from the first script.
 
