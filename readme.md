@@ -11,15 +11,17 @@ a master node accepts subscriptions to game from other (initial slave) peers, th
 Behind the scenes, the application uses a token ring implementation for peers turn, and an "oracle"/pre-emptive finite states machine for future peers behaviours ("correct"=the node is still in the game, or "wrong"=the node has crashed).  
 Optimized service mechanisms (using parallelism and lambda/functional paradigm from Java8) help the "oracle" to handle crash happening and recovering - network communications are based on classic Java RMI, of course.
 
-To run in dev mode in same host (with multiple address on same nic):  
-	`sudo ./set_ips;  ./dev/run_dev s; ./dev/run_dev c`
+To run in demo mode in same host (with multiple address on same nic):  
+	`sudo demo/set_ips`
+	`demo/run IP`
+which IP is one of the ip address added from the first script.
 
-1. "sudo ./set_ips;": set the virtual ips on eth0 - you could change as you prefer
-2. "./dev/run_dev s": run the server/master for subscriptions - here you have to click "register", leaving the fields as empty
-3. "./dev/run_dev c": run the i-nth client/slave - idem as above
-4. finally, click "close registrations and start game" on master/server gui to start the game
-
-In "lab" directory there is a similar start script: "run_lab_ws" - it does not provides fake username nor virtual ips, so you could inspire to this script for a real distributed (=different hosts) session: obviously, you have to fill fields on gui ;D  
+For example:
+1. "sudo demo/set_ips;": set the virtual ips on eth0 - you could change as you prefer
+2. "demo/run_dev 10.0.0.1": run the server/master for subscriptions - check to act as initializer and click "Accept registration"
+3. "demo/run_dev 10.0.0.2": run the client/slave - insert the address of registrar (10.0.0.1) host and click "Register"
+4. if you want you could other clients (the game accept a max of 8 total players, so you cold start up to 6 more clients)
+5. click "close registrations and start game" on master/server gui to start the game
 
 ---  
 ##### Technical details:
