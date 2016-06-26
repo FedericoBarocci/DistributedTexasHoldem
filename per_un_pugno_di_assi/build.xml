@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="build" name="per_un_pugno_di_assi">
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <path id="per_un_pugno_di_assi.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="libs/guice/javax.inject.jar"/>
+        <pathelement location="libs/guice/guice-3.0.jar"/>
+        <pathelement location="libs/guice/aopalliance-1.0.jar"/>
+        <pathelement location="libs/guice/guice-assistedinject-3.0.jar"/>
+    </path>
+    <target name="clean">
+    	<delete dir="bin"/>
+    	<mkdir dir="bin"/>
+    </target>
+    <target name="build">
+    			<mkdir dir="bin"/>
+       <echo message="${ant.project.name}: ${ant.file}"/>
+       <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+           <src path="src"/>
+           <classpath refid="per_un_pugno_di_assi.classpath"/>
+       </javac>
+    </target>
+</project>

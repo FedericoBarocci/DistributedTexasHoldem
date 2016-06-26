@@ -1,0 +1,12 @@
+Fri Jul 17 17:50:35 CEST 2015 - Main.start:66 registrationData: Max as clientable to lucia.cs.unibo.it:33333
+Fri Jul 17 17:50:36 CEST 2015 - PlayersViewHandler.<init>:35 HERE -> PlayersViewHandler 32
+Fri Jul 17 17:50:37 CEST 2015 - NodeInitializer.startListen:158 Node started on port 33333
+Fri Jul 17 17:50:37 CEST 2015 - AbstractRegistrationInitializerClientable.registerNodeInfosPlayerIdThenDo:49 accepted: true
+Fri Jul 17 17:50:42 CEST 2015 - NewPlayersObserverAsClientable.notifyNewPlayers:14 Synchronized players from initializer: fedeworkst, Max
+Fri Jul 17 17:50:42 CEST 2015 - MemoryUtil.runGarbageCollector:39 Memory released is: 8.776268Mb
+Fri Jul 17 17:50:42 CEST 2015 - PlayersKeeperImpl.getPlayers:179 returning actual players: fedeworkst Max 
+Fri Jul 17 17:50:42 CEST 2015 - Player.println:224 fedeworkst token received
+Fri Jul 17 17:50:42 CEST 2015 - PlayersViewHandler.setViewToken:77 PlayersViewHandler.setViewToken
+Fri Jul 17 17:50:42 CEST 2015 - PlayersKeeperImpl.getPlayers:179 returning actual players: fedeworkst Max 
+Fri Jul 17 17:50:42 CEST 2015 - DistributedController.receiveStartGame:64 Game can start!
+Fri Jul 17 17:50:42 CEST 2015 - PlayersViewHandler.init:43 PlayersViewHandler.init
