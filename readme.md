@@ -12,17 +12,21 @@ Behind the scenes, the application uses a token ring implementation for peers tu
 Optimized service mechanisms (using parallelism and lambda/functional paradigm from Java8) help the "oracle" to handle crash happening and recovering - network communications are based on classic Java RMI, of course.
 
 To run in demo mode in same host (with multiple address on same nic):
-`sudo demo/set_ips`
-`demo/run IP`
+
+```sh
+sudo demo/set_ips
+demo/run IP
+```
 	
-which IP is one of the ip address added from the first script.
+where IP is one of the ip address added from the first script, from 10.0.0.1 to 10.0.0.10.
+Obviously you can change the script in order to match your needs, or use a custom `ip addr add` command.
 
 For example:
 
 1. "sudo demo/set_ips;": set the virtual ips on eth0 - you could change as you prefer
 2. "demo/run_dev 10.0.0.1": run the server/master for subscriptions - check to act as initializer and click "Accept registration"
 3. "demo/run_dev 10.0.0.2": run the client/slave - insert the address of registrar (10.0.0.1) host and click "Register"
-4. if you want you could other clients (the game accept a max of 8 total players, so you cold start up to 6 more clients)
+4. if you want you could start other clients (the game accept a max of 8 total players, so you cold start up to 6 more clients)
 5. click "close registrations and start game" on master/server gui to start the game
 
 ---  
