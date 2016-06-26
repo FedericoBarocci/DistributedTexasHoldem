@@ -31,10 +31,7 @@ import com.google.inject.spi.Message;
 
 public class Main {
 	
-	private final static String DEV_MODE = "DEV";
-	
 	public static Logger logger;
-
 	public static String run_cmd;
 	
 	public RegistrationData startRegistrationGUI(boolean isDevMode) {
@@ -71,9 +68,11 @@ public class Main {
 
 		String myId = registrationData.username;
 		if (registrationData.asServable) {
+			DevPrinter.println("Start as servable");
 			nodeInitializer = nodeInitializerFactory.createAsServable(myId, addressToBind);
 		} 
 		else {
+			DevPrinter.println("Start as clientable");
 			String initializingHostAddress = registrationData.serverHost;
 			nodeInitializer = nodeInitializerFactory.createAsClientableWithInitializerPort(myId, addressToBind, initializingHostAddress, Integer.parseInt(registrationData.serverPort));
 		}
@@ -94,9 +93,12 @@ public class Main {
 //	private 
 	public static void main(String[] args) {
 		if (args.length<1) {
-			System.out.println("minimum 1 arguments: \n\n"
-					+args[0]+ "local_address_to_bind_on\n\n" );
+			System.out.println("Missing argument: ip" );
 			System.exit(1);
+		}
+		
+		for (String s : args) {
+			DevPrinter.println(s);
 		}
 		
 		Scanner scanner;
@@ -114,28 +116,7 @@ public class Main {
 		logger = Logger.getLogger("logger");
 		logger.setUseParentHandlers(false);
 		
-		boolean isDevMode = false;
-		RegistrationData registrationDataForDevMode = null;
-		if (args.length > 1) {
-			String arg1 = args[1];
-			DevPrinter.println("arg1: "+arg1);
-			isDevMode = (arg1.equalsIgnoreCase(DEV_MODE)) ? true : false;
-			if (isDevMode)
-				registrationDataForDevMode = handleArgsForDevMode(args);
-		}
-
-		
-		
 		try {
-//			String suffix = "";
-//			if (isDevMode)
-//				suffix="_"+registrationDataForDevMode.username;
-//			File file = new File("tmp");
-//			file.mkdir();
-//			FileHandler fileHandler = new FileHandler("tmp"+File.separatorChar+"trace" + suffix + ".log");
-//			fileHandler.setFormatter(new LogFormatter());
-//			logger.addHandler(fileHandler);
-	     
 	        ConsoleHandler ch = new ConsoleHandler();
 	        ch.setFormatter(new LogFormatter());
 	        logger.addHandler(ch);
@@ -146,85 +127,15 @@ public class Main {
 		
 		Main main = new Main();
 
-		RegistrationData registrationData = main.startRegistrationGUI(isDevMode);
-		// TODO only for test during development - it works only with: ./run host_ip DEV player_name [s]
-//		if (isDevMode) {
-//			DevPrinter.println("DevMode: "+isDevMode);
-//			handleRegistrationDataInDevMode(registrationDataForDevMode, registrationData);
-			/*try {
-				logger.addHandler( new FileHandler("trace_"+registrationData.username+".log"));
-				logger.removeHandler(fileHandler);
-				// TODO complete this
-			} catch (SecurityException | IOException e) {
-				e.printStackTrace();
-			}*/
-//		}
-		
+		RegistrationData registrationData = main.startRegistrationGUI(false);
 		
 		try {
-			if (isDevMode) {
-//				DevPrinter.println(registrationDataForDevMode);
-				main.start(registrationDataForDevMode, addressToBind);
-			} else {
-//				DevPrinter.println(registrationData);
-				main.start(registrationData, addressToBind);
-			}
+			main.start(registrationData, addressToBind);
 		} catch (Exception e) {
 			DevPrinter.println( "main exception");
 			handleException(e);
 		}
 	} // main
-	
-	private static RegistrationData handleArgsForDevMode(String[] args) {
-		RegistrationData registrationData = null;
-		if (args.length<2) {
-			System.out.println("ERROR:");
-			System.out.println("DevMode: "+args[0]+" DEV HOST_IP playerName <s>");
-			System.out.println("s is optional, and you have to add if you want start host as servable");
-			System.exit(0);
-		} else {
-			registrationData = new RegistrationData();
-			registrationData.username = args[2];
-			if (args.length>3 ) {
-				registrationData.asServable = (args[3].equals("s")) ? true: false;
-				DevPrinter.println(registrationData.username+" "+ ( registrationData.asServable? "as servable": "as clientable") );
-			}
-			if (!registrationData.asServable) {
-				DevPrinter.println("try to register "+registrationData.username);
-				registrationData.serverHost = "10.0.0.1";
-				registrationData.serverPort = "33333";
-			} 
-//			else {
-				registrationData.coins = 200;
-				registrationData.goal = 1000;
-//			}
-		}
-		return registrationData;
-	}
-	
-	/*private static void handleRegistrationDataInDevMode(RegistrationData registrationDataForDevMode, RegistrationData registrationData) {
-		registrationData.username = registrationDataForDevMode.username;
-		registrationData.serverHost = registrationDataForDevMode.serverHost;
-		registrationData.serverPort = registrationDataForDevMode.serverPort;
-		registrationData.username = registrationDataForDevMode.username;
-		registrationData.username = registrationDataForDevMode.username;
-		
-		if (args.length<2) {
-			System.out.println("ERROR:");
-			System.out.println("DevMode: "+args[0]+" DEV HOST_IP playerName <s>");
-			System.out.println("s is optional, and you have to add if you want start host as servable");
-			System.exit(0);
-		} else {
-			registrationData.username = args[2];
-			if (args.length>3 ) {
-				registrationData.asServable = (args[3].equals("s")) ? true: false;
-				DevPrinter.println(registrationData.username+" "+ ( registrationData.asServable? "as servable": "as clientable") );
-			}
-			if (!registrationData.asServable) {
-				DevPrinter.println("try to register "+registrationData.username);
-			}
-		}
-	}*/
 	
 	public static void handleException(Exception e) {
 			try {
@@ -253,8 +164,7 @@ public class Main {
 	        sb.append(new Date(record.getMillis()))
 	            .append(" - ")
 	            .append(formatMessage(record))
-	            .append(LINE_SEPARATOR)
-	            ;
+	            .append(LINE_SEPARATOR);
 
 	        if (record.getThrown() != null) {
 	            try {

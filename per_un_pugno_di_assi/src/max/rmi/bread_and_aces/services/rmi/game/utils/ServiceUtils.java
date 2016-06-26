@@ -6,6 +6,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import bread_and_aces.services.rmi.game.core.GameService;
+import bread_and_aces.utils.DevPrinter;
 
 public class ServiceUtils {
 
@@ -16,6 +17,7 @@ public class ServiceUtils {
 	}
 	
 	public static String getRMIURLString(String address, int port, String service) {
+		DevPrinter.println("rmi://"+address+":"+port+"/"+service);
 		return "rmi://"+address+":"+port+"/"+service;
 	}
 }

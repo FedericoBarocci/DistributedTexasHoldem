@@ -81,7 +81,6 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 		RegistrationResult registrationResult = gameRegistrarProvider.get().registerPlayer(thisNodeConnectionInfo, playerId);
 		msg+=registrationResult.isAccepted();
 		DevPrinter.println(msg);
-//		printer.println("ok");
 	}
 	protected abstract void waitForRegistrationsClosingWhileAcceptPlayersThenStartGame();
 	private void closeRegistrations() {
@@ -92,7 +91,7 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 	}
 	
 	protected void updateAllNodesForPartecipants() {
-		DevPrinter.println(/*new Throwable()*/);
+		DevPrinter.println();
 		communicator.toAll(myId, this::updatePartecipantsOnClientFunctor);
 	}
 	private void updatePartecipantsOnClientFunctor(GameService clientableGameServiceExternalInjected, String nodeId) {
@@ -108,45 +107,19 @@ public abstract class AbstractRegistrationInitializerServable implements Registr
 			);
 		} catch (RemoteException e) {
 			// CRASH: it could happen servable sends infos to crashed clientable(s) 
-			DevPrinter.println(/*new Throwable(),*/ "remote exception");
-//			try {
-//				String nodeId = clientableGameServiceExternalInjected.getId();
-//				DevPrinter.println(nodeId);
-				crashHandler.removeLocallyFromEverywhere( nodeId );
-//			} catch(RemoteException e1) {
-////				e.printStackTrace();
-////				Main.handleException(e1);
-//				DevPrinter.println( e1 );
-//			}
-//			e.printStackTrace();
-
-			//			distributedController.removePlayer(nodeId);
-//			registrarPlayersKeeper.remove( nodeId );
-//			 must remove in gameservicekeeper but also in playerskeeper .. and nodesconnectioninfos?  
+			DevPrinter.println("remote exception");
+			crashHandler.removeLocallyFromEverywhere(nodeId);
+			// must remove in gameservicekeeper but also in playerskeeper .. and nodesconnectioninfos?  
 		}
 	}
 	
 	private void startGame() {
 		DevPrinter.println("Game can start!");
 		game.start();
-//		passBucket();
-		DevPrinter.println("Inizio io perché comando io!");
+		DevPrinter.println("Sono il primo a giocare");
 		registrarPlayersKeeper.setMyselfAsLeader();
-//		.receiveToken();
-//		DevPrinter.println(/*new Throwable(),*/ "just before to sayToAllStartGame");
 		communicator.toAll(myId, this::sayToAllStartGame);
 	}
-	
-	/*private void passBucket() {
-		Player next = gameRegistrarProvider.get().getFirst();
-		String nextId = next.getName();
-//		printer.println("First player is: "+nextId);
-		communicator.toOne(this::passBucket, nextId);
-	}	
-	private void passBucket(GameService gameServiceExternalInjected) throws RemoteException {
-		gameServiceExternalInjected.receiveBucket();
-		DevPrinter.println("Ho passato bucket");
-	}*/
 	
 	private void sayToAllStartGame(GameService gameServiceExternalInjected) {
 		try {
